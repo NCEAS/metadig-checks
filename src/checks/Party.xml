@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>Party</id>
+   <name>Party</name>
+   <description>Checks to see if at least one Party concept exists.</description>
+   <type>CMR-Common_Required</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept Party is present."
+                                        
+  if(Party is not None and len(str(Party)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "Party concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>Party</name>
+      <xpath>(//CI_ResponsibleParty/individualName) or (//CI_ResponsibleParty/organisationName) or (//CI_ResponsibleParty/contactInfo) or (//CI_Responsibility/party/CI_Individual/name) or (//CI_Responsibility/party/CI_Organisation/name) or (//CI_Responsibility/party/*/contactInfo)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

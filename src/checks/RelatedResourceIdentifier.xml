@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>RelatedResourceIdentifier</id>
+   <name>Related Resource Identifier</name>
+   <description>Checks to see if at least one Related Resource Identifier concept exists.</description>
+   <type>relatedResourceCitation</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept RelatedResourceIdentifier is present."
+                                        
+  if(RelatedResourceIdentifier is not None and len(str(RelatedResourceIdentifier)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "RelatedResourceIdentifier concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>RelatedResourceIdentifier</name>
+      <xpath>(/MD_Metadata/identificationInfo/*/associatedResource/MD_AssociatedResource/name/CI_Citation/identifier/MD_Identifier/code) or (/DryadDataPackage/external) or (/DryadDataFile/isPartOf) or (/DryadDataPackage/references) or (/DryadDataPackage/hasPart) or (/*/identificationInfo/*/aggregationInfo/MD_AggregateInformation/aggregateDataSetIdentifier/MD_Identifier/code) or (/*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicDescription/geographicIdentifier/MD_Identifier/code) or (/*/identificationInfo/*/processingLevel/MD_Identifier/code) or (/*/dataQualityInfo/DQ_DataQuality/report/DQ_AccuracyOfATimeMeasurement/measureIdentification/MD_Identifier/code) or (/MI_Metadata/acquisitionInformation/MI_AcquisitionInformation/operation/MI_Operation/identifier/MD_Identifier/code) or (/MI_Metadata/acquisitionInformation/MI_AcquisitionInformation/platform/*/identifier/MD_Identifier/code) or (/MI_Metadata/acquisitionInformation/MI_AcquisitionInformation/instrument/*/identifier/MD_Identifier/code) or (/MI_Metadata/acquisitionInformation/MI_AcquisitionInformation/sensor/EOS_Sensor/identifier/MD_Identifier/code) or (/eml/*/project/@id) or (/resource/relatedIdentifiers/relatedIdentifier)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

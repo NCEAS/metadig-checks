@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>SpatialExtent</id>
+   <name>Spatial Extent</name>
+   <description>Checks to see if at least one Spatial Extent concept exists.</description>
+   <type>ECHO_Discovery-Recommended</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept SpatialExtent is present."
+                                        
+  if(SpatialExtent is not None and len(str(SpatialExtent)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "SpatialExtent concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>SpatialExtent</name>
+      <xpath>(/MD_Metadata/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement) or (/*/spatial) or (/*/identificationInfo/*/extent/EX_Extent/geographicElement) or (/eml/*/coverage/geographicCoverage) or (/resource/geoLocations/geoLocation)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

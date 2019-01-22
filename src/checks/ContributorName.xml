@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>ContributorName</id>
+   <name>Contributor Name</name>
+   <description>Checks to see if at least one Contributor Name concept exists.</description>
+   <type>CSWCoreReturnables</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept ContributorName is present."
+                                        
+  if(ContributorName is not None and len(str(ContributorName)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "ContributorName concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>ContributorName</name>
+      <xpath>(/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[not(normalize-space\(role/CI_RoleCode) ='author' or normalize-space\(role/CI_RoleCode) ='principalInvestigator' or normalize-space\(role/CI_RoleCode) ='originator')]/party/*/name) or (/*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_ResponsibleParty[not(normalize-space\(role/CI_RoleCode[.='author' or .='principalInvestigator' or .='originator']))]/*[contains(name(),'Name')]) or (/*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_ResponsibleParty[normalize-space\(role/CI_RoleCode)='contributor']/*[contains(name(),'Name')]) or (/eml/*/associatedParty) or (/resource/contributors/contributor/contributorName)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

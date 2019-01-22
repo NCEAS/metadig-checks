@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>BoundingBox</id>
+   <name>Bounding Box</name>
+   <description>Checks to see if at least one Bounding Box concept exists.</description>
+   <type>CSWCoreQueryables</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept BoundingBox is present."
+                                        
+  if(BoundingBox is not None and len(str(BoundingBox)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "BoundingBox concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>BoundingBox</name>
+      <xpath>(/MD_Metadata/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox) or (/*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox) or (/*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox) or (/eml/*/coverage/geographicCoverage/boundingCoordinates) or (/resource/geoLocations/geoLocation/geoLocationPlace)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

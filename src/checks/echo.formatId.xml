@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.echo.formatId.1</id>
+	<name>Echo formatId</name>
+	<description>Extract formatId from system metadata</description>
+	<type>identification</type>
+	<level>METADATA</level>
+	<environment>Java</environment>
+	<code>edu.ucsb.nceas.mdqengine.processor.FormatIdEchoCheck</code>
+	<!-- not used -->
+	<selector>
+		<name>title</name>
+		<xpath>/eml/dataset/title</xpath>
+	</selector>
+</mdq:check>

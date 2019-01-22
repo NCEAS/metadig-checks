@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>MeasureDescription</id>
+   <name>Measure Description</name>
+   <description>Checks to see if at least one Measure Description concept exists.</description>
+   <type>ISO_Quality</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept MeasureDescription is present."
+                                        
+  if(MeasureDescription is not None and len(str(MeasureDescription)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "MeasureDescription concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>MeasureDescription</name>
+      <xpath>(/MD_Metadata/dataQualityInfo/DQ_DataQuality/report/DQ_Element/measure/DQ_MeasureReference/measureDescription) or (/*/dataQualityInfo/DQ_DataQuality/report/DQ_QuantitativeAttributeAccuracy/measureDescription)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

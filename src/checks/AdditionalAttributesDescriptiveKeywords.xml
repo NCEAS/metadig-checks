@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>AdditionalAttributesDescriptiveKeywords</id>
+   <name>Additional Attributes - Descriptive Keywords</name>
+   <description>Checks to see if at least one Additional Attributes - Descriptive Keywords concept exists.</description>
+   <type>CMR-Granule_Recommended</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept AdditionalAttributesDescriptiveKeywords is present."
+                                        
+  if(AdditionalAttributesDescriptiveKeywords is not None and len(str(AdditionalAttributesDescriptiveKeywords)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "AdditionalAttributesDescriptiveKeywords concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>AdditionalAttributesDescriptiveKeywords</name>
+      <xpath>(/*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords[not(contains(gmd:type/gmd:MD_KeywordTypeCode,'project')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'theme')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'place')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'platform')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'dataCent'))
+            and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'discipline')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'stratum')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'temporal')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'featureType')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'process')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'product')) and
+            not(contains(gmd:type/gmd:MD_KeywordTypeCode,'dataResolution')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'service')) and not(contains(gmd:type/gmd:MD_KeywordTypeCode,'instrument'))]/gmd:keyword</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.sampling.description.present.1</id>
+	<name>Sampling description present</name>
+	<description>Checks if a sampling description is present in the methods section.</description>
+	<type>interpretation</type>
+	<level>OPTIONAL</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+    check <- function() {
+      library(base)
+      # These variables are defined by the MQE from the <xpath> selectors.
+      # "samplingDescriptionPresent" - is a methods sampling description present?
+      if(samplingDescriptionPresent) {
+        return(list(status="SUCCESS", output="A sampling description is present in the methods section."))
+      } else {
+        return(list(status="FAILURE", output="A sampling description is not present in the methods section."))
+      }
+    }
+  
+    result <- check()
+    mdq_result <- list(status=result$status, output=list(list(value=result$output)))    
+    ]]></code>
+	<selector>
+		<name>samplingDescriptionPresent</name>
+		<xpath>boolean(/eml/dataset/methods/sampling/samplingDescription)</xpath>
+	</selector>
+	<dialect>
+		<name>eml</name>
+		<xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+</mdq:check>

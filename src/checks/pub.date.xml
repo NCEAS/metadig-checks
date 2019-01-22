@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>check.pub.date.1</id>
+  <name>Publication date</name>
+  <description>Publication date should be present</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code>
+    library(metadig)
+    
+    if (length(pub_date) >= 1) {
+      success("A publication date is present.")
+    } else {
+      failure("A publication date is not present.") 
+    }
+  </code>
+  <selector>
+    <name>pub_date</name>
+    <xpath>/eml/dataset/pubDate</xpath>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

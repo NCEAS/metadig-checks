@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>ServiceLocation</id>
+   <name>Service Location</name>
+   <description>Checks to see if at least one Service Location concept exists.</description>
+   <type>service</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept ServiceLocation is present."
+                                        
+  if(ServiceLocation is not None and len(str(ServiceLocation)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "ServiceLocation concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>ServiceLocation</name>
+      <xpath>(/MD_Metadata/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage) or (/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>CSWCoreQueryablesISO</id>
+  <name>ISO_CSWCoreQueryables</name>
+  <check>
+    <id>CSWCoreQueryables_Keyword_ISO</id>
+    <name>KeywordPresent</name>
+    <description>Checks to see if at least one Keyword concept exists.</description>
+    <type>discovery</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Keyword is present."
+  if(Keyword is not None and len(Keyword) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Keyword concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>Keyword</name>
+      <xpath>/*/identificationInfo/*/descriptiveKeywords/MD_Keywords/keyword | /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space(type/MD_KeywordTypeCode)='place']/keyword/CharacterString | /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space(type/MD_KeywordTypeCode)='instrument']/keyword/CharacterString |
+        /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space(type/MD_KeywordTypeCode)='platform']/keyword/CharacterString | /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space(type/MD_KeywordTypeCode)='project']/keyword/CharacterString</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_ResourceTitle_ISO</id>
+    <name>ResourceTitlePresent</name>
+    <description>Checks to see if at least one Resource Title concept exists.</description>
+    <type>identification</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceTitle is present."
+  if(ResourceTitle is not None and len(ResourceTitle) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceTitle concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>ResourceTitle</name>
+      <xpath>/*/identificationInfo/*/citation/CI_Citation/title/CharacterString</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_Abstract_ISO</id>
+    <name>AbstractPresent</name>
+    <description>Checks to see if at least one Abstract concept exists.</description>
+    <type>discovery</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Abstract is present."
+  if(Abstract is not None and len(Abstract) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Abstract concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>Abstract</name>
+      <xpath>/*/identificationInfo/*/abstract/CharacterString</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_ResourceFormat_ISO</id>
+    <name>ResourceFormatPresent</name>
+    <description>Checks to see if at least one Resource Format concept exists.</description>
+    <type>interpretation</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceFormat is present."
+  if(ResourceFormat is not None and len(ResourceFormat) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceFormat concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>ResourceFormat</name>
+      <xpath>//resourceFormat/MD_Format/name/CharacterString</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_MetadataIdentifier_ISO</id>
+    <name>MetadataIdentifierPresent</name>
+    <description>Checks to see if at least one Metadata Identifier concept exists.</description>
+    <type>identification</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept MetadataIdentifier is present."
+  if(MetadataIdentifier is not None and len(MetadataIdentifier) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "MetadataIdentifier concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>MetadataIdentifier</name>
+      <xpath>/*/fileIdentifier/CharacterString</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_MetadataModifiedDate_ISO</id>
+    <name>MetadataModifiedDatePresent</name>
+    <description>Checks to see if at least one Metadata Modified Date concept exists.</description>
+    <type>discovery</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept MetadataModifiedDate is present."
+  if(MetadataModifiedDate is not None and len(MetadataModifiedDate) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "MetadataModifiedDate concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>MetadataModifiedDate</name>
+      <xpath>/*/dateStamp/Date | /*/dateStamp/DateTime</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_ResourceType_ISO</id>
+    <name>ResourceTypePresent</name>
+    <description>Checks to see if at least one Resource Type concept exists.</description>
+    <type>discovery</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceType is present."
+  if(ResourceType is not None and len(ResourceType) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceType concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>ResourceType</name>
+      <xpath>/*/hierarchyLevel/MD_ScopeCode</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_BoundingBox_ISO</id>
+    <name>BoundingBoxPresent</name>
+    <description>Checks to see if at least one Bounding Box concept exists.</description>
+    <type>discovery</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept BoundingBox is present."
+  if(BoundingBox is not None and len(BoundingBox) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "BoundingBox concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>BoundingBox</name>
+      <xpath>/*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* | /*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//*</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_CoordinateReferenceSystem(CRS)_ISO</id>
+    <name>CoordinateReferenceSystem(CRS)Present</name>
+    <description>Checks to see if at least one Coordinate Reference System (CRS) concept exists.</description>
+    <type>discovery</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept CoordinateReferenceSystem(CRS) is present."
+  if(CoordinateReferenceSystem is not None and len(CoordinateReferenceSystem) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "CoordinateReferenceSystem(CRS) concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>CoordinateReferenceSystem</name>
+      <xpath>/*/referenceSystemInfo/MD_ReferenceSystem/referenceSystemIdentifier/RS_Identifier/code | /*/referenceSystemInfo/MD_ReferenceSystem/referenceSystemIdentifier/RS_Identifier/codeSpace</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>CSWCoreQueryables_Association_ISO</id>
+    <name>AssociationPresent</name>
+    <description>Checks to see if at least one Association concept exists.</description>
+    <type>identification</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Association is present."
+  if(Association is not None and len(Association) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Association concept is not present"
+  return False
+      ]]></code>
+    <selector>
+      <name>Association</name>
+      <xpath>/*/identificationInfo/*/aggregationInfo/MD_AggregateInformation | /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/source | /*/dataQualityInfo/DQ_DataQuality/lineage/LE_Lineage/source</xpath>
+    </selector>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  </check>
+</mdq:suite>

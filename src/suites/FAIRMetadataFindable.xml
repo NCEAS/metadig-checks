@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>FAIR Metadata - Findable.suite.1</id>
+   <name>FAIR Metadata - Findable</name>
+   <check>
+      <id>ResourceTitle</id>
+   </check>
+   <check>
+      <id>ResourceIdentifier</id>
+   </check>
+   <check>
+      <id>ResourceIdentifierType</id>
+   </check>
+   <check>
+      <id>ResourceType</id>
+   </check>
+   <check>
+      <id>ResourceFormat</id>
+   </check>
+   <check>
+      <id>Abstract</id>
+   </check>
+   <check>
+      <id>Keyword</id>
+   </check>
+   <check>
+      <id>ResourceAuthorOriginator</id>
+   </check>
+   <check>
+      <id>ResourceAuthorOriginatorIdentifier</id>
+   </check>
+   <check>
+      <id>ResourceAuthorOriginatorIdentifierType</id>
+   </check>
+   <check>
+      <id>ResourcePublisher</id>
+   </check>
+   <check>
+      <id>ResourcePublicationDate</id>
+   </check>
+   <check>
+      <id>ResourceCreationRevisionDate</id>
+   </check>
+   <check>
+      <id>MetadataIdentifier</id>
+   </check>
+   <check>
+      <id>SpatialExtent</id>
+   </check>
+   <check>
+      <id>TemporalExtent</id>
+   </check>
+   <check>
+      <id>TaxonomicExtent</id>
+   </check>
+</mdq:suite>

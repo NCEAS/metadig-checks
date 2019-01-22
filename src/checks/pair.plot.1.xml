@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>pair.plot.1</id>
+  <name>Pair plot</name>
+  <description>Show a pair / scatter-plot matrix plot. For each data object referenced in the metadata, attempts to download, read, then display the pair plot.</description>
+  <type>interpretation</type>
+  <level>INFO</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+library(metadig)
+library(data.table)
+library(readxl)
+
+supported_formats <- c("text/csv",
+                     "text/tsv",
+                     "text/plain",
+                     "application/vnd.ms-excel",
+                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+if (length(names) <= 0) {
+  success("No data files were described in the metadata, so unable to create a pair plot of the data.")
+} else {
+  for (i in seq_along(names)) {
+    if (!(formats[i] %in% supported_formats)) {
+      save_output(paste0("Skipped displaying the head of ", names[i], " because it wasn't in the list of supported formats for displaying."))
+      next
+    }
+
+    # Convert ecogrid URis to DataONE resolve URIs
+    url <- gsub("ecogrid:/knb/", "https://cn.dataone.org/cn/v2/resolve/", urls[i])
+
+    path <- tryCatch({
+      mdq_get(url, FALSE)
+    },
+    error = function(e) {
+      e
+    })
+
+    if (inherits(path, "error")) {
+      save_output(paste0("Something went wrong when trying to download ", names[i]))
+      next
+    }
+
+    x <- tryCatch({
+      if (formats[i] == "text/csv") {
+        read.csv(path)
+      } else if (formats[i] == "text/tsv") {
+        read.delim(path)
+      } else if (formats[i] == "text/plain") {
+        fread(path)
+      } else if (formats[i] == "application/vnd.ms-excel") {
+        readxl:::read_xls(path)
+      } else if (formats[i] == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        readxl:::read_xlsx(path)
+      }
+    },
+    error = function(e) {
+      save_output(paste0("Failed to read file ", names[i], " at the following URL: ", url, "."))
+      e
+    })
+
+    if (is.data.frame(x)) {
+      save_output(capture.output(head(x, n = 10)))
+      save_output(capture.output(tail(x, n = 10)))
+    } else {
+      save_output(paste0("Something went wrong when trying to read ", names[i]))
+    }
+  }
+}
+success()
+]]></code>
+  <selector>
+    <name>names</name>
+    <xpath>//dataset/otherEntity</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>formats</name>
+    <xpath>//dataset/otherEntity</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>.//formatName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>urls</name>
+    <xpath>//dataset/otherEntity</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>.//distribution/online/url</xpath>
+    </subSelector>
+  </selector>
+    <selector>
+    <name>pids</name>
+    <xpath>//dataset/otherEntity</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./@id</xpath>
+    </subSelector>
+  </selector>
+</mdq:check>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>AdditionalAttributesInstrument</id>
+   <name>Additional Attributes - Instrument</name>
+   <description>Checks to see if at least one Additional Attributes - Instrument concept exists.</description>
+   <type>CMR-Granule_Recommended</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept AdditionalAttributesInstrument is present."
+                                        
+  if(AdditionalAttributesInstrument is not None and len(str(AdditionalAttributesInstrument)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "AdditionalAttributesInstrument concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>AdditionalAttributesInstrument</name>
+      <xpath>(//instrument/*/otherProperty/Record/AdditionalAttributes/AdditionalAttribute[/reference/EOS_AdditionalAttributeDescription/type/EOS_AdditionalAttributeTypeCode='instrumentInformation']/value) or (//instrument/*/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/type/EOS_AdditionalAttributeTypeCode='instrumentInformation']/value) or (//platform/EOS_Platform/instrument/EOS_Instrument/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[/reference/EOS_AdditionalAttributeDescription/type/EOS_AdditionalAttributeTypeCode='instrumentInformation']/value)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

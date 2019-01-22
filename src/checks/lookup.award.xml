@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.lookup.award.1</id>
+	<name>Award lookup</name>
+	<description>Look-up award information from NSF using award id</description>
+	<type>identification</type>
+	<level>METADATA</level>
+	<environment>Java</environment>
+	<code>edu.ucsb.nceas.mdqengine.processor.AwardLookupCheck</code>
+	<selector>
+		<name>awards</name>
+		<xpath>/eml/dataset/project/funding//para</xpath>
+	</selector>
+</mdq:check>

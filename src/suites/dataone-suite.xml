@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>dataone.suite.1</id>
+  <name>DataONE Quality Suite</name>
+  <description>This is the DataONE Metadata Quality Suite.</description>
+  <namespaces>
+    <namespace prefix="eml">eml://ecoinformatics.org/eml-2.1.1</namespace>
+    <namespace prefix="gmd">http://www.isotc211.org/2005/gmd</namespace>
+    <namespace prefix="dcterms">http://purl.org/dc/terms/</namespace>
+  </namespaces>
+  <check>
+    <id>check.creator.present.1</id>
+  </check>
+  <check>
+    <id>check.creator.info.1</id>
+  </check>
+  <check>
+    <id>check.contact.1</id>
+  </check>
+  <check>
+    <id>check.contact.info.1</id>
+  </check>
+  <check>
+    <id>check.abstract.100.words.1</id>
+  </check>
+  <check>
+    <id>check.dataset.title.length.1</id>
+  </check>
+  <check>
+    <id>check.identifier.is.present.1</id>
+  </check>
+  <check>
+    <id>check.identifier.is.doi.1</id>
+  </check>
+  <check>
+    <id>check.usage.is.cc.1</id>
+  </check>
+  <check>
+    <id>check.temporal.coverage.1</id>
+  </check>
+  <check>
+    <id>check.geographic.description.1</id>
+  </check>
+  <check>
+    <id>check.bounding.coordinates.1</id>
+  </check>
+  <check>
+    <id>check.pub.date.1</id>
+  </check>
+  <check>
+    <id>check.sampling.description.present.1</id>
+  </check>
+  <check>
+    <id>check.entity.present.1</id>
+  </check>
+  <check>
+    <id>check.entity.name.present.1</id>
+  </check>
+  <check>
+    <id>check.entity.attributes.present.1</id>
+  </check>
+  <check>
+    <id>check.attribute.definition.sufficient.1</id>
+  </check>
+  <check>
+    <id>check.sampling.study.extent.present.1</id>
+  </check>
+  <check>
+    <id>check.attribute.name.differs.1</id>
+  </check>
+  <check>
+    <id>check.methods.present.1</id>
+  </check>
+  <check>
+    <id>missing.value.codes.1</id>
+  </check>
+  <check>
+    <id>enumerated.domains.1</id>
+  </check>
+  <check>
+    <id>check.echo.rightsHolder.1</id>
+  </check>
+  <check>
+    <id>check.echo.datasource.1</id>
+  </check>
+  <check>
+    <id>check.echo.formatId.1</id>
+  </check>
+  <check>
+    <id>check.lookup.group.1</id>
+  </check>
+</mdq:suite>

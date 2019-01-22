@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.attribute.definition.sufficient.1</id>
+	<name>Attribute definition is sufficient.</name>
+	<description>Check that each attribute definition has greater that 4 words.</description>
+	<type>interpretation</type>
+	<level>OPTIONAL</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+check <- function() {
+  library(base)
+  # varialbe defined by MQE from the <xpath> selectors.
+  # "attributeName" - the names of each data entity
+  # "attributeDefinition" - the names of each data entity
+  
+  minWordCount <- 4
+  
+   # Skip check if no dataTables
+  if(!entityPresent) {
+    return(list(status="SKIP", values=list(value="No data table descriptions are present, so cannot check attribute definition word counts.")))
+  }
+
+  # Skip check if no attributes present
+  if(!attributesPresent) {
+    return(list(status="SKIP", values=list(value="No data table description attributes are present, so cannot check attribute definition word counts.")))
+  } 
+
+  values <- list()
+  attrCount <- 0
+  if (length(attributeName) > 0) {
+    for(iAttr in 1:length(attributeName)) {
+      attrName <- tolower(as.character(attributeName[[iAttr]]))
+      attrDef <- tolower(as.character(attributeDefinition[[iAttr]]))
+      if(!is.na(attrName) && !is.na(attrDef)) {
+        attrCount <- attrCount + 1
+        wordCount <- length(unlist(strsplit(attrDef, "\\s+", perl=T)))
+        if(wordCount < minWordCount) {
+          values[[length(values)+1]] <- attributeName[[iAttr]]
+        }
+      }
+    }
+  }
+  
+  quoteStyle <- getOption("useFancyQuotes")
+  options("useFanceyQuotes" = FALSE)
+  
+  if(length(values) > 0) {
+    return(list(status="FAILURE", values=list(value=sprintf("These data table description attributes have definitions shorter than %d words: %s", minWordCount, paste(sQuote(unlist(values)), collapse=", ")))))
+  } else {
+    return(list(status="SUCCESS", values=list(value=sprintf("All data table description attributes have sufficient definitions"))))
+  }
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=list(result$values))
+]]></code>
+
+	<!-- Don't need a subSelector for entityName, as this element is required, 
+		so their won't be entities that are selected that don't have this value, 
+		and therefor no 'blank' values. -->
+	<selector>
+		<name>attributesPresent</name>
+		<xpath>boolean(/eml/dataset/dataTable/attributeList/attribute)</xpath>
+	</selector>
+	<selector>
+		<name>entityPresent</name>
+		<xpath>boolean(/eml/dataset/dataTable)</xpath>
+	</selector>
+	<selector>
+		<name>attributeName</name>
+		<xpath>/eml/dataset/dataTable/attributeList/attribute</xpath>
+		<subSelector>
+			<name>attributeNameSubSelector</name>
+			<xpath>./attributeName</xpath>
+		</subSelector>
+	</selector>
+	<selector>
+		<name>attributeDefinition</name>
+		<xpath>/eml/dataset/dataTable/attributeList/attribute</xpath>
+		<subSelector>
+			<name>attributeDefinitionSubSelector</name>
+			<xpath>./attributeDefinition</xpath>
+		</subSelector>
+	</selector>
+	<dialect>
+		<name>eml</name>
+		<xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+</mdq:check>

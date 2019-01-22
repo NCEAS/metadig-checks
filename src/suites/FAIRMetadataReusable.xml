@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>FAIR Metadata - Reusable.suite.1</id>
+   <name>FAIR Metadata - Reusable</name>
+   <check>
+      <id>LineageStatement</id>
+   </check>
+   <check>
+      <id>Source</id>
+   </check>
+   <check>
+      <id>SourceCitation</id>
+   </check>
+   <check>
+      <id>ProcessStep</id>
+   </check>
+</mdq:suite>

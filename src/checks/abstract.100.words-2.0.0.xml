@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>check.abstract.100.words.2</id>
+  <name>Abstract length</name>
+  <description>Abstract should be at least 100 words long.</description>
+  <type>discovery</type>  
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+    if (nchar(abstract) == 0) {
+      status <- "FAILURE"
+      message <- "No abstract sections were found."
+    } else if (length(abstract) > 1) {
+      status <- "FAILURE"
+      message <- "More than one abstract section is present, only one is allowed."
+    } else {
+      library(stringr)
+      # Trim whitespace, split abstract on whitespace
+      tokens <- trimws(str_split(abstract, "\\s+")[[1]], which="both")
+      # Remove blank elements (subtly and irritatingly different than whitespace)
+      tokens <- tokens[tokens != ""]
+
+      if (length(tokens) >= 100) {
+        status <- "SUCCESS"
+        message <- paste0("The abstract is ", length(tokens), " word(s) long which is sufficient.")
+      } else {
+        status <- "FAILURE"
+        message <- paste0("The abstract is only ", length(tokens), " word(s) long but 100 or more is requried.")
+      }
+    }
+
+    mdq_result <- list(status = status,
+                       output = list(list(value = message)))
+  ]]></code>
+  <selector namespaceAware="true">
+    <name>abstract</name>
+    <xpath>/*[local-name() = 'eml']/dataset/abstract |
+      /*/gmd:identificationInfo/*/gmd:abstract/gco:CharacterString |
+      /*/dcterms:description
+      </xpath>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+  <dialect>
+    <name>Dryad Data Package and Data File Modules</name>
+    <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+  </dialect>
+</mdq:check>

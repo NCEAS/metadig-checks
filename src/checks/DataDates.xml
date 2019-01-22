@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>DataDates</id>
+   <name>Data Dates</name>
+   <description>Checks to see if at least one Data Dates concept exists.</description>
+   <type>CMR-Common_Optional</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept DataDates is present."
+                                        
+  if(DataDates is not None and len(str(DataDates)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "DataDates concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>DataDates</name>
+      <xpath>(//MD_DataIdentification/citation/CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='creation']/date) or (//MD_DataIdentification/citation/CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='creation']/dateTime) or (//MD_DataIdentification/citation/CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='revision']/date) or (//MD_DataIdentification/citation/CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='revision']/dateTime) or (//CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='creation']/date) or (//CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='lastRevision']/date) or (//CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='nextUpdate']/date) or (//CI_Citation/date/CI_Date[normalize-space\(dateType/CI_DateTypeCode)='expiry']/date)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

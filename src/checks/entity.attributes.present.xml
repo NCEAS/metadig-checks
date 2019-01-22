@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.entity.attributes.present.1</id>
+	<name>Check that an each entity has a name and attributes.</name>
+	<description>Check that each data entity has attributes.</description>
+	<type>interpretation</type>
+	<level>OPTIONAL</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+	
+check <- function() {
+  library(base)
+  library(metadig)
+  # variables defined by MQE from the <xpath> selectors.
+  # "entityName" - the names of each data entity
+  # "entityType" - the type of data entity, e.g. "dataTable", "spatialVector", etc.
+  # "entityAttributesPresent" - the names of each data entity
+  
+  outputList <- list()
+  
+  if(!entityPresent) {
+    return(list(status="SKIP", values=list(list(value="No data table descriptions (and related attributes) are present."))))
+  }
+
+  # Skip check if no attributes present
+  if(!attributesPresent) {
+    return(list(status="SKIP", values=list(list(value="No data table attributes are present."))))
+  }  
+  
+  # Assume that the check will succeed, until proven otherwise.
+  # The dataset may have multiple entities, so check each one. 
+  status <- "SUCCESS"
+  if (length(entityName) > 0) {
+    for(iEntity in 1:length(entityName)) {
+      thisEntityName <- entityName[[iEntity]]
+      #thisEntityType <- entityType[[iEntity]]
+
+      if(!entityAttributesPresent[[iEntity]]) {
+        outputList[[length(outputList)+1]] <- list(value=sprintf("The data table description '%s' does not have attributes defined.", thisEntityName))
+      }
+    }
+  } else {
+      # No data entities were selected by the xpath, so tell the user no check was performed.
+      outputList[[length(outputList)+1]] <- list(value=sprintf("No data table descriptions are present, so uanble to check for attributes."))
+      return(list(status="SKIP", values=outputList))
+  }
+  
+  # If no output was set, then the check passed, otherwise have to check for SKIP or FAILURE
+  if(length(outputList) > 0) {
+    return(list(status="FAILURE", values=outputList))
+  } else {
+    return(list(status="SUCCESS", values=list(list(value=sprintf("All data table descriptions have attributes defined.")))))
+  }
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=result$values) 
+]]></code>
+
+	<!-- Don't need a subSelector for entityName, as this is required, 
+		so their won't be entities that are selected that don't have this value, 
+		and therefor no 'blank' values. -->
+	<selector>
+		<name>attributesPresent</name>
+		<!-- <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/attributeList/attribute)</xpath> -->
+		<xpath>boolean(/eml/dataset/dataTable/attributeList/attribute)</xpath>
+	</selector>
+	<selector>
+		<name>entityPresent</name>
+		<!-- <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])</xpath> -->
+		<xpath>boolean(/eml/dataset/dataTable)</xpath>
+	</selector>
+	<selector>
+		<name>entityName</name>
+		<!-- <xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/entityName</xpath> -->
+		<xpath>/eml/dataset/dataTable/entityName</xpath>
+	</selector>
+	<selector>
+		<name>entityType</name>
+		<!-- <xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath> -->
+		<xpath>/eml/dataset/dataTable</xpath>
+		<subSelector>
+			<name>et</name>
+			<xpath>name(.)</xpath>
+		</subSelector>
+	</selector>
+	<selector>
+		<name>entityAttributesPresent</name>
+		<!-- <xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath> -->
+		<xpath>/eml/dataset/dataTable</xpath>
+		<subSelector>
+			<name>entityAttributesSubSelector</name>
+			<xpath>boolean(./attributeList/attribute)</xpath>
+		</subSelector>
+	</selector>
+	<dialect>
+		<name>eml</name>
+		<xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+</mdq:check>

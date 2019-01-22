@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>WSDL_Access.suite.1</id>
+   <name>WSDL_Access</name>
+   <check>
+      <id>Types</id>
+   </check>
+   <check>
+      <id>Interface</id>
+   </check>
+   <check>
+      <id>ServiceOperationName</id>
+   </check>
+   <check>
+      <id>Binding</id>
+   </check>
+   <check>
+      <id>ServiceLocation</id>
+   </check>
+   <check>
+      <id>Service</id>
+   </check>
+</mdq:suite>

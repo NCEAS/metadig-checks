@@ -1,0 +1,3220 @@
+<html xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Quality Engine Checks</title>
+   </head>
+   <body>
+      <h1>Quality Engine Checks</h1>
+      <h2>All checks</h2>
+      <table border="yes" cellpadding="3">
+         <tr>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Dialects</th>
+         </tr>
+         <tr>
+            <td><b>Abstract</b></td>
+            <td>Abstract</td>
+            <td>Checks to see if at least one Abstract concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Abstract length</b></td>
+            <td>check.abstract.100.words.2</td>
+            <td>Abstract should be at least 100 words long.</td>
+            <td>discovery</td>
+            <td>Dialects: 3<br>eml, ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, Dryad Data Package and
+               Data File Modules
+            </td>
+         </tr>
+         <tr>
+            <td><b>Abstract length</b></td>
+            <td>check.abstract.100.words.1</td>
+            <td>Abstract should be at least 100 words long.</td>
+            <td>discovery</td>
+            <td>Dialects: 2<br>eml, iso
+            </td>
+         </tr>
+         <tr>
+            <td><b>Acknowledgement</b></td>
+            <td>Acknowledgement</td>
+            <td>Checks to see if at least one Acknowledgement concept exists.</td>
+            <td>ACDD_recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes</b></td>
+            <td>AdditionalAttributes</td>
+            <td>Checks to see if at least one Additional Attributes concept exists.</td>
+            <td>ECHO_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes - Content Information</b></td>
+            <td>AdditionalAttributesContentInformation</td>
+            <td>Checks to see if at least one Additional Attributes - Content Information concept
+               exists.
+            </td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes - Descriptive Keywords</b></td>
+            <td>AdditionalAttributesDescriptiveKeywords</td>
+            <td>Checks to see if at least one Additional Attributes - Descriptive Keywords concept
+               exists.
+            </td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes - Geographic Identifier</b></td>
+            <td>AdditionalAttributesGeographicIdentifier</td>
+            <td>Checks to see if at least one Additional Attributes - Geographic Identifier concept
+               exists.
+            </td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes - Instrument</b></td>
+            <td>AdditionalAttributesInstrument</td>
+            <td>Checks to see if at least one Additional Attributes - Instrument concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes - Platform</b></td>
+            <td>AdditionalAttributesPlatform</td>
+            <td>Checks to see if at least one Additional Attributes - Platform concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Attributes - Quality Information</b></td>
+            <td>AdditionalAttributesQualityInformation</td>
+            <td>Checks to see if at least one Additional Attributes - Quality Information concept
+               exists.
+            </td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Lineage Documentation</b></td>
+            <td>AdditionalLineageDocumentation</td>
+            <td>Checks to see if at least one Additional Lineage Documentation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Resource Documentation</b></td>
+            <td>AdditionalResourceDocumentation</td>
+            <td>Checks to see if at least one Additional Resource Documentation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Additional Usage Documentation</b></td>
+            <td>AdditionalUsageDocumentation</td>
+            <td>Checks to see if at least one Additional Usage Documentation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Algorithm Citation</b></td>
+            <td>AlgorithmCitation</td>
+            <td>Checks to see if at least one Algorithm Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Alternate Metadata Citation</b></td>
+            <td>AlternateMetadataCitation</td>
+            <td>Checks to see if at least one Alternate Metadata Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Ancillary Keyword</b></td>
+            <td>AncillaryKeyword</td>
+            <td>Checks to see if at least one Ancillary Keyword concept exists.</td>
+            <td>CMR-Collection_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Application Schema Information</b></td>
+            <td>ApplicationSchemaInformation</td>
+            <td>Checks to see if at least one Application Schema Information concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>AssociatedDIFs</b></td>
+            <td>AssociatedDIFs</td>
+            <td>Checks to see if at least one AssociatedDIFs concept exists.</td>
+            <td>ECHO_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Association</b></td>
+            <td>Association</td>
+            <td>Checks to see if at least one Association concept exists.</td>
+            <td>CSWCoreQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute Accuracy Explanation</b></td>
+            <td>AttributeAccuracyExplanation</td>
+            <td>Checks to see if at least one Attribute Accuracy Explanation concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute Accuracy Report</b></td>
+            <td>AttributeAccuracyReport</td>
+            <td>Checks to see if at least one Attribute Accuracy Report concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute Accuracy Value</b></td>
+            <td>AttributeAccuracyValue</td>
+            <td>Checks to see if at least one Attribute Accuracy Value concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute Constraints</b></td>
+            <td>AttributeConstraints</td>
+            <td>Checks to see if at least one Attribute Constraints concept exists.</td>
+            <td>LTER_Integration</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute Definition</b></td>
+            <td>AttributeDefinition</td>
+            <td>Checks to see if at least one Attribute Definition concept exists.</td>
+            <td>entitiesAndAttributes</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute List</b></td>
+            <td>AttributeList</td>
+            <td>Checks to see if at least one Attribute List concept exists.</td>
+            <td>LTER_Integration</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute definition is sufficient.</b></td>
+            <td>check.attribute.definition.sufficient.1</td>
+            <td>Check that each attribute definition has greater that 4 words.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Attribute name differs from attribute description.</b></td>
+            <td>check.attribute.name.differs.1</td>
+            <td>Check that each entity name and definition are not identical.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Award lookup</b></td>
+            <td>check.lookup.award.1</td>
+            <td>Look-up award information from NSF using award id</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Binding</b></td>
+            <td>Binding</td>
+            <td>Checks to see if at least one Binding concept exists.</td>
+            <td>WSDL_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Bounding Box</b></td>
+            <td>BoundingBox</td>
+            <td>Checks to see if at least one Bounding Box concept exists.</td>
+            <td>CSWCoreQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Bounding Polygon</b></td>
+            <td>BoundingPolygon</td>
+            <td>Checks to see if at least one Bounding Polygon concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Browse Description</b></td>
+            <td>BrowseDescription</td>
+            <td>Checks to see if at least one Browse Description concept exists.</td>
+            <td>browseGraphic</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Browse File Name</b></td>
+            <td>BrowseFileName</td>
+            <td>Checks to see if at least one Browse File Name concept exists.</td>
+            <td>browseGraphic</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Browse File Size</b></td>
+            <td>BrowseFileSize</td>
+            <td>Checks to see if at least one Browse File Size concept exists.</td>
+            <td>browseGraphic</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Browse Format</b></td>
+            <td>BrowseFormat</td>
+            <td>Checks to see if at least one Browse Format concept exists.</td>
+            <td>browseGraphic</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Browse URL</b></td>
+            <td>BrowseURL</td>
+            <td>Checks to see if at least one Browse URL concept exists.</td>
+            <td>browseGraphic</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Center Latitude</b></td>
+            <td>CenterLatitude</td>
+            <td>Checks to see if at least one Center Latitude concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Center Longitude</b></td>
+            <td>CenterLongitude</td>
+            <td>Checks to see if at least one Center Longitude concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check contact information</b></td>
+            <td>check.contact.info.2</td>
+            <td>Check if the contact contains an email and address.</td>
+            <td>identification</td>
+            <td>Dialects: 2<br>eml, ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check contact information</b></td>
+            <td>check.contact.info.1</td>
+            <td>Check if the contact contains an email and address.</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check creator information</b></td>
+            <td>check.creator.info.2</td>
+            <td>Check if the creator contains an email and address.</td>
+            <td>identification</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2 / ISO 19139
+               and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check creator information</b></td>
+            <td>check.creator.info.1</td>
+            <td>Check if the creator contains an email and address.</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check that a contact has an ORCID, email and address</b></td>
+            <td>check.contact.has.orcid.1</td>
+            <td>Check if the contact contains a userId ORCID, email and address.</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check that an each entity has a name and attributes.</b></td>
+            <td>check.entity.attributes.present.1</td>
+            <td>Check that each data entity has attributes.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Check that an entity name, description, format, size, checksum is present</b></td>
+            <td>check.entity.name.present.1</td>
+            <td>Check that each data entity has a name, description, format, size, checksum.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Cited Resource Alternate Title</b></td>
+            <td>CitedResourceAlternateTitle</td>
+            <td>Checks to see if at least one Cited Resource Alternate Title concept exists.</td>
+            <td>genericCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Cloud Cover</b></td>
+            <td>CloudCover</td>
+            <td>Checks to see if at least one Cloud Cover concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Collection Data Type</b></td>
+            <td>CollectionDataType</td>
+            <td>Checks to see if at least one Collection Data Type concept exists.</td>
+            <td>CMR-Collection_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Common Data Model Datatype</b></td>
+            <td>CommonDataModelDatatype</td>
+            <td>Checks to see if at least one Common Data Model Datatype concept exists.</td>
+            <td>ACDD_recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Completeness Report</b></td>
+            <td>CompletenessReport</td>
+            <td>Checks to see if at least one Completeness Report concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Confidence</b></td>
+            <td>Confidence</td>
+            <td>Checks to see if at least one Confidence concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Conformance Result</b></td>
+            <td>ConformanceResult</td>
+            <td>Checks to see if at least one Conformance Result concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Constraint Reference</b></td>
+            <td>ConstraintReference</td>
+            <td>Checks to see if at least one Constraint Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Contact</b></td>
+            <td>check.contact.2</td>
+            <td>Contact should be present</td>
+            <td>identification</td>
+            <td>Dialects: 2<br>eml, ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Contact</b></td>
+            <td>check.contact.1</td>
+            <td>Contact should be present</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Contributor Name</b></td>
+            <td>ContributorName</td>
+            <td>Checks to see if at least one Contributor Name concept exists.</td>
+            <td>CSWCoreReturnables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Contributor Role</b></td>
+            <td>ContributorRole</td>
+            <td>Checks to see if at least one Contributor Role concept exists.</td>
+            <td>ACDD_suggested</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Coordinate Reference System (CRS)</b></td>
+            <td>CoordinateReferenceSystem(CRS)</td>
+            <td>Checks to see if at least one Coordinate Reference System (CRS) concept exists.</td>
+            <td>CSWCoreQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Coupled Resource</b></td>
+            <td>CoupledResource</td>
+            <td>Checks to see if at least one Coupled Resource concept exists.</td>
+            <td>ISO_ServiceDiscovery-Conditional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Coupled Type</b></td>
+            <td>CoupledType</td>
+            <td>Checks to see if at least one Coupled Type concept exists.</td>
+            <td>ISO_ServiceDiscovery-Conditional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Coverage Content Type</b></td>
+            <td>CoverageContentType</td>
+            <td>Checks to see if at least one Coverage Content Type concept exists.</td>
+            <td>rubricContent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Coverage Result</b></td>
+            <td>CoverageResult</td>
+            <td>Checks to see if at least one Coverage Result concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Coverage includes that Arctic</b></td>
+            <td>coverage.in.arctic.1</td>
+            <td>Checks to see if at least one geographic coverage intersects with the Arctic, which
+               is defined as the area north of 45° N latitude.
+            </td>
+            <td>interpretation</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Creator</b></td>
+            <td>check.creator.present.2</td>
+            <td>Creator should be present</td>
+            <td>identification</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Creator</b></td>
+            <td>check.creator.present.1</td>
+            <td>Creator should be present</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Creator has ORCID</b></td>
+            <td>check.creator.has.orcid.1</td>
+            <td>The creator field should contain an ORCID, email and address.</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>DOI Identifier</b></td>
+            <td>check.identifier.is.doi.1</td>
+            <td>Identifier should be a DOI.</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Data Dates</b></td>
+            <td>DataDates</td>
+            <td>Checks to see if at least one Data Dates concept exists.</td>
+            <td>CMR-Common_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Data Quality Scope</b></td>
+            <td>DataQualityScope</td>
+            <td>Checks to see if at least one Data Quality Scope concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Data entity present check.</b></td>
+            <td>check.entity.present.2</td>
+            <td>Check that a data entity is present.</td>
+            <td>interpretation</td>
+            <td>Dialects: 2<br>eml, ISO 19115 and ISO 19115-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Data entity present check.</b></td>
+            <td>check.entity.present.1</td>
+            <td>Check that a data entity is present.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Data head and tail</b></td>
+            <td>data.head.and.tail.1</td>
+            <td>Show the first and last rows of tabular data. For each data object referenced in the
+               metadata, attempts to download, read, then display the first and last ten lines.
+            </td>
+            <td>interpretation</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>DataType</b></td>
+            <td>DataType</td>
+            <td>Checks to see if at least one DataType concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Dataset title length is sufficient</b></td>
+            <td>check.dataset.title.length.2</td>
+            <td>Check that the dataset title is greater than 7 words and less than 20.</td>
+            <td>identification</td>
+            <td>Dialects: 3<br>eml, ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, Dryad Data Package and
+               Data File Modules
+            </td>
+         </tr>
+         <tr>
+            <td><b>Dataset title length is sufficient</b></td>
+            <td>check.dataset.title.length.1</td>
+            <td>Check that the dataset title is greater than 7 words and less than 20.</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Date Type</b></td>
+            <td>DateType</td>
+            <td>Checks to see if at least one Date Type concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>DayNightFlag</b></td>
+            <td>DayNightFlag</td>
+            <td>Checks to see if at least one DayNightFlag concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Descriptive Result</b></td>
+            <td>DescriptiveResult</td>
+            <td>Checks to see if at least one Descriptive Result concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Dimensions</b></td>
+            <td>Dimensions</td>
+            <td>Checks to see if at least one Dimensions concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>DimensionsName</b></td>
+            <td>DimensionsName</td>
+            <td>Checks to see if at least one DimensionsName concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Distribution Contact</b></td>
+            <td>DistributionContact</td>
+            <td>Checks to see if at least one Distribution Contact concept exists.</td>
+            <td>distributionInfo</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Distribution Format</b></td>
+            <td>DistributionFormat</td>
+            <td>Checks to see if at least one Distribution Format concept exists.</td>
+            <td>distributionInfo</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Distribution Liability</b></td>
+            <td>DistributionLiability</td>
+            <td>Checks to see if at least one Distribution Liability concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Easternmost Longitude</b></td>
+            <td>EasternmostLongitude</td>
+            <td>Checks to see if at least one Easternmost Longitude concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Echo datasource</b></td>
+            <td>check.echo.datasource.1</td>
+            <td>Extract datasource (auth MN) from system metadata</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Echo formatId</b></td>
+            <td>check.echo.formatId.1</td>
+            <td>Extract formatId from system metadata</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Echo rightsHolder</b></td>
+            <td>check.echo.rightsHolder.1</td>
+            <td>Extract rightsHolder from system metadata</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Email</b></td>
+            <td>Email</td>
+            <td>Checks to see if at least one Email concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Embargo Date</b></td>
+            <td>EmbargoDate</td>
+            <td>Checks to see if at least one Embargo Date concept exists.</td>
+            <td>DMAP-DF_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>End Time</b></td>
+            <td>EndTime</td>
+            <td>Checks to see if at least one End Time concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Ends at Present Flag</b></td>
+            <td>EndsatPresentFlag</td>
+            <td>Checks to see if at least one Ends at Present Flag concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Entity Type Definition</b></td>
+            <td>EntityTypeDefinition</td>
+            <td>Checks to see if at least one Entity Type Definition concept exists.</td>
+            <td>entitiesAndAttributes</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Entity and Attribute Information</b></td>
+            <td>EntityandAttributeInformation</td>
+            <td>Checks to see if at least one Entity and Attribute Information concept exists.</td>
+            <td>entitiesAndAttributes</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Entity name length</b></td>
+            <td>check.entity.name.length.1</td>
+            <td>Length of entity name is less than 100 characters.</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Enumerated domain</b></td>
+            <td>enumerated.domains.1</td>
+            <td>Enumerated domains should be defined</td>
+            <td>interpretation</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Evaluation Method Description</b></td>
+            <td>EvaluationMethodDescription</td>
+            <td>Checks to see if at least one Evaluation Method Description concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Evaluation Procedure</b></td>
+            <td>EvaluationProcedure</td>
+            <td>Checks to see if at least one Evaluation Procedure concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Evaluation Reference</b></td>
+            <td>EvaluationReference</td>
+            <td>Checks to see if at least one Evaluation Reference concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Evaluation Reference Document</b></td>
+            <td>EvaluationReferenceDocument</td>
+            <td>Checks to see if at least one Evaluation Reference Document concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Evaluation Specification</b></td>
+            <td>EvaluationSpecification</td>
+            <td>Checks to see if at least one Evaluation Specification concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Evalulation Method</b></td>
+            <td>EvalulationMethod</td>
+            <td>Checks to see if at least one Evalulation Method concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Evalulation Method Type</b></td>
+            <td>EvalulationMethodType</td>
+            <td>Checks to see if at least one Evalulation Method Type concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Exclusion GRing Flag</b></td>
+            <td>ExclusionGRingFlag</td>
+            <td>Checks to see if at least one Exclusion GRing Flag concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Feature Catalogue Citation</b></td>
+            <td>FeatureCatalogueCitation</td>
+            <td>Checks to see if at least one Feature Catalogue Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>FillValue</b></td>
+            <td>FillValue</td>
+            <td>Checks to see if at least one FillValue concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>First Name</b></td>
+            <td>FirstName</td>
+            <td>Checks to see if at least one First Name concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Format Citation</b></td>
+            <td>FormatCitation</td>
+            <td>Checks to see if at least one Format Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Funder</b></td>
+            <td>check.echo.funder.1</td>
+            <td>Check for extracting funder from the metadata for result indexing and analysis.</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Future Metadata Review Date</b></td>
+            <td>FutureMetadataReviewDate</td>
+            <td>Checks to see if at least one Future Metadata Review Date concept exists.</td>
+            <td>UMM-Common_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>GRing Point Latitude</b></td>
+            <td>GRingPointLatitude</td>
+            <td>Checks to see if at least one GRing Point Latitude concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>GRing Point Longitude</b></td>
+            <td>GRingPointLongitude</td>
+            <td>Checks to see if at least one GRing Point Longitude concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>GRing Point Sequence Number</b></td>
+            <td>GRingPointSequenceNumber</td>
+            <td>Checks to see if at least one GRing Point Sequence Number concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Geographic coverage coordinates</b></td>
+            <td>check.bounding.coordinates.2</td>
+            <td>Geographic Coverage should contain bounding coordinates.</td>
+            <td>discovery</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2 / ISO 19139
+               and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Geographic coverage coordinates</b></td>
+            <td>check.bounding.coordinates.1</td>
+            <td>Geographic Coverage should contain bounding coordinates.</td>
+            <td>discovery</td>
+            <td>Dialects: 2<br>eml, iso
+            </td>
+         </tr>
+         <tr>
+            <td><b>Geographic coverage description</b></td>
+            <td>check.geographic.description.2</td>
+            <td>Geographic coverage description should be present at the dataset level.</td>
+            <td>discovery</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2 / ISO 19139
+               and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Geographic coverage description</b></td>
+            <td>check.geographic.description.1</td>
+            <td>Geographic coverage description should be present at the dataset level.</td>
+            <td>discovery</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Grid Dimension Count</b></td>
+            <td>GridDimensionCount</td>
+            <td>Checks to see if at least one Grid Dimension Count concept exists.</td>
+            <td>UMM-Collection_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Grid Dimension Resolution</b></td>
+            <td>GridDimensionResolution</td>
+            <td>Checks to see if at least one Grid Dimension Resolution concept exists.</td>
+            <td>UMM-Collection_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Grid Dimension Type Code</b></td>
+            <td>GridDimensionTypeCode</td>
+            <td>Checks to see if at least one Grid Dimension Type Code concept exists.</td>
+            <td>UMM-Collection_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Group lookup</b></td>
+            <td>check.lookup.group.1</td>
+            <td>Look up group information from CN using system metadata info</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Homogeneity</b></td>
+            <td>Homogeneity</td>
+            <td>Checks to see if at least one Homogeneity concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Horizontal Positional Accuracy Explanation</b></td>
+            <td>HorizontalPositionalAccuracyExplanation</td>
+            <td>Checks to see if at least one Horizontal Positional Accuracy Explanation concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Horizontal Positional Accuracy Report</b></td>
+            <td>HorizontalPositionalAccuracyReport</td>
+            <td>Checks to see if at least one Horizontal Positional Accuracy Report concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Horizontal Positional Accuracy Value</b></td>
+            <td>HorizontalPositionalAccuracyValue</td>
+            <td>Checks to see if at least one Horizontal Positional Accuracy Value concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Identified Issues Citation</b></td>
+            <td>IdentifiedIssuesCitation</td>
+            <td>Checks to see if at least one Identified Issues Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Identifier present</b></td>
+            <td>check.identifier.is.present.1</td>
+            <td>Identifier should be present.</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Input Granule</b></td>
+            <td>InputGranule</td>
+            <td>Checks to see if at least one Input Granule concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument</b></td>
+            <td>Instrument</td>
+            <td>Checks to see if at least one Instrument concept exists.</td>
+            <td>rubricAcquisition</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Characteristics Name</b></td>
+            <td>InstrumentCharacteristicsName</td>
+            <td>Checks to see if at least one Instrument Characteristics Name concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Characteristics Value</b></td>
+            <td>InstrumentCharacteristicsValue</td>
+            <td>Checks to see if at least one Instrument Characteristics Value concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Citation</b></td>
+            <td>InstrumentCitation</td>
+            <td>Checks to see if at least one Instrument Citation concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Keyword</b></td>
+            <td>InstrumentKeyword</td>
+            <td>Checks to see if at least one Instrument Keyword concept exists.</td>
+            <td>rubricAcquisition</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Long Name</b></td>
+            <td>InstrumentLongName</td>
+            <td>Checks to see if at least one Instrument Long Name concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Operation Modes</b></td>
+            <td>InstrumentOperationModes</td>
+            <td>Checks to see if at least one Instrument Operation Modes concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Short Name</b></td>
+            <td>InstrumentShortName</td>
+            <td>Checks to see if at least one Instrument Short Name concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Instrument Type</b></td>
+            <td>InstrumentType</td>
+            <td>Checks to see if at least one Instrument Type concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Interface</b></td>
+            <td>Interface</td>
+            <td>Checks to see if at least one Interface concept exists.</td>
+            <td>WSDL_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Keyword</b></td>
+            <td>Keyword</td>
+            <td>Checks to see if at least one Keyword concept exists.</td>
+            <td>LTER_Identification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Keyword Ontology Citation</b></td>
+            <td>KeywordOntologyCitation</td>
+            <td>Checks to see if at least one Keyword Ontology Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Keyword Type</b></td>
+            <td>KeywordType</td>
+            <td>Checks to see if at least one Keyword Type concept exists.</td>
+            <td>CSWAdditionalQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Keyword Vocabulary</b></td>
+            <td>KeywordVocabulary</td>
+            <td>Checks to see if at least one Keyword Vocabulary concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Keyword Vocabulary Citation</b></td>
+            <td>KeywordVocabularyCitation</td>
+            <td>Checks to see if at least one Keyword Vocabulary Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Keywords present</b></td>
+            <td>check.keyword.present.2</td>
+            <td>At least one keyword should be present.</td>
+            <td>discovery</td>
+            <td>Dialects: 3<br>eml, ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, Dryad Data Package and
+               Data File Modules
+            </td>
+         </tr>
+         <tr>
+            <td><b>Last Name</b></td>
+            <td>LastName</td>
+            <td>Checks to see if at least one Last Name concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Lineage Scope</b></td>
+            <td>LineageScope</td>
+            <td>Checks to see if at least one Lineage Scope concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Lineage Statement</b></td>
+            <td>LineageStatement</td>
+            <td>Checks to see if at least one Lineage Statement concept exists.</td>
+            <td>rubricDescription</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Local Version Identifier</b></td>
+            <td>LocalVersionIdentifier</td>
+            <td>Checks to see if at least one Local Version Identifier concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Logical Consistency</b></td>
+            <td>LogicalConsistency</td>
+            <td>Checks to see if at least one Logical Consistency concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Logical Consistency Report</b></td>
+            <td>LogicalConsistencyReport</td>
+            <td>Checks to see if at least one Logical Consistency Report concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>LongName</b></td>
+            <td>LongName</td>
+            <td>Checks to see if at least one LongName concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Maintenance</b></td>
+            <td>Maintenance</td>
+            <td>Checks to see if at least one Maintenance concept exists.</td>
+            <td>LTER_Discovery</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Measure</b></td>
+            <td>Measure</td>
+            <td>Checks to see if at least one Measure concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Measure Description</b></td>
+            <td>MeasureDescription</td>
+            <td>Checks to see if at least one Measure Description concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Measure Identifier</b></td>
+            <td>MeasureIdentifier</td>
+            <td>Checks to see if at least one Measure Identifier concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Measure Name</b></td>
+            <td>MeasureName</td>
+            <td>Checks to see if at least one Measure Name concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Measure Time</b></td>
+            <td>MeasureTime</td>
+            <td>Checks to see if at least one Measure Time concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Media</b></td>
+            <td>Media</td>
+            <td>Checks to see if at least one Media concept exists.</td>
+            <td>distributionInfo</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Medium Reference</b></td>
+            <td>MediumReference</td>
+            <td>Checks to see if at least one Medium Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Access Constraints</b></td>
+            <td>MetadataAccessConstraints</td>
+            <td>Checks to see if at least one Metadata Access Constraints concept exists.</td>
+            <td>constraints</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Association</b></td>
+            <td>MetadataAssociation</td>
+            <td>Checks to see if at least one Metadata Association concept exists.</td>
+            <td>CMR-Common_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Contact</b></td>
+            <td>MetadataContact</td>
+            <td>Checks to see if at least one Metadata Contact concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Dates</b></td>
+            <td>MetadataDates</td>
+            <td>Checks to see if at least one Metadata Dates concept exists.</td>
+            <td>CMR-Common_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Deletion Date</b></td>
+            <td>MetadataDeletionDate</td>
+            <td>Checks to see if at least one Metadata Deletion Date concept exists.</td>
+            <td>UMM-Common_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Identifier</b></td>
+            <td>MetadataIdentifier</td>
+            <td>Checks to see if at least one Metadata Identifier concept exists.</td>
+            <td>CSWCoreQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Language</b></td>
+            <td>MetadataLanguage</td>
+            <td>Checks to see if at least one Metadata Language concept exists.</td>
+            <td>CSWCoreReturnables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Modified Date</b></td>
+            <td>MetadataModifiedDate</td>
+            <td>Checks to see if at least one Metadata Modified Date concept exists.</td>
+            <td>CSWCoreQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Profile Citation</b></td>
+            <td>MetadataProfileCitation</td>
+            <td>Checks to see if at least one Metadata Profile Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Standard Citation</b></td>
+            <td>MetadataStandardCitation</td>
+            <td>Checks to see if at least one Metadata Standard Citation concept exists.</td>
+            <td>DIF_Discovery-Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Standard Version</b></td>
+            <td>MetadataStandardVersion</td>
+            <td>Checks to see if at least one Metadata Standard Version concept exists.</td>
+            <td>DIF_Discovery-Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Time Convention</b></td>
+            <td>MetadataTimeConvention</td>
+            <td>Checks to see if at least one Metadata Time Convention concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Metadata Use Constraints</b></td>
+            <td>MetadataUseConstraints</td>
+            <td>Checks to see if at least one Metadata Use Constraints concept exists.</td>
+            <td>constraints</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Methods present</b></td>
+            <td>check.methods.present.2</td>
+            <td>All datasets should contain a methods section, and it's description should have sufficient
+               length (7 words).
+            </td>
+            <td>interpretation</td>
+            <td>Dialects: 2<br>eml, ISO 19115 and ISO 19115-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Methods present</b></td>
+            <td>check.methods.present.1</td>
+            <td>All datasets should contain a methods section, or a link to a separate methods doc.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Missing Value Codes</b></td>
+            <td>missing.value.codes.1</td>
+            <td>Missing value codes should be present for all attributes. Note that this only checks
+               for the presence of a &lt;missingValueCode&gt; in each &lt;attribute&gt; and does not check the
+               validity of the code values.
+            </td>
+            <td>interpretation</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>NSF awards in database</b></td>
+            <td>check.nsf.award.numbers.in.nsf.database.1</td>
+            <td>All entered NSF award numbers should be present in the NSF award database.</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Name</b></td>
+            <td>Name</td>
+            <td>Checks to see if at least one Name concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Naming Authority</b></td>
+            <td>NamingAuthority</td>
+            <td>Checks to see if at least one Naming Authority concept exists.</td>
+            <td>identifiers</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Non-proprietary data formats</b></td>
+            <td>check.non.proprietary.formats.1</td>
+            <td>Dataset should use non-proprietary data storage formats</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Northernmost Latitude</b></td>
+            <td>NorthernmostLatitude</td>
+            <td>Checks to see if at least one Northernmost Latitude concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Offset</b></td>
+            <td>Offset</td>
+            <td>Checks to see if at least one Offset concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Online Resource Function</b></td>
+            <td>OnlineResourceFunction</td>
+            <td>Checks to see if at least one Online Resource Function concept exists.</td>
+            <td>OnlineResources</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Operation Citation</b></td>
+            <td>OperationCitation</td>
+            <td>Checks to see if at least one Operation Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Ordering Instructions</b></td>
+            <td>OrderingInstructions</td>
+            <td>Checks to see if at least one Ordering Instructions concept exists.</td>
+            <td>distributionInfo</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Organization Name</b></td>
+            <td>OrganizationName</td>
+            <td>Checks to see if at least one Organization Name concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>PGE Name</b></td>
+            <td>PGEName</td>
+            <td>Checks to see if at least one PGE Name concept exists.</td>
+            <td>CMR-Granule_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>PGE Version</b></td>
+            <td>PGEVersion</td>
+            <td>Checks to see if at least one PGE Version concept exists.</td>
+            <td>CMR-Granule_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Pair plot</b></td>
+            <td>pair.plot.1</td>
+            <td>Show a pair / scatter-plot matrix plot. For each data object referenced in the metadata,
+               attempts to download, read, then display the pair plot.
+            </td>
+            <td>interpretation</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+         <tr>
+            <td><b>Paleo Temporal Coverage</b></td>
+            <td>PaleoTemporalCoverage</td>
+            <td>Checks to see if at least one Paleo Temporal Coverage concept exists.</td>
+            <td>DIF_Discovery-HighlyRecommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parameter Definition</b></td>
+            <td>ParameterDefinition</td>
+            <td>Checks to see if at least one Parameter Definition concept exists.</td>
+            <td>rubricContent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parameter Name</b></td>
+            <td>ParameterName</td>
+            <td>Checks to see if at least one Parameter Name concept exists.</td>
+            <td>rubricContent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parameter Name (Long)</b></td>
+            <td>ParameterName(Long)</td>
+            <td>Checks to see if at least one Parameter Name (Long) concept exists.</td>
+            <td>rubricContent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parameter Units</b></td>
+            <td>ParameterUnits</td>
+            <td>Checks to see if at least one Parameter Units concept exists.</td>
+            <td>rubricContent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parameters Citation</b></td>
+            <td>ParametersCitation</td>
+            <td>Checks to see if at least one Parameters Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parent Identifier</b></td>
+            <td>ParentIdentifier</td>
+            <td>Checks to see if at least one Parent Identifier concept exists.</td>
+            <td>identifiers</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Parent Metadata Reference</b></td>
+            <td>ParentMetadataReference</td>
+            <td>Checks to see if at least one Parent Metadata Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Party</b></td>
+            <td>Party</td>
+            <td>Checks to see if at least one Party concept exists.</td>
+            <td>CMR-Common_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Phone</b></td>
+            <td>Phone</td>
+            <td>Checks to see if at least one Phone concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Phone Type</b></td>
+            <td>PhoneType</td>
+            <td>Checks to see if at least one Phone Type concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Place Keyword</b></td>
+            <td>PlaceKeyword</td>
+            <td>Checks to see if at least one Place Keyword concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Plan Citation</b></td>
+            <td>PlanCitation</td>
+            <td>Checks to see if at least one Plan Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform</b></td>
+            <td>Platform</td>
+            <td>Checks to see if at least one Platform concept exists.</td>
+            <td>rubricAcquisition</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Characteristics Name</b></td>
+            <td>PlatformCharacteristicsName</td>
+            <td>Checks to see if at least one Platform Characteristics Name concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Characteristics Value</b></td>
+            <td>PlatformCharacteristicsValue</td>
+            <td>Checks to see if at least one Platform Characteristics Value concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Citation</b></td>
+            <td>PlatformCitation</td>
+            <td>Checks to see if at least one Platform Citation concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Keyword</b></td>
+            <td>PlatformKeyword</td>
+            <td>Checks to see if at least one Platform Keyword concept exists.</td>
+            <td>rubricAcquisition</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Long Name</b></td>
+            <td>PlatformLongName</td>
+            <td>Checks to see if at least one Platform Long Name concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Orbit Information</b></td>
+            <td>PlatformOrbitInformation</td>
+            <td>Checks to see if at least one Platform Orbit Information concept exists.</td>
+            <td>CMR-Granule_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Short Name</b></td>
+            <td>PlatformShortName</td>
+            <td>Checks to see if at least one Platform Short Name concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Platform Type</b></td>
+            <td>PlatformType</td>
+            <td>Checks to see if at least one Platform Type concept exists.</td>
+            <td>acquisitionDetails</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Point Latitude</b></td>
+            <td>PointLatitude</td>
+            <td>Checks to see if at least one Point Latitude concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Point Longitude</b></td>
+            <td>PointLongitude</td>
+            <td>Checks to see if at least one Point Longitude concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Portrayal Catalogue Citation</b></td>
+            <td>PortrayalCatalogueCitation</td>
+            <td>Checks to see if at least one Portrayal Catalogue Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Positional Accuracy Report</b></td>
+            <td>PositionalAccuracyReport</td>
+            <td>Checks to see if at least one Positional Accuracy Report concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Precision of Seconds</b></td>
+            <td>PrecisionofSeconds</td>
+            <td>Checks to see if at least one Precision of Seconds concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Process Step</b></td>
+            <td>ProcessStep</td>
+            <td>Checks to see if at least one Process Step concept exists.</td>
+            <td>rubricLineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Process Step Description</b></td>
+            <td>ProcessStepDescription</td>
+            <td>Checks to see if at least one Process Step Description concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Process Step Purpose</b></td>
+            <td>ProcessStepPurpose</td>
+            <td>Checks to see if at least one Process Step Purpose concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Process Step Reference</b></td>
+            <td>ProcessStepReference</td>
+            <td>Checks to see if at least one Process Step Reference concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Process Step Scope</b></td>
+            <td>ProcessStepScope</td>
+            <td>Checks to see if at least one Process Step Scope concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Process Step Time</b></td>
+            <td>ProcessStepTime</td>
+            <td>Checks to see if at least one Process Step Time concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Processing Citation</b></td>
+            <td>ProcessingCitation</td>
+            <td>Checks to see if at least one Processing Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Processing Level</b></td>
+            <td>ProcessingLevel</td>
+            <td>Checks to see if at least one Processing Level concept exists.</td>
+            <td>ACDD_recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Processing Software Reference</b></td>
+            <td>ProcessingSoftwareReference</td>
+            <td>Checks to see if at least one Processing Software Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Processor</b></td>
+            <td>Processor</td>
+            <td>Checks to see if at least one Processor concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Producer Identifier</b></td>
+            <td>ProducerIdentifier</td>
+            <td>Checks to see if at least one Producer Identifier concept exists.</td>
+            <td>CMR-Granule_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Project Description</b></td>
+            <td>ProjectDescription</td>
+            <td>Checks to see if at least one Project Description concept exists.</td>
+            <td>LTER_Evaluation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Project Keyword</b></td>
+            <td>ProjectKeyword</td>
+            <td>Checks to see if at least one Project Keyword concept exists.</td>
+            <td>ProjectIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Project Name</b></td>
+            <td>ProjectName</td>
+            <td>Checks to see if at least one Project Name concept exists.</td>
+            <td>ACDD_recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Project Sponsor</b></td>
+            <td>ProjectSponsor</td>
+            <td>Checks to see if at least one Project Sponsor concept exists.</td>
+            <td>ProjectIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Publication Information</b></td>
+            <td>PublicationInformation</td>
+            <td>Checks to see if at least one Publication Information concept exists.</td>
+            <td>CMR-Common_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Publication date</b></td>
+            <td>check.pub.date.2</td>
+            <td>Publication date should be present</td>
+            <td>identification</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Publication date</b></td>
+            <td>check.pub.date.1</td>
+            <td>Publication date should be present</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Purpose</b></td>
+            <td>Purpose</td>
+            <td>Checks to see if at least one Purpose concept exists.</td>
+            <td>rubricDescription</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Quality Statement</b></td>
+            <td>QualityStatement</td>
+            <td>Checks to see if at least one Quality Statement concept exists.</td>
+            <td>DIF_Discovery-HighlyRecommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Quantitative Result</b></td>
+            <td>QuantitativeResult</td>
+            <td>Checks to see if at least one Quantitative Result concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Radius Units</b></td>
+            <td>RadiusUnits</td>
+            <td>Checks to see if at least one Radius Units concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Related Metadata Citation</b></td>
+            <td>RelatedMetadataCitation</td>
+            <td>Checks to see if at least one Related Metadata Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Related Resource Citation</b></td>
+            <td>RelatedResourceCitation</td>
+            <td>Checks to see if at least one Related Resource Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Related Resource Identifier</b></td>
+            <td>RelatedResourceIdentifier</td>
+            <td>Checks to see if at least one Related Resource Identifier concept exists.</td>
+            <td>relatedResourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Related URL</b></td>
+            <td>RelatedURL</td>
+            <td>Checks to see if at least one Related URL concept exists.</td>
+            <td>CMR-Common_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Report</b></td>
+            <td>Report</td>
+            <td>Checks to see if at least one Report concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Representativity</b></td>
+            <td>Representativity</td>
+            <td>Checks to see if at least one Representativity concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Reprocessing Plan Note</b></td>
+            <td>ReprocessingPlanNote</td>
+            <td>Checks to see if at least one Reprocessing Plan Note concept exists.</td>
+            <td>CMR-Granule_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Requirement Citation</b></td>
+            <td>RequirementCitation</td>
+            <td>Checks to see if at least one Requirement Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Access Constraints</b></td>
+            <td>ResourceAccessConstraints</td>
+            <td>Checks to see if at least one Resource Access Constraints concept exists.</td>
+            <td>constraints</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Author / Originator</b></td>
+            <td>ResourceAuthorOriginator</td>
+            <td>Checks to see if at least one Resource Author / Originator concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Author / Originator Email Address</b></td>
+            <td>ResourceAuthorOriginatorEmailAddress</td>
+            <td>Checks to see if at least one Resource Author / Originator Email Address concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Author / Originator Identifier</b></td>
+            <td>ResourceAuthorOriginatorIdentifier</td>
+            <td>Checks to see if at least one Resource Author / Originator Identifier concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Author / Originator Identifier Type</b></td>
+            <td>ResourceAuthorOriginatorIdentifierType</td>
+            <td>Checks to see if at least one Resource Author / Originator Identifier Type concept
+               exists.
+            </td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Author / Originator Organization</b></td>
+            <td>ResourceAuthorOriginatorOrganization</td>
+            <td>Checks to see if at least one Resource Author / Originator Organization concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Author / Originator URL</b></td>
+            <td>ResourceAuthorOriginatorURL</td>
+            <td>Checks to see if at least one Resource Author / Originator URL concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Citation</b></td>
+            <td>ResourceCitation</td>
+            <td>Checks to see if at least one Resource Citation concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Contact</b></td>
+            <td>ResourceContact</td>
+            <td>Checks to see if at least one Resource Contact concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Cost or Fees</b></td>
+            <td>ResourceCostorFees</td>
+            <td>Checks to see if at least one Resource Cost or Fees concept exists.</td>
+            <td>distributionInfo</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Creation Date</b></td>
+            <td>ResourceCreationDate</td>
+            <td>Checks to see if at least one Resource Creation Date concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Creation/Revision Date</b></td>
+            <td>ResourceCreationRevisionDate</td>
+            <td>Checks to see if at least one Resource Creation/Revision Date concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Distribution</b></td>
+            <td>ResourceDistribution</td>
+            <td>Checks to see if at least one Resource Distribution concept exists.</td>
+            <td>LTER_Identification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Format</b></td>
+            <td>ResourceFormat</td>
+            <td>Checks to see if at least one Resource Format concept exists.</td>
+            <td>CSWCoreReturnables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Identifier</b></td>
+            <td>ResourceIdentifier</td>
+            <td>Checks to see if at least one Resource Identifier concept exists.</td>
+            <td>DataCite3.1Mandatory</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Identifier Type</b></td>
+            <td>ResourceIdentifierType</td>
+            <td>Checks to see if at least one Resource Identifier Type concept exists.</td>
+            <td>DataCite3.1Mandatory</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Language</b></td>
+            <td>ResourceLanguage</td>
+            <td>Checks to see if at least one Resource Language concept exists.</td>
+            <td>otherInformation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Lineage</b></td>
+            <td>ResourceLineage</td>
+            <td>Checks to see if at least one Resource Lineage concept exists.</td>
+            <td>ISO-1_Discovery-Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Long Name</b></td>
+            <td>ResourceLongName</td>
+            <td>Checks to see if at least one Resource Long Name concept exists.</td>
+            <td>ECHO_Discovery-Mandatory</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Online Link</b></td>
+            <td>ResourceOnlineLink</td>
+            <td>Checks to see if at least one Resource Online Link concept exists.</td>
+            <td>ISO-1_Discovery-Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Publication Date</b></td>
+            <td>ResourcePublicationDate</td>
+            <td>Checks to see if at least one Resource Publication Date concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Publisher</b></td>
+            <td>ResourcePublisher</td>
+            <td>Checks to see if at least one Resource Publisher concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Publisher E-Mail</b></td>
+            <td>ResourcePublisherEMail</td>
+            <td>Checks to see if at least one Resource Publisher E-Mail concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Publisher URL</b></td>
+            <td>ResourcePublisherURL</td>
+            <td>Checks to see if at least one Resource Publisher URL concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Quality Description</b></td>
+            <td>ResourceQualityDescription</td>
+            <td>Checks to see if at least one Resource Quality Description concept exists.</td>
+            <td>SERF_HighlyRecommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Revision Date</b></td>
+            <td>ResourceRevisionDate</td>
+            <td>Checks to see if at least one Resource Revision Date concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Status</b></td>
+            <td>ResourceStatus</td>
+            <td>Checks to see if at least one Resource Status concept exists.</td>
+            <td>otherInformation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Title</b></td>
+            <td>ResourceTitle</td>
+            <td>Checks to see if at least one Resource Title concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Type</b></td>
+            <td>ResourceType</td>
+            <td>Checks to see if at least one Resource Type concept exists.</td>
+            <td>ISO-1_Discovery-Conditional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource URL</b></td>
+            <td>ResourceURL</td>
+            <td>Checks to see if at least one Resource URL concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Update Frequency</b></td>
+            <td>ResourceUpdateFrequency</td>
+            <td>Checks to see if at least one Resource Update Frequency concept exists.</td>
+            <td>FGDC_Mandatory</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Use Constraints</b></td>
+            <td>ResourceUseConstraints</td>
+            <td>Checks to see if at least one Resource Use Constraints concept exists.</td>
+            <td>constraints</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Resource Version</b></td>
+            <td>ResourceVersion</td>
+            <td>Checks to see if at least one Resource Version concept exists.</td>
+            <td>resourceCitation</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Responsibility</b></td>
+            <td>Responsibility</td>
+            <td>Checks to see if at least one Responsibility concept exists.</td>
+            <td>CMR-Common_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Responsible Party Identifier</b></td>
+            <td>ResponsiblePartyIdentifier</td>
+            <td>Checks to see if at least one Responsible Party Identifier concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Responsible Party Identifier Type</b></td>
+            <td>ResponsiblePartyIdentifierType</td>
+            <td>Checks to see if at least one Responsible Party Identifier Type concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Result</b></td>
+            <td>Result</td>
+            <td>Checks to see if at least one Result concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Rights</b></td>
+            <td>Rights</td>
+            <td>Checks to see if at least one Rights concept exists.</td>
+            <td>CSWCoreReturnables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Role</b></td>
+            <td>Role</td>
+            <td>Checks to see if at least one Role concept exists.</td>
+            <td>people</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sampling description present</b></td>
+            <td>check.sampling.description.present.1</td>
+            <td>Checks if a sampling description is present in the methods section.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sampling extent description present</b></td>
+            <td>check.sampling.study.extent.present.1</td>
+            <td>Checks that a sampling study extent is present.</td>
+            <td>interpretation</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Scale</b></td>
+            <td>Scale</td>
+            <td>Checks to see if at least one Scale concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Security Constraints</b></td>
+            <td>SecurityConstraints</td>
+            <td>Checks to see if at least one Security Constraints concept exists.</td>
+            <td>CSWAdditionalQueryables</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sensor Characteristics</b></td>
+            <td>SensorCharacteristics</td>
+            <td>Checks to see if at least one Sensor Characteristics concept exists.</td>
+            <td>ECHO_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sensor Characteristics Name</b></td>
+            <td>SensorCharacteristicsName</td>
+            <td>Checks to see if at least one Sensor Characteristics Name concept exists.</td>
+            <td>CMR-Granule_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sensor Characteristics Value</b></td>
+            <td>SensorCharacteristicsValue</td>
+            <td>Checks to see if at least one Sensor Characteristics Value concept exists.</td>
+            <td>CMR-Granule_Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sensor Long Name</b></td>
+            <td>SensorLongName</td>
+            <td>Checks to see if at least one Sensor Long Name concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sensor Short Name</b></td>
+            <td>SensorShortName</td>
+            <td>Checks to see if at least one Sensor Short Name concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service</b></td>
+            <td>Service</td>
+            <td>Checks to see if at least one Service concept exists.</td>
+            <td>WSDL_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Location</b></td>
+            <td>ServiceLocation</td>
+            <td>Checks to see if at least one Service Location concept exists.</td>
+            <td>service</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Operation Name</b></td>
+            <td>ServiceOperationName</td>
+            <td>Checks to see if at least one Service Operation Name concept exists.</td>
+            <td>service</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Operation Reference</b></td>
+            <td>ServiceOperationReference</td>
+            <td>Checks to see if at least one Service Operation Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Profile Reference</b></td>
+            <td>ServiceProfileReference</td>
+            <td>Checks to see if at least one Service Profile Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Provider</b></td>
+            <td>ServiceProvider</td>
+            <td>Checks to see if at least one Service Provider concept exists.</td>
+            <td>service</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Resource Reference</b></td>
+            <td>ServiceResourceReference</td>
+            <td>Checks to see if at least one Service Resource Reference concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Standard Citation</b></td>
+            <td>ServiceStandardCitation</td>
+            <td>Checks to see if at least one Service Standard Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Service Type</b></td>
+            <td>ServiceType</td>
+            <td>Checks to see if at least one Service Type concept exists.</td>
+            <td>service</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source</b></td>
+            <td>Source</td>
+            <td>Checks to see if at least one Source concept exists.</td>
+            <td>rubricLineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Citation</b></td>
+            <td>SourceCitation</td>
+            <td>Checks to see if at least one Source Citation concept exists.</td>
+            <td>ISO_ExternalRefs</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Citation Abbreviation</b></td>
+            <td>SourceCitationAbbreviation</td>
+            <td>Checks to see if at least one Source Citation Abbreviation concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Description</b></td>
+            <td>SourceDescription</td>
+            <td>Checks to see if at least one Source Description concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Metadata</b></td>
+            <td>SourceMetadata</td>
+            <td>Checks to see if at least one Source Metadata concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Reference System</b></td>
+            <td>SourceReferenceSystem</td>
+            <td>Checks to see if at least one Source Reference System concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Scope</b></td>
+            <td>SourceScope</td>
+            <td>Checks to see if at least one Source Scope concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Step</b></td>
+            <td>SourceStep</td>
+            <td>Checks to see if at least one Source Step concept exists.</td>
+            <td>ISO_Lineage</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Time Period</b></td>
+            <td>SourceTimePeriod</td>
+            <td>Checks to see if at least one Source Time Period concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Source Used</b></td>
+            <td>SourceUsed</td>
+            <td>Checks to see if at least one Source Used concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Southernmost Latitude</b></td>
+            <td>SouthernmostLatitude</td>
+            <td>Checks to see if at least one Southernmost Latitude concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Spatial Extent</b></td>
+            <td>SpatialExtent</td>
+            <td>Checks to see if at least one Spatial Extent concept exists.</td>
+            <td>ECHO_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Spatial Representation</b></td>
+            <td>SpatialRepresentation</td>
+            <td>Checks to see if at least one Spatial Representation concept exists.</td>
+            <td>CMR-Collection_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Spatial Resolution</b></td>
+            <td>SpatialResolution</td>
+            <td>Checks to see if at least one Spatial Resolution concept exists.</td>
+            <td>ISO-1_Discovery-Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Specific Usage</b></td>
+            <td>SpecificUsage</td>
+            <td>Checks to see if at least one Specific Usage concept exists.</td>
+            <td>ISO_UserFeedback</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Sponsor Project Identifier</b></td>
+            <td>SponsorProjectIdentifier</td>
+            <td>Checks to see if at least one Sponsor Project Identifier concept exists.</td>
+            <td>ProjectIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Standalone Report Citation</b></td>
+            <td>StandaloneReportCitation</td>
+            <td>Checks to see if at least one Standalone Report Citation concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Standard Name Vocabulary</b></td>
+            <td>StandardNameVocabulary</td>
+            <td>Checks to see if at least one Standard Name Vocabulary concept exists.</td>
+            <td>rubricDescription</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Start Time</b></td>
+            <td>StartTime</td>
+            <td>Checks to see if at least one Start Time concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Supplemental Information</b></td>
+            <td>SupplementalInformation</td>
+            <td>Checks to see if at least one Supplemental Information concept exists.</td>
+            <td>rubricDescription</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Taxonomic Extent</b></td>
+            <td>TaxonomicExtent</td>
+            <td>Checks to see if at least one Taxonomic Extent concept exists.</td>
+            <td>LTER_Discovery</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Taxonomic coverage present</b></td>
+            <td>check.taxonomic.coverage.1</td>
+            <td>Check that a taxonomic coverage exists at the dataset level, or at least one entity's
+               level, or one attribute's level.
+            </td>
+            <td>discovery</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal Extent</b></td>
+            <td>TemporalExtent</td>
+            <td>Checks to see if at least one Temporal Extent concept exists.</td>
+            <td>ISO-1_Discovery-Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal Keyword</b></td>
+            <td>TemporalKeyword</td>
+            <td>Checks to see if at least one Temporal Keyword concept exists.</td>
+            <td>ECHO_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal Quality Report</b></td>
+            <td>TemporalQualityReport</td>
+            <td>Checks to see if at least one Temporal Quality Report concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal Range Type</b></td>
+            <td>TemporalRangeType</td>
+            <td>Checks to see if at least one Temporal Range Type concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal Resolution</b></td>
+            <td>TemporalResolution</td>
+            <td>Checks to see if at least one Temporal Resolution concept exists.</td>
+            <td>ACDD_recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal coverage</b></td>
+            <td>check.temporal.coverage.2</td>
+            <td>Temporal coverage should be present at the dataset level</td>
+            <td>discovery</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2 / ISO 19139
+               and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal coverage</b></td>
+            <td>check.temporal.coverage.1</td>
+            <td>Temporal coverage should be present at the dataset level</td>
+            <td>discovery</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Temporal coverage start year</b></td>
+            <td>check.temporal.start.year.1</td>
+            <td>Temporal coverage should include a start year</td>
+            <td>discovery</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Thematic Accuracy Report</b></td>
+            <td>ThematicAccuracyReport</td>
+            <td>Checks to see if at least one Thematic Accuracy Report concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Theme Keyword</b></td>
+            <td>ThemeKeyword</td>
+            <td>Checks to see if at least one Theme Keyword concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Time Type</b></td>
+            <td>TimeType</td>
+            <td>Checks to see if at least one Time Type concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Title</b></td>
+            <td>check.title.1</td>
+            <td>Title should be present</td>
+            <td>identification</td>
+            <td>Dialects: 2<br>eml, iso
+            </td>
+         </tr>
+         <tr>
+            <td><b>Topic Category</b></td>
+            <td>TopicCategory</td>
+            <td>Checks to see if at least one Topic Category concept exists.</td>
+            <td>rubricIdentification</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Transfer Size</b></td>
+            <td>TransferSize</td>
+            <td>Checks to see if at least one Transfer Size concept exists.</td>
+            <td>distributionInfo</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>TwoDCoordinateSystem</b></td>
+            <td>TwoDCoordinateSystem</td>
+            <td>Checks to see if at least one TwoDCoordinateSystem concept exists.</td>
+            <td>ECHO_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Types</b></td>
+            <td>Types</td>
+            <td>Checks to see if at least one Types concept exists.</td>
+            <td>WSDL_Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>URL</b></td>
+            <td>URL</td>
+            <td>Checks to see if at least one URL concept exists.</td>
+            <td>OnlineResources</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Units</b></td>
+            <td>Units</td>
+            <td>Checks to see if at least one Units concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Usability Report</b></td>
+            <td>UsabilityReport</td>
+            <td>Checks to see if at least one Usability Report concept exists.</td>
+            <td>ISO_Quality</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Usage</b></td>
+            <td>check.usage.is.cc.2</td>
+            <td>Usage should be Creative Commons</td>
+            <td>identification</td>
+            <td>Dialects: 3<br>eml, Dryad Data Package and Data File Modules, ISO 19115 and ISO 19115-2 / ISO 19139
+               and ISO 19139-2
+            </td>
+         </tr>
+         <tr>
+            <td><b>Usage</b></td>
+            <td>check.usage.is.cc.1</td>
+            <td>Usage should be Creative Commons</td>
+            <td>identification</td>
+            <td>Dialects: 1<br>eml
+            </td>
+         </tr>
+         <tr>
+            <td><b>Usage Time</b></td>
+            <td>UsageTime</td>
+            <td>Checks to see if at least one Usage Time concept exists.</td>
+            <td>ISO_UserFeedback</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>User Contact</b></td>
+            <td>UserContact</td>
+            <td>Checks to see if at least one User Contact concept exists.</td>
+            <td>ISO_UserFeedback</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>User Determined Limitations</b></td>
+            <td>UserDeterminedLimitations</td>
+            <td>Checks to see if at least one User Determined Limitations concept exists.</td>
+            <td>ISO_UserFeedback</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>User Response</b></td>
+            <td>UserResponse</td>
+            <td>Checks to see if at least one User Response concept exists.</td>
+            <td>ISO_UserFeedback</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>ValidRange</b></td>
+            <td>ValidRange</td>
+            <td>Checks to see if at least one ValidRange concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>VariableType</b></td>
+            <td>VariableType</td>
+            <td>Checks to see if at least one VariableType concept exists.</td>
+            <td>UMM-Variable_Required</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Version Description</b></td>
+            <td>VersionDescription</td>
+            <td>Checks to see if at least one Version Description concept exists.</td>
+            <td>ECS_Discovery-Recommended</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Vertical Extent</b></td>
+            <td>VerticalExtent</td>
+            <td>Checks to see if at least one Vertical Extent concept exists.</td>
+            <td>ISO-1_Discovery-Optional</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Vertical Maximum</b></td>
+            <td>VerticalMaximum</td>
+            <td>Checks to see if at least one Vertical Maximum concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Vertical Minimum</b></td>
+            <td>VerticalMinimum</td>
+            <td>Checks to see if at least one Vertical Minimum concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Vertical Positional Accuracy Explanation</b></td>
+            <td>VerticalPositionalAccuracyExplanation</td>
+            <td>Checks to see if at least one Vertical Positional Accuracy Explanation concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Vertical Positional Accuracy Report</b></td>
+            <td>VerticalPositionalAccuracyReport</td>
+            <td>Checks to see if at least one Vertical Positional Accuracy Report concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Vertical Positional Accuracy Value</b></td>
+            <td>VerticalPositionalAccuracyValue</td>
+            <td>Checks to see if at least one Vertical Positional Accuracy Value concept exists.</td>
+            <td>FGDC_Mandatory_If_Applicable</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>Westernmost Longitude</b></td>
+            <td>WesternmostLongitude</td>
+            <td>Checks to see if at least one Westernmost Longitude concept exists.</td>
+            <td>extent</td>
+            <td>Dialects: 6<br>DataCite 3.1, Dryad Data Package and Data File Modules, Ecological Metadata Language,
+               , ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2, ISO 19115-1 / ISO 19115-3
+            </td>
+         </tr>
+         <tr>
+            <td><b>award numbers</b></td>
+            <td>check.nsf.award.numbers.present.1</td>
+            <td>One or more award numbers must be entered.</td>
+            <td>identification</td>
+            <td>Dialects: 0<br></td>
+         </tr>
+      </table>
+   </body>
+</html>

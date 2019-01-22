@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>check.usage.is.cc.2</id>
+  <name>Usage</name>
+  <description>Usage should be Creative Commons</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+library(stringr)
+
+# CC-BY: This work is licensed under the Creative Commons Attribution 4.0 International License.\nTo view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/."
+# CC-0:"This work is dedicated to the public domain under the Creative Commons Universal 1.0 Public Domain Dedication.\nTo view a copy of this dedication, visit https://creativecommons.org/publicdomain/zero/1.0/."
+
+phrases <- c("http[s]*://creativecommons.org/licenses/by/4.0", "http[s]*://creativecommons.org/publicdomain/zero/1.0")
+
+if (length(rights) == 0) {
+  status <- "FAILURE"
+  message <- "The document is not licensed with a Creative Commons CC-0 or CC-BY license."
+} else {
+  if (length(rights) > 1) {
+    rights[[1]] <- paste(rights, collapse = '')
+  }
+
+  if (str_detect(rights[[1]], phrases[[1]])) {
+    status <- "SUCCESS"
+    message <- "The document is licensed with a Creative Commons CC-BY license."
+  } else if (str_detect(rights[[1]], phrases[[2]])) {
+    status <- "SUCCESS"
+    message <- "The document is licensed with a Creative Commons CC-0 license."
+  } else {
+    status <- "FAILURE"
+    message <- "The document is not licensed with a Creative Commons CC-0 or CC-BY license."
+  }
+}
+
+mdq_result <- list(status = status,
+                   output = list(list(value = message)))
+  ]]></code>
+  <selector namespaceAware="true">
+    <name>rights</name>
+    <!--  Remove blank text nodes from consideration -->
+    <xpath>/*[local-name() = 'eml']/dataset/intellectualRights//text()[not(self::text()[not(normalize-space())])] |
+      /*/gmd:identificationInfo/*/gmd:resourceConstraints/gmd:MD_LegalConstraints |
+      /*/dcterms:rights
+    </xpath>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Dryad Data Package and Data File Modules</name>
+    <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+</mdq:check>

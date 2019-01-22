@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.contact.info.2</id>
+	<name>Check contact information</name>
+	<description>Check if the contact contains an email and address.</description>
+	<type>identification</type>
+	<level>INFO</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+check <- function() {
+  library(base)
+  values <- list()
+
+  contactCount <- length(contacts)
+  emailCount <- length(emailAddresses)
+  addressCount <- length(addresses)
+
+  if(contactCount == 0) {
+    values[[length(values)+1]] <- list(value=sprintf("A 'contact' is not present, so unable to check email and address."))
+    return(list(status="FAILURE", values=values))
+  }
+  
+  # Assume that the check will succeed, until proven otherwise.
+  # The output messages will be gathered into a list
+  status <- "SUCCESS"
+  
+  # Output number of contacts that have email addresses
+  if(emailCount == contactCount) {
+    values[[length(values)+1]] <- list(value=sprintf("All contacts have email addresses."))
+  } else {
+    values[[length(values)+1]] <- list(value=sprintf("%d of %d contacts have email addresses.", emailCount, contactCount))
+  }
+  
+  # Output number of contact that have addresses
+  if(addressCount == contactCount) {
+    values[[length(values)+1]] <- list(value=sprintf("All contacts have addresses."))
+  } else {
+    values[[length(values)+1]] <- list(value=sprintf("%d of %d contacts have addresses.", addressCount, contactCount))
+  }
+  
+  return(list(status=status, values=values))
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=result$values)
+]]></code>
+  <selector namespaceAware="true">
+		 <name>contacts</name>
+		 <xpath>/*[local-name() = 'eml']/dataset/contact |
+			 /*/gmd:identificationInfo/*/gmd:pointOfContact
+		 </xpath>
+	 </selector>
+  <selector namespaceAware="true">
+		 <name>emailAddresses</name>
+		 <xpath>/*[local-name() = 'eml']/dataset/contact/electronicMailAddress |
+			 /*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress/gco:CharacterString
+		 </xpath>
+	 </selector>
+  <selector namespaceAware="true">
+		 <name>addresses</name>
+		 <xpath>/*[local-name() = 'eml']/dataset/contact/address |
+			 /*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:pointOfContact/gmd:CI_ResponsibleParty/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint/gco:CharacterString
+		 </xpath>
+	 </selector>
+	 <dialect>
+		 <name>eml</name>
+		 <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	 </dialect>
+  <dialect>
+		<name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+		<xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+</mdq:check>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>UMM-Variable.suite.1</id>
+   <name>UMM-Variable</name>
+   <check>
+      <id>Name</id>
+   </check>
+   <check>
+      <id>LongName</id>
+   </check>
+   <check>
+      <id>Units</id>
+   </check>
+   <check>
+      <id>DataType</id>
+   </check>
+   <check>
+      <id>DimensionsName</id>
+   </check>
+   <check>
+      <id>Dimensions</id>
+   </check>
+   <check>
+      <id>ValidRange</id>
+   </check>
+   <check>
+      <id>Scale</id>
+   </check>
+   <check>
+      <id>Offset</id>
+   </check>
+   <check>
+      <id>FillValue</id>
+   </check>
+   <check>
+      <id>VariableType</id>
+   </check>
+   <check>
+      <id>ThemeKeyword</id>
+   </check>
+</mdq:suite>

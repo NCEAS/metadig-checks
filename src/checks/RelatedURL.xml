@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>RelatedURL</id>
+   <name>Related URL</name>
+   <description>Checks to see if at least one Related URL concept exists.</description>
+   <type>CMR-Common_Required</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept RelatedURL is present."
+                                        
+  if(RelatedURL is not None and len(str(RelatedURL)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "RelatedURL concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>RelatedURL</name>
+      <xpath>(/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[not(contains\(function/CI_OnLineFunctionCode,'download'))]) or (/*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[not(contains\(function/CI_OnLineFunctionCode,'download'))]) or (/*/identificationInfo/*/graphicOverview/MD_BrowseGraphic/fileName) or (/*/identificationInfo/*/graphicOverview/MD_BrowseGraphic/fileName) or (//MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage) or (/MD_Metadata/identificationInfo/*/graphicOverview/MD_BrowseGraphic/fileName)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

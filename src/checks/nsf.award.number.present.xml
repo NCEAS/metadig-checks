@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.nsf.award.numbers.present.1</id>
+	<name>award numbers</name>
+	<description>One or more award numbers must be entered.</description>
+	<type>identification</type>
+	<level>REQUIRED</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+if (is.null(awards)) {
+  status <- "FAILURE"
+  output <- "No award numbers were found."
+  mdq_result <- list(status = status,
+                     output = list(list(value = output)))
+} else if (length(awards) < 1) {
+  status <- "FAILURE"
+  output <- paste0("No award numbers were found when one or more were expected.")
+  mdq_result <- list(status = status,
+                     output = list(list(value = output)))
+} else if (all(nchar(awards) <= 0)) {
+  status <- "FAILURE"
+  output <- "Of the award numbers found, none were non-zero in length."
+  mdq_result <- list(status = status,
+                     output = list(list(value = output)))
+} else {
+  status <- "SUCCESS"
+  output <- "At least one award number was found."
+  mdq_result <- list(status = status,
+                     output = list(list(value = output)))
+}]]></code>
+	<selector>
+		<name>awards</name>
+		<xpath>/eml/dataset/project/funding//para | /eml/dataset/project/funding</xpath>
+	</selector>
+</mdq:check>

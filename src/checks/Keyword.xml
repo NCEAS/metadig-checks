@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>Keyword</id>
+   <name>Keyword</name>
+   <description>Checks to see if at least one Keyword concept exists.</description>
+   <type>LTER_Identification</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept Keyword is present."
+                                        
+  if(Keyword is not None and len(str(Keyword)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "Keyword concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>Keyword</name>
+      <xpath>(/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space\(type/MD_KeywordTypeCode)='theme']/keyword) or (/*/subject) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[not(contains\(type/MD_KeywordTypeCode,'project')) and not(contains\(type/MD_KeywordTypeCode,'theme')) and not(contains\(type/MD_KeywordTypeCode,'place')) and not(contains\(type/MD_KeywordTypeCode,'platform')) and not(contains\(type/MD_KeywordTypeCode,'dataCent'))
+            and not(contains\(type/MD_KeywordTypeCode,'discipline')) and not(contains\(type/MD_KeywordTypeCode,'stratum')) and not(contains\(type/MD_KeywordTypeCode,'temporal')) and not(contains\(type/MD_KeywordTypeCode,'featureType')) and not(contains\(type/MD_KeywordTypeCode,'process')) and not(contains\(type/MD_KeywordTypeCode,'product')) and
+            not(contains\(type/MD_KeywordTypeCode,'dataResolution')) and not(contains\(type/MD_KeywordTypeCode,'service')) and not(contains\(type/MD_KeywordTypeCode,'instrument'))]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'project')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'theme')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'place')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'platform')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'dataCent')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'discipline')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'stratum')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'temporal')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'featureType')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'process')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'product')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'dataResolution')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'service')]/keyword) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'instrument')]/keyword) or (/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space\(type/MD_KeywordTypeCode)='place']/keyword) or (/MD_Metadata/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicDescription/geographicIdentifier/MD_Identifier/code) or (/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space\(type/MD_KeywordTypeCode)='instrument']/keyword) or (/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space\(type/MD_KeywordTypeCode)='platform']/keyword) or (/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space\(type/MD_KeywordTypeCode)='project']/keyword) or (/eml/*/keywordSet/keyword[not(contains(@keywordType,'place')) and not(contains(@keywordType,'place')) and not(contains(@keywordType,'thematic')) and not(contains(@keywordType,'temporal')) and not(contains(@keywordType,'discipline')) and not(contains(@keywordType,'stratum')) and not(contains(@keywordType,'taxonomic'))]) or (/eml/*/keywordSet/keyword[@keywordType='place']) or (/eml/*/keywordSet/keyword[@keywordType='taxonomic']) or (/eml/*/keywordSet/keyword[@keywordType='thematic']) or (/eml/*/keywordSet/keyword[@keywordType='temporal']) or (/eml/*/keywordSet/keyword[@keywordType='discipline']) or (/eml/*/keywordSet/keyword[@keywordType='stratu']) or (/resource/subjects/subject)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

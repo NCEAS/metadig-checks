@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>check.bounding.coordinates.2</id>
+  <name>Geographic coverage coordinates</name>
+  <description>Geographic Coverage should contain bounding coordinates.</description>
+  <type>discovery</type>  
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code>
+    library(metadig)
+    
+    if (coordinatesPresent) >= 1) {
+      success("A set of bounding coordinates describing the geographic coverage of this dataset is present.")
+    } else {
+      failure("A set of bounding coordinates describing the geographic coverage of this dataset is not present.")
+    }
+  </code>
+  <selector namespaceAware="true">
+    <name>coordinatesPresent</name>
+    <xpath> boolean(/*[local-name() = 'eml']/dataset/coverage/geographicCoverage/boundingCoordinates) or
+            boolean(/*/gmd:identificationInfo/*/gmd:extent/*/gmd:geographicElement/*/*/gco:Decimal) or
+            boolean(/*/dcterms:spatial)
+    </xpath>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Dryad Data Package and Data File Modules</name>
+    <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+</mdq:check>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>PlatformOrbitInformation</id>
+   <name>Platform Orbit Information</name>
+   <description>Checks to see if at least one Platform Orbit Information concept exists.</description>
+   <type>CMR-Granule_Recommended</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept PlatformOrbitInformation is present."
+                                        
+  if(PlatformOrbitInformation is not None and len(str(PlatformOrbitInformation)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "PlatformOrbitInformation concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>PlatformOrbitInformation</name>
+      <xpath>(//platform/EOS_Platform/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/name='OrbitalModelName']/value) or (//platform/EOS_Platform/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/name='OrbitNumber']/value) or (//platform/EOS_Platform/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/name='StartOrbitNumber']/value) or (//platform/EOS_Platform/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/name='StopOrbitNumber']/value) or (//platform/EOS_Platform/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/name='EquatorCrossingLongitude']/value) or (//platform/EOS_Platform/otherProperty/Record/EOS_AdditionalAttributes/additionalAttribute/EOS_AdditionalAttribute[eos:reference/EOS_AdditionalAttributeDescription/name='EquatorCrossingDateTime']/value)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

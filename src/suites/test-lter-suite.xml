@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>test-lter-suite.1.1</id>
+  <name>mdqengine provisional test suite for LTER</name>
+  <check>
+    <id>check-dataset.1.1</id>
+    <name>packageIdPattern</name>
+    <description>The check was written with the explanation: tbd --mob. I think what this check is checking is that the package ID follows the scope.identifier.revision format. I'm not sure where the regex came from or if it's correct.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>rscript</environment>
+    <code><![CDATA[
+# A test can return status of "SUCCESS", "FAILURE", "ERROR" or
+# "SKIP". The variable 'status' is set by this check routine and will be
+# read by the script engine after check code has been executed. The
+# possible values of 'status' are:
+#     "SUCCESS" : All tests conducted by the check routine have passed.
+#     "FAILURE" : One or more tests conducted by the check routine have not passed.
+#     "ERROR" : An error has been encountered by the check routine that prevents
+#               it from performing any testing
+#     "SKIP" : The check routine has determined that the tests it performs do
+#              not apply to the current metadata or data.
+# In addition, a check routine can set the variable 'output' which is a description
+# of the results of the test.
+# Both 'status' and 'output' can be set as lists, for example, to
+# convey results of congruency between a metadata document and the datasets that
+# it documents. Each 'status' element, for example, could be the status for one
+# of the multiple datasets checked.
+check <- function() {
+    # Assume all the checks will pass.
+    status <- "SUCCESS"
+    output <- "The package identifier is valid"
+
+    # Stop testing after the first failure.
+    if (! grepl("^[a-zA-Z0-9_\\-]+\\.\\d+\\.\\d+", packageId, perl = TRUE, fixed = FALSE)) {
+        status <- "FAILURE";
+        output <- "The packageId value should match the pattern 'scope.identifier.revision'";
+        mdq_result <- list(status=status, output=list(list(value=output)))
+        return (mdq_result);
+    }
+
+    tokens = unlist(strsplit(packageId, "\\.", fixed = FALSE, perl = TRUE, useBytes = FALSE))
+    scope <- tokens[[1]]
+    identifier <- tokens[[2]]
+    revision <- tokens[[3]]
+
+    # Stop running tests if one has failed - can't just exit R doesn't allow halting execution without
+    # signalng an error.
+    if (grepl("^0", identifier)) {
+        status <- "FAILURE"
+        output <- "A leading zero was found in the identifier. The identifier value must be a whole number."
+        mdq_result <- list(status=status, output=list(list(value=output)))
+    	return (mdq_result)
+    }
+
+    if (grepl("^0", revision)) {
+        output <- "A leading zero was found in the revision. The revision value must be a whole number."
+        status <- "FAILURE"
+        mdq_result <- list(status=status, output=list(list(value=output)))
+    	return (mdq_result)
+    }
+
+    mdq_result <- list(status=status, output=list(list(value=output)))
+    return (mdq_result)
+}
+
+mdq_result <- check()
+      ]]></code>
+    <!-- The script engine extracts values from the tested metadata
+		document as specified by the selector. The engine then sets a variable
+		the same as the '<name>' value that will be available to the check
+		code. -->
+    <selector>
+      <name>packageId</name>
+      <xpath>/eml/@packageId</xpath>
+    </selector>
+    <!-- The <dialect> element is used by the scripting engine to
+		determine if a check should be run for a metadata document. The
+		tested document is checked to see if it contains the specified
+		dialect xpath. Multiple dialects can be supported by each check. -->
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.3.1</id>
+    <name>schemaValid</name>
+    <description>Check if the metadata document is schema valid.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>Java</environment>
+    <code>edu.ucsb.nceas.mdqengine.processor.SchemaCheck</code>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.6.1</id>
+    <name>keywordPresent</name>
+    <description>Checks to see if at least one keyword is present. The LTER portal allows searches on keywords. This check is a precursor for checking on keywords from the controlled vocabulary.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+
+  # Message is set when an error occurs.
+  output = "Keywords are not present"
+
+  if(len(keywords) > 0):
+    status = "SUCCESS"
+    return True
+
+  status = "FAILURE"
+  output = "Keywords are not present"
+  return False
+
+      ]]></code>
+    <selector>
+      <name>keywords</name>
+      <xpath>/eml/dataset/keywordSet/keyword</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.7.1</id>
+    <name>methodsElementPresent</name>
+    <description>All datasets should contain a methods element, at a minimum a link to a separate methods doc.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>rscript</environment>
+    <code><![CDATA[
+check <- function() {
+    # Check that a <methods> element is present for the dataset.
+    status <- "SUCCESS"
+    output <- "A methods element is present"
+
+    if(any(!exists("methods"), length(methods) == 0, is.null(methods))) {
+        status <- "FAILURE"
+        output <- "A methods element is not present"
+    }
+    mdq_result <- list(status=status, output=list(list(value=output)))
+    return (mdq_result)
+}
+
+mdq_result <- check()
+      ]]></code>
+    <selector>
+      <name>methods</name>
+      <xpath>/eml/dataset/methods</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.8.1</id>
+    <name>coveragePresent</name>
+    <description>At least one of geographicCoverage, taxonomicCoverage, or temporalCoverage is present.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  status = "ERROR"
+
+  # Check if the mdq set our xpath mdq_result
+  if 'coverages' not in globals():
+    mdq_result = False
+    output = "A coverage element is not present"
+    status = "SUCCESS"
+  elif(len(coverages) > 0):
+    mdq_result = True
+    output = "A coverage element is not present"
+    status = "SUCCESS"
+  else:
+    mdq_result = False
+    output = "A coverage element is not present"
+    status = "FAILURE"
+
+  return(mdq_result)
+      ]]></code>
+    <selector>
+      <name>coverages</name>
+      <xpath>/eml/dataset/coverage/geographicCoverage |
+				/eml/dataset/coverage/temporalCoverage |
+				/eml/dataset/coverage/taxonomicCoverage
+			</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.9.1</id>
+    <name>geographicCoveragePresent</name>
+    <description>Check that geographicCoverage exists in EML at the dataset level, or at least one entity's level, or at least one attribute's level.</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+
+  # If a geographicCoverage element is found at the dataset level
+  # then the check passes. If this element is not found at the
+  # dataset level, then one must be present at either at the entity
+  # level (for at least one entity) or at the attribute level (for
+  # at least on attribute).
+  # Check if the mdq set the mdq_result for our xpath selector
+
+  # Check if the scripting engine has set each value that we are looking
+  # for.
+  if datasetGeographicCoverage:
+    output = "A coverage is present at the dataset level."
+    status = "SUCCESS"
+    return True
+
+  # Geo coverage not found at the dataset level, check entity and attribute levels
+  if entityGeographicCoverage:
+    output = "A coverage is present at the entity level."
+    status = "SUCCESS"
+    return True
+
+  if attributeGeographicCoverage:
+    output = "A coverage is present at the attribute level."
+    status = "SUCCESS"
+    return True
+
+  # A coveage element was not found at any level.
+  output = "A coverage element is not present at the dataset, entity or attribute levels"
+  status = "FAILURE"
+
+  return(False)
+      ]]></code>
+    <!-- Geographic coverage at the dataset level -->
+    <selector>
+      <name>datasetGeographicCoverage</name>
+      <xpath>boolean(/eml/dataset/coverage/geographicCoverage)</xpath>
+    </selector>
+    <!-- Geographic coverage at the entity level. Use the required element
+			'entityName' to ensure that entities are being selected. -->
+    <selector>
+      <name>entityGeographicCoverage</name>
+      <xpath>boolean(/eml/dataset/*/entityName/../coverage/geographicCoverage)
+			</xpath>
+    </selector>
+    <!-- Geographic coverage can be at the attribute level -->
+    <selector>
+      <name>attributeGeographicCoverage</name>
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute/coverage/geographicCoverage)
+			</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.10.1</id>
+    <name>taxonomicCoveragePresent</name>
+    <description>Check that taxonomicCoverage exists in EML at the dataset level, or at least one entity's level, or at least one attribute's level.</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+
+  # If a taxonomicCoverage element is found at the dataset level
+  # then the check passes. If this element is not found at the
+  # dataset level, then one must be present at either at the entity
+  # level (for at least one entity) or at the attribute level (for
+  # at least on attribute).
+  # Check if the mdq set the mdq_result for our xpath selector
+
+  if datasetTaxonomicCoverage:
+    output = "A coverage is present at the dataset level."
+    status = "SUCCESS"
+    return True
+
+  # Taxonomic coverage not found at the dataset level, check entity and attribute levels
+  if entityTaxonomicCoverage:
+    output = "A coverage element is present at the entity level."
+    status = "SUCCESS"
+    return True
+
+  if attributeTaxonomicCoverage:
+    output = "A coverage element is present at the attribute level."
+    status = "SUCCESS"
+    return True
+
+  # A coveage element was not found at any level.
+  output = "A coverage element is not present at the dataset, entity or attribute levels"
+  status = "FAILURE"
+
+  return(False)
+      ]]></code>
+    <!-- Taxonomic coverage at the dataset level -->
+    <selector>
+      <name>datasetTaxonomicCoverage</name>
+      <xpath>boolean(/eml/dataset/coverage/taxonomicCoverage)</xpath>
+    </selector>
+    <!-- Taxonomic coverage at the entity level. Use the required element 'entityName'
+			to ensure that entities are being selected. -->
+    <selector>
+      <name>entityTaxonomicCoverage</name>
+      <xpath>boolean(/eml/dataset/*/entityName/../coverage/taxonomicCoverage)
+			</xpath>
+    </selector>
+    <!-- Taxonomic coverage can be at the attribute level -->
+    <selector>
+      <name>attributeTaxonomicCoverage</name>
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute/coverage/taxonomicCoverage)
+			</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.11.1</id>
+    <name>temporalCoveragePresent</name>
+    <description>Check that temporalCoverage exists in EML at the dataset level, or at least one entity's level, or at least one attribute's level.</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+
+  # If a temporalCoverage element is found at the dataset level
+  # then the check passes. If this element is not found at the
+  # dataset level, then one must be present at either at the entity
+  # level (for at least one entity) or at the attribute level (for
+  # at least on attribute).
+  # Because the selectors used by this script are boolean, the mdqe will
+  # set the values to either true or false, so a value will always be assisnged.
+
+  # Check if the scripting engine has set each value that we are looking
+  # for.
+  if datasetTemporalCoverage:
+    output = "A coverage is present at the dataset level."
+    status = "SUCCESS"
+    return True
+
+  # Temporal coverage not found at the dataset level, check entity and attribute levels
+  if entityTemporalCoverage:
+    output = "A coverage element is present at the entity level."
+    status = "SUCCESS"
+    return True
+
+  if attributeTemporalCoverage:
+    output = "A coverage element is present at the attribute level."
+    status = "SUCCESS"
+    return True
+
+  # A coveage element was not found at any level.
+  output = "A coverage element is not present at the dataset, entity or attribute levels"
+  status = "FAILURE"
+
+  return(False)
+      ]]></code>
+    <!-- Temporal coverage at the dataset level -->
+    <selector>
+      <name>datasetTemporalCoverage</name>
+      <xpath>boolean(/eml/dataset/coverage/temporalCoverage)</xpath>
+    </selector>
+    <!-- Temporal coverage at the entity level. Use the required element 'entityName'
+			to ensure that entities are being selected. -->
+    <selector>
+      <name>entityTemporalCoverage</name>
+      <xpath>boolean(/eml/dataset/*/entityName/../coverage/temporalCoverage)
+			</xpath>
+    </selector>
+    <!-- Temporal coverage can be at the attribute level -->
+    <selector>
+      <name>attributeTemporalCoverage</name>
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute/coverage/temporalCoverage)
+			</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.12.1</id>
+    <name>titleLength</name>
+    <description><![CDATA[If the title is shorter than 5 words, it might be insufficient. Title word count >= 7 and <= 20 including prepositions and numbers.]]></description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  import re
+
+  global output
+  global status
+
+  # Check that the word count of the dataset title is between 7 and 20 words.
+  if 'title' in globals():
+    numWords = len(re.split('\s+', title))
+    if numWords < 7:
+      output = "The dataset title is less that 7 words."
+      status = "FAILURE"
+      mdq_result = False
+    elif numWords > 20:
+      output = "The dataset title is greater than 20 words."
+      status = "FAILURE"
+      mdq_result = False
+    else:
+      output = "The dataset title is between 7 and 20 words (count=%s)." % numWords
+      status = "SUCCESS"
+      mdq_result = True
+  else:
+    output = "No title element is present."
+    status = "FAILURE"
+    mdq_result = False
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>title</name>
+      <xpath>/*[local-name() = 'eml']/dataset/title</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.13.1</id>
+    <name>pubDatePresent</name>
+    <description>Check for presence of the pubDate element</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  import re
+
+  global output
+  global status
+
+  # Check that a publication date is present
+  if 'pubDate' in globals() and pubDate is not None:
+    pubDateLength = len(pubDate)
+
+    if (pubDateLength < 4):
+      output = "The publication date (pubDate) is less that 4 characters long."
+      status = "FAILURE"
+      mdq_result = False
+    else:
+      output = "The publication date length of %s is valid" % pubDateLength
+      status = "SUCCESS"
+      mdq_result = True
+  else:
+    output = "No publication date is present."
+    status = "FAILURE"
+    mdq_result = False
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>pubDate</name>
+      <xpath>/*[local-name() = 'eml']/dataset/pubDate</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-dataset.14.1</id>
+    <name>datasetAbstractLength</name>
+    <description>Check the length of a dataset abstract, and warn if less than 20 words.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  # check: datasetAbstractLength
+  import re
+
+  global output
+  global status
+
+  if 'abstract' not in globals():
+    output = "No abstract is present."
+    status = "FAILURE"
+    return False
+
+  if abstract is None:
+    output = "Abstract not found with check selector."
+    status = "FAILURE"
+    return False
+
+  numWords = len(re.split('\s+', abstract))
+  if (numWords < 20):
+    output = "The abstract is less that 20 words long."
+    status = "FAILURE"
+    mdq_result = False
+  else:
+    output = "The abstract is valid, with a word count of %s" % numWords
+    status = "SUCCESS"
+    mdq_result = True
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>abstract</name>
+      <xpath>/eml/dataset/abstract</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.14.1</id>
+    <name>tooFewFields</name>
+    <description>Compare number of fields specified in metadata to number of fields found in data records.</description>
+    <type>congruency</type>
+    <level>REQUIRED</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  import sys
+  import csv
+  import urllib2
+
+  global output
+  global status
+  status = "SUCCESS"
+
+  # varialbe defined by MQE
+  # "attributeNames" - the attribute names (column headings) for the entity
+  # "numHeaderLines" - the number of header lines for a data entity
+  # "recordDelimiter" - the delimiter character used to separate records in the data entities
+  # "fieldDelimiter" -  the delimiter character used to separate fields in the data entities
+  #  print "entityCount", entityCount
+
+  # Download enough data to get the entire header, i.e. don't need to read the whole file
+  maxDownloadByteCount = 2048
+
+  # The dataset may have multiple entities, so check each one
+  for iEntity in range(0, int(entityCount)):
+    thisAttributeNames = attributeNames[iEntity]
+    thisNumHeaderLines = numHeaderLines[iEntity]
+    url = distributionUrls[iEntity]
+    print "url: %s" % url
+    thisFieldDelimiter = fieldDelimiters[iEntity]
+    thisRecordDelimiter = recordDelimiters[iEntity].encode('ascii', errors='ignore')
+
+    response = urllib2.urlopen(url)
+    remoteData = response.read(maxDownloadByteCount)
+
+    encodingScheme = response.headers.getparam('charset')
+    print "remote data encoding: %s" % encodingScheme
+    # The default python encoding is 'ascii', so we have to
+    # Deal with characters outside of the ASCII range by just ignoring them. We aren't displaying
+    # the data or processing it, just counting how many columns of data there are.
+    dataEntity = remoteData.encode("ascii", errors='ignore')
+    #lines = dataEntity.split(thisRecordDelimiter)
+    lines = dataEntity.splitlines()
+
+    headerLine = ''
+    for iLine in range(0, int(thisNumHeaderLines)):
+      headerLine += lines[iLine]
+
+    colNames = headerLine.split(thisFieldDelimiter)
+    print "number of attributes in metadata: ", len(thisAttributeNames)
+    print "number of columns in data: ", len(colNames)
+
+    # Fail if any one of the entiies has too fields, otherwise continue
+    if (len(colNames) < len(attributeNames)):
+      status = "FAILURE"
+      return True
+
+  return False
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>attributeNames</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>attributeNamesSubSelector</name>
+        <xpath>./attributeList/attribute/attributeName</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>numHeaderLines</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>numHeaderLinesSubSelect</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>fieldDelimiters</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>fieldDelimitersSubSelect</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter
+				</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>recordDelimiters</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>recordDelimitersSubSelect</name>
+        <xpath>./physical/dataFormat/textFormat/recordDelimiter</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>distributionUrls</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>distributionUrlsSubSelect</name>
+        <xpath>./physical/distribution/online/url</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.15.1</id>
+    <name>tooManyFields</name>
+    <description>Compare number of fields specified in metadata to number of fields found in data records.</description>
+    <type>congruency</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  import sys
+  import csv
+  import urllib2
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "attributeNames" - the attribute names (column headings) for the entity
+  # "numHeaderLines
+  # "recordDelimiter" - the delimiter character used to separate records in the data entities
+  # "fieldDelimiter" -  the delimiter character used to separate fields in the data entities
+
+  # Download enough data to get the entire header, i.e. don't need to read the whole file
+  maxDownloadByteCount = 2048
+
+  # The dataset may have multiple entities, so check each one
+  for iEntity in range(0, int(entityCount)):
+    thisAttributeNames = attributeNames[iEntity]
+    thisNumHeaderLines = numHeaderLines[iEntity]
+    url = distributionUrls[iEntity]
+    thisFieldDelimiter = fieldDelimiters[iEntity]
+    thisRecordDelimiter = recordDelimiters[iEntity].encode('ascii', errors='ignore')
+
+    response = urllib2.urlopen(url)
+    remoteData = response.read(maxDownloadByteCount)
+
+    encodingScheme = response.headers.getparam('charset')
+    #print "remote data encoding: %s" % encodingScheme
+    # The default python encoding is 'ascii', so we have to
+    # Deal with characters outside of the ASCII range by just ignoring them. We aren't displaying
+    # the data or processing it, just counting how many columns of data there are.
+    dataEntity = remoteData.encode("ascii", errors='ignore')
+    #lines = dataEntity.split(thisRecordDelimiter)
+    lines = dataEntity.splitlines()
+
+    headerLine = ''
+    for iLine in range(0, int(thisNumHeaderLines)):
+      headerLine += lines[iLine]
+
+    colNames = headerLine.split(thisFieldDelimiter)
+
+    # Fail if any one of the entiies has too many fields, otherwise continue
+    if (len(colNames) > len(attributeNames)):
+      return True
+
+  return False
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>attributeNames</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>attributeNamesSubSelector</name>
+        <xpath>./attributeList/attribute/attributeName</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>numHeaderLines</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>numHeaderLinesSubSelect</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>fieldDelimiters</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>fieldDelimitersSubSelect</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter
+				</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>recordDelimiters</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>recordDelimitersSubSelect</name>
+        <xpath>./physical/dataFormat/textFormat/recordDelimiter</xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>distributionUrls</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>distributionUrlsSubSelect</name>
+        <xpath>./physical/distribution/online/url</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.1.1</id>
+    <name>entityNameLength</name>
+    <description>Length of entity name is less than 100 characters.</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "entityCount" - the number of entities in the dataset
+  # "entityNames" - the entity names for the dataset entities (dataTables)
+
+  maxEntityNameLength = 100
+
+  # The dataset may have multiple entities, so check each one
+  for iEntity in range(0, int(entityCount)):
+    thisEntityName = entityNames[iEntity]
+
+    if len(thisEntityName) > maxEntityNameLength:
+      status = "SUCCESS"
+      return True
+
+  status = "FAILURE"
+  return False
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityNames</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>entityNamesSubSelector</name>
+        <xpath>./entityName</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.2.1</id>
+    <name>entityDescriptionPresent</name>
+    <description>Check for presence of an entity description.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # variable defined by MQE
+  # "entityCount" - the number of entities in the dataset
+  # "entityDescriptions" - the number of entities in the dataset
+
+  print "entityDescriptions", entityDescriptions
+  print "type(entityDescriptions)", type(entityDescriptions)
+
+  if entityDescriptions is None:
+  	output = "No entityDescription element present in the document."
+  	status = "FAILURE"
+  	return False
+
+  if entityCount > len(entityDescriptions):
+      output = "There are %d entities and only %d entity descriptions." % (entityCount, len(entityDescriptions))
+      status = "FAILURE"
+      return False
+  else:
+      output = "There are %d entities and %d entity descriptions." % (entityCount, len(entityDescriptions))
+      status = "SUCCESS"
+      return True
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityDescriptions</name>
+      <xpath>/eml/dataset/dataTable/entityDescription</xpath>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.3.1</id>
+    <name>numHeaderLinesPresent</name>
+    <description>Check for presence of the 'numHeaderLines' element</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "entityCount"
+  # "numHeaderLines"
+
+  # Create a list of entity names for entities that don't have 'numHeaderLines' element.
+  missing = []
+  for iEntity in range(0, entityCount):
+    if numHeaderLines[iEntity] is None:
+      missing.append(entityNames[iEntity])
+
+  # Report the entities that don't have 'numHeaderLines'
+  if len(missing) > 0:
+    status = "FAILURE"
+    output = "Entities without 'numHeaderLines': %s" % ", ".join(missing)
+    mdq_result = False
+  else:
+    status = "SUCCESS"
+    output = "All entities have 'numHeaderLines'"
+    mdq_result = True
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityNames</name>
+      <xpath>/eml/dataset/dataTable/entityName</xpath>
+    </selector>
+    <!-- Use a subSelector for numHeader lines so that a value will be returned
+			for all entities. Using a subSelector, a null will be returned for entities
+			that don't have 'numHeaderLines'. If we use just a selector, only found values
+			will be returned, not missing values. -->
+    <selector>
+      <name>numHeaderLines</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>headerLinesSubselector</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.4.1</id>
+    <name>numFooterLinesPresent</name>
+    <description>Check for presence of the 'numFooterLines' element</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "entityCount"
+  # "numFooterLines"
+
+  missing = []
+  for iEntity in range(0, entityCount):
+    if numFooterLines[iEntity] is None:
+      missing.append(entityNames[iEntity])
+
+  if len(missing) > 0:
+    status = "FAILURE"
+    output = "Entities without 'numFooterLines': %s" % ", ".join(missing)
+    mdq_result = False
+  else:
+    status = "SUCCESS"
+    output = "All entities have 'numFooterLines'"
+    mdq_result = True
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityNames</name>
+      <xpath>/eml/dataset/dataTable/entityName</xpath>
+    </selector>
+    <!-- Use a subSelector for 'fieldDso that a value will be returned for
+			all entities. Using a subSelector, a null will be returned for entities that
+			don't have 'numFooterLines'. If we use just a selector, only found values
+			will be returned, not missing values. -->
+    <selector>
+      <name>numFooterLines</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>footerLinesSubselector</name>
+        <xpath>./physical/dataFormat/textFormat/numFooterLines</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.5.1</id>
+    <name>fieldDelimiterValid</name>
+    <description>Field delimiters should be one character only</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "entityCount"
+  # "entityName"
+  # "fieldDelimiter"
+
+  invalid = []
+  for iEntity in range(0, entityCount):
+    if fieldDelimiter[iEntity] is None:
+      invalid.append(entityName[iEntity])
+    elif len(fieldDelimiter[iEntity]) > 1:
+      invalid.append(entityName[iEntity])
+
+  if len(invalid) > 0:
+    status = "FAILURE"
+    output = "Entities with invalid or missing 'fieldDelimiter': %s" % ", ".join(invalid)
+    mdq_result = False
+  else:
+    status = "SUCCESS"
+    output = "All entities have 'fieldDelimiter'"
+    mdq_result = True
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityName</name>
+      <xpath>/eml/dataset/dataTable/entityName</xpath>
+    </selector>
+    <!-- Use a subSelector for 'fieldDso that a value will be returned for
+			all entities. Using a subSelector, a null will be returned for entities that
+			don't have 'numFooterLines'. If we use just a selector, only found values
+			will be returned, not missing values. -->
+    <selector>
+      <name>fieldDelimiter</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>fieldDelimiterSubselector</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter
+				</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.6.1</id>
+    <name>recordDelimiterPresent</name>
+    <description>Check presence of record delimiter. Check that the record delimiter is one of the suggested values.</description>
+    <type>metadata</type>
+    <level>INFO</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "entityCount"
+  # "recordDelimiter"
+
+  invalid = []
+  # Create a list with all the 'suggested' valid line ending values
+  lineEndings = []
+  lineEndings.append("\n")
+  lineEndings.append("\r")
+  lineEndings.append("\r\n")
+  # Java (i.e. from the MQE) stores '\n' as two separate characters '\' and 'n', not one escaped
+  # character for new line, i.e. ascii value 10, so we have to test for that 2 character string as well.
+  lineEndings.append("\\n")
+  lineEndings.append("\\r\\n")
+
+  # Loop through the entities and check that each 'recordDelimiter' is valid.
+  for iEntity in range(0, entityCount):
+    if recordDelimiter[iEntity] is None:
+      invalid.append(entityNames[iEntity])
+    elif recordDelimiter[iEntity] not in lineEndings:
+      invalid.append(entityNames[iEntity])
+
+  if len(invalid) > 0:
+    status = "FAILURE"
+    output = "Entities with invalid or missing 'recordDelimiter': %s" % ", ".join(invalid)
+    mdq_result = False
+  else:
+    status = "SUCCESS"
+    output = "All entities have a valid 'recordDelimiter'."
+    mdq_result = True
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityNames</name>
+      <xpath>/eml/dataset/dataTable/entityName</xpath>
+    </selector>
+    <!-- Use a subSelector for 'recordDelimiter' so that a value will be returned
+			for all entities. Using a subSelector, a null will be returned for entities
+			that don't have 'recordDelimiter'. If we use just a selector, only found
+			values will be returned, not missing values. -->
+    <selector>
+      <name>recordDelimiter</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>recordDelimiterSubselector</name>
+        <xpath>./physical/dataFormat/textFormat/recordDelimiter</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>check-entity.7.1</id>
+    <name>attributeNamesUnique</name>
+    <description>Checks if attributeName values are unique in the table. Not required by EML.</description>
+    <type>metadata</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+
+  global output
+  global status
+
+  # varialbe defined by MQE
+  # "entityCount"
+  # "attributeNames"
+
+  invalid = []
+  # Loop through the entities and check that the attributeNames for each are unique.
+  for iEntity in range(0, entityCount):
+    thisAttrNames = attributeNames[iEntity]
+    # Create a set from the attribute list, which will not containe duplicates, and
+    # compare that to the original list. If they are not the same, then there are
+    # duplicates.
+    uniqueAttrs = list(set(thisAttrNames))
+    if len(uniqueAttrs) != len(thisAttrNames):
+      invalid.append(entityNames[iEntity])
+
+  if len(invalid) > 0:
+    status = "FAILURE"
+    output = "Entities with duplicate attribute names: %s" % ", ".join(invalid)
+    mdq_result = False
+  else:
+    status = "SUCCESS"
+    output = "Each of the %d entities has unique attribute names" % entityCount
+    mdq_result = True
+
+  return mdq_result
+      ]]></code>
+    <selector>
+      <name>entityCount</name>
+      <xpath>count(/eml/dataset/dataTable)</xpath>
+    </selector>
+    <selector>
+      <name>entityNames</name>
+      <xpath>/eml/dataset/dataTable/entityName</xpath>
+    </selector>
+    <!-- Use a subSelector for 'recordDelimiter' so that a value will be returned
+			for all entities. Using a subSelector, a null will be returned for entities
+			that don't have 'recordDelimiter'. If we use just a selector, only found
+			values will be returned, not missing values. -->
+    <selector>
+      <name>attributeNames</name>
+      <xpath>/eml/dataset/dataTable</xpath>
+      <subSelector>
+        <name>attributeNamesSubSelector</name>
+        <xpath>./attributeList/attribute/attributeName</xpath>
+      </subSelector>
+    </selector>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>sample.plot.check</id>
+    <name>check that a plot can be saved</name>
+    <level>INFO</level>
+    <environment>rscript</environment>
+    <code><![CDATA[
+      		library(ggplot2)
+
+	  		g <- ggplot(diamonds, aes(carat, price, color = cut)) + geom_point()
+	  		path <- file.path(tempDir, "diamonds.png")
+	  		ggsave(path, plot = g, width = 6, height = 6)
+
+  			mdq_result <- list(status = "SUCCESS",
+            			       output = list(list(value = path, type = "image/png")))
+		]]></code>
+  </check>
+</mdq:suite>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.creator.info.2</id>
+	<name>Check creator information</name>
+	<description>Check if the creator contains an email and address.</description>
+	<type>identification</type>  
+	<level>INFO</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+check <- function() {
+  library(base)
+  values <- list()
+
+  creatorCount <- length(creator)
+  emailCount <- length(emailAddresses)
+  addressCount <- length(addresses)
+
+  if(creatorCount == 0) {
+    values[[length(values)+1]] <- list(value=sprintf("A 'creator' is not present, so unable to check email and address."))
+    return(list(status="FAILURE", values=values))
+  }
+  
+  # Assume that the check will succeed, until proven otherwise.
+  # The output messages will be gathered into a list
+  status <- "SUCCESS"
+  
+  # Output number of creators that have email addresses
+  if(emailCount == creatorCount) {
+    values[[length(values)+1]] <- list(value=sprintf("All %s creators have email addresses.", creatorCount))
+  } else {
+    values[[length(values)+1]] <- list(value=sprintf("%d of %d creators have email addresses.", emailCount, creatorCount))
+  }
+  
+  # Output number of creators that have addresses
+  if(addressCount == creatorCount) {
+    values[[length(values)+1]] <- list(value=sprintf("All %s creators have addresses.", creatorCount))
+  } else {
+    values[[length(values)+1]] <- list(value=sprintf("%d of %d creators have addresses.", addressCount, creatorCount))
+  }
+
+  return(list(status=status, values=values))
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=result$values)
+]]></code>
+  <selector namespaceAware="true">
+    <name>creator</name>
+	<xpath>/*[local-name() = 'eml']/dataset/creator |
+		  /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='originator'] |
+		  /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='author'] |
+		  /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='principalInvestigator'] |
+		  /*/dcterms:creator
+	</xpath>
+  </selector>
+  <selector namespaceAware="true">
+	<name>emailAddresses</name>
+	<xpath>/*[local-name() = 'eml']/dataset/creator/electronicMailAddress |
+		/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='originator']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress |
+		/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='author']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress |
+		/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='principalInvestigator']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress
+	</xpath>
+	</selector>
+  <selector namespaceAware="true">
+	<name>addresses</name>
+	<xpath>/*[local-name() = 'eml']/dataset/creator/address |
+		/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='originator']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint|
+		/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='author']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint |
+		/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='principalInvestigator']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:deliveryPoint
+	</xpath>
+  </selector>
+	<dialect>
+	  <name>eml</name>
+	  <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+	<dialect>
+		<name>Dryad Data Package and Data File Modules</name>
+		<xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+	</dialect>
+	<dialect>
+		<name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+		<xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+	</dialect>
+</mdq:check>

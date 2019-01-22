@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.nsf.award.numbers.in.nsf.database.1</id>
+	<name>NSF awards in database</name>
+	<description>All entered NSF award numbers should be present in the NSF award database.</description>
+	<type>identification</type>
+	<level>OPTIONAL</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+library(httr)
+library(stringr)
+NSFawardLength <- 7
+
+if (is.null(awards)) {
+  mdq_result <- list(status = "SKIP",
+                     output = list(list(value = "No NSF award numbers are present in the metadata document so this check was skipped.")))
+
+} else {
+  # Clean up each award string so we can pass it to the HTTP API
+  awards <- trimws(gsub("nsf award", "", tolower(awards)))
+  # Extract the integer funding numbers from any other character left in the 'funding' element.
+  awards <- str_extract(awards, "\\d+")
+  # Make sure that all award numbers are the correct number of characters
+  # The number may have been stripped of leading zeros, so add them back
+  # in if necessary.
+  awardFormat <- paste0("%0", NSFawardLength, "d")
+  awards <- lapply(awards, function(x) {
+    award <- x
+    if(nchar(x) < NSFawardLength) {
+        award <- sprintf(awardFormat, as.integer(x))
+    }
+    as.character(award)
+  })
+
+  # Search for each award
+  responses <- lapply(awards, function(award) {
+    tryCatch({
+      req <- GET(paste0("https://arcticdata.io/api.nsf.gov/services/v1/awards.json?id=", award))
+      stopifnot(req$status_code == 200) # Throw an error if the HTTP status isn't 200
+      content(req)
+    },
+    error = function(e) {
+      list()
+    })
+  })
+
+  # Determine if each award was found
+  is_found <- sapply(responses, function(r) ifelse(!is.null(r$response$award) && length(r$response$award) == 1, TRUE, FALSE))
+
+
+  if (all(is_found)) {
+    mdq_result <- list(status = "SUCCESS",
+                       output = list(list(value = "All award numbers were found in the NSF award database.")))
+  } else {
+
+    outputs <- paste0("The award number '", awards[!is_found], "' was not found in the NSF award database.")
+    mdq_result <- list(status = "ERROR",
+    
+                       output = lapply(outputs, function(message) { list(value = message)}))
+  }
+}
+
+]]></code>
+	<selector>
+		<name>awards</name>
+		<xpath>/*[local-name() = 'eml']/dataset/project/funding//text()[normalize-space()]</xpath>
+	</selector>
+</mdq:check>

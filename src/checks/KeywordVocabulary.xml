@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<check>
+   <id>KeywordVocabulary</id>
+   <name>Keyword Vocabulary</name>
+   <description>Checks to see if at least one Keyword Vocabulary concept exists.</description>
+   <type>rubricIdentification</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+ 
+  output = "The concept KeywordVocabulary is present."
+                                        
+  if(KeywordVocabulary is not None and len(str(KeywordVocabulary)) > 0):
+    status = "SUCCESS"
+    return True
+    
+  status = "FAILURE"
+  output = "KeywordVocabulary concept is not present"
+  
+  return False
+      ]]></code>
+   <selector>
+      <name>KeywordVocabulary</name>
+      <xpath>(/resource/subjects/subject/@subjectScheme) or (/eml/*/keywordSet/keywordThesaurus) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords/thesaurusName/CI_Citation) or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains\(type/MD_KeywordTypeCode,'platform')]/thesaurusName) or (/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space\(type/MD_KeywordTypeCode)='theme']/thesaurusName/CI_Citation)</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name/>
+      <xpath>boolean(/*[local-name() = ''])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</check>

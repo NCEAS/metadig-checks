@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ISO_UserFeedback_Understanding.suite.1</id>
+   <name>ISO_UserFeedback_Understanding</name>
+   <check>
+      <id>SpecificUsage</id>
+   </check>
+   <check>
+      <id>UsageTime</id>
+   </check>
+   <check>
+      <id>UserDeterminedLimitations</id>
+   </check>
+   <check>
+      <id>UserContact</id>
+   </check>
+   <check>
+      <id>UserResponse</id>
+   </check>
+   <check>
+      <id>AdditionalUsageDocumentation</id>
+   </check>
+   <check>
+      <id>IdentifiedIssuesCitation</id>
+   </check>
+</mdq:suite>

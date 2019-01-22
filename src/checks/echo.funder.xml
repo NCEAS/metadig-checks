@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.echo.funder.1</id>
+	<name>Funder</name>
+	<description>Check for extracting funder from the metadata for result indexing and analysis.</description>
+	<type>identification</type>
+	<level>METADATA</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+if (is.null(awards)) {
+  status <- "SUCCESS"
+  output <- "NA"
+  mdq_result <- list(status = status,
+                     output = list(list(value = output)))
+} else {
+  status <- "SUCCESS"  
+  mdq_result <- list(status = status,
+                     output = lapply(awards, function(message) { list(value = message)}))
+                     
+}]]></code>
+	<selector>
+		<name>awards</name>
+		<xpath>/eml/dataset/project/funding//para</xpath>
+	</selector>
+</mdq:check>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>FAIR Metadata - Accessible.suite.1</id>
+   <name>FAIR Metadata - Accessible</name>
+   <check>
+      <id>ResourceDistribution</id>
+   </check>
+   <check>
+      <id>DistributionContact</id>
+   </check>
+   <check>
+      <id>ServiceType</id>
+   </check>
+   <check>
+      <id>ServiceLocation</id>
+   </check>
+   <check>
+      <id>ServiceProvider</id>
+   </check>
+</mdq:suite>

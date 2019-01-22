@@ -1,0 +1,1321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>ACDD_Discovery_ACDD_ISO</id>
+  <name>ACDD_Discovery_ACDD_ISO</name>
+  <namespaces>
+    <namespace prefix="eml">eml://ecoinformatics.org/eml-2.1.1</namespace>
+    <namespace prefix="gco">http://www.isotc211.org/2005/gco</namespace>
+    <namespace prefix="gmd">http://www.isotc211.org/2005/gmd</namespace>
+    <namespace prefix="gml">http://www.opengis.net/gml/3.2</namespace>
+    <namespace prefix="gmx">http://www.isotc211.org/2005/gmx</namespace>
+    <namespace prefix="xlink">http://www.w3.org/1999/xlink</namespace>
+    <namespace prefix="gss">http://www.isotc211.org/2005/gss</namespace>
+    <namespace prefix="gts">http://www.isotc211.org/2005/gts</namespace>
+    <namespace prefix="gsr">http://www.isotc211.org/2005/gsr</namespace>
+    <namespace prefix="gmi">http://www.isotc211.org/2005/gmi</namespace>
+    <namespace prefix="srv">http://www.isotc211.org/2005/srv</namespace>
+  </namespaces>
+  <check>
+    <id>ACDD_highlyRecommended_ResourceTitle_ACDD_ISO_EML</id>
+    <name>ResourceTitlePresent</name>
+    <description>Checks to see if at least one Resource Title concept exists.</description>
+    <type>ACDD_highlyRecommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+    global output
+    global status
+
+    output = "The concept ResourceTitle is present."
+
+    if(ResourceTitle is not None and len(ResourceTitle) > 0):
+        status = "SUCCESS"
+        return True
+
+    status = "FAILURE"
+    output = "ResourceTitle concept is not present"
+
+    return False
+      ]]></code>
+    <selector>
+      <name>ResourceTitle</name>
+      <xpath>(/*/identificationInfo/*/citation/CI_Citation/title//*) | (/eml/*/title) | (/netcdf/attribute[@name='title']/@value)</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_highlyRecommended_Abstract_ACDD_ISO_EML</id>
+    <name>AbstractPresent</name>
+    <description>Checks to see if at least one Abstract concept exists.</description>
+    <type>ACDD_highlyRecommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Abstract is present."
+  if(len(Abstract) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Abstract concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>Abstract</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:abstract//* | /eml:eml/*/abstract | /netcdf/attribute[@name='summary']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_highlyRecommended_Keyword_ACDD_ISO_EML</id>
+    <name>KeywordPresent</name>
+    <description>Checks to see if at least one Keyword concept exists.</description>
+    <type>ACDD_highlyRecommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Keyword is present."
+  if(len(Keyword) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Keyword concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>Keyword</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:keyword | /*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords[normalize-space(gmd:type/gmd:MD_KeywordTypeCode)='place']/gmd:keyword//* | /*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords[normalize-space(gmd:type/gmd:MD_KeywordTypeCode)='instrument']/gmd:keyword//* |
+        /*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords[normalize-space(gmd:type/gmd:MD_KeywordTypeCode)='platform']/gmd:keyword//* | /*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords[normalize-space(gmd:type/gmd:MD_KeywordTypeCode)='project']/gmd:keyword//* | /eml:eml/*/keywordSet/keyword | /netcdf/attribute[@name='keywords']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_ResourceIdentifier_ACDD_ISO_EML</id>
+    <name>ResourceIdentifierPresent</name>
+    <description>Checks to see if at least one Resource Identifier concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceIdentifier is present."
+  if(len(ResourceIdentifier) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceIdentifier concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ResourceIdentifier</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code//* | /eml:eml/@packageId | /netcdf/attribute[@name='id']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_NamingAuthority_ACDD_ISO_EML</id>
+    <name>NamingAuthorityPresent</name>
+    <description>Checks to see if at least one Naming Authority concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept NamingAuthority is present."
+  if(len(NamingAuthority) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "NamingAuthority concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>NamingAuthority</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:authority | /netcdf/attribute[@name='naming_authority']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_KeywordVocabulary_ACDD_ISO_EML</id>
+    <name>KeywordVocabularyPresent</name>
+    <description>Checks to see if at least one Keyword Vocabulary concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept KeywordVocabulary is present."
+  if(len(KeywordVocabulary) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "KeywordVocabulary concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>KeywordVocabulary</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName | /eml:eml/*/keywordSet/keywordThesaurus | /netcdf/attribute[@name='keyword_vocabulary']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_CommonDataModelDatatype_ACDD_ISO_EML</id>
+    <name>CommonDataModelDatatypePresent</name>
+    <description>Checks to see if at least one Common Data Model Datatype concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept CommonDataModelDatatype is present."
+  if(len(CommonDataModelDatatype) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "CommonDataModelDatatype concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>CommonDataModelDatatype</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode | /netcdf/attribute[@name='cdm_data_type']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_LineageStatement_ACDD_ISO_EML</id>
+    <name>LineageStatementPresent</name>
+    <description>Checks to see if at least one Lineage Statement concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept LineageStatement is present."
+  if(len(LineageStatement) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "LineageStatement concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>LineageStatement</name>
+      <xpath>/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:statement//* | /netcdf/attribute[@name='history']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_SupplementalInformation_ACDD_ISO_EML</id>
+    <name>SupplementalInformationPresent</name>
+    <description>Checks to see if at least one Supplemental Information concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept SupplementalInformation is present."
+  if(len(SupplementalInformation) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "SupplementalInformation concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>SupplementalInformation</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:supplementalInformation//* | /eml:eml/*/additionalInfo | /netcdf/attribute[@name='comment']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_ResourceCreation/RevisionDate_ACDD_ISO_EML</id>
+    <name>ResourceCreation/RevisionDatePresent</name>
+    <description>Checks to see if at least one Resource Creation/Revision Date concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceCreation_RevisionDate is present."
+  if(len(ResourceCreation_RevisionDate) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceCreation_RevisionDate concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ResourceCreation_RevisionDate</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[normalize-space(gmd:dateType/gmd:CI_DateTypeCode)='creation']/gmd:date/gco:Date | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[normalize-space(gmd:dateType/gmd:CI_DateTypeCode)='creation']/gmd:date/gco:DateTime | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[normalize-space(gmd:dateType/gmd:CI_DateTypeCode)='revision']/gmd:date/gco:Date |
+        /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[normalize-space(gmd:dateType/gmd:CI_DateTypeCode)='revision']/gmd:date/gco:DateTime | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[normalize-space(gmd:dateType/gmd:CI_DateTypeCode)='publication']/gmd:date/gco:Date | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:date/gmd:CI_Date[normalize-space(gmd:dateType/gmd:CI_DateTypeCode)='publication']/gmd:date/gco:DateTime
+        | /eml:eml/*/maintenance/changeHistory/changeDate | /eml:eml/*/pubDate | /netcdf/attribute[@name='date_created']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_ResourceContact_ACDD_ISO_EML</id>
+    <name>ResourceContactPresent</name>
+    <description>Checks to see if at least one Resource Contact concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceContact is present."
+  if(len(ResourceContact) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceContact concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ResourceContact</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:pointOfContact | /eml:eml/*/contact | /netcdf/attribute[@name='creator_name']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_Author/OriginatorWorldWideWebAddress_ACDD_ISO_EML</id>
+    <name>Author/OriginatorWorldWideWebAddressPresent</name>
+    <description>Checks to see if at least one Author / Originator World Wide Web Address concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Author_OriginatorWorldWideWebAddress is present."
+  if(len(Author_OriginatorWorldWideWebAddress) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Author_OriginatorWorldWideWebAddress concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>Author_OriginatorWorldWideWebAddress</name>
+      <xpath>//gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='author']/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL | /eml:eml/*/creator/electronicMailAddress | /netcdf/attribute[@name='creator_url']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_Author/OriginatorEmailAddress_ACDD_ISO_EML</id>
+    <name>Author/OriginatorEmailAddressPresent</name>
+    <description>Checks to see if at least one Author / Originator Email Address concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Author_OriginatorEmailAddress is present."
+  if(len(Author_OriginatorEmailAddress) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Author_OriginatorEmailAddress concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>Author_OriginatorEmailAddress</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='author']/gmd:contactInfo/gmd:CI_Contact/gmd:address/gmd:CI_Address/gmd:electronicMailAddress//* | /eml:eml/*/creator/onlineUrl | /netcdf/attribute[@name='creator_email']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_OriginatingOrganization_ACDD_ISO_EML</id>
+    <name>OriginatingOrganizationPresent</name>
+    <description>Checks to see if at least one Originating Organization concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept OriginatingOrganization is present."
+  if(len(OriginatingOrganization) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "OriginatingOrganization concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>OriginatingOrganization</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='author']/gmd:organisationName//* | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='originator']/gmd:organisationName//* | /eml:eml/*/creator/organizationName | /netcdf/attribute[@name='institution']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_ProjectName_ACDD_ISO_EML</id>
+    <name>ProjectNamePresent</name>
+    <description>Checks to see if at least one Project Name concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ProjectName is present."
+  if(len(ProjectName) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ProjectName concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ProjectName</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:aggregationInfo/gmd:MD_AggregateInformation[normalize-space(gmd:associationType/gmd:DS_AssociationTypeCode)='largerWorkCitation' and normalize-space(gmd:initiativeType/gmd:DS_InitiativeTypeCode)='project']/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title//* | /*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords[normalize-space(gmd:type/gmd:MD_KeywordTypeCode)='project']/gmd:keyword//* |
+        /gmi:MI_Metadata/gmi:acquisitionInformation/gmi:MI_AcquisitionInformation/gmi:operation/gmi:MI_Operation/gmi:citation/gmd:CI_Citation//* | /eml:eml/*/creator/electronicMailAddress | /netcdf/attribute[@name='project']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_ProcessingLevel_ACDD_ISO_EML</id>
+    <name>ProcessingLevelPresent</name>
+    <description>Checks to see if at least one Processing Level concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ProcessingLevel is present."
+  if(len(ProcessingLevel) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ProcessingLevel concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ProcessingLevel</name>
+      <xpath>/*/gmd:contentInfo/*/gmd:processingLevelCode/gmd:MD_Identifier/gmd:code//* | /netcdf/attribute[@name='processing_level']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_Acknowledgement_ACDD_ISO_EML</id>
+    <name>AcknowledgementPresent</name>
+    <description>Checks to see if at least one Acknowledgement concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Acknowledgement is present."
+  if(len(Acknowledgement) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Acknowledgement concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>Acknowledgement</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:credit//* | /netcdf/attribute[@name='acknowledgement']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_BoundingBox_ACDD_ISO_EML</id>
+    <name>BoundingBoxPresent</name>
+    <description>Checks to see if at least one Bounding Box concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept BoundingBox is present."
+  if(len(BoundingBox) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "BoundingBox concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>BoundingBox</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox//* | /*/gmd:identificationInfo/srv:SV_ServiceIdentification/srv:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox//* | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates | /netcdf/attribute[@name='geospatial_lat_max']</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_SouthernmostLatitude_ACDD_ISO_EML</id>
+    <name>SouthernmostLatitudePresent</name>
+    <description>Checks to see if at least one Southernmost Latitude concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept SouthernmostLatitude is present."
+  if(len(SouthernmostLatitude) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "SouthernmostLatitude concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>SouthernmostLatitude</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:southBoundLatitude/gco:Decimal | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates/southBoundingCoordinate | /netcdf/attribute[@name='geospatial_lat_min']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_NorthernmostLatitude_ACDD_ISO_EML</id>
+    <name>NorthernmostLatitudePresent</name>
+    <description>Checks to see if at least one Northernmost Latitude concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept NorthernmostLatitude is present."
+  if(len(NorthernmostLatitude) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "NorthernmostLatitude concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>NorthernmostLatitude</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:northBoundLatitude/gco:Decimal | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates/northBoundingCoordinate | /netcdf/attribute[@name='geospatial_lat_max']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_WesternmostLongitude_ACDD_ISO_EML</id>
+    <name>WesternmostLongitudePresent</name>
+    <description>Checks to see if at least one Westernmost Longitude concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept WesternmostLongitude is present."
+  if(len(WesternmostLongitude) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "WesternmostLongitude concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>WesternmostLongitude</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:westBoundLongitude/gco:Decimal | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates/westBoundingCoordinate | /netcdf/attribute[@name='geospatial_lon_min']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_EasternmostLongitude_ACDD_ISO_EML</id>
+    <name>EasternmostLongitudePresent</name>
+    <description>Checks to see if at least one Easternmost Longitude concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept EasternmostLongitude is present."
+  if(len(EasternmostLongitude) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "EasternmostLongitude concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>EasternmostLongitude</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox/gmd:eastBoundLongitude/gco:Decimal | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates/eastBoundingCoordinate | /netcdf/attribute[@name='geospatial_lon_max']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_StartTime_ACDD_ISO_EML</id>
+    <name>StartTimePresent</name>
+    <description>Checks to see if at least one Start Time concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept StartTime is present."
+  if(len(StartTime) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "StartTime concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>StartTime</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition | /eml:eml/*/coverage/temporalCoverage/rangeOfDates/beginDate/calendarDate | /netcdf/attribute[@name='time_coverage_start']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_EndTime_ACDD_ISO_EML</id>
+    <name>EndTimePresent</name>
+    <description>Checks to see if at least one End Time concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept EndTime is present."
+  if(len(EndTime) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "EndTime concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>EndTime</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition | /eml:eml/*/coverage/temporalCoverage/rangeOfDates/endDate | /netcdf/attribute[@name='time_coverage_end']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_VerticalMinimum_ACDD_ISO_EML</id>
+    <name>VerticalMinimumPresent</name>
+    <description>Checks to see if at least one Vertical Minimum concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept VerticalMinimum is present."
+  if(len(VerticalMinimum) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "VerticalMinimum concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>VerticalMinimum</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:minimumValue/gco:Real | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates/boundingAltitudes/altitudeMinimum | /netcdf/attribute[@name='geospatial_vertical_min']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_TemporalExtent_ACDD_ISO_EML</id>
+    <name>TemporalExtentPresent</name>
+    <description>Checks to see if at least one Temporal Extent concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept TemporalExtent is present."
+  if(len(TemporalExtent) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "TemporalExtent concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>TemporalExtent</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent//* | /eml:eml/*/coverage/temporalCoverage | /netcdf/attribute[@name='time_coverage_duration']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_TemporalResolution_ACDD_ISO_EML</id>
+    <name>TemporalResolutionPresent</name>
+    <description>Checks to see if at least one Temporal Resolution concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept TemporalResolution is present."
+  if(len(TemporalResolution) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "TemporalResolution concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>TemporalResolution</name>
+      <xpath>/eml:eml/*/coverage/temporalCoverage//*/units | /netcdf/attribute[@name='time_coverage_resolution']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_StandardNameVocabulary_ACDD_ISO_EML</id>
+    <name>StandardNameVocabularyPresent</name>
+    <description>Checks to see if at least one Standard Name Vocabulary concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept StandardNameVocabulary is present."
+  if(len(StandardNameVocabulary) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "StandardNameVocabulary concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>StandardNameVocabulary</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:thesaurusName/gmd:CI_Citation/gmd:title//* | /netcdf/variable/attribute[@name='standard_name_vocabulary']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_VerticalMaximum_ACDD_ISO_EML</id>
+    <name>VerticalMaximumPresent</name>
+    <description>Checks to see if at least one Vertical Maximum concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept VerticalMaximum is present."
+  if(len(VerticalMaximum) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "VerticalMaximum concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>VerticalMaximum</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:extent/gmd:EX_Extent/gmd:verticalElement/gmd:EX_VerticalExtent/gmd:maximumValue/gco:Real | /eml:eml/*/coverage/geographicCoverage/boundingCoordinates/boundingAltitudes/altitudeMaximum | /netcdf/attribute[@name='geospatial_vertical_max']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_recommended_ResourceAccessConstraints_ACDD_ISO_EML</id>
+    <name>ResourceAccessConstraintsPresent</name>
+    <description>Checks to see if at least one Resource Access Constraints concept exists.</description>
+    <type>ACDD_recommended</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ResourceAccessConstraints is present."
+  if(len(ResourceAccessConstraints) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ResourceAccessConstraints concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ResourceAccessConstraints</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:accessConstraints/gmd:MD_RestrictionCode | /*/gmd:identificationInfo/*/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints//* | /eml:eml/access | /netcdf/variable/attribute[@name='license']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_suggested_ContributorName_ACDD_ISO_EML</id>
+    <name>ContributorNamePresent</name>
+    <description>Checks to see if at least one Contributor Name concept exists.</description>
+    <type>ACDD_suggested</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ContributorName is present."
+  if(len(ContributorName) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ContributorName concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ContributorName</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[not(normalize-space(gmd:role/gmd:CI_RoleCode[.='author' or .='principalInvestigator' or .='originator']))]//*[contains(name(),'Name')]//* | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='contributor']//*[contains(name(),'Name')]//* | /eml:eml/*/associatedParty |
+        /netcdf/attribute[@name='contributor_name']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_suggested_ContributorRole_ACDD_ISO_EML</id>
+    <name>ContributorRolePresent</name>
+    <description>Checks to see if at least one Contributor Role concept exists.</description>
+    <type>ACDD_suggested</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept ContributorRole is present."
+  if(len(ContributorRole) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "ContributorRole concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>ContributorRole</name>
+      <xpath>/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[not(normalize-space(gmd:role/gmd:CI_RoleCode)[.='author' or .='principalInvestigator' or .='originator'])]/gmd:role/gmd:CI_RoleCode | /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role[gmd:CI_RoleCode='contributor'] | /eml:eml/*/*/role | /netcdf/attribute[@name='contributor_role']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_suggested_Publisher_ACDD_ISO_EML</id>
+    <name>PublisherPresent</name>
+    <description>Checks to see if at least one Publisher concept exists.</description>
+    <type>ACDD_suggested</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept Publisher is present."
+  if(len(Publisher) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "Publisher concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>Publisher</name>
+      <xpath>//gmd:CI_ResponsibleParty[normalize-space(gmd:role/gmd:CI_RoleCode)='publisher']/gmd:organisationName//* | /eml:eml/*/publisher | /netcdf/attribute[@name='publisher_name']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_suggested_PublisherURL_ACDD_ISO_EML</id>
+    <name>PublisherURLPresent</name>
+    <description>Checks to see if at least one Publisher URL concept exists.</description>
+    <type>ACDD_suggested</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept PublisherURL is present."
+  if(len(PublisherURL) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "PublisherURL concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>PublisherURL</name>
+      <xpath>//gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode ='publisher']/gmd:contactInfo/gmd:CI_Contact/gmd:onlineResource/gmd:CI_OnlineResource/gmd:linkage/gmd:URL | /eml:eml/*/publisher/electronicMailAddress | /netcdf/attribute[@name='publisher_url']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+  <check>
+    <id>ACDD_suggested_PublisherE-Mail_ACDD_ISO_EML</id>
+    <name>PublisherE-MailPresent</name>
+    <description>Checks to see if at least one Publisher E-Mail concept exists.</description>
+    <type>ACDD_suggested</type>
+    <level>OPTIONAL</level>
+    <environment>python</environment>
+    <code><![CDATA[
+def call():
+  global output
+  global status
+  # Message is set when an error occurs.
+  output = "The concept PublisherEMail is present."
+  if(len(PublisherEMail) > 0):
+    status = "SUCCESS"
+    return True
+  status = "FAILURE"
+  output = "PublisherEMail concept is not present"
+  return False
+      ]]></code>
+    <selector namespaceAware="true">
+      <name>PublisherEMail</name>
+      <xpath>//gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty[gmd:role/gmd:CI_RoleCode ='publisher']/gmd:contactInfo/gmd:address/gmd:CI_Address/gmd:electronicMailAddress//* | /eml:eml/*/publisher/electronicMailAddress | /netcdf/attribute[@name='publisher_email']/@value</xpath>
+    </selector>
+    <dialect>
+      <name>acdd</name>
+      <xpath>boolean(/*[local-name() = 'netcdf'])</xpath>
+    </dialect>
+    <dialect>
+      <name>iso</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+      <name>eml</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+    </dialect>
+  </check>
+</mdq:suite>

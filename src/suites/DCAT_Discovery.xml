@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>DCAT_Discovery.suite.1</id>
+   <name>DCAT_Discovery</name>
+   <check>
+      <id>ResourceTitle</id>
+   </check>
+   <check>
+      <id>Abstract</id>
+   </check>
+   <check>
+      <id>Keyword</id>
+   </check>
+   <check>
+      <id>ResourceCreationRevisionDate</id>
+   </check>
+   <check>
+      <id>ResourcePublisher</id>
+   </check>
+   <check>
+      <id>ResourceContact</id>
+   </check>
+   <check>
+      <id>MetadataIdentifier</id>
+   </check>
+   <check>
+      <id>ResourceAccessConstraints</id>
+   </check>
+</mdq:suite>

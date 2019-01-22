@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>check.identifier.is.doi.1</id>
+  <name>DOI Identifier</name>
+  <description>Identifier should be a DOI.</description>
+  <type>identification</type>
+  <level>OPTIONAL</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+library(stringr)
+
+# Alter the FAILURE message if the source member node is ADC. 
+
+if (!exists("authoritativeMemberNode") || is.null(authoritativeMemberNode)) {
+  warningMsg <- "The identifier '%s' does not look like a DOI.."
+} else {
+  if (authoritativeMemberNode == "urn:node:ARCTIC" || authoritativeMemberNode == "urn:node:mnTestARCTIC") {
+    warningMsg <- "The identifier '%s' does not look like a DOI. Note that a DOI will be assigned to this dataset when it has been reviewed and approved."
+  } else {
+    warningMsg <- "The identifier '%s' does not look like a DOI."
+  }
+}
+
+# If the system metadata was provided to the quality engine, then use the metadata pid there.
+if (exists("systemMetadataPid") || !is.null(systemMetadataPid)) {
+  identifier <- systemMetadataPid
+}
+
+if (length(identifier) == 0) {
+  mdq_result <- list(status = "FAILURE",
+                     output = list(list(value = "No identifier was found.")))
+} else if (length(identifier) > 1) {
+  mdq_result <- list(status = "FAILURE",
+                     output = list(list(value = "More that one identifier was found when a single one was expected.")))
+} else {
+  doi_patterns = c("doi:10\\..+",
+                   "http(s)?:\\/\\/(dx.)?doi\\.org\\/(doi\\:)?10\\..+")
+
+  is_doi = any(str_detect(identifier, doi_patterns))
+
+  if (is_doi) {
+    mdq_result <- list(status = "SUCCESS",
+                       output = list(list(value = sprintf("The identifier '%s' looks like a DOI.", identifier))))
+  } else {
+    mdq_result <- list(status = "FAILURE",
+                       output = list(list(value = sprintf(warningMsg, identifier))))
+  }
+}
+  ]]></code>
+   <selector>
+    <name>identifier</name>
+    <xpath>
+    (/eml/@packageId)
+    |
+    (/*/fileIdentifier/CharacterString)
+    </xpath>
+  </selector>
+</mdq:check>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.entity.present.2</id>
+	<name>Data entity present check.</name>
+	<description>Check that a data entity is present.</description>
+	<type>interpretation</type>
+	<level>OPTIONAL</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+check <- function() {
+  library(base)
+  library(metadig)
+  # variables defined by MQE from the <xpath> selectors.
+  # "entityPresent" - is a data entity description present?
+  
+  outputList <- list()
+  status <- "SUCCESS"
+  # Assume that the check will succeed, until proven otherwise.
+  # The dataset may have multiple entities, so check each one. 
+  if(entityPresent) {
+    if (entityCount == 1) {
+      outputList[[length(outputList)+1]] <- list(value=sprintf("1 data entity description is present."))
+    } else {
+      outputList[[length(outputList)+1]] <- list(value=sprintf("%d data entity descriptions are present", entityCount))
+    }
+    return(list(status=status, values=outputList))
+  } else {
+    outputList[[length(outputList)+1]] <- list(value=sprintf("No data entity descriptions are present."))
+    return(list(status="FAILURE", values=outputList))
+  }
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=result$values) 
+]]></code>
+	<selector namespaceAware="true">
+		<name>entityPresent</name>
+		<xpath>boolean(
+		       /*[local-name() = 'eml']/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] or
+		       /*/gmd:distributionInfo/gmd:MD_Distribution)
+		</xpath>
+	</selector>
+	<selector namespaceAware="true">
+		<name>entityCount</name>
+		<xpath>count(
+			/*[local-name() = 'eml']/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
+			/*/gmd:distributionInfo/gmd:MD_Distribution)
+		</xpath>
+	</selector>
+	<dialect>
+		<name>eml</name>
+		<xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+	<dialect>
+		<name>ISO 19115 and ISO 19115-2</name>
+		<xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+	</dialect>
+</mdq:check>

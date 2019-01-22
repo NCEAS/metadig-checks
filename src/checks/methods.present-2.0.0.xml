@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>check.methods.present.2</id>
+	<name>Methods present</name>
+	<description>All datasets should contain a methods section, and it's description should have sufficient length (7 words).</description>
+	<type>interpretation</type>
+	<level>REQUIRED</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+library(metadig)
+library(base)
+
+check <- function() {
+    badStepCount <- 0
+    # Recommended minimum word count
+    minWordCount <- 7
+    # Recommended max word count
+    maxWordCount <- 20
+    
+    # Check that a <methods> section is present for the dataset.
+    if(!methodsPresent) {
+        return(list(status = "FAILURE", output = sprintf("A methods section is not present, so unable to check method step descriptions word count.")))
+    }
+
+    # For each method step that has a description, check if the word count is adequate.
+    if (methodStepDescriptionCount > 0) {
+        for(iDescr in 1:length(methodStepDescription)) {
+            thisDescr <- methodStepDescription[[iDescr]]
+            if(is.null(thisDescr) || class(thisDescr) != "character" || grepl("^\\s*$", thisDescr)) {
+              next;
+            } else {
+                wordCount <- length(unlist(strsplit(thisDescr, "\\s+", perl=T)))
+                if (wordCount < minWordCount) {
+                    badStepCount <- badStepCount + 1
+                }
+            }
+        }
+    } else {
+        # No methodSteps defined (shouldn't happen, it's a required element for methods)
+        return(list(status="FAILURE", output=sprintf("No method step descriptions are present.")))
+    }
+    
+    # Report the total number of method step descriptions that aren't of sufficient length.
+    if (badStepCount > 0) {
+        return(list(status="FAILURE", output=sprintf("%d of %d method step descriptions have word counts less than the recommended count (word count > %d).", badStepCount, methodStepDescriptionCount, minWordCount)))
+    } else {
+        return(list(status="SUCCESS", output=sprintf("All %d method step descriptions are sufficient (word count > %d).", methodStepCount, minWordCount)))
+    }
+}
+result <- check()
+mdq_result <- list(status=result$status, output=list(list(value=result$output)))
+]]></code>
+	<selector namespaceAware="true">
+		<name>methodsPresent</name>
+		<xpath>boolean(
+			/*[local-name() = 'eml']/dataset/methods or
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage
+			)</xpath>
+	</selector>
+	<selector namespaceAware="true">
+		<name>methodStepCount</name>
+		<xpath>count(
+			/*[local-name() = 'eml']/dataset/methods/methodStep |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmi:LE_ProcessStep |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LI_Source/gmd:sourceStep/gmd:LI_ProcessStep |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LE_Source/gmd:sourceStep/gmd:LE_ProcessStep
+			)</xpath>
+	</selector>
+	<selector namespaceAware="true">
+		<name>methodStepDescriptionCount</name>
+		<xpath>count(
+			/*[local-name() = 'eml']/dataset/methods/methodStep/description |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep/gmd:description |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmi:LE_ProcessStep/gmd:description |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LI_Source/gmd:sourceStep/gmd:LI_ProcessStep/gmd:description |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LE_Source/gmd:sourceStep/gmd:LE_ProcessStep/gmd:description
+			)</xpath>
+	</selector>
+	<selector namespaceAware="true">
+		<name>methodStepDescription</name>
+        <!-- use string-join to gather all descendant text nodes, when Java supports Xpath 2.0 -->
+		<xpath>/*[local-name() = 'eml']/dataset/methods/methodStep/description//text()[normalize-space()] |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmd:LI_ProcessStep/gmd:description//text()[normalize-space()] |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:processStep/gmi:LE_ProcessStep/gmd:description//text()[normalize-space()] |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LI_Source/gmd:sourceStep/gmd:LI_ProcessStep/gmd:description//text()[normalize-space()] |
+			/*/gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LE_Source/gmd:sourceStep/gmd:LE_ProcessStep/gmd:description//text()[normalize-space()]
+		</xpath>
+	</selector>
+	<dialect>
+		<name>eml</name>
+		<xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+	<dialect>
+		<name>ISO 19115 and ISO 19115-2</name>
+		<xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+	</dialect>
+</mdq:check>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>ResourceIdentifier</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceIdentifier.1</id>
    <name>Resource Identifier</name>
-   <description>Checks to see if at least one Resource Identifier concept exists.</description>
-   <type>DataCite3.1Mandatory</type>
+   <description>Check that a resource identifier exists.</description>
+   <type>FAIR-Findable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,20 +11,24 @@ def call():
   global output
   global status
  
-  output = "The concept ResourceIdentifier is present."
-                                        
-  if(ResourceIdentifier is not None and len(str(ResourceIdentifier)) > 0):
+  if ('ResourceIdentifier' in globals() and ResourceIdentifier is not None and len(str(ResourceIdentifier)) > 0):
+    output = "A resource identifier is present"
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "ResourceIdentifier concept is not present"
+  else:
+    output = "A resource identifier is not present"
+    status = "FAILURE"
+    return False
   
-  return False
       ]]></code>
    <selector>
       <name>ResourceIdentifier</name>
-      <xpath>(/MD_Metadata/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code) or (/*/identifier) or (/*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code) or (/eml/@packageId) or (/resource/identifier[identifierType='DOI']) or (/resource/alternateIdentifiers/alternateIdentifier)</xpath>
+      <xpath>/*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code/CharacterString/text() |
+         /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code/CharacterString/text() |
+         /*/identifier/text() |
+         /eml/@packageId |
+         /resource/identifier[identifierType='DOI']/text() |
+         /resource/alternateIdentifiers/alternateIdentifier/text()</xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,15 +36,11 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
    </dialect>
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
@@ -50,4 +50,4 @@ def call():
       <name>ISO 19115-1 / ISO 19115-3</name>
       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
-</check>
+</mdq:check>

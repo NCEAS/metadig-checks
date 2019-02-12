@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>ResourceTitle</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceTitle.1</id>
    <name>Resource Title</name>
-   <description>Checks to see if at least one Resource Title concept exists.</description>
-   <type>resourceCitation</type>
+   <description>Check that a resource title exists.</description>
+   <type>FAIRi-Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,20 +11,22 @@ def call():
   global output
   global status
  
-  output = "The concept ResourceTitle is present."
-                                        
-  if(ResourceTitle is not None and len(str(ResourceTitle)) > 0):
+  if ('ResourceTitle' in globals() and ResourceTitle is not None and len(str(ResourceTitle)) > 0):
+    output = "A resource title is present"
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "ResourceTitle concept is not present"
-  
-  return False
+  else:
+    output = "A resource title is not present"
+    status = "FAILURE"
+    return False
+
       ]]></code>
    <selector>
       <name>ResourceTitle</name>
-      <xpath>(/resource/titles/title) or (/*/title) or (/eml/*/title) or (/*/identificationInfo/*/citation/CI_Citation/title) or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/title)</xpath>
+      <xpath>/resource/titles/title/text() |
+         /*/title/text() |
+         /eml/dataset/title/text() |
+         /*/identificationInfo/*/citation/CI_Citation/title/CharacterString/text()</xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,22 +34,18 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
    </dialect>
    <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
-      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-</check>
+       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+    <dialect>
+       <name>ISO 19115-1 / ISO 19115-3</name>
+       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+    </dialect>
+</mdq:check>

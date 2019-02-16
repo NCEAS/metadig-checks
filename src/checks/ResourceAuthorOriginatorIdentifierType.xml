@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>ResourceAuthorOriginatorIdentifierType</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceAuthorOriginatorIdentifierType.1</id>
    <name>Resource Author / Originator Identifier Type</name>
-   <description>Checks to see if at least one Resource Author / Originator Identifier Type concept exists.</description>
-   <type>resourceCitation</type>
+   <description>Check that an Author / Originator Identifier Type exists.</description>
+   <type>FAIR-Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
- 
-  output = "The concept ResourceAuthorOriginatorIdentifierType is present."
-                                        
-  if(ResourceAuthorOriginatorIdentifierType is not None and len(str(ResourceAuthorOriginatorIdentifierType)) > 0):
+
+  if ('ResourceAuthorOriginatorIdentifierType' in globals() and ResourceAuthorOriginatorIdentifierType is not None and ResourceAuthorOriginatorIdentifierType):
+    output = "An author/originator identifier type is present"
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "ResourceAuthorOriginatorIdentifierType concept is not present"
-  
-  return False
+  else:
+    output = "An author/originator identifier type is not present"
+    status = "FAILURE"
+    return False
       ]]></code>
    <selector>
       <name>ResourceAuthorOriginatorIdentifierType</name>
-      <xpath>(/resource/contributors/contributor/nameIdentifier/@nameIdentifierScheme) or (/eml/*/associatedParty/@system) or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/codeSpace/CharacterString) or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/codeSpace/CharacterString)</xpath>
+      <xpath>boolean((/resource/contributors/contributor/nameIdentifier/@nameIdentifierScheme)
+         or (/eml/*/creator/userId/@system)
+         or (/eml/*/creator/userId/@directory)
+         or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/codeSpace/CharacterString)
+         or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/codeSpace/CharacterString))
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,15 +35,11 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
    </dialect>
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
@@ -50,4 +49,4 @@ def call():
       <name>ISO 19115-1 / ISO 19115-3</name>
       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
-</check>
+</mdq:check>

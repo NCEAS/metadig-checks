@@ -2,8 +2,8 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>ResourceTitle.1</id>
    <name>Resource Title</name>
-   <description>Check that a resource title exists.</description>
-   <type>FAIRi-Findable</type>
+   <description>Check that a title exists.</description>
+   <type>FAIR-Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,7 +11,7 @@ def call():
   global output
   global status
  
-  if ('ResourceTitle' in globals() and ResourceTitle is not None and len(str(ResourceTitle)) > 0):
+  if ('ResourceTitle' in globals() and ResourceTitle is not None and len(str(ResourceTitle) > 0)):
     output = "A resource title is present"
     status = "SUCCESS"
     return True
@@ -26,7 +26,8 @@ def call():
       <xpath>/resource/titles/title/text() |
          /*/title/text() |
          /eml/dataset/title/text() |
-         /*/identificationInfo/*/citation/CI_Citation/title/CharacterString/text()</xpath>
+         /*/identificationInfo/*/citation/CI_Citation/title/CharacterString/text()
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

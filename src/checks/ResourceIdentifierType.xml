@@ -11,7 +11,7 @@ def call():
   global output
   global status
  
-  if ('ResourceIdentifierType' in globals() and ResourceIdentifierType is not None and len(str(ResourceIdentifierType)) > 0):
+  if ('ResourceIdentifierType' in globals() and ResourceIdentifierType is not None and ResourceIdentifierType):
     output = "A resource identifier type is present"
     status = "SUCCESS"
     return True
@@ -23,9 +23,9 @@ def call():
       ]]></code>
    <selector>
       <name>ResourceIdentifierType</name>
-      <xpath>/eml/@system |
-         /resource/identifier/@identifierType |
-         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/codeSpace
+      <xpath>boolean(/eml/@system or
+         /resource/identifier/@identifierType or
+         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/codeSpace)
       </xpath>
    </selector>
    <dialect>

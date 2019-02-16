@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>TaxonomicExtent</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>TaxonomicExtent.1</id>
    <name>Taxonomic Extent</name>
-   <description>Checks to see if at least one Taxonomic Extent concept exists.</description>
-   <type>LTER_Discovery</type>
+   <description>Check that a taxonomic extent exists.</description>
+   <type>FAIR-Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,20 +11,20 @@ def call():
   global output
   global status
  
-  output = "The concept TaxonomicExtent is present."
-                                        
-  if(TaxonomicExtent is not None and len(str(TaxonomicExtent)) > 0):
+  if ('TaxonomicExtent' in globals() and TaxonomicExtent is not None and TaxonomicExtent):
+    output = "A taxonomic extent is present"
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "TaxonomicExtent concept is not present"
-  
-  return False
+  else:
+    output = "A taxonomic extent is not present"
+    status = "FAILURE"
+    return False
       ]]></code>
    <selector>
       <name>TaxonomicExtent</name>
-      <xpath>(/*/scientificName) or (/eml/*/coverage/taxonomicCoverage)</xpath>
+      <xpath>boolean((/*/scientificName)
+         or (/eml/*/coverage/taxonomicCoverage))
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,15 +32,11 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
    </dialect>
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
@@ -50,4 +46,4 @@ def call():
       <name>ISO 19115-1 / ISO 19115-3</name>
       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
-</check>
+</mdq:check>

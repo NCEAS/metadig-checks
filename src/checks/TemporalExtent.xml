@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>TemporalExtent</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>TemporalExtent.1</id>
    <name>Temporal Extent</name>
-   <description>Checks to see if at least one Temporal Extent concept exists.</description>
-   <type>ISO-1_Discovery-Optional</type>
+   <description>Check that a temporal extent exists.</description>
+   <type>FAIR-Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,20 +11,22 @@ def call():
   global output
   global status
  
-  output = "The concept TemporalExtent is present."
-                                        
-  if(TemporalExtent is not None and len(str(TemporalExtent)) > 0):
+  if ('TemporalExtent' in globals() and TemporalExtent is not None and TemporalExtent):
+    output = "A temporal extent is present"
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "TemporalExtent concept is not present"
-  
-  return False
+  else:
+    output = "A temporal extent is not present"
+    status = "FAILURE"
+    return False
       ]]></code>
    <selector>
       <name>TemporalExtent</name>
-      <xpath>(/*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent) or (/*/temporal) or (/*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent) or (/eml/*/coverage/temporalCoverage)</xpath>
+      <xpath>boolean((/*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent)
+         or (/*/temporal)
+         or (/*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent)
+         or (/eml/*/coverage/temporalCoverage))
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,15 +34,11 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
    </dialect>
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
@@ -50,4 +48,4 @@ def call():
       <name>ISO 19115-1 / ISO 19115-3</name>
       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
-</check>
+</mdq:check>

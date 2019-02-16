@@ -11,7 +11,7 @@ def call():
   global output
   global status
  
-  if ('ResourceIdentifier' in globals() and ResourceIdentifier is not None and len(str(ResourceIdentifier)) > 0):
+  if ('ResourceIdentifier' in globals() and ResourceIdentifier is not None and ResourceIdentifier):
     output = "A resource identifier is present"
     status = "SUCCESS"
     return True
@@ -23,12 +23,13 @@ def call():
       ]]></code>
    <selector>
       <name>ResourceIdentifier</name>
-      <xpath>/*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code/CharacterString/text() |
-         /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code/CharacterString/text() |
-         /*/identifier/text() |
-         /eml/@packageId |
-         /resource/identifier[identifierType='DOI']/text() |
-         /resource/alternateIdentifiers/alternateIdentifier/text()</xpath>
+      <xpath>boolean(/*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code/CharacterString
+         or /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code/CharacterString
+         or /*/identifier
+         or /eml/@packageId
+         or /resource/identifier[identifierType='DOI']
+         or /resource/alternateIdentifiers/alternateIdentifier)
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

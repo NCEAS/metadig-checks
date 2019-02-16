@@ -27,7 +27,7 @@ def call():
          /*/description |
          /eml/*/abstract |
          /*/identificationInfo/*/abstract |
-         /MD_Metadata/identificationInfo/*/abstract
+         /*/identificationInfo/*/abstract
       </xpath>
    </selector>
    <dialect>

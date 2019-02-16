@@ -24,8 +24,8 @@ def call():
    <selector>
       <name>ResourceFormat</name>
       <xpath>
-         /MD_Metadata/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
-         /MD_Metadata/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title |
+         /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
+         /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title |
          /DryadDataFile/format |
          //resourceFormat/MD_Format/name |
          /eml/*/dataTable/physical/dataFormat |

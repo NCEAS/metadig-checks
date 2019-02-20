@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>ResourceDistribution</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceDistribution.1</id>
    <name>Resource Distribution</name>
-   <description>Checks to see if at least one Resource Distribution concept exists.</description>
-   <type>LTER_Identification</type>
+   <description>Check that resource distribution information exists.</description>
+   <type>FAIR-Accessible</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
- 
-  output = "The concept ResourceDistribution is present."
-                                        
-  if(ResourceDistribution is not None and len(str(ResourceDistribution)) > 0):
+
+  if ('ResourceDistribution' in globals() and ResourceDistribution is not None and ResourceDistribution):
+    output = "Resource distribution information is present"
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "ResourceDistribution concept is not present"
-  
-  return False
+  else:
+    output = "Resource distribution information is not present"
+    status = "FAILURE"
+    return False
+
       ]]></code>
    <selector>
       <name>ResourceDistribution</name>
-      <xpath>(/eml/*/distribution) or (/MD_Metadata/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space\(function/CI_OnLineFunctionCode)='information']) or (/MD_Metadata/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space\(function/CI_OnLineFunctionCode)='information']) or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space\(function/CI_OnLineFunctionCode)='information']) or (/MD_Metadata/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space\(function/CI_OnLineFunctionCode)='download']) or (/MD_Metadata/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space\(function/CI_OnLineFunctionCode)='download']) or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space\(function/CI_OnLineFunctionCode)='download'])</xpath>
+      <xpath>boolean((/eml/*/distribution)
+         or (/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'])
+         or (/*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'])
+         or (/*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'])
+         or (/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'])
+         or (/*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'])
+         or (/*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download']))
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,15 +38,11 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
    </dialect>
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
@@ -50,4 +52,4 @@ def call():
       <name>ISO 19115-1 / ISO 19115-3</name>
       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
-</check>
+</mdq:check>

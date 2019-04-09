@@ -3,33 +3,52 @@
    <id>ResourcePublicationDate.1</id>
    <name>Resource Publication Date</name>
    <description>Check that a publication date exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
+  
+  import metadig.variable as mvar
 
-  if ('ResourcePublicationDate' in globals() and ResourcePublicationDate is not None and ResourcePublicationDate):
-    output = "A publication data present"
+  if ('resourcePublicationDate' in globals() and resourcePublicationDate is not None and resourcePublicationDate):
     status = "SUCCESS"
-    return True
   else:
     output = "A publication date is not present"
     status = "FAILURE"
     return False
-
+    
+  if (mvar.isBlank(resourcePublicationDate)):
+    output = "The publication date is blank"
+    status = "FAILURE"
+    return False
+  else:
+    output = "The publication date '{}' was found".format(resourcePublicationDate)
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>ResourcePublicationDate</name>
-      <xpath>boolean((/resource/publicationYear)
-         or (/*/available)
-         or (/eml/*/pubDate)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime))
+      <name>resourcePublicationDatePresent</name>
+      <xpath>boolean(
+         /resource/publicationYear or
+         /*/available or
+         /eml/dataset/pubDate or
+         /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date or
+         /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime or
+         /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime)
       </xpath>
+   </selector>
+   <selector>
+       <name>resourcePublicationDate</name>
+       <xpath>/resource/publicationYear |
+              /*/available |
+              /eml/dataset/pubDate |
+              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date |
+              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime |
+              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime
+       </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

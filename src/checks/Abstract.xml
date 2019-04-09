@@ -3,31 +3,46 @@
    <id>Abstract.1</id>
    <name>Abstract</name>
    <description>Check that an abstract exists.</description>
-   <type>FAIR-Findable</type>
-   <level>OPTIONAL</level>
+   <type>Findable</type>
+   <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
+  # check: datasetAbstractLength
+  import re
+  import metadig.variable as mvar
+
   global output
   global status
- 
-  if ('Abstract' in globals() and Abstract is not None and len(str(Abstract)) > 0):
-    output = "An abstract is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "An abstract is not present"
+  minLength = 100
+  
+  if 'abstract' not in globals() or abstract is None:
+    output = "An abstract was not found."
     status = "FAILURE"
     return False
 
+  if(mvar.isBlank(abstract)):
+    output = "The abstract is blank"
+    status = "FAILURE"
+    return False
+  
+  numWords = len(re.split('\s+', abstract.strip()))
+  if (numWords < minLength):
+    output = "The abstract word count of '{}' is less that the recommended minimum of '{}'".format(numWords, minLength)
+    status = "FAILURE"
+    return False
+  else:
+    output = "The abstract is valid, with a word count of {}".format(numWords)
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>Abstract</name>
-      <xpath>/resource/descriptions/description[@descriptionType='Abstract']/*  |
-         /*/description |
-         /eml/*/abstract |
-         /*/identificationInfo/*/abstract |
-         /*/identificationInfo/*/abstract
+      <name>abstract</name>
+      <xpath>/resource/descriptions/description[@descriptionType='Abstract'] |
+          /*/description |
+          /eml/*/abstract |
+          /*/identificationInfo/*/abstract |
+          /*/identificationInfo/*/abstract
       </xpath>
    </selector>
    <dialect>

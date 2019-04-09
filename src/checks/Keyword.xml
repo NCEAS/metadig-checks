@@ -2,8 +2,8 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>Keyword.1</id>
    <name>Keyword</name>
-   <description>Checks to see if at least one Keyword concept exists.</description>
-   <type>FAIR-Findable</type>
+   <description>Checks to see if at least one natural language keyword exists.</description>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,20 +11,20 @@ def call():
   global output
   global status
 
-  # 'Keyword' should be a boolean
-  if ('Keyword' in globals() and Keyword is not None and Keyword):
-    output = "A keyword is present"
+  # 'natLangKeyword' should be a boolean
+  if ('natLangKeyword' in globals() and natLangKeyword is not None and natLangKeyword):
+    output = "A natural language keyword (no controlled vocabulary used) is present"
     status = "SUCCESS"
     return True
   else:
-    output = "A keyword is not present"
+    output = "A natural language keyword (no controlled vocabulary used) is not present"
     status = "FAILURE"
     return False
 
       ]]></code>
    <selector>
-      <name>Keyword</name>
-      <xpath>boolean((/MD_Metadata/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space(type/MD_KeywordTypeCode)='theme']/keyword)
+      <name>natLangKeyword</name>
+      <xpath>boolean((/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[normalize-space(type/MD_KeywordTypeCode)='theme']/keyword)
          or (/*/subject)
          or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'project')]/keyword)
          or (/*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'theme')]/keyword)

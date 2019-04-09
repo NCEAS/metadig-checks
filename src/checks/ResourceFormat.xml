@@ -3,33 +3,47 @@
    <id>ResourceFormat.1</id>
    <name>Resource Format</name>
    <description>Check that a resource format exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Interoperable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
- 
-  if ('ResourceFormat' in globals() and ResourceFormat is not None and len(str(ResourceFormat)) > 0):
-    output = "A resource format is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "A resource format is not present"
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+
+  # A resource format is not present
+  if 'resourceFormat' not in globals() or resourceFormat is None:
+    output = "A resource format was not found."
     status = "FAILURE"
     return False
-
+        
+  if (mvar.isBlank(resourceFormat)):
+    output = "The resource format is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier type is a single string or arrayList
+    if(isinstance(resourceFormat, str) or isinstance(resourceFormat, unicode)):
+      output = "A resource /format '{}' was found".format(resourceFormat)
+    elif (isinstance(resourceFormat, ArrayList)):
+      output = "The resource format '{}' was found (first of {} formats)".format(resourceFormat[0].strip(), resourceFormat.size())
+    else:
+      output = "The resource format '{}' was found)".format(resourceFormat)
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>ResourceFormat</name>
+      <name>resourceFormat</name>
       <xpath>
-         /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
-         /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title |
-         /DryadDataFile/format |
-         //resourceFormat/MD_Format/name |
-         /eml/*/dataTable/physical/dataFormat |
-         /resource/formats/format
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
+          /DryadDataFile/format/CharacterString |
+          //resourceFormat/MD_Format/name | 
+          /eml/dataset/*/physical/dataFormat//formatName |
+          /resource/formats/format
       </xpath>
    </selector>
    <dialect>
@@ -45,11 +59,7 @@ def call():
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
    </dialect>
    <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

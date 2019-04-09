@@ -3,30 +3,42 @@
    <id>ResourceType.1</id>
    <name>Resource Type</name>
    <description>Checks to see if at least one Resource Type concept exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
- 
-  if ('ResourceType' in globals() and ResourceType is not None and len(str(ResourceType)) > 0):
-    output = "A resource type is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "A resource type is not present"
+  
+  import metadig.variable as mvar
+
+  # An attribute definition is not present
+  if 'resourceType' not in globals() or resourceType is None:
+    output = "A resource type was not found."
     status = "FAILURE"
     return False
+        
+  if (mvar.isBlank(resourceType)):
+    output = "The resource type is blank."
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource type is a single string or arrayList
+    if(isinstance(resourceType, str) or isinstance(resourceType, unicode)):
+      output = "The resource type '{}' was found".format(resourceType)
+    else:
+      output = "The resource type '{}' was found".format(resourceType[0])
+    status = "SUCCESS"
+    return True
 
       ]]></code>
    <selector>
-      <name>ResourceType</name>
-      <xpath>/MD_Metadata/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode |
+      <name>resourceType</name>
+      <xpath>/*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode |
          /*/type |
          /*/hierarchyLevel/MD_ScopeCode |
-         /eml/*/physical/dataFormat |
+         /eml//physical/dataFormat//formatName/text()[normalize-space()] |
          /resource/resourceType/@resourceTypeGeneral
       </xpath>
    </selector>

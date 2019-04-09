@@ -3,29 +3,41 @@
    <id>MetadataIdentifier.1</id>
    <name>Metadata Identifier</name>
    <description>Check that a metadata identifier exists.</description>
-   <type>CSWCoreQueryables</type>
+   <type>Findable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
+  import metadig.variable as mvar
+
+  # These global variables are read by the quality engine when
+  # the check returns
   global output
   global status
- 
-  if ('MetadataIdentifier' in globals() and MetadataIdentifier is not None and len(str(MetadataIdentifier)) > 0):
-    output = "A metadata identifier is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "A metadata identifier is not present"
+
+  # check if metadata identifier is present
+  if 'metadataIdentifier' not in globals() or metadataIdentifier is None:
+    output = "A metadataIdentifier was not found."
     status = "FAILURE"
     return False
-
+    
+  if (mvar.isBlank(metadataIdentifier)):
+    output = "The metadata identifier is blank."
+    status = "FAILURE"
+    return False
+  else:
+    output = "The metadata identifier '{}' was found.".format(metadataIdentifier.strip())
+    status = "SUCCESS"
+    return True 
+    
+  # Check if the identifier is an authority id (DOI, ARK, CURIE, RRID)
+  # doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
       ]]></code>
    <selector>
-      <name>MetadataIdentifier</name>
-      <xpath>/MD_Metadata/metadataIdentifier/MD_Identifier |
-        /*/fileIdentifier |
-        /eml/@id
+      <name>metadataIdentifier</name>
+      <xpath>/*/metadataIdentifier/MD_Identifier |
+             /*/fileIdentifier |
+             /eml/@id
       </xpath>
    </selector>
    <dialect>

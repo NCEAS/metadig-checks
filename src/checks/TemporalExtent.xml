@@ -3,7 +3,7 @@
    <id>TemporalExtent.1</id>
    <name>Temporal Extent</name>
    <description>Check that a temporal extent exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,7 +11,7 @@ def call():
   global output
   global status
  
-  if ('TemporalExtent' in globals() and TemporalExtent is not None and TemporalExtent):
+  if ('temporalExtent' in globals() and temporalExtent is not None and temporalExtent):
     output = "A temporal extent is present"
     status = "SUCCESS"
     return True
@@ -21,11 +21,11 @@ def call():
     return False
       ]]></code>
    <selector>
-      <name>TemporalExtent</name>
-      <xpath>boolean((/*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent)
-         or (/*/temporal)
-         or (/*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent)
-         or (/eml/*/coverage/temporalCoverage))
+      <name>temporalExtent</name>
+      <xpath>boolean(
+          /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
+          /*/temporal or
+          /eml/*/coverage/temporalCoverage)
       </xpath>
    </selector>
    <dialect>

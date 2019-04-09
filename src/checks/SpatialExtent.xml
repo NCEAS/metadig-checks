@@ -3,7 +3,7 @@
    <id>SpatialExtent.1</id>
    <name>Spatial Extent</name>
    <description>Checks to see if at least one Spatial Extent concept exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,7 +11,7 @@ def call():
   global output
   global status
 
-  if ('SpatialExtent' in globals() and SpatialExtent is not None and SpatialExtent):
+  if ('spatialExtent' in globals() and spatialExtent is not None and spatialExtent):
     output = "A spatial extent is present"
     status = "SUCCESS"
     return True
@@ -21,12 +21,15 @@ def call():
     return False
       ]]></code>
    <selector>
-      <name>SpatialExtent</name>
-      <xpath>boolean((/MD_Metadata/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement)
-         or (/*/spatial)
-         or (/*/identificationInfo/*/extent/EX_Extent/geographicElement)
-         or (/eml/*/coverage/geographicCoverage)
-         or (/resource/geoLocations/geoLocation))
+      <name>spatialExtent</name>
+      <xpath>boolean(
+          /*/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement or
+    	  /*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
+          /*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
+          /*/spatial or
+          /*/identificationInfo/*/extent/EX_Extent/geographicElement or
+          /eml/*/coverage/geographicCoverage/boundingCoordinates or
+          /resource/geoLocations/geoLocation)
       </xpath>
    </selector>
    <dialect>

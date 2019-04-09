@@ -3,7 +3,7 @@
    <id>TaxonomicExtent.1</id>
    <name>Taxonomic Extent</name>
    <description>Check that a taxonomic extent exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -22,8 +22,9 @@ def call():
       ]]></code>
    <selector>
       <name>TaxonomicExtent</name>
-      <xpath>boolean((/*/scientificName)
-         or (/eml/*/coverage/taxonomicCoverage))
+      <xpath>boolean(
+          /*/scientificName or
+          /eml/*/coverage/taxonomicCoverage)
       </xpath>
    </selector>
    <dialect>

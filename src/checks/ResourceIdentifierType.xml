@@ -3,29 +3,41 @@
    <id>ResourceIdentifierType.1</id>
    <name>Resource Identifier Type</name>
    <description>Check that a resource identifier type exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
- 
-  if ('ResourceIdentifierType' in globals() and ResourceIdentifierType is not None and ResourceIdentifierType):
-    output = "A resource identifier type is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "A resource identifier type is not present"
+  
+  import metadig.variable as mvar
+
+  # An attribute definition is not present
+  if 'resourceIdentifierType' not in globals() or resourceIdentifierType is None:
+    output = "A resource identifier type was not found."
     status = "FAILURE"
     return False
-
+        
+  if (mvar.isBlank(resourceIdentifierType)):
+    output = "The resource identifier type is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier type is a single string or arrayList
+    if(isinstance(resourceIdentifierType, str) or isinstance(resourceIdentifierType, unicode)):
+      output = "The resource identifier type '{}' was found".format(resourceIdentifierType)
+    else:
+      output = "The resource identifier type '{}' was found".format(resourceIdentifierType[0])
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>ResourceIdentifierType</name>
-      <xpath>boolean(/eml/@system or
-         /resource/identifier/@identifierType or
-         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/codeSpace)
+      <name>resourceIdentifierType</name>
+      <xpath>/eml/@system |
+         /resource/identifier/@identifierType |
+         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/codeSpace//text()[normalize-space()] |
+         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/authority//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

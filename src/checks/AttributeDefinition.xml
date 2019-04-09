@@ -1,30 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<check>
-   <id>AttributeDefinition</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>AttributeDefinition.1</id>
    <name>Attribute Definition</name>
-   <description>Checks to see if at least one Attribute Definition concept exists.</description>
-   <type>entitiesAndAttributes</type>
+   <description>Checks that at least one attribute definition exists.</description>
+   <type>Interoperable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+
+  # These global variables are read by the quality engine when
+  # the check returns
   global output
   global status
- 
-  output = "The concept AttributeDefinition is present."
-                                        
-  if(AttributeDefinition is not None and len(str(AttributeDefinition)) > 0):
+
+  # An attribute definition is not present
+  if 'attributeDefinitionPresent' not in globals() or attributeDefinitionPresent is None or not attributeDefinitionPresent:
+    output = "An attribute definition was not found."
+    status = "FAILURE"
+    return False
+          
+  if (mvar.isBlank(attributeDefinition)):
+    output = "The attribute definitions are blank."
+    status = "FAILURE"
+    return False
+  else:
+    output = "An attribute definition was found."
     status = "SUCCESS"
     return True
-    
-  status = "FAILURE"
-  output = "AttributeDefinition concept is not present"
-  
-  return False
       ]]></code>
    <selector>
-      <name>AttributeDefinition</name>
-      <xpath>(/MD_Metadata/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute/*/description) or (/*/contentInfo/*/dimension/MD_Band/descriptor) or (/eml/*/dataTable/attributeList/attribute/attributeDefinition)</xpath>
+      <name>attributeDefinitionPresent</name>
+      <xpath>boolean(
+        /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute/*/description or
+        /*/contentInfo/*/dimension/MD_Band/descript or
+        /eml/*/dataTable/attributeList/attribute/attributeDefinition)
+      </xpath>
+   </selector>
+   <selector>
+      <name>attributeDefinition</name>
+      <xpath>/*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute/*/description |
+             /*/contentInfo/*/dimension/MD_Band/descript |
+             /eml/*/dataTable/attributeList/attribute/attributeDefinition
+      </xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -32,15 +52,11 @@ def call():
    </dialect>
    <dialect>
       <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile or local-name() = 'DryadDataPackage'])</xpath>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name/>
-      <xpath>boolean(/*[local-name() = ''])</xpath>
    </dialect>
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
@@ -50,4 +66,4 @@ def call():
       <name>ISO 19115-1 / ISO 19115-3</name>
       <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
-</check>
+</mdq:check>

@@ -3,15 +3,15 @@
    <id>ResourceDistribution.1</id>
    <name>Resource Distribution</name>
    <description>Check that resource distribution information exists.</description>
-   <type>FAIR-Accessible</type>
-   <level>OPTIONAL</level>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
 
-  if ('ResourceDistribution' in globals() and ResourceDistribution is not None and ResourceDistribution):
+  if ('resourceDistributionPresent' in globals() and resourceDistributionPresent is not None and resourceDistributionPresent):
     output = "Resource distribution information is present"
     status = "SUCCESS"
     return True
@@ -22,18 +22,33 @@ def call():
 
       ]]></code>
    <selector>
-      <name>ResourceDistribution</name>
-      <xpath>boolean((/eml/*/distribution)
-         or (/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'])
-         or (/*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'])
-         or (/*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'])
-         or (/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'])
-         or (/*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'])
-         or (/*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download']))
+      <name>resourceDistributionPresent</name>
+      <xpath>boolean(
+         /eml/dataset/distribution or
+         /eml/dataset/*/physical/distribution or
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] or
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] or
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] or
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] or
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] or
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'])
+      </xpath>
+   </selector>
+   <selector>
+      <name>resourceDistribution</name>
+      <xpath>
+         /eml/dataset/distribution |
+         /eml/dataset/*/physical/distribution |
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] |
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] |
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] |
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] |
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] |
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download']
       </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 3.1, 4.x</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
    </dialect>
    <dialect>

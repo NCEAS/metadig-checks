@@ -3,32 +3,44 @@
    <id>ResourceIdentifier.1</id>
    <name>Resource Identifier</name>
    <description>Check that a resource identifier exists.</description>
-   <type>FAIR-Findable</type>
+   <type>Findable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
- 
-  if ('ResourceIdentifier' in globals() and ResourceIdentifier is not None and ResourceIdentifier):
-    output = "A resource identifier is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "A resource identifier is not present"
+  
+  import metadig.variable as mvar
+
+  # An attribute definition is not present
+  if 'resourceIdentifier' not in globals() or resourceIdentifier is None:
+    output = "A resource identifier was not found."
     status = "FAILURE"
     return False
-  
+        
+  if (mvar.isBlank(resourceIdentifier)):
+    output = "The resource identifier is blank."
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier is a single string or arrayList
+    if(isinstance(resourceIdentifier, str) or isinstance(resourceIdentifier, unicode)):
+      output = "The resource identifier '{}' was found".format(resourceIdentifier)
+    else:
+      output = "The resource identifier '{}' was found".format(resourceIdentifier[0])
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>ResourceIdentifier</name>
-      <xpath>boolean(/*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code/CharacterString
-         or /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code/CharacterString
-         or /*/identifier
-         or /eml/@packageId
-         or /resource/identifier[identifierType='DOI']
-         or /resource/alternateIdentifiers/alternateIdentifier)
+      <name>resourceIdentifier</name>
+      <xpath>
+          /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code//text()[normalize-space()] |
+          /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |
+          /*/identifier |
+          /eml/@packageId |
+          /resource/identifier[identifierType='DOI'] |
+          /resource/alternateIdentifiers/alternateIdentifier
       </xpath>
    </selector>
    <dialect>

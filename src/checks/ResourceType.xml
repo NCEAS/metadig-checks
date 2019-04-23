@@ -2,8 +2,8 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>ResourceType.1</id>
    <name>Resource Type</name>
-   <description>Checks to see if at least one Resource Type concept exists.</description>
-   <type>Findable</type>
+   <description>Check that a resource type exists.</description>
+   <type>Interoperable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[

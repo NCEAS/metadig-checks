@@ -3,30 +3,46 @@
    <id>ResourceAuthorOriginatorIdentifier.1</id>
    <name>Resource Author / Originator Identifier</name>
    <description>Check that an author / originator identifier exists.</description>
-   <type>FAIR-Findable</type>
-   <level>OPTIONAL</level>
+   <type>Reusable</type>
+   <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
 
-  if ('ResourceAuthorOriginatorIdentifier' in globals() and ResourceAuthorOriginatorIdentifier is not None and ResourceAuthorOriginatorIdentifier):
-    output = "An identifier for an author/originator is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "An identifier for an author/originator is not present"
+  # A resource format is not present
+  if 'resourceFormat' not in globals() or resourceFormat is None:
+    output = "A resource format was not found."
     status = "FAILURE"
     return False
 
+  if (mvar.isBlank(resourceFormat)):
+    output = "The resource format is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier type is a single string or arrayList
+    if(isinstance(resourceFormat, str) or isinstance(resourceFormat, unicode)):
+      output = "The resource format '{}' was found".format(resourceFormat)
+    elif (isinstance(resourceFormat, ArrayList)):
+      output = "The resource format '{}' was found (first of {} formats)".format(resourceFormat[0].strip(), resourceFormat.size())
+    else:
+      output = "The resource format '{}' was found)".format(resourceFormat)
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>ResourceAuthorOriginatorIdentifier</name>
-      <xpath>boolean((/resource/contributors/contributor/nameIdentifier)
-         or (/eml/*/creator/userId)
-         or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/code/CharacterString)
-         or (/MD_Metadata/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/code/CharacterString))
+      <name>resourceAuthorOriginator</name>
+      <xpath>
+          /resource/contributors/contributor/nameIdentifier or 
+          /eml/*/creator/userId or 
+          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/code or 
+          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='creator']/party/*/partyIdentifier/MD_Identifier/code or 
+          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/code
       </xpath>
    </selector>
    <dialect>

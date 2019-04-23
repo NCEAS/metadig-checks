@@ -4,7 +4,7 @@
    <name>Resource Identifier Type</name>
    <description>Check that a resource identifier type exists.</description>
    <type>Findable</type>
-   <level>REQUIRED</level>
+   <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():

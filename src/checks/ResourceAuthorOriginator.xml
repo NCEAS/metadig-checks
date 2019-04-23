@@ -4,7 +4,7 @@
    <name>Resource Author / Originator</name>
    <description>Check that an author / originator exists.</description>
    <type>Findable</type>
-   <level>OPTIONAL</level>
+   <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
@@ -12,11 +12,11 @@ def call():
   global status
 
   if ('resourceAuthorOriginator' in globals() and resourceAuthorOriginator is not None and resourceAuthorOriginator):
-    output = "An author/originator is present"
+    output = "A resource author/originator is present"
     status = "SUCCESS"
     return True
   else:
-    output = "An author/originator is not present"
+    output = "A resource author/originator is not present"
     status = "FAILURE"
     return False
 

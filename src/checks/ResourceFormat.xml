@@ -27,7 +27,7 @@ def call():
   else:
     # Check if resource identifier type is a single string or arrayList
     if(isinstance(resourceFormat, str) or isinstance(resourceFormat, unicode)):
-      output = "A resource /format '{}' was found".format(resourceFormat)
+      output = "The resource format '{}' was found".format(resourceFormat)
     elif (isinstance(resourceFormat, ArrayList)):
       output = "The resource format '{}' was found (first of {} formats)".format(resourceFormat[0].strip(), resourceFormat.size())
     else:

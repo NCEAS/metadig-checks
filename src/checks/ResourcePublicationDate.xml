@@ -16,16 +16,16 @@ def call():
   if ('resourcePublicationDate' in globals() and resourcePublicationDate is not None and resourcePublicationDate):
     status = "SUCCESS"
   else:
-    output = "A publication date is not present"
+    output = "A resource publication date is not present"
     status = "FAILURE"
     return False
     
   if (mvar.isBlank(resourcePublicationDate)):
-    output = "The publication date is blank"
+    output = "The resource publication date is blank"
     status = "FAILURE"
     return False
   else:
-    output = "The publication date '{}' was found".format(resourcePublicationDate)
+    output = "The resource publication date '{}' was found".format(resourcePublicationDate)
     status = "SUCCESS"
     return True
       ]]></code>

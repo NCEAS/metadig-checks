@@ -17,7 +17,7 @@ def call():
 
   # check if metadata identifier is present
   if 'metadataIdentifier' not in globals() or metadataIdentifier is None:
-    output = "A metadataIdentifier was not found."
+    output = "A metadata identifier was not found."
     status = "FAILURE"
     return False
     

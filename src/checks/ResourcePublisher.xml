@@ -3,7 +3,7 @@
    <id>ResourcePublisher.1</id>
    <name>Resource Publisher</name>
    <description>Check that a publisher exists.</description>
-   <type>Findable</type>
+   <type>Accessible</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[

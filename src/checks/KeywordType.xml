@@ -45,7 +45,7 @@ def call():
         return True
           
   # No valid keywordType found
-  output = "A keyword type (classification) is not present final"
+  output = "A keyword type (classification) is not present"
   status = "FAILURE"
   return False
       ]]></code>

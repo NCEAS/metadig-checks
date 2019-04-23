@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../../src/main/resources/schemas/schema1.xsd">
     <id>FAIR.suite.1</id>
-    <name>Metadata Compliance Suite</name>
+    <name>FAIR Recommendation Metadata Suite</name>
     <check>
         <id>Abstract.1</id>
         <type>Findable</type>
@@ -30,7 +30,7 @@
     <check>
         <id>ResourceAuthorOriginator.1</id>
         <type>Findable</type>
-        <level>OPTIONAL</level>
+        <level>REQUIRED</level>
     </check>
     <check>
         <id>ResourceIdentifier.1</id>
@@ -49,7 +49,7 @@
     </check>
     <check>
         <id>ResourcePublisher.1</id>
-        <type>Findable</type>
+        <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
     <check>
@@ -83,12 +83,27 @@
         <level>OPTIONAL</level>
     </check>
     <check>
+        <id>AttributeStorageType.1</id>
+        <type>Interoperable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
         <id>ResourceDistribution.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
+        <id>AccessControlRules.1</id>
+        <type>Accessible</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
         <id>DataPubliclyAvailable.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>ResourceDistributionLandingPage.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
@@ -134,7 +149,7 @@
     </check>
     <check>
         <id>ProvenanceTrace.1</id>
-        <type>Findable</type>
+        <type>Reusable</type>
         <level>REQUIRED</level>
     </check> 
 </mdq:suite>

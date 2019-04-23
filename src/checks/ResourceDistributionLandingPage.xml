@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceDistributionLandingPage.1</id>
+   <name>Resource Distribution Landing Page</name>
+   <description>Check that a resource distribution landing page exists.</description>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+
+  displayLength = 20
+  # A resource format is not present
+  if 'resourceDistributionLandingPage' not in globals() or resourceDistributionLandingPage is None:
+    output = "A resource distribution information url was not found."
+    status = "FAILURE"
+    return False
+        
+  if (mvar.isBlank(resourceDistributionLandingPage)):
+    output = "The resource distribution information url is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if variable type is a single string or arrayList
+    if(isinstance(resourceDistributionLandingPage, str) or isinstance(resourceDistributionLandingPage, unicode)):
+      output = "The resource distribution information url '{}' was found".format(resourceDistributionLandingPage)
+    elif (isinstance(resourceDistributionLandingPage, ArrayList)):
+      output = "The resource distribution information url '{}' was found (first of {} urls)".format(resourceDistributionLandingPage[0].strip(), resourceDistributionLandingPage.size())
+    else:
+      output = "The resource distribution information url '{}' was found)".format(resourceDistributionLandingPage)
+    status = "SUCCESS"
+    return True
+      ]]></code>
+   <selector>
+      <name>resourceDistributionLandingPage</name>
+      <xpath>
+          /eml/*/distribution/online/url[@function="information"] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL[../../function/CI_OnLineFunctionCode/@codeListValue="information"]
+  </xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

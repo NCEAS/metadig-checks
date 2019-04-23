@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceLicense.1</id>
+   <name>Resource License</name>
+   <description>Check that a resource usage license exists.</description>
+   <type>Reusable</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+
+  # These global variables are read by the quality engine when
+  # the check returns
+  global output
+  global status
+
+  # An attribute definition is not present
+  if 'resourceLicensePresent' not in globals() or resourceLicensePresent is None or not resourceLicensePresent:
+    output = "A resource usage license was not found."
+    status = "FAILURE"
+    return False
+          
+  if (mvar.isBlank(resourceLicense)):
+    output = "The resource useage license is blank."
+    status = "FAILURE"
+    return False
+  else:
+    output = "The resource usage license '{}' was found.".format(resourceLicense)
+    status = "SUCCESS"
+    return True
+      ]]></code>
+   <selector>
+      <name>resourceLicensePresent</name>
+      <xpath>boolean(
+        /eml/dataset/intellectualRights or
+        /*/rights or
+        /resource/rightsList/rights or
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useLimitation or
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints or
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints or
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints or
+        /eml/dataset/licensed)
+      </xpath>
+   </selector>
+   <selector>
+      <name>resourceLicense</name>
+      <xpath>
+        /eml/dataset/intellectualRights |
+        /*/rights |
+        /resource/rightsList/rights |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useLimitation |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints |
+        /eml/dataset/licensed
+      </xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language 2.1, 2.2.0</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

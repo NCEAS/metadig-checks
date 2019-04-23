@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>AttributeStorageType.1</id>
+   <name>Attribute Storage Type</name>
+   <description>Check that an attribute storage type exists.</description>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+
+  # An attribute storage type is not present
+  if 'attributeStorageType' not in globals() or attributeStorageType is None:
+    output = "An attribute storage type was not found."
+    status = "FAILURE"
+    return False
+        
+  if (mvar.isBlank(attributeStorageType)):
+    output = "The attribute storage type is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if attribute storage type is a single string or arrayList
+    if(isinstance(attributeStorageType, str) or isinstance(attributeStorageType, unicode)):
+      output = "The attribute storage type '{}' was found".format(attributeStorageType)
+    elif (isinstance(attributeStorageType, ArrayList)):
+      output = "The attribute storage type '{}' was found (first of {} types)".format(attributeStorageType[0].strip(), attributeStorageType.size())
+    else:
+      output = "The attribute storage type '{}' was found)".format(attributeStorageType)
+    status = "SUCCESS"
+    return True
+      ]]></code>
+   <selector>
+      <name>attributeStorageType</name>
+      <xpath>/eml/dataset/*/attributeList/attribute/storageType</xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

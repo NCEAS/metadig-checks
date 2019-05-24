@@ -11,6 +11,7 @@ def call():
   global output
   global status
   
+  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # An attribute definition is not present
@@ -19,6 +20,9 @@ def call():
     status = "FAILURE"
     return False
         
+        
+  # check if the identifier is blank
+  # TODO: check the identifier namespace
   if (mvar.isBlank(resourceIdentifier)):
     output = "The resource identifier is blank."
     status = "FAILURE"
@@ -27,8 +31,11 @@ def call():
     # Check if resource identifier is a single string or arrayList
     if(isinstance(resourceIdentifier, str) or isinstance(resourceIdentifier, unicode)):
       output = "The resource identifier '{}' was found".format(resourceIdentifier)
+    elif (isinstance(resourceIdentifier, ArrayList)):
+      output = "The resource identifier '{}' was found (first of {} identifiers)".format(resourceIdentifier[0].strip(), resourceIdentifier.size())
     else:
-      output = "The resource identifier '{}' was found".format(resourceIdentifier[0])
+      output = "The resource identifier '{}' was found)".format(resourceIdentifier)
+
     status = "SUCCESS"
     return True
       ]]></code>
@@ -38,7 +45,9 @@ def call():
           /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |
           /*/identifier |
-          /eml/@packageId |
+          /eml/@id |
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
+          /eml/dataset/*/alternateIdentifier |
           /resource/identifier[identifierType='DOI'] |
           /resource/alternateIdentifiers/alternateIdentifier
       </xpath>

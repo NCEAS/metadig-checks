@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>ResourceDistribution.1</id>
    <name>Resource Distribution</name>
-   <description>Check that resource distribution information exists.</description>
+   <description>Check that resource distribution information exists and is resolvable.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -11,40 +11,50 @@ def call():
   global output
   global status
 
-  if ('resourceDistributionPresent' in globals() and resourceDistributionPresent is not None and resourceDistributionPresent):
-    output = "Resource distribution information is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "Resource distribution information is not present"
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+  import metadig.checks as checks
+
+  # An attribute definition is not present
+  if 'resourceDistribution' not in globals() or resourceDistribution is None:
+    output = "A resource identifier was not found."
     status = "FAILURE"
     return False
-
+      
+  if (mvar.isBlank(resourceDistribution)):
+    output = "The resource identifier is blank."
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier is a single string or arrayList
+    if(isinstance(resourceDistribution, str) or isinstance(resourceDistribution, unicode)):
+      output = "The resource distribution URL '{}' was found".format(resourceDistribution)
+      url = resourceDistribution.strip()
+    elif (isinstance(resourceDistribution, ArrayList)):
+      output = "The resource distribution URL '{}' was found (first of {} identifiers)".format(resourceDistribution[0].strip(), resourceDistribution.size())
+      url = resourceDistribution[0].strip()
+    else:
+      output = "The resource distribution URL '{}' was found)".format(resourceDistribution.strip())
+      url = resourceDistribution.strip()
+      
+    resolvable, msg = checks.isResolvable(url)
+    if (resolvable):
+      output = '{} and is resolvable.'.format(output)      
+      status = "SUCCESS"
+      return True
+    else:
+      output = "{}, but is not resolvable: {}".format(output, msg)      
+      status = "FAILURE"
+      return False
       ]]></code>
-   <selector>
-      <name>resourceDistributionPresent</name>
-      <xpath>boolean(
-         /eml/dataset/distribution or
-         /eml/dataset/*/physical/distribution or
-         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] or
-         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] or
-         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] or
-         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] or
-         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] or
-         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'])
-      </xpath>
-   </selector>
    <selector>
       <name>resourceDistribution</name>
       <xpath>
-         /eml/dataset/distribution |
-         /eml/dataset/*/physical/distribution |
-         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] |
-         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] |
-         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='information'] |
-         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] |
-         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download'] |
-         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[normalize-space(function/CI_OnLineFunctionCode)='download']
+         /eml/dataset/distribution/online/url[@function="download"] |
+         /eml/dataset/*/physical/distribution/online/url[@function="download"] |
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL |
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL |
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL 
       </xpath>
    </selector>
    <dialect>

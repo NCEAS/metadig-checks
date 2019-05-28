@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>DistributionContact.1</id>
-   <name>Distribution Contact</name>
+   <name>Distribution Contact.1</name>
    <description>Check that a distribution contact exists.</description>
-   <type>FAIR-Accessible</type>
-   <level>OPTIONAL</level>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
 
-  if ('DistributionContact' in globals() and DistributionContact is not None and DistributionContact):
-    output = "A distribution contact is present"
-    status = "SUCCESS"
-    return True
-  else:
-    output = "A distribution contact is not present"
+  # A distribution contact is not present
+  if 'distributionContact' not in globals() or distributionContact is None:
+    output = "A distribution contact was not found."
     status = "FAILURE"
     return False
-
+        
+  if (mvar.isBlank(distributionContact)):
+    output = "The distribution contact is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier type is a single string or arrayList
+    if(isinstance(distributionContact, str) or isinstance(distributionContact, unicode)):
+      output = "The distribution contact '{}' was found".format(distributionContact)
+    elif (isinstance(distributionContact, ArrayList)):
+      output = "The distribution contact '{}' was found (first of {} contacts)".format(distributionContact[0].strip(), distributionContact.size())
+    else:
+      output = "The distribution contact '{}' was found)".format(distributionContact)
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
-      <name>DistributionContact</name>
-      <xpath>boolean((/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_Responsibility)
-         or (/*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact)
-         or (/eml/*/associatedParty/role[RoleType='distributor']))
+      <name>distributionContact</name>
+      <xpath>
+          /eml/*/associatedParty/role[RoleType='distributor'] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/*/text() | 
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text() |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()
       </xpath>
    </selector>
    <dialect>
@@ -41,11 +57,7 @@ def call():
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
    </dialect>
    <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

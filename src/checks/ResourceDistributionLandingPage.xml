@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>ResourceDistributionLandingPage.1</id>
    <name>Resource Distribution Landing Page</name>
-   <description>Check that a resource distribution landing page exists.</description>
+   <description>Check that a resource distribution landing page exists and is resolvable.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -13,6 +13,7 @@ def call():
   
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  import metadig.checks as checks
 
   displayLength = 20
   # A resource format is not present
@@ -29,18 +30,33 @@ def call():
     # Check if variable type is a single string or arrayList
     if(isinstance(resourceDistributionLandingPage, str) or isinstance(resourceDistributionLandingPage, unicode)):
       output = "The resource distribution information url '{}' was found".format(resourceDistributionLandingPage)
+      url = resourceDistributionLandingPage.strip()
     elif (isinstance(resourceDistributionLandingPage, ArrayList)):
       output = "The resource distribution information url '{}' was found (first of {} urls)".format(resourceDistributionLandingPage[0].strip(), resourceDistributionLandingPage.size())
+      url = resourceDistributionLandingPage[0].strip()
     else:
       output = "The resource distribution information url '{}' was found)".format(resourceDistributionLandingPage)
-    status = "SUCCESS"
-    return True
+      url = resourceDistributionLandingPage.strip()
+      
+    resolvable, msg = checks.isResolvable(url)
+    if (resolvable):
+      output = '{} and is resolvable.'.format(output)      
+      status = "SUCCESS"
+      return True
+    else:
+      output = "{}, but is not resolvable: {}".format(output, msg)      
+      status = "FAILURE"
+      return False
+
       ]]></code>
    <selector>
       <name>resourceDistributionLandingPage</name>
       <xpath>
-          /eml/*/distribution/online/url[@function="information"] |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource/linkage/URL[../../function/CI_OnLineFunctionCode/@codeListValue="information"]
+          /eml/dataset/distribution/online/url[@function="information"] |
+          /eml/dataset/*/physical/distribution/online/url[@function="information"] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode/@codeListValue="information"]/linkage/URL |
+          /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL |
+          /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL
   </xpath>
    </selector>
    <dialect>

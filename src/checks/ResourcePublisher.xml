@@ -4,7 +4,7 @@
    <name>Resource Publisher</name>
    <description>Check that a publisher exists.</description>
    <type>Accessible</type>
-   <level>OPTIONAL</level>
+   <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():

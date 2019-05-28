@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>MetadataIdentifier.1</id>
-   <name>Metadata Identifier</name>
-   <description>Check that a metadata identifier exists.</description>
-   <type>Findable</type>
+   <id>MetadataIdentifierResolvable.1</id>
+   <name>Metadata Identifier Resolvable</name>
+   <description>Check that a metadata identifier exists and is resolvable.</description>
+   <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   import metadig.variable as mvar
+  import metadig.checks as checks
 
   # These global variables are read by the quality engine when
   # the check returns
@@ -26,17 +27,30 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "The metadata identifier '{}' was found.".format(metadataIdentifier.strip())
-    status = "SUCCESS"
-    return True 
+    # TODO: Check if the identifier is an authority id (DOI, ARK, CURIE, RRID)
+    # doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
+  
+    # Check if the identifier is resolvable
+    try:
+      (resolvable, msg) = checks.isResolvable(metadataIdentifier.strip())
+    except Exception:
+      output = 'Error resolving metadata identifier "{}"'.format(metadataIdentifier.strip())
+      status = "ERROR"
+      return False 
     
-  # Check if the identifier is an authority id (DOI, ARK, CURIE, RRID)
-  # doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
+    if (resolvable):
+      output = 'The metadata identifier "{}" is resolvable.'.format(metadataIdentifier.strip())
+      status = "SUCCESS"
+      return True
+    else:
+      output = 'The metadata identifier "{}" is not resolvable'.format(metadataIdentifier.strip(), msg)      
+      status = "FAILURE"
+      return False
    ]]></code>
    <selector>
       <name>metadataIdentifier</name>
       <xpath>/*/metadataIdentifier/MD_Identifier |
-             /*/fileIdentifier |
+             /*/fileIdentifier/*/text() |
              /eml/@packageId
       </xpath>
    </selector>

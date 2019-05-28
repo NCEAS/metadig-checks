@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>ResourceIdentifierResolvable.1</id>
+   <name>Resource Identifier</name>
+   <description>Check that a resource identifier exists.</description>
+   <type>Findable</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+
+  # An attribute definition is not present
+  if 'resourceIdentifier' not in globals() or resourceIdentifier is None:
+    output = "A resource identifier was not found."
+    status = "FAILURE"
+    return False
+        
+  if (mvar.isBlank(resourceIdentifier)):
+    output = "The resource identifier is blank."
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource identifier is a single string or arrayList
+    if(isinstance(resourceIdentifier, str) or isinstance(resourceIdentifier, unicode)):
+      output = "The resource identifier '{}' was found".format(resourceIdentifier)
+    elif (isinstance(resourceIdentifier, ArrayList)):
+      output = "The resource identifier '{}' was found (first of {} identifiers)".format(resourceIdentifier[0].strip(), resourceIdentifier.size())
+    else:
+      output = "The resource identifier '{}' was found)".format(resourceIdentifier)
+
+  resolvable, msg = checks.isResolvable(url)
+  if (resolvable):
+    output = '{} and is resolvable.'.format(output)      
+    status = "SUCCESS"
+    return True
+  else:
+    output = "{}, but is not resolvable: {}".format(output, msg)      
+    status = "FAILURE"
+    return False
+   ]]></code>
+   <selector>
+      <name>resourceIdentifier</name>
+      <xpath>
+          /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code//text()[normalize-space()] |
+          /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |
+          /*/identifier |
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
+          /eml/dataset/*/alternateIdentifier |
+          /eml/@id |
+          /resource/identifier[identifierType='DOI'] |
+          /resource/alternateIdentifiers/alternateIdentifier
+      </xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

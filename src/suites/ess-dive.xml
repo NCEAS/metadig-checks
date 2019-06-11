@@ -25,9 +25,6 @@
     <id>check.identifier.is.present.1</id>
   </check>
   <check>
-    <id>check.identifier.is.doi.1</id>
-  </check>
-  <check>
     <id>check.usage.is.cc.1</id>
   </check>
   <check>
@@ -43,22 +40,13 @@
     <id>check.pub.date.1</id>
   </check>
   <check>
-    <id>check.sampling.description.present.1</id>
-  </check>
-  <check>
     <id>check.entity.present.1</id>
-  </check>
-  <check>
-    <id>check.entity.name.present.1</id>
   </check>
   <check>
     <id>check.entity.attributes.present.1</id>
   </check>
   <check>
     <id>check.attribute.definition.sufficient.1</id>
-  </check>
-  <check>
-    <id>check.sampling.study.extent.present.1</id>
   </check>
   <check>
     <id>check.attribute.name.differs.1</id>

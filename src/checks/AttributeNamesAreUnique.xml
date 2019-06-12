@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>AttributeNamesAreUnique.1</id>
+   <name>Attribute Names Are Unique</name>
+   <description>Check that attribute names are unique.</description>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+  
+  # Determine if elements are repeated in a list
+  def duplicates(x):
+    repeated = []
+    nElements = len(x)
+      
+    for i in range(nElements):
+      k = i + 1
+      for j in range(k, nElements):
+        if x[i] == x[j] and x[i] not in repeated:
+          if(str(x[i]).strip() == ""): 
+            continue
+          repeated.append(str(x[i]))
+    return repeated
+    
+  allDuplicates = []
+  entityCount = 0
+  attributeCount = 0
+  
+  # For each resource, check that the attributes defined for it have unique names
+  if(len(entities) == 0):
+    output = "No resources found, unable to check for duplicate attribute names."
+    status = "SKIP"
+    return True
+  
+  for i in range(0, len(entities)):
+    entityCount += 1
+    attrList = entities.get(i)
+    # No attributes for this entity
+    if(attrList == None):
+      continue
+    else:
+      # If only one attribute, the quality engine will return it as a string. Don't
+      # check for dupes (characters) in a single string, only check a list of strings
+      if(isinstance(attrList, str) or isinstance(attrList, unicode)):
+        attributeCount += 1
+        continue
+      else:
+        attributeCount += len(attrList)
+        allDuplicates.extend(duplicates(attrList))
+        
+  if(len(allDuplicates) > 0):
+    output = "{} resources total. Duplicates of these attribute names were found: {}".format(entityCount, ', '.join(allDuplicates))
+  else:
+    output = "{} resources, {} attributes total. No duplicate attribute names were found.".format(entityCount, attributeCount)
+  status = "SUCCESS"
+  return True 
+      ]]></code>
+   <selector>
+      <name>entities</name>
+      <xpath>
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
+          /*/contentInfo/MD_CoverageDescription |
+          /*/contentInfo/MI_CoverageDescription 
+      </xpath>
+      <subSelector>
+          <name>attributeNames</name>
+          <xpath>
+              ./attributeList/attribute/attributeName |
+              ./attributeDescription/RecordType |
+              ./dimension/MI_Band/sequenceIdentifier/MemberName/aName//text() |
+              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()
+          </xpath>
+      </subSelector>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

@@ -1,50 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>AttributeDefinition.1</id>
-   <name>Attribute Definition</name>
-   <description>Checks that at least one attribute definition exists.</description>
+   <name>Attribute Definition Present</name>
+   <description>Check that an attribute definition exists.</description>
    <type>Interoperable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
-  import java.util.ArrayList as ArrayList
-  import metadig.variable as mvar
-
-  # These global variables are read by the quality engine when
-  # the check returns
   global output
   global status
-
-  # An attribute definition is not present
-  if 'attributeDefinitionPresent' not in globals() or attributeDefinitionPresent is None or not attributeDefinitionPresent:
-    output = "An attribute definition was not found."
-    status = "FAILURE"
-    return False
-          
-  if (mvar.isBlank(attributeDefinition)):
-    output = "The attribute definitions are blank."
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+  
+  # Check if a measurementScale is present for each attribute.
+  
+  if not attributesPresent:
+    output = "No attributes are present, so unable to check for attribute defintions. Check skipped."
+    status = "SKIP"
+    return True 
+    
+  attributeCount = 0
+  missing = []
+  
+  for i in range(0, len(attributeDefinition)):
+    attributeCount += 1
+    definition = attributeDefinition.get(i)
+    name = attributeName.get(i)
+    # No definition for this attribute was specified
+    if(definition == None or len(definition) == 0):
+        missing.append(name)
+    else:
+      if(mvar.isBlank(definition)):
+          missing.append(name)
+      else:
+        continue
+  
+  if(len(missing) > 0):
+    output = "The following attributes do not have definitions: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    output = "An attribute definition was found."
+    output = "All {} attributes have a definition".format(attributeCount)
     status = "SUCCESS"
     return True
-      ]]></code>
+    ]]></code>
    <selector>
-      <name>attributeDefinitionPresent</name>
+      <name>attributesPresent</name>
       <xpath>boolean(
-        /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute/*/description or
-        /*/contentInfo/*/dimension/MD_Band/descript or
-        /eml/*/dataTable/attributeList/attribute/attributeDefinition)
-      </xpath>
+          /eml/dataset/*/attributeList/attribute or
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute or
+          /*/contentInfo/*/dimension/MI_Band or
+          /*/contentInfo/*/dimension/MD_Band)</xpath>
    </selector>
    <selector>
       <name>attributeDefinition</name>
-      <xpath>/*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute/*/description |
-             /*/contentInfo/*/dimension/MD_Band/descript |
-             /eml/*/dataTable/attributeList/attribute/attributeDefinition
+      <xpath>/eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute |
+          /*/contentInfo/*/dimension/MI_Band |
+          /*/contentInfo/*/dimension/MD_Band 
       </xpath>
+      <subSelector>
+         <name>definition</name>
+         <xpath>
+             ./*/description |
+             ./descriptor/*/text() |
+             ./attributeDefinition
+         </xpath>
+     </subSelector>
+   </selector>
+   <selector>
+      <name>attributeName</name>
+      <xpath>
+          /eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/*/dimension/MI_Band |
+          /*/contentInfo/*/dimension/MD_Band
+      </xpath>
+      <subSelector>
+         <name>name</name>
+         <xpath>
+             ./attributeName | 
+             ./*/name/code/*/text() |
+             ./sequenceIdentifier/MemberName/aName/*/text() |
+             ./sequenceIdentifier/MemberName/aName/*/text()
+         </xpath>
+     </subSelector>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>
@@ -59,11 +100,7 @@ def call():
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
    </dialect>
    <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

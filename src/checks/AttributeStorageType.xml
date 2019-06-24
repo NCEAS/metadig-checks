@@ -13,31 +13,61 @@ def call():
   
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
-
-  # An attribute storage type is not present
-  if 'attributeStorageType' not in globals() or attributeStorageType is None:
-    output = "An attribute storage type was not found."
-    status = "FAILURE"
-    return False
-        
-  if (mvar.isBlank(attributeStorageType)):
-    output = "The attribute storage type is blank."   
+  
+  # Check if an attribute storage type is present for each attribute.
+  
+  if not attributesPresent:
+    output = "No attributes are present, so unable to check for attribute storage type. Check skipped."
+    status = "SKIP"
+    return True 
+    
+  attributeCount = 0
+  missing = []
+  
+  for i in range(0, len(attributeStorageType)):
+    attributeCount += 1
+    storageType = attributeStorageType.get(i)
+    name = attributeName.get(i)
+    # No storageType for this attribute was specified
+    if(storageType == None or len(storageType) == 0):
+        missing.append(name)
+    else:
+      if(mvar.isBlank(storageType)):
+          missing.append(name)
+      else:
+        continue
+  
+  if(len(missing) > 0):
+    output = "The following attributes do not have storageType: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    # Check if attribute storage type is a single string or arrayList
-    if(isinstance(attributeStorageType, str) or isinstance(attributeStorageType, unicode)):
-      output = "The attribute storage type '{}' was found".format(attributeStorageType)
-    elif (isinstance(attributeStorageType, ArrayList)):
-      output = "The attribute storage type '{}' was found (first of {} types)".format(attributeStorageType[0].strip(), attributeStorageType.size())
-    else:
-      output = "The attribute storage type '{}' was found)".format(attributeStorageType)
+    output = "All {} attributes have a storageType".format(attributeCount)
     status = "SUCCESS"
     return True
-      ]]></code>
+    ]]></code>
+   <selector>
+      <name>attributesPresent</name>
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute)
+      </xpath>
+   </selector>
    <selector>
       <name>attributeStorageType</name>
-      <xpath>/eml/dataset/*/attributeList/attribute/storageType</xpath>
+      <xpath>/eml/dataset/*/attributeList/attribute</xpath>
+      <subSelector>
+         <name>storageType</name>
+         <xpath>./storageType</xpath>
+     </subSelector>
+   </selector>
+   <selector>
+      <name>attributeName</name>
+      <xpath>
+          /eml/dataset/*/attributeList/attribute
+      </xpath>
+      <subSelector>
+         <name>name</name>
+         <xpath>./attributeName</xpath>
+     </subSelector>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

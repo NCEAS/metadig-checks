@@ -1,104 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>KeywordType.1</id>
-   <name>KeywordType</name>
-   <description>Checks to see if at least one keyword with type (classification) exists.</description>
+   <name>Keyword Type Present</name>
+   <description>Check if each keyword has a type specified..</description>
    <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
-  import metadig.variable as mvar
-  import java.util.ArrayList as ArrayList
-  
   global output
   global status
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
 
-  # 'keywordTypePresent' should be a boolean
-  if ('keywordTypePresent' in globals() and keywordTypePresent is not None and keywordTypePresent):
-    status = "SUCCESS"
-  else:
-    output = "A keyword with type (classification) is not present"
+  missing = []
+  # Limit the number of missing keywords that will be listed
+  missingListMax = 5
+  # For each keyword, check if a type is specified
+  if(len(keywords) == 0):
+    output = "No keywords found, unable to check for keyword types."
+    status = "SKIP"
+    return True
+     
+  # For each keyword, check if a type is specified.
+  # Note that the quality engine returns xpath selections as ArrayLists when 
+  # multiple items are returned.
+  for i in range(0, len(keywords)):
+    keywordType = keywords.get(i)
+    thisKeywordName = keywordNames.get(i)
+    if(thisKeywordName is None):
+      thisKeywordName = "no name"
+    elif(isinstance(thisKeywordName, int)):
+      thisKeywordName = str(thisKeywordName)
+    elif(isinstance(thisKeywordName, ArrayList)):
+      for j in range(0, len(thisKeywordName)):
+        testStr = thisKeywordName.get(j).strip()
+        if(testStr == ""):
+          continue
+        else:
+          thisKeywordName = testStr
+          break
+          
+    if keywordType is None:
+      if(len(missing) > missingListMax):
+        missing.append('...')
+        break
+      else: 
+        missing.append(thisKeywordName)
+        continue
+          
+    if (mvar.isBlank(keywordType)):
+      if(len(missing) > missingListMax):
+        missing.append('...')
+        break
+      else:
+        missing.append(thisKeywordName)
+        continue
+
+  if(len(missing) > 0):
+    output = "The following keywords do not have a type specified: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
-    
-  # A keyword type exists, so now check that there is at least one that is non-blank 
-  if (isinstance(keywordType, unicode) or isinstance(keywordType, str)):
-    if(mvar.isBlank(keywordType)):
-      output = "A keyword type (classification) is not present"
-      status = "FAILURE"
-      return False
-    else:
-      output = "At least one keyword type ('{}') is present".format(keywordType).strip()
-      status = "SUCCESS"
-      return True
-  elif (isinstance(keywordType, ArrayList)):
-    # Return as soon as we find a valid vocabulary
-    for i in range(0, len(keywordType)):
-      thisKeywordType = keywordType.get(i).strip()
-      # This one is not valid, check next
-      if(mvar.isBlank(thisKeywordType)):
-        continue
-      else:
-        output = "At least one keyword type ('{}') is present".format(thisKeywordType).strip()
-        status = "SUCCESS"
-        return True
-          
-  # No valid keywordType found
-  output = "A keyword type (classification) is not present"
-  status = "FAILURE"
-  return False
-      ]]></code>
+  else:
+    output = "All {} keywords have a type specified".format(len(keywords))
+    status = "SUCCESS"
+    return True
+
+    ]]></code>
    <selector>
-      <name>keywordTypePresent</name>
-      <xpath>boolean(
-            /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'dataCent')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'dataResolution')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'discipline')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'featureType')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'instrument')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'place')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'platform')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'process')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'product')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'project')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'service')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'stratum')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'temporal')]/keyword
-         or /*/identificationInfo/*/descriptiveKeywords/MD_Keywords[contains(type/MD_KeywordTypeCode,'theme')]/keyword
-         or /eml/*/keywordSet/keyword[@keywordType='discipline']
-         or /eml/*/keywordSet/keyword[@keywordType='place']
-         or /eml/*/keywordSet/keyword[@keywordType='stratum']
-         or /eml/*/keywordSet/keyword[@keywordType='taxonomic']
-         or /eml/*/keywordSet/keyword[@keywordType='temporal']
-         or /eml/*/keywordSet/keyword[@keywordType='theme']
-         or /eml/*/keywordSet/keyword[@keywordType='thematic'])
-         </xpath>
-   </selector>
-   <selector>
-      <name>keywordType</name>
-      <xpath>/*/identificationInfo/*/descriptiveKeywords/MD_Keywords/keyword/../type/MD_KeywordTypeCode//text() |
-             /eml/*/keywordSet/keyword/@keywordType
+      <name>keywords</name>
+      <xpath>
+          /eml/dataset/keywordSet/keyword |
+          /*/identificationInfo/*/descriptiveKeywords/MD_Keywords/keyword
       </xpath>
+      <subSelector>
+        <name>type</name>
+        <xpath>
+            attribute::keywordType |
+            ../type/MD_KeywordTypeCode
+        </xpath>
+      </subSelector>
+    </selector>
+    <selector>
+      <name>keywordNames</name>
+      <xpath>
+          /eml/dataset/keywordSet/keyword |
+          /*/identificationInfo/*/descriptiveKeywords/MD_Keywords/keyword
+      </xpath>
+      <subSelector>
+        <name>name</name>
+        <xpath>./text() | ./*/text()</xpath>
+      </subSelector>
    </selector>
-   <dialect>
-      <name>DataCite 3.1, 4.x</name>
-      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
-   </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>
    </dialect>
    <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

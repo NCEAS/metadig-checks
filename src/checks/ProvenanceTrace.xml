@@ -35,7 +35,7 @@ def call():
           /*/dataQualityInfo/DQ_DataQuality/lineage/*/processStep |
           /*/dataQualityInfo/DQ_DataQuality/lineage/*/source/*/sourceStep/LI_ProcessStep |
           /eml/*/methods/methodStep/dataSource |
-          /eml/*/methods/methodStep/subStep
+          /eml/*/methods/methodStep/subStep/dataSource
       </xpath>
    </selector>
    <dialect>

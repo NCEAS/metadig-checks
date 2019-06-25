@@ -8,53 +8,48 @@
    <environment>python</environment>
    <code><![CDATA[
 def call():
+  global output
+  global status
+         
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
-  # These global variables are read by the quality engine when
-  # the check returns
-  global output
-  global status
-
-  # An attribute definition is not present
-  if 'resourceLicensePresent' not in globals() or resourceLicensePresent is None or not resourceLicensePresent:
-    output = "A resource usage license was not found."
+  # A resource license is not present
+  if 'resourceLicense' not in globals() or resourceLicense is None:
+    output = "A resource license was not found."
     status = "FAILURE"
     return False
-          
+
   if (mvar.isBlank(resourceLicense)):
-    output = "The resource useage license is blank."
+    output = "The resource license is blank."   
     status = "FAILURE"
     return False
   else:
-    output = "The resource usage license '{}' was found.".format(resourceLicense)
+    # Check if resource license is a single string or arrayList
+    if(isinstance(resourceLicense, str) or isinstance(resourceLicense, unicode)):
+      output = "The resource license '{}' was found".format(resourceLicense)
+    elif (isinstance(resourceLicense, ArrayList)):
+      output = "The resource license '{}' was found (first of {} licenses)".format(resourceLicense[0].strip(), resourceLicense.size())
+    else:
+      output = "The resource license '{}' was found)".format(resourceLicense)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceLicensePresent</name>
-      <xpath>boolean(
-        /eml/dataset/intellectualRights or
-        /*/rights or
-        /resource/rightsList/rights or
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useLimitation or
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints or
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints or
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints or
-        /eml/dataset/licensed)
-      </xpath>
-   </selector>
-   <selector>
       <name>resourceLicense</name>
+      <!--
+      The Xpaths for the ISO resourceConstraints check for just the MD_RestrictionCode of 'license', but may have to be made more 
+      open, i.e. check for 'licenceUnrestricted' or 'intellectualPropertyRights'. See https://geo-ide.noaa.gov/wiki/index.php?title=ISO_19115_and_19115-2_CodeList_Dictionaries#MD_RestrictionCode
+      for more details.
+      -->
       <xpath>
         /eml/dataset/intellectualRights |
         /*/rights |
         /resource/rightsList/rights |
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useLimitation |
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints |
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints |
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints |
-        /eml/dataset/licensed
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode[@codeListValue="license"] |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode[@codeListValue="license"] |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode[@codeListValue="license"] |
+        /eml/dataset/licensed/identifier
       </xpath>
    </selector>
    <dialect>

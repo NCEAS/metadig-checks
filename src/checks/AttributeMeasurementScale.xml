@@ -3,7 +3,7 @@
    <id>AttributeMeasurementScale.1</id>
    <name>Attribute Measurement Scale</name>
    <description>Check that an attribute measurement scale exists.</description>
-   <type>Interoperable</type>
+   <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -11,33 +11,58 @@ def call():
   global output
   global status
   
-  import java.util.ArrayList as ArrayList
-  import metadig.variable as mvar
-
-  # An attribute measurement scale is not present
-  if 'attributeMeasurementScale' not in globals() or attributeMeasurementScale is None:
-    output = "An attribute measurement scale was not found."
-    status = "FAILURE"
-    return False
-        
-  if (mvar.isBlank(attributeMeasurementScale)):
-    output = "The attribute measurement scale is blank."   
+  # Check if a measurementScale is present for each attribute.
+  
+  if not attributesPresent:
+    output = "No attributes present, unable to check if attributes have a measurement scale defined."
+    status = "SKIP"
+    return True 
+    
+  attributeCount = 0
+  missing = []
+    
+  for i in range(0, len(attributeMeasurementScale)):
+    attributeCount += 1
+    measurementScale = attributeMeasurementScale.get(i)
+    name = attributeName.get(i)
+    # No measurement scale for this attribute
+    if(measurementScale == None):
+      missing.append(name)
+    else:
+      # There should be only one measurement scale per attribute, which the quality engine will return it as a string.
+      if(isinstance(measurementScale, str) or isinstance(measurementScale, unicode)):
+        continue
+      else:
+        continue
+  
+  if(len(missing) > 0):
+    output = "The following attributes do not have a measurement scale: '{}')".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    # Check if attribute measurement scale is a single string or arrayList
-    if(isinstance(attributeMeasurementScale, str) or isinstance(attributeMeasurementScale, unicode)):
-      output = "An attribute measurement scale '{}' was found".format(attributeMeasurementScale)
-    elif (isinstance(attributeMeasurementScale, ArrayList)):
-      output = "The attribute measurement scale '{}' was found (first of {} scales)".format(attributeMeasurementScale[0].strip(), attributeMeasurementScale.size())
-    else:
-      output = "The attribute measurement scale '{}' was found)".format(attributeMeasurementScale)
+    output = "All {} attributes have a measurement scale".format(attributeCount)
     status = "SUCCESS"
     return True
-      ]]></code>
+    ]]></code>
+   <selector>
+      <name>attributesPresent</name>
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute)</xpath>
+   </selector>
    <selector>
       <name>attributeMeasurementScale</name>
-      <xpath>/eml/dataset/*/attributeList/attribute/measurementScale</xpath>
+      <xpath>/eml/dataset/*/attributeList/attribute</xpath>
+      <subSelector>
+         <name>measurementScale</name>
+         <xpath>./measurementScale</xpath>
+     </subSelector>
+   </selector>
+   <selector>
+      <name>attributeName</name>
+      <xpath>/eml/dataset/*/attributeList/attribute</xpath>
+      <subSelector>
+         <name>name</name>
+         <xpath>./attributeName</xpath>
+     </subSelector>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

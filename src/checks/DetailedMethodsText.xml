@@ -31,9 +31,10 @@ def call():
    <selector>
       <name>detailedMethodsText</name>
       <xpath>/*/resourceLineage/LI_Lineage/statement |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement |
+          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text |
+          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text() |
           /*/provenance |
-          /eml/dataset/methods
+          /eml/dataset/methods/methodStep/description//text()
       </xpath>
    </selector>
    <dialect>

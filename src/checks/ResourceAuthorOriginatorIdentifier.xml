@@ -14,35 +14,35 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
-  # A resource format is not present
-  if 'resourceFormat' not in globals() or resourceFormat is None:
-    output = "A resource format was not found."
+  # A resource author is not present
+  if 'resourceAuthorIdentifier' not in globals() or resourceAuthorIdentifier is None:
+    output = "A resource author identifier was not found."
     status = "FAILURE"
     return False
         
-  if (mvar.isBlank(resourceFormat)):
-    output = "The resource format is blank."   
+  if (mvar.isBlank(resourceAuthorIdentifier)):
+    output = "The resource author identifier is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if resource identifier type is a single string or arrayList
-    if(isinstance(resourceFormat, str) or isinstance(resourceFormat, unicode)):
-      output = "The resource format '{}' was found".format(resourceFormat)
-    elif (isinstance(resourceFormat, ArrayList)):
-      output = "The resource format '{}' was found (first of {} formats)".format(resourceFormat[0].strip(), resourceFormat.size())
+    # Check if resource author identifier is a single string or arrayList
+    if(isinstance(resourceAuthorIdentifier, str) or isinstance(resourceAuthorIdentifier, unicode)):
+      output = "The resource format '{}' was found".format(resourceAuthorIdentifier)
+    elif (isinstance(resourceAuthorIdentifier, ArrayList)):
+      output = "The resource author identifier '{}' was found (first of {} formats)".format(resourceAuthorIdentifier[0].strip(), resourceAuthorIdentifier.size())
     else:
-      output = "The resource format '{}' was found)".format(resourceFormat)
+      output = "The resource author identifier '{}' was found)".format(resourceAuthorIdentifier)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceAuthorOriginator</name>
+      <name>resourceAuthorIdentifier</name>
       <xpath>
           /resource/contributors/contributor/nameIdentifier |
           /eml/*/creator/userId |
-          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/code |
-          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='creator']/party/*/partyIdentifier/MD_Identifier/code |
-          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space\(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/code
+          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/code |
+          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='creator']/party/*/partyIdentifier/MD_Identifier/code |
+          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/code
       </xpath>
    </selector>
    <dialect>

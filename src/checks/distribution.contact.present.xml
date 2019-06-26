@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>DistributionContact.1</id>
-   <name>Distribution Contact.1</name>
+   <id>distribution.contact.present.1</id>
+   <name>Distribution Contact Present</name>
    <description>Check that a distribution contact exists.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>

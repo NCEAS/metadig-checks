@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>Source.1</id>
-   <name>Source</name>
-   <description>Check if a lineage source exists.</description>
-   <type>FAIR Reusable</type>
+   <id>provenance.sourceEntity.present.1</id>
+   <name>Provenance Source Entity Present</name>
+   <description>Check if a lineage source entity is specified.</description>
+   <type>Reusable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[

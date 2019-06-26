@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>AttributePrecision.1</id>
-   <name>Attribute Precision Defined</name>
+   <id>entity.attributePrecision.present.1</id>
+   <name>Entity Attribute Precision Defined</name>
    <description>Check that attributes have a measurement precision defined.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>

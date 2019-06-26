@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>MetadataIdentifierResolvable.1</id>
+   <id>metadata.identifier.resolvable.1</id>
    <name>Metadata Identifier Resolvable</name>
-   <description>Check that a metadata identifier exists and is resolvable.</description>
+   <description>Check that the metadata identifier exists and is resolvable.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>

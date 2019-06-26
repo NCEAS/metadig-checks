@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>ResourceCreationRevisionDate.1</id>
-   <name>Resource Creation/Revision Date</name>
-   <description>Check that a creation or revision date exists.</description>
-   <type>FAIR-Findable</type>
+   <id>dataset.revisionDate.present.1</id>
+   <name>Dataset Revision Date Present</name>
+   <description>Check that a revision date exists.</description>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[

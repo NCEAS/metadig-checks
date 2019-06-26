@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>enumerated.domains.1</id>
-  <name>Enumerated domain</name>
+  <id>entity.attributeEnumeratedDomainds.present.1</id>
+  <name>Entity Attribute Enumerated Domains Present</name>
   <description>Enumerated domains should be defined</description>
   <type>interpretation</type>
   <level>OPTIONAL</level>

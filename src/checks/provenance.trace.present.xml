@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>ProvenanceTrace.1</id>
-   <name>ProvenanceTrace</name>
+   <id>provenance.trace.present.1</id>
+   <name>Provenance Trace Present</name>
    <description>Check that provenance information is present.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>ControlledKeywords.1</id>
-   <name>Controlled Keywords</name>
-   <description>Check if keywords are present that are controlled by a vocabulary.</description>
+   <id>keyword.thesaurus.present.1</id>
+   <name>Keyword Thesaurus Present</name>
+   <description>Check if a keyword thesaurus is present, indicating that the keywords are controlled.</description>
    <type>Findable</type>
    <level>REQUIRED</level>
    <environment>python</environment>

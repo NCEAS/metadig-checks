@@ -3,153 +3,254 @@
     <id>FAIR.suite.1</id>
     <name>FAIR Recommendation Metadata Suite</name>
     <check>
-        <id>Abstract.1</id>
+        <id>dataset.abstract.length.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>AwardFunder.1</id>
+        <id>award.funder.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>ControlledKeyword.1</id>
+        <id>dataset.keywords.controlled.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>KeywordType.1</id>
+        <id>dataset.keywordType.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>MetadataIdentifier.1</id>
+        <id>metadata.identifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceAuthorOriginator.1</id>
+        <id>dataset.naturalLanguageKeywords.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceIdentifier.1</id>
+        <id>dataset.creator.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceIdentifierType.1</id>
+        <id>dataset.creatorIdentifier.present.1</id>
+        <type>Findable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.identifier.present.1</id>
+        <type>Findable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.identifierType.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>ResourcePublicationDate.1</id>
+        <id>dataset.publicationDate.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourcePublisher.1</id>
+        <id>dataset.title.sufficient.1</id>
+        <type>Findable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.type.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>dataset.spatialExtent.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>geographic.description.present.2</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>dataset.taxonomicExtent.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>dataset.temporalExtent.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <!-- 
+        Accessible 
+    -->
+    <check>
+        <id>dataset.accessControlRules.specified.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>ResourceTitle.1</id>
-        <type>Findable</type>
+        <id>dataset.landingPage.present.1</id>
+        <type>Accessible</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>entity.access.public.1</id>
+        <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceType.1</id>
-        <type>Findable</type>
+        <id>distribution.contact.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>distribution.contactIdentifier.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>metadata.identifier.resolvable.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>dataset.distribution.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.identifier.resolvable.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>dataset.distribution.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>dataset.publisher.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>dataset.publisherIdentifier.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>dataset.serviceProvider.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <!-- Interoperable -->    
+    <check>
+    <id>entity.attributeNames.unique.1</id>
+      <type>Interoperable</type>
+      <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.attributeDescription.present.1</id>
+        <type>Interoperable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>SpatialExtent.1</id>
-        <type>Findable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>check.geographic.description.2</id>
-        <type>Findable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>TaxonomicExtent.1</id>
-        <type>Findable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>TemporalExtent.1</id>
-        <type>Findable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>AttributeStorageType.1</id>
+        <id>entity.attributeStorageType.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceDistribution.1</id>
-        <type>Accessible</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>AccessControlRules.1</id>
-        <type>Accessible</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>DataPubliclyAvailable.1</id>
-        <type>Accessible</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>ResourceDistributionLandingPage.1</id>
-        <type>Accessible</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>AttributeDefinition.1</id>
-        <type>Interoperable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>ResourceFormat.1</id>
+        <id>entity.checksum.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceName.1</id>
+        <id>entity.checksum.congruent.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>AttributeUnits.1</id>
+        <id>coverage.contentType.present.1</id>
+        <type>Interoperable</type>
+        <level>REQUIRED</level>
+    </check>
+    
+    <check>
+        <id>entity.format.present.1</id>
+        <type>Interoperable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.name.present.1</id>
+        <type>Interoperable</type>
+        <level>REQUIRED</level>
+    </check>
+    <!-- Reusable -->
+    <check>
+        <id>dataset.methods.present.1</id>
+        <type>Reusable</type>
+         <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>sampling.description.present.2</id>
+        <type>Reusable</type>
+         <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.attributeDomain.present.1</id>
+        <type>Reusable</type>
+         <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>entity.attributeUnits.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>AttributeMeasurementScale.1</id>
+        <id>entity.attributeMeasurementScale.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ProvenanceProcessStepCode.1</id>
+        <id>entity.attributePrecision.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ResourceLicense.1</id>
+        <id>entity.qualityDescription.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>DetailedMethodsText.1</id>
+        <id>dataset.methods.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>ProvenanceTrace.1</id>
+        <id>metadata.license.present.1</id>
+        <type>Reusable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>provenance.processStepCode.present.1</id>
+        <type>Reusable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>provenance.trace.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check> 
+    <check>
+        <id>dataset.entityLicense.present.1</id>
+        <type>Reusable</type>
+        <level>REQUIRED</level>
+    </check>
 </mdq:suite>

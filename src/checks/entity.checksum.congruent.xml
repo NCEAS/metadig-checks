@@ -40,7 +40,7 @@
     chksum <- getChecksum(dnProd, firstResId)
     
     # Compare the checksum from the metadata with the DataONE checksum
-    if(checksum != )
+    if(checksum )
     
     # Check if the checksum value and algorithm for at least one data entity exists
     if(!checksumAndAlgorithmPresent) {
@@ -71,16 +71,16 @@
   </selector>
   <selector>
     <name>resourceIdentifierPresent</name>
-    <xpath>boolean()/eml/@id |
-        /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
-        /eml/dataset/*/alternateIdentifier)
+    <xpath>boolean(/eml/@id or
+        /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id or
+        /eml/dataset/alternateIdentifier)
     </xpath>
   </selector>
   <selector>
     <name>resourceIdentifiers</name>
     <xpath>/eml/@id |
         /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
-        /eml/dataset/*/alternateIdentifier
+        /eml/dataset/alternateIdentifier
     </xpath>
   </selector>
   <dialect>

@@ -11,7 +11,7 @@ def call():
   global output
   global status
 
-  if ('ServiceType' in globals() and ServiceType is not None and ServiceType):
+  if ('serviceType' in globals() and serviceType is not None and serviceType):
     output = "A service type is present"
     status = "SUCCESS"
     return True
@@ -22,7 +22,7 @@ def call():
 
       ]]></code>
    <selector>
-      <name>ServiceType</name>
+      <name>serviceType</name>
       <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/serviceType/LocalName))</xpath>
    </selector>
    <dialect>

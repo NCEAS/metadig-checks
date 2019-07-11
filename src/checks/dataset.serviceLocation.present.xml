@@ -11,7 +11,7 @@ def call():
   global output
   global status
 
-  if ('ServiceLocation' in globals() and ServiceLocation is not None and ServiceLocation):
+  if ('serviceLocation' in globals() and serviceLocation is not None and serviceLocation):
     output = "A service location is present"
     status = "SUCCESS"
     return True
@@ -21,7 +21,7 @@ def call():
     return False
       ]]></code>
    <selector>
-      <name>ServiceLocation</name>
+      <name>serviceLocation</name>
       <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage)
          or (/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL))
       </xpath>

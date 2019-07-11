@@ -11,17 +11,17 @@ def call():
   global output
   global status
  
-  if ('ResourceCreationRevisionDate' in globals() and ResourceCreationRevisionDate is not None and ResourceCreationRevisionDate):
-    output = "A creation or revision date is present"
+  if ('datasetRevisionDatePresent' in globals() and datasetRevisionDatePresent is not None and datasetRevisionDatePresent):
+    output = "A dataset creation or revision date is present"
     status = "SUCCESS"
     return True
   else:
-    output = "A creation or revision date is not present"
+    output = "A dataset creation or revision date is not present"
     status = "FAILURE"
     return False
       ]]></code>
    <selector>
-      <name>ResourceCreationRevisionDate</name>
+      <name>datasetRevisionDatePresent</name>
       <xpath>boolean((/resource/dates/date)
          or (/*/dateSubmitted)
          or (/eml/*/maintenance/changeHistory/changeDate)

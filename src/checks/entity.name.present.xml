@@ -2,8 +2,8 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-	<id>check.entity.name.present.1</id>
-	<name>Check that an entity name, description, format, size, checksum is present</name>
+	<id>entity.name.present.1</id>
+	<name>Entity Name Present</name>
 	<description>Check that each data entity has a name, description, format, size, checksum.</description>
 	<type>interpretation</type>
 	<level>INFO</level>

@@ -17,26 +17,26 @@ def call():
 
   displayLength = 20
   # A resource format is not present
-  if 'resourceDistributionLandingPage' not in globals() or resourceDistributionLandingPage is None:
+  if 'datasetLandingPage' not in globals() or datasetLandingPage is None:
     output = "A resource distribution information url was not found."
     status = "FAILURE"
     return False
         
-  if (mvar.isBlank(resourceDistributionLandingPage)):
-    output = "The resource distribution information url is blank."   
+  if (mvar.isBlank(datasetLandingPage)):
+    output = "The dataset langing page url is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if variable type is a single string or arrayList
-    if(isinstance(resourceDistributionLandingPage, str) or isinstance(resourceDistributionLandingPage, unicode)):
-      output = "The resource distribution information url '{}' was found".format(resourceDistributionLandingPage)
-      url = resourceDistributionLandingPage.strip()
-    elif (isinstance(resourceDistributionLandingPage, ArrayList)):
-      output = "The resource distribution information url '{}' was found (first of {} urls)".format(resourceDistributionLandingPage[0].strip(), resourceDistributionLandingPage.size())
-      url = resourceDistributionLandingPage[0].strip()
+    if(isinstance(datasetLandingPage, str) or isinstance(datasetLandingPage, unicode)):
+      output = "The dataset landing page url '{}' was found".format(datasetLandingPage)
+      url = datasetLandingPage.strip()
+    elif (isinstance(datasetLandingPage, ArrayList)):
+      output = "The dataset landing page url '{}' was found (first of {} urls)".format(datasetLandingPage[0].strip(), datasetLandingPage.size())
+      url = datasetLandingPage[0].strip()
     else:
-      output = "The resource distribution information url '{}' was found)".format(resourceDistributionLandingPage)
-      url = resourceDistributionLandingPage.strip()
+      output = "The dataset landing page url '{}' was found)".format(datasetLandingPage)
+      url = datasetLandingPage.strip()
       
     resolvable, msg = checks.isResolvable(url)
     if (resolvable):
@@ -50,7 +50,7 @@ def call():
 
       ]]></code>
    <selector>
-      <name>resourceDistributionLandingPage</name>
+      <name>datasetLandingPage</name>
       <xpath>
           /eml/dataset/distribution/online/url[@function="information"] |
           /eml/dataset/*/physical/distribution/online/url[@function="information"] |

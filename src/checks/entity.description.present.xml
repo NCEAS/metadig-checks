@@ -14,24 +14,24 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
-  # Check if a resource description is present for each attribute.
+  # Check if a entity description is present for each attribute.
   
-  if not resourcePresent:
-    output = "No resources present so cannot check their descriptions, skipping this check."
+  if not entityPresent:
+    output = "No entities are  present so cannot check their descriptions, skipping this check."
     status = "SKIP"
     return True 
     
-  resourceCount = 0
+  entityCount = 0
   missing = []
     
-  for i in range(0, len(resources)):
-    resourceCount += 1
-    description = resources.get(i)
-    name = resourceNames.get(i)
-    # No description for this resource was specified
+  for i in range(0, len(entities)):
+    entityCount += 1
+    description = entities.get(i)
+    name = entityNames.get(i)
+    # No description for this entity was specified
     if(description == None):
       if(name == None): 
-        missing.append("resource #{}".format(i))
+        missing.append("entity #{}".format(i))
       else:
         missing.append(name)
     else:
@@ -40,23 +40,23 @@ def call():
         continue
       elif(not(isinstance(description, str) or isinstance(description, unicode))):
         if(name == None): 
-          missing.append("resource #{}".format(i))
+          missing.append("entity #{}".format(i))
         else:
           missing.append(name)
       else:
         continue
   
   if(len(missing) > 0):
-    output = "The following resources are missing a description: '{}'".format(', '.join(missing))
+    output = "The following entities are missing a description: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    output = "All {} resources have descriptions".format(resourceCount)
+    output = "All {} entities have descriptions".format(entityCount)
     status = "SUCCESS"
     return True
     ]]></code>
    <selector>
-      <name>resourcePresent</name>
+      <name>entityPresent</name>
       <xpath>boolean(
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] or
           /*/contentInfo/MD_CoverageDescription or
@@ -64,7 +64,7 @@ def call():
       </xpath>
    </selector>
    <selector>
-      <name>resources</name>
+      <name>entities</name>
       <xpath>
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
           /*/contentInfo/MD_CoverageDescription |
@@ -79,7 +79,7 @@ def call():
      </subSelector>
    </selector>
    <selector>
-      <name>resourceNames</name>
+      <name>entityNames</name>
       <xpath>
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
           /*/contentInfo/MD_CoverageDescription |

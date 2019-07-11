@@ -13,24 +13,24 @@ def call():
   
   import metadig.variable as mvar
 
-  if ('resourcePublicationDate' in globals() and resourcePublicationDate is not None and resourcePublicationDate):
+  if ('datasetPubDate' in globals() and datasetPubDate is not None and datasetPubDate):
     status = "SUCCESS"
   else:
     output = "A resource publication date is not present"
     status = "FAILURE"
     return False
     
-  if (mvar.isBlank(resourcePublicationDate)):
+  if (mvar.isBlank(datasetPubDate)):
     output = "The resource publication date is blank"
     status = "FAILURE"
     return False
   else:
-    output = "The resource publication date '{}' was found".format(resourcePublicationDate)
+    output = "The resource publication date '{}' was found".format(datasetPubDate)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourcePublicationDatePresent</name>
+      <name>datasetPubDate</name>
       <xpath>boolean(
          /resource/publicationYear or
          /*/available or
@@ -41,7 +41,7 @@ def call():
       </xpath>
    </selector>
    <selector>
-       <name>resourcePublicationDate</name>
+       <name>datasetPubDate</name>
        <xpath>/resource/publicationYear |
               /*/available |
               /eml/dataset/pubDate |

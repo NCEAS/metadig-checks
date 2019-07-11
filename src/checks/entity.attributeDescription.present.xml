@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.attributeDescription.present.1</id>
    <name>Entity Attribute Descriptions Present</name>
-   <description>Check that an attribute definition exists.</description>
+   <description>Check that an attribute description exists.</description>
    <type>Interoperable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -26,23 +26,23 @@ def call():
   
   for i in range(0, len(attributeDefinition)):
     attributeCount += 1
-    definition = attributeDefinition.get(i)
+    description = attributeDefinition.get(i)
     name = attributeName.get(i)
-    # No definition for this attribute was specified
-    if(definition == None or len(definition) == 0):
+    # No description for this attribute was specified
+    if(description == None or len(description) == 0):
         missing.append(name)
     else:
-      if(mvar.isBlank(definition)):
+      if(mvar.isBlank(description)):
           missing.append(name)
       else:
         continue
   
   if(len(missing) > 0):
-    output = "The following attributes do not have definitions: '{}'".format(', '.join(missing))
+    output = "The following attributes do not have description: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have a definition".format(attributeCount)
+    output = "All {} attributes have a description".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -62,7 +62,7 @@ def call():
           /*/contentInfo/*/dimension/MD_Band 
       </xpath>
       <subSelector>
-         <name>definition</name>
+         <name>description</name>
          <xpath>
              ./*/description |
              ./descriptor/*/text() |

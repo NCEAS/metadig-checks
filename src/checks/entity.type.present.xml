@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>ResourceType.1</id>
-   <name>Resource Type</name>
-   <description>Check that a resource type exists.</description>
+   <id>entity.type.present.1</id>
+   <name>Entity Type Present</name>
+   <description>Check that an entity type exists.</description>
    <type>Interoperable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -15,20 +15,20 @@ def call():
 
   # An attribute definition is not present
   if 'resourceType' not in globals() or resourceType is None:
-    output = "A resource type was not found."
+    output = "An entity type was not found."
     status = "FAILURE"
     return False
         
   if (mvar.isBlank(resourceType)):
-    output = "The resource type is blank."
+    output = "The entity type is blank."
     status = "FAILURE"
     return False
   else:
     # Check if resource type is a single string or arrayList
     if(isinstance(resourceType, str) or isinstance(resourceType, unicode)):
-      output = "The resource type '{}' was found".format(resourceType)
+      output = "The entity type '{}' was found".format(resourceType)
     else:
-      output = "The resource type '{}' was found".format(resourceType[0])
+      output = "The entity type '{}' was found".format(resourceType[0])
     status = "SUCCESS"
     return True
 

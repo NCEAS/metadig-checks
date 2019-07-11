@@ -13,23 +13,23 @@ def call():
   
   import metadig.variable as mvar
  
-  if ('resourcePublisherPresent' in globals() and resourcePublisherPresent is not None and resourcePublisherPresent):
+  if ('datasetPublisherPresent' in globals() and datasetPublisherPresent is not None and datasetPublisherPresent):
     status = "SUCCESS"
   else:
-    output = "A publisher is not present"
+    output = "A dataset publisher is not present"
     status = "FAILURE"
     return False
     
-  if (mvar.isBlank(resourcePublisher)):
-    output = "The resource publisher is blank."
+  if (mvar.isBlank(datasetPublisher)):
+    output = "The dataset publisher is blank."
     status = "FAILURE"
     return False
 
-  output = "The resource publisher '{}' was found".format(resourcePublisher.strip())
+  output = "The dataset publisher '{}' was found".format(datasetPublisher.strip())
   return True 
       ]]></code>
    <selector>
-      <name>resourcePublisherPresent</name>
+      <name>datasetPublisherPresent</name>
       <xpath>boolean(
           /resource/publisher or
           /eml/dataset/publisher or
@@ -38,7 +38,7 @@ def call():
       </xpath>
    </selector>
    <selector>
-      <name>resourcePublisher</name>
+      <name>datasetPublisher</name>
       <xpath>/resource/publisher |
              /eml/dataset/publisher |
              /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_ResponsibleParty[normalize-space(role/CI_RoleCode)='publisher']/organisationName |

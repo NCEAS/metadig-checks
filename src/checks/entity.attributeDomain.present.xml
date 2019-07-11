@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.attributeDomain.present.1</id>
    <name>Entity Attribute Domain Present</name>
-   <description>Check that an attribute domain is defined where necessary.</description>
+   <description>Check that an attribute domain is defined for each relevant attribute.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -15,7 +15,6 @@ def call():
   import metadig.variable as mvar
   
   # Check if a measurementScale is present for each attribute.
-  
   if not attributesPresent:
     output = "No attributes present that require a measurement domain, check skipped."
     status = "SKIP"
@@ -24,7 +23,7 @@ def call():
   attributeCount = 0
   missing = []
   
-    for i in range(0, len(attributeDomain)):
+  for i in range(0, len(attributeDomain)):
     attributeCount += 1
     domain = attributeDomain.get(i)
     name = attributeName.get(i)
@@ -43,7 +42,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes that require a domain have one efined".format(attributeCount)
+    output = "All {} attributes that require a domain have one defined".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>

@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>dataset.entityLicense.present.1</id>
    <name>Dataset Entity License Present</name>
-   <description>Check that a entity usage license exists.</description>
+   <description>Check that an entity usage license exists.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -13,7 +13,8 @@ def call():
          
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
-
+  
+  displayNchars = 20
   # A resource license is not present
   if 'resourceLicense' not in globals() or resourceLicense is None:
     output = "A resource license was not found."
@@ -27,9 +28,17 @@ def call():
   else:
     # Check if resource license is a single string or arrayList
     if(isinstance(resourceLicense, str) or isinstance(resourceLicense, unicode)):
-      output = "The resource license '{}' was found".format(resourceLicense)
+      outstr = resourceLicense.strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      output = "The resource license '{}' was found".format(outstr)
     elif (isinstance(resourceLicense, ArrayList)):
-      output = "The resource license '{}' was found (first of {} licenses)".format(resourceLicense[0].strip(), resourceLicense.size())
+      outstr = resourceLicense[0].strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      output = "The resource license '{}' was found (first of {} licenses)".format(outstr, resourceLicense.size())
     else:
       output = "The resource license '{}' was found)".format(resourceLicense)
     status = "SUCCESS"

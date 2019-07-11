@@ -34,7 +34,14 @@ def call():
       thisKeywordName = str(thisKeywordName)
     elif(isinstance(thisKeywordName, ArrayList)):
       for j in range(0, len(thisKeywordName)):
-        testStr = thisKeywordName.get(j).strip()
+        testStr = thisKeywordName.get(j)
+        # The quality engine assumes that a string that looks like an
+        # integer should be converted to an int, so convert it to
+        # a string!
+        if(isinstance(testStr, int)):
+          testStr = str(testStr)
+          
+        testStr = testStr.strip()
         if(testStr == ""):
           continue
         else:

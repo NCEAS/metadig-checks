@@ -43,6 +43,11 @@
         <level>REQUIRED</level>
     </check>
     <check>
+        <id>dataset.revisionDate.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
         <id>entity.identifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
@@ -58,7 +63,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.title.sufficient.1</id>
+        <id>dataset.title.length.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
@@ -100,11 +105,13 @@
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
+    <!--
     <check>
         <id>entity.access.public.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    -->
     <check>
         <id>distribution.contact.present.1</id>
         <type>Accessible</type>
@@ -125,11 +132,13 @@
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    <!--
     <check>
         <id>entity.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    -->
     <check>
         <id>dataset.distribution.present.1</id>
         <type>Accessible</type>
@@ -146,9 +155,14 @@
         <level>REQUIRED</level>
     </check>
     <check>
+        <id>dataset.serviceLocation.present.1</id>
+        <type>Accessible</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
         <id>dataset.serviceProvider.present.1</id>
         <type>Accessible</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <!-- Interoperable -->    
     <check>
@@ -171,17 +185,23 @@
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
+    <!-- This check isn't ready for production yet
     <check>
         <id>entity.checksum.congruent.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
+    -->
     <check>
         <id>coverage.contentType.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
-    
+    <check>
+        <id>entity.attributeEnumeratedDomains.present.1</id>
+        <type>Interoperable</type>
+         <level>REQUIRED</level>
+    </check>
     <check>
         <id>entity.format.present.1</id>
         <type>Interoperable</type>
@@ -192,6 +212,12 @@
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
+    <check>
+        <id>dataset.servicetype.present.1</id>
+        <type>Interoperable</type>
+        <level>REQUIRED</level>
+    </check>
+    
     <!-- Reusable -->
     <check>
         <id>dataset.methods.present.1</id>
@@ -199,7 +225,7 @@
          <level>REQUIRED</level>
     </check>
     <check>
-        <id>sampling.description.present.2</id>
+        <id>entity.format.nonproprietary.1</id>
         <type>Reusable</type>
          <level>REQUIRED</level>
     </check>
@@ -224,6 +250,11 @@
         <level>REQUIRED</level>
     </check>
     <check>
+        <id>entity.description.present.1</id>
+        <type>Reusable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
         <id>entity.qualityDescription.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
@@ -240,6 +271,11 @@
     </check>
     <check>
         <id>provenance.processStepCode.present.1</id>
+        <type>Reusable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>provenance.sourceEntity.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>

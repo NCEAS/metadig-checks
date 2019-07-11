@@ -25,7 +25,7 @@
     <id>check.abstract.100.words.1</id>
   </check>
   <check>
-    <id>check.dataset.title.length.1</id>
+    <id>dataset.title.length.1</id>
   </check>
   <check>
     <id>check.identifier.is.present.1</id>

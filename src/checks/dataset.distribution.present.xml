@@ -16,26 +16,26 @@ def call():
   import metadig.checks as checks
 
   # An attribute definition is not present
-  if 'resourceDistribution' not in globals() or resourceDistribution is None:
-    output = "A resource identifier was not found."
+  if 'datasetDistribution' not in globals() or datasetDistribution is None:
+    output = "A dataset distribution URL was not found."
     status = "FAILURE"
     return False
       
-  if (mvar.isBlank(resourceDistribution)):
-    output = "The resource identifier is blank."
+  if (mvar.isBlank(datasetDistribution)):
+    output = "The dataset distribution URL is blank."
     status = "FAILURE"
     return False
   else:
-    # Check if resource identifier is a single string or arrayList
-    if(isinstance(resourceDistribution, str) or isinstance(resourceDistribution, unicode)):
-      output = "The resource distribution URL '{}' was found".format(resourceDistribution)
-      url = resourceDistribution.strip()
-    elif (isinstance(resourceDistribution, ArrayList)):
-      output = "The resource distribution URL '{}' was found (first of {} identifiers)".format(resourceDistribution[0].strip(), resourceDistribution.size())
-      url = resourceDistribution[0].strip()
+    # Check if dataset distribution URL is a single string or arrayList
+    if(isinstance(datasetDistribution, str) or isinstance(datasetDistribution, unicode)):
+      output = "The resource distribution URL '{}' was found".format(datasetDistribution)
+      url = datasetDistribution.strip()
+    elif (isinstance(datasetDistribution, ArrayList)):
+      output = "The dataset distribution URL '{}' was found (first of {} URLs)".format(datasetDistribution[0].strip(), datasetDistribution.size())
+      url = datasetDistribution[0].strip()
     else:
-      output = "The resource distribution URL '{}' was found)".format(resourceDistribution.strip())
-      url = resourceDistribution.strip()
+      output = "The dataset distribution URL '{}' was found)".format(datasetDistribution.strip())
+      url = datasetDistribution.strip()
       
     resolvable, msg = checks.isResolvable(url)
     if (resolvable):
@@ -48,7 +48,7 @@ def call():
       return False
       ]]></code>
    <selector>
-      <name>resourceDistribution</name>
+      <name>datasetDistribution</name>
       <xpath>
          /eml/dataset/distribution/online/url[@function="download"] |
          /eml/dataset/*/physical/distribution/online/url[@function="download"] |

@@ -16,9 +16,9 @@ def call():
   import metadig.checks as checks
 
   displayLength = 20
-  # A resource format is not present
+  # A dataset landing page is not present
   if 'datasetLandingPage' not in globals() or datasetLandingPage is None:
-    output = "A resource distribution information url was not found."
+    output = "A dataset landing page url was not found."
     status = "FAILURE"
     return False
         

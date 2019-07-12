@@ -43,11 +43,11 @@
       	/*/identificationInfo/*/citation/CI_Citation/title)
     </xpath>
   </selector>
-  <selector namespaceAware="true">
+  <selector>
     <name>datasetTitle</name>
-    <xpath>/*[local-name() = 'eml']/dataset/title |
-      /*/dcterms:description |
-      /*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:title
+    <xpath>/eml/dataset/title |
+      /*/description |
+      /*/identificationInfo/*/citation/CI_Citation/title
     </xpath>
   </selector>
   <dialect>

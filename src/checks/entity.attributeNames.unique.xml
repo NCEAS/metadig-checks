@@ -32,9 +32,9 @@ def call():
   entityCount = 0
   attributeCount = 0
   
-  # For each resource, check that the attributes defined for it have unique names
+  # For each entity, check that the attributes defined for it have unique names
   if(len(entities) == 0):
-    output = "No resources found, unable to check for duplicate attribute names."
+    output = "No entities found, unable to check for duplicate attribute names."
     status = "SKIP"
     return True
   
@@ -55,9 +55,9 @@ def call():
         allDuplicates.extend(duplicates(attrList))
         
   if(len(allDuplicates) > 0):
-    output = "{} resources total. Duplicates of these attribute names were found: {}".format(entityCount, ', '.join(allDuplicates))
+    output = "{} entities total. Duplicates of these attribute names were found: {}".format(entityCount, ', '.join(allDuplicates))
   else:
-    output = "{} resources, {} attributes total. No duplicate attribute names were found.".format(entityCount, attributeCount)
+    output = "{} entities, {} attributes total. No duplicate attribute names were found.".format(entityCount, attributeCount)
   status = "SUCCESS"
   return True 
       ]]></code>

@@ -11,18 +11,18 @@ def call():
   global output
   global status
 
-  if ('resourceAuthorOriginator' in globals() and resourceAuthorOriginator is not None and resourceAuthorOriginator):
-    output = "A resource author/originator is present"
+  if ('creator' in globals() and creator is not None and creator):
+    output = "A dataset author/originator is present"
     status = "SUCCESS"
     return True
   else:
-    output = "A resource author/originator is not present"
+    output = "A dataset author/originator is not present"
     status = "FAILURE"
     return False
 
       ]]></code>
    <selector>
-      <name>resourceAuthorOriginator</name>
+      <name>creator</name>
       <xpath>boolean(
          /resource/creators/creator/* or
          /*/creator or

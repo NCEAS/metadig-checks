@@ -14,29 +14,29 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
-  # A resource author is not present
-  if 'resourceAuthorIdentifier' not in globals() or resourceAuthorIdentifier is None:
-    output = "A resource author identifier was not found."
+  # A dataset creator is not present
+  if 'creator' not in globals() or creator is None:
+    output = "A dataset creator identifier was not found."
     status = "FAILURE"
     return False
         
-  if (mvar.isBlank(resourceAuthorIdentifier)):
-    output = "The resource author identifier is blank."   
+  if (mvar.isBlank(creator)):
+    output = "The dataset creator identifier is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if resource author identifier is a single string or arrayList
-    if(isinstance(resourceAuthorIdentifier, str) or isinstance(resourceAuthorIdentifier, unicode)):
-      output = "The resource format '{}' was found".format(resourceAuthorIdentifier)
-    elif (isinstance(resourceAuthorIdentifier, ArrayList)):
-      output = "The resource author identifier '{}' was found (first of {} formats)".format(resourceAuthorIdentifier[0].strip(), resourceAuthorIdentifier.size())
+    # Check if dataset creator identifier is a single string or arrayList
+    if(isinstance(creator, str) or isinstance(creator, unicode)):
+      output = "The dataset creator identifier '{}' was found".format(creator)
+    elif (isinstance(creator, ArrayList)):
+      output = "The dataset creator identifier '{}' was found (first of {} formats)".format(creator[0].strip(), creator.size())
     else:
-      output = "The resource author identifier '{}' was found)".format(resourceAuthorIdentifier)
+      output = "The dataset creator identifier '{}' was found)".format(creator)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceAuthorIdentifier</name>
+      <name>creator</name>
       <xpath>
           /resource/contributors/contributor/nameIdentifier |
           /eml/*/creator/userId |

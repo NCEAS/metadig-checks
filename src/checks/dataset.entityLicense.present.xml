@@ -14,40 +14,40 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
-  displayNchars = 20
-  # A resource license is not present
-  if 'resourceLicense' not in globals() or resourceLicense is None:
-    output = "A resource license was not found."
+  displayNchars = 40
+  # A dataset license is not present
+  if 'datasetLicense' not in globals() or datasetLicense is None:
+    output = "A dataset license was not found."
     status = "FAILURE"
     return False
 
-  if (mvar.isBlank(resourceLicense)):
-    output = "The resource license is blank."   
+  if (mvar.isBlank(datasetLicense)):
+    output = "The dataset license is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if resource license is a single string or arrayList
-    if(isinstance(resourceLicense, str) or isinstance(resourceLicense, unicode)):
-      outstr = resourceLicense.strip()
+    # Check if dataset license is a single string or arrayList
+    if(isinstance(datasetLicense, str) or isinstance(datasetLicense, unicode)):
+      outstr = datasetLicense.strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
         outstr = "{}...".format(outstr[:displayNchars])
-      output = "The resource license '{}' was found".format(outstr)
-    elif (isinstance(resourceLicense, ArrayList)):
-      outstr = resourceLicense[0].strip()
+      output = "The dataset license '{}' was found".format(outstr)
+    elif (isinstance(datasetLicense, ArrayList)):
+      outstr = datasetLicense[0].strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
         outstr = "{}...".format(outstr[:displayNchars])
-      output = "The resource license '{}' was found (first of {} licenses)".format(outstr, resourceLicense.size())
+      output = "The dataset license '{}' was found (first of {} licenses)".format(outstr, datasetLicense.size())
     else:
-      output = "The resource license '{}' was found)".format(resourceLicense)
+      output = "The dataset license '{}' was found)".format(datasetLicense)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceLicense</name>
+      <name>datasetLicense</name>
       <!--
-      The Xpaths for the ISO resourceConstraints check for just the MD_RestrictionCode of 'license', but may have to be made more 
+      The Xpaths for the ISO    resourceConstraints check for just the MD_RestrictionCode of 'license', but may have to be made more 
       open, i.e. check for 'licenceUnrestricted' or 'intellectualPropertyRights'. See https://geo-ide.noaa.gov/wiki/index.php?title=ISO_19115_and_19115-2_CodeList_Dictionaries#MD_RestrictionCode
       for more details.
       -->

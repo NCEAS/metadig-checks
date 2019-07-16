@@ -16,16 +16,16 @@ def call():
   if ('datasetPubDate' in globals() and datasetPubDate is not None and datasetPubDate):
     status = "SUCCESS"
   else:
-    output = "A resource publication date is not present"
+    output = "A entity publication date is not present"
     status = "FAILURE"
     return False
     
   if (mvar.isBlank(datasetPubDate)):
-    output = "The resource publication date is blank"
+    output = "The entity publication date is blank"
     status = "FAILURE"
     return False
   else:
-    output = "The resource publication date '{}' was found".format(datasetPubDate)
+    output = "The entity publication date '{}' was found".format(datasetPubDate)
     status = "SUCCESS"
     return True
       ]]></code>

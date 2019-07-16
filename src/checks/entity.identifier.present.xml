@@ -15,32 +15,32 @@ def call():
   import metadig.variable as mvar
 
   # An attribute definition is not present
-  if 'resourceIdentifier' not in globals() or resourceIdentifier is None:
-    output = "A resource identifier was not found."
+  if 'entityIdentifier' not in globals() or entityIdentifier is None:
+    output = "A entity identifier was not found."
     status = "FAILURE"
     return False
         
         
   # check if the identifier is blank
   # TODO: check the identifier namespace
-  if (mvar.isBlank(resourceIdentifier)):
-    output = "The resource identifier is blank."
+  if (mvar.isBlank(entityIdentifier)):
+    output = "The entity identifier is blank."
     status = "FAILURE"
     return False
   else:
-    # Check if resource identifier is a single string or arrayList
-    if(isinstance(resourceIdentifier, str) or isinstance(resourceIdentifier, unicode)):
-      output = "The resource identifier '{}' was found".format(resourceIdentifier)
-    elif (isinstance(resourceIdentifier, ArrayList)):
-      output = "The resource identifier '{}' was found (first of {} identifiers)".format(resourceIdentifier[0].strip(), resourceIdentifier.size())
+    # Check if entity identifier is a single string or arrayList
+    if(isinstance(entityIdentifier, str) or isinstance(entityIdentifier, unicode)):
+      output = "The entity identifier '{}' was found".format(entityIdentifier)
+    elif (isinstance(entityIdentifier, ArrayList)):
+      output = "The entity identifier '{}' was found (first of {} identifiers)".format(entityIdentifier[0].strip(), entityIdentifier.size())
     else:
-      output = "The resource identifier '{}' was found)".format(resourceIdentifier)
+      output = "The entity identifier '{}' was found)".format(entityIdentifier)
 
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceIdentifier</name>
+      <name>entityIdentifier</name>
       <xpath>
           /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |

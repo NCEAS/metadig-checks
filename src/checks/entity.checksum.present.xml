@@ -12,10 +12,10 @@
     
     # Check if the checksum value and algorithm for at least one data entity exists
     if(!checksumAndAlgorithmPresent) {
-      return(list(status = "FAILURE", output = sprintf("A data resource checksum is not present.")))
+      return(list(status = "FAILURE", output = sprintf("An entity checksum is not present.")))
     }
     
-    return(list(status = "SUCCESS", output = sprintf("A data resource checksum and checksum algorithm are present (%s resources found).", checksumAlgorithmCount)))
+    return(list(status = "SUCCESS", output = sprintf("An entity checksum and checksum algorithm are present (%s entities found).", checksumAlgorithmCount)))
   }
   result <- check()
   mdq_result <- list(status=result$status, output=list(list(value=result$output)))

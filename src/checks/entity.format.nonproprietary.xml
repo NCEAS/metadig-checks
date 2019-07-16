@@ -50,37 +50,37 @@ def call():
         formats.append(row)
 
   proprietaryFound = []
-  # A resource format is not present
-  if 'resourceFormats' not in globals() or resourceFormats is None:
-    output = "A resource format was not found."
+  # An entity format is not present
+  if 'entityFormat' not in globals() or entityFormat is None:
+    output = "An entity format was not found."
     status = "FAILURE"
     return False
         
-  if (mvar.isBlank(resourceFormats)):
-    output = "The resource format is blank."   
+  if (mvar.isBlank(entityFormat)):
+    output = "The entity format is blank."   
     status = "FAILURE"
     return False
     
-  for i in range(0, len(resourceFormats)):
-    # Check each resource format and see if it is in the 'proprietary' list, which
+  for i in range(0, len(entityFormat)):
+    # Check each entity format and see if it is in the 'proprietary' list, which
     # is based on all formats from DataONE that have been manually determined to be
     # proprietary.
-    thisFormat = resourceFormats.get(i)
+    thisFormat = entityFormat.get(i)
     if(isProprietary(formats, thisFormat)):
       proprietaryFound.append(thisFormat)
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = "These proprietary data resource formats were found: '{}' (out of {} total formats.)".format(', '.join(fmts), len(resourceFormats))
+    output = "These proprietary data entity formats were found: '{}' (out of {} total formats.)".format(', '.join(fmts), len(entityFormat))
     status = "FAILURE"
     return False
   else:
-    output = "No proprietary data resource formats found (out of {} total formats.".format(len(resourceFormats))
+    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormat))
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceFormats</name>
+      <name>entityFormat</name>
       <xpath>
           /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name//text() |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name//text() |

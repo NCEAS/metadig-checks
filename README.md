@@ -5,7 +5,9 @@
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/metadig-checks/issues)
 
-metadig-checks contain metadata quality checks that are used by the [MetaDIG Quality engine](https://github.com)
+metadig-checks contain metadata quality checks that are used by the [MetaDIG Quality engine](https://github.com).
+
+A glossary of metadata terms is available on the ESIP Wiki at http://wiki.esipfed.org/index.php/Concepts_Glossary.
 
 ## License
 ```

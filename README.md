@@ -7,7 +7,7 @@
 
 metadig-checks contain metadata quality checks that are used by the [MetaDIG Quality engine](https://github.com).
 
-A glossary of metadata terms is available on the ESIP Wiki at http://wiki.esipfed.org/index.php/Concepts_Glossary.
+A glossary of metadata terms is available on the ESIP Wiki at http://wiki.esipfed.org/index.php/Concepts_Glossary. This glossary is open for editing / additions to the whole ESIP community.
 
 ## License
 ```

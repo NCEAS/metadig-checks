@@ -11,35 +11,33 @@ def call():
   global output
   global status
   
-  import metadig.variable as mvar
-
-  # An attribute definition is not present
-  if 'resourceType' not in globals() or resourceType is None:
-    output = "An entity type was not found."
-    status = "FAILURE"
-    return False
-        
-  if (mvar.isBlank(resourceType)):
-    output = "The entity type is blank."
-    status = "FAILURE"
-    return False
-  else:
-    # Check if resource type is a single string or arrayList
-    if(isinstance(resourceType, str) or isinstance(resourceType, unicode)):
-      output = "The entity type '{}' was found".format(resourceType)
-    else:
-      output = "The entity type '{}' was found".format(resourceType[0])
+  # Check if an entity type is present
+  # Note: for EML, this checks looks for the presence of one of the
+  # entity type elements, not an element value that specifies the entity type
+  # as a string. When the quality engine is upgraded to an XPath implementation 
+  # supporting XPath 2.0 'name()' function, then the entity name can be returned.
+  # For now, just the presence or absence is checked for with a boolean operator.
+  if ('entityTypePresent' in globals() and entityTypePresent is not None and entityTypePresent):
     status = "SUCCESS"
-    return True
-
+    output = "An entity type was found"
+    return True 
+  else:
+    output = "An entity type was not found"
+    status = "FAILURE"
+    return False
+    
       ]]></code>
    <selector>
-      <name>resourceType</name>
-      <xpath>/*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode |
+      <name>entityTypePresent</name>
+      <xpath>boolean(/*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode |
          /*/type |
          /*/hierarchyLevel/MD_ScopeCode |
-         /eml//physical/dataFormat//formatName/text()[normalize-space()] |
-         /resource/resourceType/@resourceTypeGeneral
+         /eml/dataset/dataTable | 
+         /eml/dataset/otherEntity | 
+         /eml/dataset/spatialVector |
+         /eml/dataset/spatialRaster | 
+         /eml/dataset/view |
+         /resource/resourceType/@resourceTypeGeneral)
       </xpath>
    </selector>
    <dialect>

@@ -164,7 +164,7 @@
       <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeDescription.present.1</id>
+        <id>entity.attributeDefinition.present.1</id>
         <type>Interoperable</type>
         <level>OPTIONAL</level>
     </check>

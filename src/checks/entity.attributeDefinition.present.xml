@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>entity.attributeDescription.present.1</id>
-   <name>Entity Attribute Descriptions Present</name>
-   <description>Check that an attribute description exists.</description>
+   <id>entity.attributeDefinition.present.1</id>
+   <name>Entity Attribute Definition Present</name>
+   <description>Check that an attribute definition exists.</description>
    <type>Interoperable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -14,9 +14,9 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
-  # Check if a measurementScale is present for each attribute.
+  # Check if definitions are present for each attribute.
   
-  if not attributesPresent:
+  if not attributeDefinitionPresent:
     output = "No attributes are present, so unable to check for attribute defintions. Check skipped."
     status = "SKIP"
     return True 
@@ -26,28 +26,28 @@ def call():
   
   for i in range(0, len(attributeDefinition)):
     attributeCount += 1
-    description = attributeDefinition.get(i)
+    definition = attributeDefinition.get(i)
     name = attributeName.get(i)
-    # No description for this attribute was specified
-    if(description == None or len(description) == 0):
+    # No definition for this attribute was specified
+    if(definition == None or len(definition) == 0):
         missing.append(name)
     else:
-      if(mvar.isBlank(description)):
+      if(mvar.isBlank(definition)):
           missing.append(name)
       else:
         continue
   
   if(len(missing) > 0):
-    output = "The following attributes do not have description: '{}'".format(', '.join(missing))
+    output = "The following attributes do not have a definition: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have a description".format(attributeCount)
+    output = "All {} attributes have a definition".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>
    <selector>
-      <name>attributesPresent</name>
+      <name>attributeDefinitionPresent</name>
       <xpath>boolean(
           /eml/dataset/*/attributeList/attribute or
           /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute or
@@ -62,7 +62,7 @@ def call():
           /*/contentInfo/*/dimension/MD_Band 
       </xpath>
       <subSelector>
-         <name>description</name>
+         <name>definition</name>
          <xpath>
              ./*/description |
              ./descriptor/*/text() |

@@ -1,0 +1,48 @@
+<project name="MetaDIG-checks" default="dist" basedir=".">
+  <!-- This build file provides tasks to create distributions for the 
+       MetaDIG Quality Engine. 
+       Set properties in the file 'build.properties' to control the operation
+       of the tasks
+  -->
+  <property file="build.properties" />
+  <description>
+    MetaDIG Quality Engine Suites and Checks
+  </description>
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>   
+  </target>
+  <target name="dist" depends="init"
+        description="generate the MetaDIG Checks distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${dist}/checks"/>
+    <mkdir dir="${dist}/suites"/>
+    
+    <exec executable="${bin}/${stagescript}" spawn="false" output="stage.log">  
+        <arg value="src"/>
+        <arg value="dist"/>
+        <arg value="${suites}"/>
+    </exec>
+    
+    <tar destfile="${dist}/metadig-checks-${metadig-checks.version}.tar">
+      <tarfileset dir="${dist}/checks"
+                  prefix="checks"
+                  preserveLeadingSlashes="false">
+        <include name="*.xml"/>
+      </tarfileset>
+      <tarfileset dir="${dist}/suites"
+                  prefix="suites"
+                  preserveLeadingSlashes="false">
+        <include name="*.xml"/>
+      </tarfileset>
+    </tar>
+  </target>
+
+  <target name="clean"
+        description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>

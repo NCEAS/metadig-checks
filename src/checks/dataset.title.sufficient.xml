@@ -8,7 +8,8 @@
    <environment>python</environment>
    <code><![CDATA[
 def call():
-  # check: does a resource title exist?
+  # check: is the dataset title sufficient - i.e. does it contain
+  # the "who", "what", "where"?
   import re
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
@@ -22,33 +23,33 @@ def call():
   maxWordCount = 20
   displayNchars = 20
   # Title is not present
-  if 'resourceTitle' not in globals() or resourceTitle is None:
-    output = "A resource title was not found."
+  if 'datasetTitle' not in globals() or datasetTitle is None:
+    output = "A dataset title was not found."
     status = "FAILURE"
     return False
     
-  if (mvar.isBlank(resourceTitle)):
-    output = "The resource title is blank."
+  if (mvar.isBlank(datasetTitle)):
+    output = "The dataset title is blank."
     status = "FAILURE"
     return False
     
-  words = re.split('\s+', resourceTitle.strip())
+  words = re.split('\s+', datasetTitle.strip())
   if(len(words) < minWordCount):
-    output = "The resource title word count ({}) contains less that the recommended minimum ({}): '{}'".format(len(words), maxWordCount, resourceTitle)
+    output = "The dataset title word count ({}) contains less that the recommended minimum ({}): '{}'".format(len(words), maxWordCount, datasetTitle)
     status = "FAILURE"
     return False
   elif(len(words) > maxWordCount):
-    output = "The resource title word count ({}) contains more than the recommended maximum ({}): '{}...'".format(len(words), maxWordCount, resourceTitle[:displayNchars])
+    output = "The dataset title word count ({}) contains more than the recommended maximum ({}): '{}...'".format(len(words), maxWordCount, datasetTitle[:displayNchars])
     status = "FAILURE"
     return False
   else:
-    output = "The resource title contains a sufficent word count (count={}, minimum={}, maximum={}".format(len(words), minWordCount, maxWordCount)
+    output = "The dataset title contains a sufficent word count (count={}, minimum={}, maximum={}".format(len(words), minWordCount, maxWordCount)
     status = "SUCCESS"
     return True
 
   ]]></code>
    <selector>
-      <name>resourceTitle</name>
+      <name>datasetTitle</name>
       <xpath>/resource/titles/title |
              /*/title |
              /eml/dataset/title |

@@ -14,8 +14,8 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
-  # Check if a entity name is present for each attribute.
-  
+  maxPrint = 5
+  # Check if a name is present for each entity.
   if not entityPresent:
     output = "No entities are  present so cannot check their name, skipping this check."
     status = "SKIP"
@@ -29,10 +29,9 @@ def call():
     name = entities.get(i)
     # No name for this entity was specified
     if(name == None):
-      if(name == None): 
-        missing.append("entity #{}".format(i))
-      else:
-        missing.append(name)
+      missing.append("entity #{}".format(i))
+      if(entityCount > maxPrint): 
+        break
     else:
       # Description value should be a string or an array of strings
       if(isinstance(name, ArrayList)):
@@ -47,6 +46,8 @@ def call():
   
   if(len(missing) > 0):
     output = "The following entities are missing a name: '{}'".format(', '.join(missing))
+    if(entityCount > maxPrint):
+      output += ", ..."
     status = "FAILURE"
     return False
   else:
@@ -72,7 +73,7 @@ def call():
       <subSelector>
          <name>name</name>
          <xpath>
-             ./entityDescription |
+             ./entityName |
              ./attributeDescription/RecordType
          </xpath>
      </subSelector>

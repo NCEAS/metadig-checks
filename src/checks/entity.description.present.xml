@@ -14,8 +14,9 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
-  # Check if a entity description is present for each attribute.
+  maxPrint = 5
   
+  # Check if a entity description is present for each attribute.
   if not entityPresent:
     output = "No entities are  present so cannot check their descriptions, skipping this check."
     status = "SKIP"
@@ -34,6 +35,9 @@ def call():
         missing.append("entity #{}".format(i))
       else:
         missing.append(name)
+        
+      if(entityCount > maxPrint): 
+        break
     else:
       # Description value should be a string or an array of strings
       if(isinstance(description, ArrayList)):
@@ -43,11 +47,16 @@ def call():
           missing.append("entity #{}".format(i))
         else:
           missing.append(name)
+          
+        if(entityCount > maxPrint): 
+          break
       else:
         continue
   
   if(len(missing) > 0):
     output = "The following entities are missing a description: '{}'".format(', '.join(missing))
+    if(entityCount > maxPrint):
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

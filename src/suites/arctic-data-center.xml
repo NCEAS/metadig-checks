@@ -81,21 +81,11 @@
   <check>
     <id>coverage.in.arctic.1</id>
   </check>
+  <!-- this check output is indexed to the 'funder' field in the Solr Quality Index -->
   <check>
     <id>check.echo.funder.1</id>
   </check>
-  <check>
-    <id>check.echo.rightsHolder.1</id>
-  </check>
-  <check>
-    <id>check.echo.datasource.1</id>
-  </check>
-  <check>
-    <id>check.echo.formatId.1</id>
-  </check>
-  <check>
-    <id>check.lookup.group.1</id>
-  </check>
+  <!-- this check output is indexed to the 'funderInfo' field in the Solr Quality Index -->
   <check>
     <id>check.lookup.award.1</id>
   </check>

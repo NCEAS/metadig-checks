@@ -9,6 +9,7 @@
 	<level>REQUIRED</level>
 	<environment>rscript</environment>
 	<code><![CDATA[
+	library(stringr)
 if (is.null(awards)) {
   status <- "FAILURE"
   output <- "No award numbers were found."
@@ -32,6 +33,6 @@ if (is.null(awards)) {
 }]]></code>
 	<selector>
 		<name>awards</name>
-		<xpath>/eml/dataset/project/funding//para | /eml/dataset/project/funding</xpath>
+		<xpath>/*[local-name() = 'eml']/dataset/project/funding//text()[normalize-space()]</xpath>
 	</selector>
 </mdq:check>

@@ -21,13 +21,13 @@ check <- function() {
   # The dataset may have multiple entities, so check each one. 
   if(entityPresent) {
     if (entityCount == 1) {
-      outputList[[length(outputList)+1]] <- list(value=sprintf("1 data description is present."))
+      outputList[[length(outputList)+1]] <- list(value=sprintf("1 data entity is present."))
     } else {
-      outputList[[length(outputList)+1]] <- list(value=sprintf("%d data descriptions are present", entityCount))
+      outputList[[length(outputList)+1]] <- list(value=sprintf("%d data entities are present", entityCount))
     }
     return(list(status=status, values=outputList))
   } else {
-    outputList[[length(outputList)+1]] <- list(value=sprintf("No data descriptions are present."))
+    outputList[[length(outputList)+1]] <- list(value=sprintf("No data entities are present."))
     return(list(status="FAILURE", values=outputList))
   }
 }

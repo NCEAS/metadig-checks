@@ -38,16 +38,20 @@ def call():
       output = "The dataset landing page url '{}' was found)".format(datasetLandingPage)
       url = datasetLandingPage.strip()
       
-    resolvable, msg = checks.isResolvable(url)
-    if (resolvable):
-      output = '{} and is resolvable.'.format(output)      
-      status = "SUCCESS"
-      return True
-    else:
-      output = "{}, but is not resolvable: {}".format(output, msg)      
-      status = "FAILURE"
-      return False
+  # 2019-08-9 Note that the resolvability part of this check is currently disabled, until https://redmine.dataone.org/issues/881 is 
+  # closed and the fix is incorporated into a DataONE CCI release.
+  status = "SUCCESS"
+  return true
 
+  #resolvable, msg = checks.isResolvable(url)
+  #if (resolvable):
+  #  output = '{} and is resolvable.'.format(output)      
+  #  status = "SUCCESS"
+  #  return True
+  #else:
+  #  output = "{}, but is not resolvable: {}".format(output, msg)      
+  #  status = "FAILURE"
+  #  return False
       ]]></code>
    <selector>
       <name>datasetLandingPage</name>

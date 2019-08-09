@@ -122,21 +122,27 @@
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    <!-- This check relies on the DataONE HEAD/resolve service, which is
+       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>metadata.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    -->
     <check>
         <id>dataset.distribution.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    <!-- This check relies on the DataONE HEAD/resolve service, which is
+       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>entity.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    -->
     <check>
         <id>dataset.publisher.present.1</id>
         <type>Accessible</type>

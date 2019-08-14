@@ -165,7 +165,12 @@
     </check>
     <!-- Interoperable -->    
     <check>
-    <id>entity.attributeNames.unique.1</id>
+      <id>entity.attributeNames.differ.1</id>
+      <type>Interoperable</type>
+      <level>REQUIRED</level>
+    </check>
+    <check>
+      <id>entity.attributeNames.unique.1</id>
       <type>Interoperable</type>
       <level>REQUIRED</level>
     </check>
@@ -173,6 +178,11 @@
         <id>entity.attributeDefinition.present.1</id>
         <type>Interoperable</type>
         <level>OPTIONAL</level>
+    </check>
+    <check>
+      <id>entity.attributeDefinition.sufficient.1</id>
+      <type>Interoperable</type>
+      <level>REQUIRED</level>
     </check>
     <check>
         <id>entity.attributeStorageType.present.1</id>

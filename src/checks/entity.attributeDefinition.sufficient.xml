@@ -36,11 +36,11 @@ def call():
     name = attributeName.get(i)
     # No definition for this attribute was specified
     if(definition == None or len(definition) == 0):
-        insufficient.append(name)
+      insufficient.append(name)
     else:
       if(mvar.isBlank(definition)):
-          insufficient.append(name)
-          continue
+        insufficient.append(name)
+        continue
           
       # If for some reason there are multiple definitions for this entity, just use the first one
       if(isinstance(definition, ArrayList)):
@@ -59,15 +59,15 @@ def call():
     
   if(len(insufficient) > 0):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-      output = "These attribute (of {} total) have defintions less that {} words: '{}'".format(attributeCount, minWordCount, ", ".join(insufficient[0:maxPrint]))
-      if(len(insufficient) > maxPrint):
-        output += ", ..."
-      status = "FAILURE"
-      return False
+    output = "These attribute (of {} total) have defintions less that {} words: '{}'".format(attributeCount, minWordCount, ", ".join(insufficient[0:maxPrint]))
+    if(len(insufficient) > maxPrint):
+      output += ", ..."
+    status = "FAILURE"
+    return False
   else:
-      output = "All {} attribute have sufficient definitions.".format(attributeCount)
-      status = "SUCCESS"
-      return True
+    output = "All {} attribute have sufficient definitions.".format(attributeCount)
+    status = "SUCCESS"
+    return True
     ]]></code>
    <selector>
       <name>attributeDefinitionPresent</name>

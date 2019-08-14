@@ -40,7 +40,7 @@ def call():
   # 2019-08-9 Note that the resolvability part of this check is currently disabled, until https://redmine.dataone.org/issues/881 is 
   # closed and the fix is incorporated into a DataONE CCI release.
   status = "SUCCESS"
-  return true
+  return True
 
   #resolvable, msg = checks.isResolvable(url)
   #if (resolvable):

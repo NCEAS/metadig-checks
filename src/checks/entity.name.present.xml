@@ -30,14 +30,15 @@ def call():
     # No name for this entity was specified
     if(name == None):
       missing.append("entity #{}".format(i))
-      if(entityCount > maxPrint): 
-        break
+      if(len(missing) > maxPrint): 
+        continue
     else:
       # Description value should be a string or an array of strings
       if(isinstance(name, ArrayList)):
         continue
       elif(not(isinstance(name, str) or isinstance(name, unicode))):
         if(name == None): 
+          if(len(missing) > maxPrint)
           missing.append("entity #{}".format(i))
         else:
           missing.append(name)
@@ -46,7 +47,7 @@ def call():
   
   if(len(missing) > 0):
     output = "The following entities are missing a name: '{}'".format(', '.join(missing))
-    if(entityCount > maxPrint):
+    if(len(missing) > maxPrint):
       output += ", ..."
     status = "FAILURE"
     return False

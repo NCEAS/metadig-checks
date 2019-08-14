@@ -36,7 +36,7 @@ def call():
       else:
         missing.append(name)
         
-      if(entityCount > maxPrint): 
+      if(len(missing) > maxPrint): 
         break
     else:
       # Description value should be a string or an array of strings
@@ -48,14 +48,14 @@ def call():
         else:
           missing.append(name)
           
-        if(entityCount > maxPrint): 
+        if(len(missing) > maxPrint): 
           break
       else:
         continue
   
   if(len(missing) > 0):
     output = "The following entities are missing a description: '{}'".format(', '.join(missing))
-    if(entityCount > maxPrint):
+    if(len(missing) > maxPrint):
       output += ", ..."
     status = "FAILURE"
     return False

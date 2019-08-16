@@ -20,7 +20,6 @@ def call():
   
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
-  
   import csv
   
   def isProprietary(formats, thisFormat):
@@ -33,16 +32,18 @@ def call():
         
     return False
   
+  dataFilename = "DataONEformats.csv"
   formatsFile = ""
-  # The DataONE formats filename is passed via the 'mdq_params' hash
+  # The checks data directory is passed via the 'mdq_params' hash
+  # The filename is known only to this check.
   if('mdq_params' not in globals()):
     output = "Internal error running check, mdq_params not available to check."
     status = "ERROR"
     return False
   else:
-    formatsFile = mdq_params['DataONEformatsFile']
+    formatsFile = "{}/{}".format(mdq_params['metadigDataDir'], dataFilename)
   
-  # Create list of list with the DataONE formats
+  # Create list with the DataONE formats
   formats = []
   with open(formatsFile, 'rb') as csvfile:
       fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')

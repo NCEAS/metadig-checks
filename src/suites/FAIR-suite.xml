@@ -23,6 +23,11 @@
         <level>OPTIONAL</level>
     </check>
     <check>
+    <id>dataset.publicationDate.timeframe.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
         <id>metadata.identifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>

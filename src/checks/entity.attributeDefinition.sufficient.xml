@@ -15,12 +15,13 @@ def call():
   import metadig.variable as mvar
   import re
   
+  NoneType = type(None)
   minWordCount = 5
   maxWordCount = 20
   maxPrint = 5
+  attributeNamesMissing = False
   
   # Check if definitions are present for each attribute.
-  
   if not attributeDefinitionPresent:
     output = "No attributes are present, so unable to check if defintions are sufficient. Check skipped."
     status = "SKIP"
@@ -28,40 +29,55 @@ def call():
     
   attributeCount = 0
   insufficient = []
+  insufficientCount = 0
   
+  if(isinstance(attributeName, NoneType) or attributeName.size() == 0):
+   attributeNamesMissing = True
+
   # Check each attribute definition to see if it is missing or blank.
-  for i in range(0, len(attributeDefinition)):
+  for i in range(0, attributeDefinition.size()):
     attributeCount += 1
     definition = attributeDefinition.get(i)
-    name = attributeName.get(i)
+    if(not attributeNamesMissing):
+      name = attributeName.get(i)
+      # Check if the attribute name is blank
+      if(isinstance(name, NoneType) or mvar.isBlank(name)):
+        attributeNamesMissing = True
+        
     # No definition for this attribute was specified
-    if(definition == None or len(definition) == 0):
-      insufficient.append(name)
+    if(isinstance(definition, NoneType) or len(definition) == 0):
+      insufficientCount += 1
+      if(not attributeNamesMissing):
+        insufficient.append(name)
     else:
       if(mvar.isBlank(definition)):
-        insufficient.append(name)
+        insufficientCount += 1
+        if(not attributeNamesMissing):
+          insufficient.append(name)
         continue
           
       # If for some reason there are multiple definitions for this entity, just use the first one
       if(isinstance(definition, ArrayList)):
         definition = definition.get(0)
+      # Now check the word count
       words = re.split('\s+', definition.strip())
-      if(len(words) < minWordCount):
-        # Keep the list short for printing
-        insufficient.append(name)
+      if(len(words) < minWordCount or len(words) > maxWordCount):
+        insufficientCount += 1
+        if(not attributeNamesMissing):
+          insufficient.append(name)
   
   # Let the user know if defintions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
-  if(len(insufficient) > 0):
-    output = "{} attributes do not definitions. ".format(len(insufficient))
-  else:
-    output = ""
-    
-  if(len(insufficient) > 0):
+  if(insufficientCount > 0):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    output = "These attribute (of {} total) have defintions less that {} words: '{}'".format(attributeCount, minWordCount, ", ".join(insufficient[0:maxPrint]))
-    if(len(insufficient) > maxPrint):
-      output += ", ..."
+    if(attributeNamesMissing):
+      output = "{} attributes (of {} attributes) have insufficient definitions - less than {} words or greater than {} words.".format(insufficientCount, attributeCount, minWordCount, maxWordCount)
+      #output = "attributeCount {}, attributeDefinition.size() {}, attributeName.size() {} ".format(attributeCount, attributeDefinition.size(), attributeName.size())
+    else:
+      output = "These {} attributes (of {} total) have insufficient defintions less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
+      if(len(insufficient) > maxPrint):
+        output += ", ..."
+      
     status = "FAILURE"
     return False
   else:
@@ -72,24 +88,26 @@ def call():
    <selector>
       <name>attributeDefinitionPresent</name>
       <xpath>boolean(
-          /eml/dataset/*/attributeList/attribute or
-          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute or
-          /*/contentInfo/*/dimension/MI_Band or
-          /*/contentInfo/*/dimension/MD_Band)</xpath>
+          /eml/dataset/*/attributeList/attribute/attributeDefinition or
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute/*/description or
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
+          /*/contentInfo/*/dimension/MI_Band/descriptor or
+          /*/contentInfo/*/dimension/MD_Band/descriptor)</xpath>
    </selector>
    <selector>
       <name>attributeDefinition</name>
       <xpath>/eml/dataset/*/attributeList/attribute |
-          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band 
       </xpath>
       <subSelector>
          <name>definition</name>
          <xpath>
+             ./attributeDefinition |
              ./*/description |
-             ./descriptor/*/text() |
-             ./attributeDefinition
+             ./descriptor/*/text()
          </xpath>
      </subSelector>
    </selector>

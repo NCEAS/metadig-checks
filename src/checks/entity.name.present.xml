@@ -38,8 +38,8 @@ def call():
         continue
       elif(not(isinstance(name, str) or isinstance(name, unicode))):
         if(name == None): 
-          if(len(missing) > maxPrint)
-          missing.append("entity #{}".format(i))
+          if(len(missing) > maxPrint):
+            missing.append("entity #{}".format(i))
         else:
           missing.append(name)
       else:

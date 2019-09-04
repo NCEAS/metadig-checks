@@ -105,8 +105,7 @@ def call():
          <xpath>
              ./attributeName | 
              ./*/name/code/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text()
+             ./sequenceIdentifier/MemberName/aName/*/text() 
          </xpath>
      </subSelector>
    </selector>

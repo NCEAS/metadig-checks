@@ -13,6 +13,16 @@
         <level>OPTIONAL</level>
     </check>
     <check>
+        <id>award.funderIdentifier.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>award.identifier.present.1</id>
+        <type>Findable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
         <id>dataset.keywords.controlled.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
@@ -23,7 +33,7 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-    <id>dataset.publicationDate.timeframe.1</id>
+        <id>dataset.publicationDate.timeframe.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -35,7 +45,7 @@
     <check>
         <id>dataset.naturalLanguageKeywords.present.1</id>
         <type>Findable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>dataset.creator.present.1</id>
@@ -68,14 +78,19 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.title.length.1</id>
+        <id>dataset.publisher.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.type.present.1</id>
+        <id>dataset.publisherIdentifier.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>dataset.title.length.1</id>
+        <type>Findable</type>
+        <level>REQUIRED</level>
     </check>
     <check>
         <id>dataset.spatialExtent.present.1</id>
@@ -103,14 +118,15 @@
     <check>
         <id>dataset.accessControlRules.specified.1</id>
         <type>Accessible</type>
-        <level>OPTIONAL</level>
+        <level>REQUIRED</level>
     </check>
     <check>
         <id>dataset.landingPage.present.1</id>
         <type>Accessible</type>
-        <level>OPTIONAL</level>
+        <level>REQUIRED</level>
     </check>
-    <!--
+    <!-- This check relies on the DataONE HEAD/resolve service, which is
+       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>entity.access.public.1</id>
         <type>Accessible</type>
@@ -149,16 +165,6 @@
     </check>
     -->
     <check>
-        <id>dataset.publisher.present.1</id>
-        <type>Accessible</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>dataset.publisherIdentifier.present.1</id>
-        <type>Accessible</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
         <id>dataset.serviceLocation.present.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
@@ -170,7 +176,7 @@
     </check>
     <!-- Interoperable -->    
     <check>
-      <id>entity.attributeNames.differ.1</id>
+      <id>entity.attributeName.differs.1</id>
       <type>Interoperable</type>
       <level>REQUIRED</level>
     </check>
@@ -182,7 +188,7 @@
     <check>
         <id>entity.attributeDefinition.present.1</id>
         <type>Interoperable</type>
-        <level>OPTIONAL</level>
+        <level>REQUIRED</level>
     </check>
     <check>
       <id>entity.attributeDefinition.sufficient.1</id>
@@ -209,7 +215,7 @@
     <check>
         <id>coverage.contentType.present.1</id>
         <type>Interoperable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.attributeEnumeratedDomains.present.1</id>
@@ -227,9 +233,14 @@
         <level>REQUIRED</level>
     </check>
     <check>
+        <id>entity.type.present.1</id>
+        <type>Interoperable</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
         <id>dataset.serviceType.present.1</id>
         <type>Interoperable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     
     <!-- Reusable -->

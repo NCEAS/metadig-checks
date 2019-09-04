@@ -3,7 +3,7 @@
    <id>distribution.contactIdentifier.present.1</id>
    <name>Distribution Contact Identifier</name>
    <description>Check that a distribution contact identifier exists.</description>
-   <type>Interoperable</type>
+   <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[

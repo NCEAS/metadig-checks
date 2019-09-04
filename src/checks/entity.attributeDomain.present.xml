@@ -14,35 +14,58 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
+  NoneType = type(None)
   # Check if a measurementScale is present for each attribute.
   if not attributesPresent:
-    output = "No attributes present that require a measurement domain, check skipped."
+    output = "No attributes present so measurement domain cannot be checked, check skipped."
     status = "SKIP"
     return True 
     
   attributeCount = 0
   missing = []
+  missingCount = 0
+  attributeNamesMissing = False
+  maxPrint = 5
   
-  for i in range(0, len(attributeDomain)):
+  # Check global variable (from XPath selector) to see if attribute names exist
+  if(isinstance(attributeName, NoneType) or attributeName.size == 0):
+    attributeNamesMissing = True
+    
+  for i in range(0, attributeDomain.size()):
     attributeCount += 1
     domain = attributeDomain.get(i)
-    name = attributeName.get(i)
+    if(not attributeNamesMissing):
+      name = attributeName.get(i)
+    # Check if the attribute name is blank
+    if(isinstance(name, NoneType) or mvar.isBlank(name)):
+      attributeNamesMissing = True
+
     # No domain for this attribute was specified
-    if(domain == None or len(domain) == 0):
+    if(isinstance(domain, NoneType) or len(domain) == 0):
+      missingCount += 1
+      if(not attributeNamesMissing):
         missing.append(name)
     else:
       # Note: there may be more that one value returned for the domain, i.e for ISO the min and max values are returned
       if(mvar.isBlank(domain)):
+        missingCount += 1
+        if(not attributeNamesMissing):
           missing.append(name)
       else:
         continue
-  
-  if(len(missing) > 0):
-    output = "The following attributes do not have a domain specified: '{}'".format(', '.join(missing))
+        
+  if(missingCount > 0):
+    if(attributeNamesMissing):
+      output = "{} attributes (of {} total) do not have a measurement domain defined".format(missingCount, attributeCount)
+    else:
+      output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
+      
+    if(len(missing) > maxPrint):
+      output += ", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes that require a domain have one defined".format(attributeCount)
+    output = "All {} attributes have a measurement domain defined".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -84,7 +107,6 @@ def call():
          <name>name</name>
          <xpath>
              ./attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text() |
              ./sequenceIdentifier/MemberName/aName/*/text()
          </xpath>
      </subSelector>

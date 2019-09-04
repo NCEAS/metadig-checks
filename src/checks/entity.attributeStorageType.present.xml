@@ -38,11 +38,11 @@ def call():
         continue
   
   if(len(missing) > 0):
-    output = "The following attributes do not have storageType: '{}'".format(', '.join(missing))
+    output = "The following attributes do not have storage type: '{}'".format(', '.join(missing))
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have a storageType".format(attributeCount)
+    output = "All {} attributes have a storage type".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>

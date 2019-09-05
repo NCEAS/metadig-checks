@@ -60,4 +60,9 @@
   <check>
     <id>enumerated.domains.1</id>
   </check>
+  <check>
+      <id>dataset.keywords.controlled.1</id>
+      <type>Findable</type>
+      <level>OPTIONAL</level>
+  </check>
 </mdq:suite>

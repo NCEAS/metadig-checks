@@ -11,12 +11,27 @@
     if (pubDatePresent) {
       # A publication date is present, so now check if it is in
       # the future
-      metadataDate <- as.Date(datasetPubDate)
-      currentDate <- Sys.Date()
-      if(metadataDate > currentDate) {
-        failure("The publication date '%s' is in the future.")
+      # The R as.Date function assumes that you are specifying a date as number of
+      # days since epoch, if a string is entered that looks like a number, i.e. "2017"
+      # so we have to check to see if R got confused.
+      pubDate <- toString(datasetPubDate)
+      # R handles ISO 8601 formatted dates, so specifying the year only will cause problems. In
+      # this case, add month and day in the ISO way.
+      if(nchar(pubDate) == 4) {
+        pubDate <- sprintf("%s-01-01", pubDate)
+      }
+      metadataDate <- as.Date(pubDate, optional = TRUE)
+      # If the date wasn't parsable by R, return an error
+      if(is.na(metadataDate)) {
+        metadataDate <- as.Date(pubDate, tryFormats = c("%d/%m/%y"), optional = TRUE)
+        if(is.na(metadataDate)) failure(sprintf("Unable to parse publication date '%s'.", pubDate))
       } else {
-        success("A publication date is present and is not in the future.")
+        currentDate <- Sys.Date()
+        if(metadataDate > currentDate) {
+          failure(sprintf("The publication date '%s' is in the future.", pubDate))
+        } else {
+          success(sprintf("The publication date '%s' was found and is not in the future.", datasetPubDate))
+        }
       }
     } else {
       failure("A publication date is not present.") 

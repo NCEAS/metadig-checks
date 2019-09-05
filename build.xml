@@ -17,7 +17,13 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
     <mkdir dir="${dist}/checks"/>
+    <mkdir dir="${dist}/data"/>
     <mkdir dir="${dist}/suites"/>
+
+    <copy todir="${dist}/data">
+      <fileset dir="${data}">
+      </fileset>
+    </copy>
     
     <exec executable="${bin}/${stagescript}" spawn="false" output="stage.log">  
         <arg value="src"/>
@@ -35,6 +41,11 @@
                   prefix="suites"
                   preserveLeadingSlashes="false">
         <include name="*.xml"/>
+      </tarfileset>
+      <tarfileset dir="${dist}/data"
+                  prefix="data"
+                  preserveLeadingSlashes="false">
+        <include name="*.*"/>
       </tarfileset>
     </tar>
   </target>

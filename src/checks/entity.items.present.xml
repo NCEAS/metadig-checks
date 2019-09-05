@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>entity.items.present.1</id>
+	<name>Check that an entity name, description, format, size, checksum is present</name>
+	<description>Check that each data entity has a name, description, format, size, checksum.</description>
+	<type>interpretation</type>
+	<level>INFO</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+check <- function() {
+  library(base)
+  library(metadig)
+  # variables defined by MQE from the <xpath> selectors.
+  # "entityName" - the names of each data entity
+  # "entityDescriptionPresent" - is the names of each data entity present
+  # "entityFormatPresent" - is the description for the entity present
+  # "entitySizePresent" - is the description for the entity present
+  # 'entityChecksumPresent" - is the checksum value (e.g. SHA1, MD5) of the entity present
+  
+  outputList <- list()
+  # Assume that the check will succeed, until proven otherwise.
+  # The dataset may have multiple entities, so check each one. All entities are checked
+  # so mdqe can report to the user about all entities, not just the one that failed.
+  # Set quote style to simple quotes
+  skip <- FALSE
+  if (length(entityName) > 0) {
+    for(iEntity in 1:length(entityName)) {
+      # Assume that the check will succeed, until proven otherwise.
+      undefEl <- list()
+      thisEntityType <- entityType[[iEntity]]
+      
+      if(!isDefined("entityName", entityName, iEntity)) {
+        undefEl[[length(undefEl)+1]] <- "name"
+        thisEntityName <- sprintf("%d", iEntity)
+      } else {
+        thisEntityName <- sprintf("%s", entityName[[iEntity]])
+      }
+      
+      if(!isTrueVal("entityFormatPresent", entityFormatPresent, iEntity)) {
+        undefEl[[length(undefEl)+1]] <- "format"
+      }
+
+      if(!isTrueVal("entitySizePresent", entitySizePresent, iEntity)) {
+        undefEl[[length(undefEl)+1]] <- "size"
+      }
+
+      if(!isTrueVal("entityDescriptionPresent", entityDescriptionPresent, iEntity)) {
+        undefEl[[length(undefEl)+1]] <- "description"
+      }
+
+      if(!isTrueVal("entityChecksumPresent", entityChecksumPresent, iEntity)) {
+        undefEl[[length(undefEl)+1]] <- "checksum (authentication)"
+      }
+
+      # Store output for this entity if it didn't pass a check. We will only report on entities that don't have
+      # all the elements we are checking for.
+      if(length(undefEl) > 0) {
+        outputList[[length(outputList)+1]] <- list(value=sprintf("Description for '%s' is missing these items: %s", thisEntityName, paste(sQuote(unlist(undefEl)), collapse=", ")))
+      }
+    }
+  } else {
+      # No data entities were selected by the xpath, so tell the user no check was performed and set status to SKIP
+      outputList[[length(outputList)+1]] <- list(value=sprintf("No data descriptions are present, so unable to check entity 'name', 'format', etc"))
+      skip <- TRUE
+  }
+  
+  # If nt output was set, then the check passed, otherwise have to check for SKIP or FAILURE
+  status <- "FAILURE"
+  if(length(outputList) > 0) {
+    if (skip) status <- "SKIP"
+    return(list(status=status, values=outputList))
+  } else {
+    outputList[[length(outputList)+1]] <- list(value=sprintf("All data description sections have a name, description, format, size and checksum"))
+    return(list(status="SUCCESS", values=outputList))
+  }
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=result$values) 
+]]></code>
+
+	<!-- Don't need a subSelector for entityName, as this element is required, 
+		so their won't be entities that are selected that don't have this value, 
+		and therefor no 'blank' values. -->
+	<selector>
+		<name>entityName</name>
+		<xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/entityName</xpath>
+	</selector>
+	<selector>
+		<name>entityType</name>
+		<xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath>
+		<subSelector>
+		<name>et</name>
+		<xpath>name(.)</xpath>
+		</subSelector>
+	</selector>
+	<selector>
+		<name>entityDescriptionPresent</name>
+		<xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath>
+		<subSelector>
+			<name>entityDescriptionSubSelector</name>
+			<xpath>boolean(./entityDescription)</xpath>
+		</subSelector>
+	</selector>
+	<selector>
+		<name>entitySizePresent</name>
+		<xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath>
+		<subSelector>
+			<name>entitySizeSubSelector</name>
+			<xpath>boolean(./physical/size)</xpath>
+		</subSelector>
+	</selector>
+	<selector>
+		<name>entityFormatPresent</name>
+		<xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath>
+		<subSelector>
+			<name>entityFormatPresentSubSelector</name>
+			<xpath>boolean(./physical/dataFormat)</xpath>
+		</subSelector>
+	</selector>
+	<selector>
+		<name>entityChecksumPresent</name>
+		<xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]</xpath>
+		<subSelector>
+			<name>entityChecksumPresentSubSelector</name>
+			<xpath>boolean(./physical/authentication)</xpath>
+		</subSelector>
+	</selector>
+	<dialect>
+		<name>eml</name>
+		<xpath>boolean(/*[local-name() = 'eml'])</xpath>
+	</dialect>
+</mdq:check>

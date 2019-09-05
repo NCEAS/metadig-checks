@@ -7,6 +7,7 @@
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
+    <!-- Not ready for 0.2.0 release
     <check>
         <id>award.funder.present.1</id>
         <type>Findable</type>
@@ -22,6 +23,7 @@
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
+    -->
     <check>
         <id>dataset.keywords.controlled.1</id>
         <type>Findable</type>
@@ -115,11 +117,14 @@
     <!-- 
         Accessible 
     -->
+    <!-- Remove this check until interested parties verify that this check
+         is testing the correct concept. See https://github.com/NCEAS/metadig-checks/issues/29
     <check>
         <id>dataset.accessControlRules.specified.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    -->
     <check>
         <id>dataset.landingPage.present.1</id>
         <type>Accessible</type>

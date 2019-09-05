@@ -6,7 +6,7 @@
   <type>identification</type>
   <level>REQUIRED</level>
   <environment>rscript</environment>
-  <code>
+  <code><![CDATA[
     library(metadig)
     
     if (length(pub_date) >= 1) {
@@ -14,7 +14,7 @@
     } else {
       failure("A publication date is not present.") 
     }
-  </code>
+  ]]><</code>
   <selector>
     <name>pub_date</name>
     <xpath>/eml/dataset/pubDate</xpath>

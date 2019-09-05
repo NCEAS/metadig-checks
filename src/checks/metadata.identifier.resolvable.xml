@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>metadata.identifier.resolvable.1</id>
+   <name>Metadata Identifier Resolvable</name>
+   <description>Check that the metadata identifier exists and is resolvable.</description>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  import metadig.variable as mvar
+  import metadig.checks as checks
+
+  # These global variables are read by the quality engine when
+  # the check returns
+  global output
+  global status
+
+  # check if metadata identifier is present
+  if 'metadataIdentifier' not in globals() or metadataIdentifier is None:
+    output = "A metadata identifier was not found."
+    status = "FAILURE"
+    return False
+    
+  if (mvar.isBlank(metadataIdentifier)):
+    output = "The metadata identifier is blank."
+    status = "FAILURE"
+    return False
+  else:
+    # TODO: Check if the identifier is an authority id (DOI, ARK, CURIE, RRID)
+    # doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
+  
+    # Check if the identifier is resolvable
+    try:
+      (resolvable, msg) = checks.isResolvable(metadataIdentifier.strip())
+    except Exception:
+      output = 'Error resolving metadata identifier "{}"'.format(metadataIdentifier.strip())
+      status = "ERROR"
+      return False 
+    
+    if (resolvable):
+      output = 'The metadata identifier "{}" is resolvable.'.format(metadataIdentifier.strip())
+      status = "SUCCESS"
+      return True
+    else:
+      output = 'The metadata identifier "{}" is not resolvable'.format(metadataIdentifier.strip(), msg)      
+      status = "FAILURE"
+      return False
+   ]]></code>
+   <selector>
+      <name>metadataIdentifier</name>
+      <xpath>/*/metadataIdentifier/MD_Identifier |
+             /*/fileIdentifier/*/text() |
+             /eml/@packageId
+      </xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

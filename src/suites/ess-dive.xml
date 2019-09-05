@@ -19,7 +19,7 @@
     <id>check.abstract.100.words.1</id>
   </check>
   <check>
-    <id>check.dataset.title.length.1</id>
+    <id>dataset.title.length.1</id>
   </check>
   <check>
     <id>check.identifier.is.present.1</id>
@@ -61,15 +61,8 @@
     <id>enumerated.domains.1</id>
   </check>
   <check>
-    <id>check.echo.funder.1</id>
-  </check>
-  <check>
-    <id>check.echo.rightsHolder.1</id>
-  </check>
-  <check>
-    <id>check.echo.datasource.1</id>
-  </check>
-  <check>
-    <id>check.echo.formatId.1</id>
+      <id>dataset.keywords.controlled.1</id>
+      <type>Findable</type>
+      <level>OPTIONAL</level>
   </check>
 </mdq:suite>

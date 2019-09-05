@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>entity.name.present.1</id>
-   <name>Entity Names Present</name>
-   <description>Check that a name is specified for every entity.</description>
-   <type>Interoperable</type>
+   <id>entity.description.present.1</id>
+   <name>Entity Description Present</name>
+   <description>Check that a description is available for every entity.</description>
+   <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
@@ -15,9 +15,10 @@ def call():
   import metadig.variable as mvar
   
   maxPrint = 5
-  # Check if a name is present for each entity.
+  
+  # Check if a entity description is present for each attribute.
   if not entityPresent:
-    output = "No entities are  present so cannot check their name, skipping this check."
+    output = "No entities are  present so cannot check their descriptions, skipping this check."
     status = "SKIP"
     return True 
     
@@ -26,33 +27,40 @@ def call():
     
   for i in range(0, len(entities)):
     entityCount += 1
-    name = entities.get(i)
-    # No name for this entity was specified
-    if(name == None):
-      missing.append("entity #{}".format(i))
+    description = entities.get(i)
+    name = entityNames.get(i)
+    # No description for this entity was specified
+    if(description == None):
+      if(name == None): 
+        missing.append("entity #{}".format(i))
+      else:
+        missing.append(name)
+        
       if(len(missing) > maxPrint): 
-        continue
+        break
     else:
       # Description value should be a string or an array of strings
-      if(isinstance(name, ArrayList)):
+      if(isinstance(description, ArrayList)):
         continue
-      elif(not(isinstance(name, str) or isinstance(name, unicode))):
+      elif(not(isinstance(description, str) or isinstance(description, unicode))):
         if(name == None): 
-          if(len(missing) > maxPrint):
-            missing.append("entity #{}".format(i))
+          missing.append("entity #{}".format(i))
         else:
           missing.append(name)
+          
+        if(len(missing) > maxPrint): 
+          break
       else:
         continue
   
   if(len(missing) > 0):
-    output = "The following entities are missing a name: '{}'".format(', '.join(missing))
+    output = "The following entities are missing a description: '{}'".format(', '.join(missing))
     if(len(missing) > maxPrint):
       output += ", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} entities have names".format(entityCount)
+    output = "All {} entities have descriptions".format(entityCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -72,13 +80,30 @@ def call():
           /*/contentInfo/MI_CoverageDescription
       </xpath>
       <subSelector>
-         <name>name</name>
+         <name>description</name>
          <xpath>
-             ./entityName |
+             ./entityDescription |
              ./attributeDescription/RecordType
          </xpath>
      </subSelector>
    </selector>
+   <selector>
+      <name>entityNames</name>
+      <xpath>
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
+          /*/contentInfo/MD_CoverageDescription |
+          /*/contentInfo/MI_CoverageDescription
+      </xpath>
+      <!-- Coverage descriptions don't really have a specific name, so use the description instead -->
+      <subSelector>
+         <name>names</name>
+         <xpath>
+             ./entityName | 
+             ./attributeDescription/RecordType
+         </xpath>
+     </subSelector>
+   </selector>
+
    <dialect>
       <name>DataCite 3.1</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>

@@ -1,7 +1,7 @@
 ## metadig-checks: MetaDIG suites and checks for data and metadata improvement and guidance.
 
 
-- **Author**: Matthew B. Jones, Peter Slaughter ([NCEAS](http://www.nceas.ucsb.edu), Ted Habermann, Sean Gordon
+- **Author**: Matthew B. Jones, Peter Slaughter ([NCEAS](http://www.nceas.ucsb.edu)), Ted Habermann, Sean Gordon
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/metadig-checks/issues)
 

@@ -19,7 +19,7 @@
     <id>check.abstract.100.words.1</id>
   </check>
   <check>
-    <id>check.dataset.title.length.1</id>
+    <id>dataset.title.length.1</id>
   </check>
   <check>
     <id>check.identifier.is.present.1</id>
@@ -43,13 +43,13 @@
     <id>check.pub.date.1</id>
   </check>
   <check>
-    <id>check.sampling.description.present.1</id>
+    <id>sampling.description.present.1</id>
   </check>
   <check>
     <id>check.entity.present.1</id>
   </check>
   <check>
-    <id>check.entity.name.present.1</id>
+    <id>entity.items.present.1</id>
   </check>
   <check>
     <id>check.entity.attributes.present.1</id>
@@ -71,17 +71,5 @@
   </check>
   <check>
     <id>enumerated.domains.1</id>
-  </check>
-  <check>
-    <id>check.echo.rightsHolder.1</id>
-  </check>
-  <check>
-    <id>check.echo.datasource.1</id>
-  </check>
-  <check>
-    <id>check.echo.formatId.1</id>
-  </check>
-  <check>
-    <id>check.lookup.group.1</id>
   </check>
 </mdq:suite>

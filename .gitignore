@@ -37,3 +37,6 @@ rsconnect/
 
 # Intellij project directory
 .idea/
+
+# Ant distribution directory
+dist/**

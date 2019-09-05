@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>entity.attributeEnumeratedDomains.present.1</id>
+  <name>Entity Attribute Enumerated Domains Present</name>
+  <description>Enumerated domains should be defined</description>
+  <type>interpretation</type>
+  <level>OPTIONAL</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+library(metadig)
+
+# Find the <attribute> elements that have enumerated domains in them
+idxs <- which(!is.na(enumerated_domains))
+
+for (i in idxs) {
+  # Check the <code> element
+  for (code in codes[i]) {
+    if (is.null(code) || nchar(code) <= 0) {
+      failure(paste0("A code for the attribute ", names[i], " (id: ", ids[i], ") was undefined. This is either because the <code> was missing or did not contain any content."))
+    }
+  }
+
+  # Check the <definition> element
+  for (definition in definitions[i]) {
+    if (is.null(definition) || nchar(definition) <= 0) {
+      failure(paste0("A definition for the attribute ", names[i], " (id: ", ids[i], ") was undefined. This is either because the <definition> was missing or did not contain any content."))
+    }
+  }
+}
+
+success("All enumerated domain descriptions found had codes and definitions.")
+]]></code>
+  <selector>
+    <name>ids</name>
+    <xpath>/eml/dataset/dataTable/attributeList/attribute/@id</xpath>
+  </selector>
+  <selector>
+    <name>names</name>
+    <xpath>/eml/dataset/dataTable/attributeList/attribute</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./attributeName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>enumerated_domains</name>
+    <xpath>/eml/dataset/dataTable/attributeList/attribute</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./measurementScale/nominal/nonNumericDomain/enumeratedDomain</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>codes</name>
+    <xpath>/eml/dataset/dataTable/attributeList/attribute</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./measurementScale/nominal/nonNumericDomain/enumeratedDomain/codeDefinition/code</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>definitions</name>
+    <xpath>/eml/dataset/dataTable/attributeList/attribute</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./measurementScale/nominal/nonNumericDomain/enumeratedDomain/codeDefinition/definition</xpath>
+    </subSelector>
+  </selector>
+</mdq:check>

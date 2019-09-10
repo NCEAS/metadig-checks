@@ -36,7 +36,11 @@
     </xpath>
   </selector>
   <dialect>
-    <name>eml</name>
-    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+     <name>Ecological Metadata Language</name>
+     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+     <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+     <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
   </dialect>
 </mdq:check>

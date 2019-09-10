@@ -39,6 +39,7 @@ def call():
       <name>distributionContact</name>
       <xpath>
           /eml/*/associatedParty/role[RoleType='distributor'] |
+          /eml/*/contact |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/*/text() | 
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text() |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()

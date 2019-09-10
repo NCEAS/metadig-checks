@@ -80,16 +80,6 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.publisher.present.1</id>
-        <type>Findable</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>dataset.publisherIdentifier.present.1</id>
-        <type>Findable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
         <id>dataset.title.length.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
@@ -117,27 +107,16 @@
     <!-- 
         Accessible 
     -->
-    <!-- Remove this check until interested parties verify that this check
-         is testing the correct concept. See https://github.com/NCEAS/metadig-checks/issues/29
     <check>
         <id>dataset.accessControlRules.specified.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    -->
     <check>
         <id>dataset.landingPage.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    <!-- This check relies on the DataONE HEAD/resolve service, which is
-       currently broken. See https://redmine.dataone.org/issues/8812
-    <check>
-        <id>entity.access.public.1</id>
-        <type>Accessible</type>
-        <level>REQUIRED</level>
-    </check>
-    -->
     <check>
         <id>distribution.contact.present.1</id>
         <type>Accessible</type>
@@ -161,6 +140,26 @@
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
+    <check>
+        <id>dataset.publisher.present.1</id>
+        <type>Accessible</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>dataset.publisherIdentifier.present.1</id>
+        <type>Accessible</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>dataset.serviceLocation.present.1</id>
+        <type>Accessible</type>
+        <level>OPTIONAL</level>
+    </check>
+    <check>
+        <id>dataset.serviceProvider.present.1</id>
+        <type>Accessible</type>
+        <level>OPTIONAL</level>
+    </check>
     <!-- This check relies on the DataONE HEAD/resolve service, which is
        currently broken. See https://redmine.dataone.org/issues/8812
     <check>
@@ -170,12 +169,7 @@
     </check>
     -->
     <check>
-        <id>dataset.serviceLocation.present.1</id>
-        <type>Accessible</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>dataset.serviceProvider.present.1</id>
+        <id>entity.access.public.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>

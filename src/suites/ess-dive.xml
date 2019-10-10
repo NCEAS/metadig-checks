@@ -40,25 +40,7 @@
     <id>check.pub.date.1</id>
   </check>
   <check>
-    <id>check.entity.present.1</id>
-  </check>
-  <check>
-    <id>check.entity.attributes.present.1</id>
-  </check>
-  <check>
-    <id>check.attribute.definition.sufficient.1</id>
-  </check>
-  <check>
-    <id>check.attribute.name.differs.1</id>
-  </check>
-  <check>
     <id>check.methods.present.1</id>
-  </check>
-  <check>
-    <id>missing.value.codes.1</id>
-  </check>
-  <check>
-    <id>enumerated.domains.1</id>
   </check>
   <check>
       <id>dataset.keywords.controlled.1</id>

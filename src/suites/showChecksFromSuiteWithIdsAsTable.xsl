@@ -5,6 +5,7 @@
     -->
     <xsl:output method="html"/>
     <xsl:key name="checkLookup" match="//check" use="id"/>
+    <xsl:param name="checkType"/>
     <xsl:template match="/">
         <html>
             <head>
@@ -23,12 +24,16 @@
                         <th>Type</th>
                         <th>Dialects</th>
                     </tr>
-                    <xsl:apply-templates/>
+                    <h2><xsl:value-of select="concat(count(//check[contains(type,$checkType)]),' checks Type = ',$checkType)"/></h2>
+                    <xsl:for-each select="//check[contains(type,$checkType)]">
+                        <xsl:sort select="id"/>
+                        <xsl:call-template name="displayCheckTableRow"/>
+                    </xsl:for-each>
                 </table>
             </body>
         </html>
     </xsl:template>
-    <xsl:template match="check">
+    <xsl:template name="displayCheckTableRow">
         <!-- 
             The test can be defined in the suite definition or in the allChecks.xml file
         -->

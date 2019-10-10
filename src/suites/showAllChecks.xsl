@@ -23,12 +23,16 @@
                         <th>Type</th>
                         <th>Dialects</th>
                     </tr>
-                    <xsl:apply-templates/>
+                    <h2><xsl:value-of select="count(//check[contains(type,'Findable')])"/></h2>
+                    <xsl:for-each select="//check[contains(type,'Findable')]">
+                        <xsl:sort select="id"/>
+                        <xsl:call-template name="displayCheckTableRow"/>
+                    </xsl:for-each>
                 </table>
             </body>
         </html>
     </xsl:template>
-    <xsl:template match="check">
+    <xsl:template name="displayCheckTableRow">
         <xsl:variable name="currentCheck" select="."/>
         <tr>
             <td>

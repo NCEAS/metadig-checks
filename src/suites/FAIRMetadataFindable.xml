@@ -20,7 +20,7 @@
       <id>ResourceFormat</id>
    </check>
    <check>
-      <id>Abstract</id>
+      <id>dataset.abstract.length.1</id>
    </check>
    <check>
       <id>Keyword</id>

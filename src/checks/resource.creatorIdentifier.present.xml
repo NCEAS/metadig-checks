@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.creatorIdentifier.present.1</id>
-   <name>Dataset Creator Identifier Present</name>
-   <description>Check that a dataset creator identifier exists.</description>
+   <id>resource.creatorIdentifier.present.1</id>
+   <name>Resource creator Identifier Present</name>
+   <description>Check that a resource creator identifier exists.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -14,24 +14,24 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
-  # A dataset creator is not present
+  # A resource creator is not present
   if 'creator' not in globals() or creator is None:
-    output = "A dataset creator identifier was not found."
+    output = "A resource creator identifier was not found."
     status = "FAILURE"
     return False
         
   if (mvar.isBlank(creator)):
-    output = "The dataset creator identifier is blank."   
+    output = "The resource creator identifier is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if dataset creator identifier is a single string or arrayList
+    # Check if resource creator identifier is a single string or arrayList
     if(isinstance(creator, str) or isinstance(creator, unicode)):
-      output = "The dataset creator identifier '{}' was found".format(creator)
+      output = "The resource creator identifier '{}' was found".format(creator)
     elif (isinstance(creator, ArrayList)):
-      output = "The dataset creator identifier '{}' was found (first of {} formats)".format(creator[0].strip(), creator.size())
+      output = "The resource creator identifier '{}' was found (first of {} formats)".format(creator[0].strip(), creator.size())
     else:
-      output = "The dataset creator identifier '{}' was found)".format(creator)
+      output = "The resource creator identifier '{}' was found)".format(creator)
     status = "SUCCESS"
     return True
       ]]></code>

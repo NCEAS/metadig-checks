@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.publisher.present.1</id>
-   <name>Dataset Publisher Present</name>
+   <id>resource.publisher.present.1</id>
+   <name>Resource Publisher Present</name>
    <description>Check that a publisher exists.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>
@@ -16,16 +16,16 @@ def call():
   if ('datasetPublisherPresent' in globals() and datasetPublisherPresent is not None and datasetPublisherPresent):
     status = "SUCCESS"
   else:
-    output = "A dataset publisher is not present"
+    output = "A resource publisher is not present"
     status = "FAILURE"
     return False
     
   if (mvar.isBlank(datasetPublisher)):
-    output = "The dataset publisher is blank."
+    output = "The resource publisher is blank."
     status = "FAILURE"
     return False
 
-  output = "The dataset publisher '{}' was found".format(datasetPublisher.strip())
+  output = "The resource publisher '{}' was found".format(datasetPublisher.strip())
   return True 
       ]]></code>
    <selector>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.publisherIdentifier.present.1</id>
-   <name>Dataset Publisher Identifier Present</name>
-   <description>Check that a dataset publisher identifier exists.</description>
+   <id>resource.publisherIdentifier.present.1</id>
+   <name>Resource Publisher Identifier Present</name>
+   <description>Check that a resource publisher identifier exists.</description>
    <type>Accessible</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -14,24 +14,24 @@ def call():
   import metadig.variable as mvar
   import java.util.ArrayList as ArrayList
 
-  # A dataset publisher identifier is not present
+  # A resource publisher identifier is not present
   if 'datasetPublisherIdentifier' not in globals() or datasetPublisherIdentifier is None:
-    output = "A dataset publisher identifier was not found."
+    output = "A resource publisher identifier was not found."
     status = "FAILURE"
     return False
         
   if (mvar.isBlank(datasetPublisherIdentifier)):
-    output = "The dataset publisher identifier is blank."
+    output = "The resource publisher identifier is blank."
     status = "FAILURE"
     return False
   else:
-    # Check if dataset publisher identifier is a single string or arrayList
+    # Check if resource publisher identifier is a single string or arrayList
     if(isinstance(datasetPublisherIdentifier, str) or isinstance(datasetPublisherIdentifier, unicode)):
-      output = "The dataset publisher identifier '{}' was found".format(datasetPublisherIdentifier.strip())
+      output = "The resource publisher identifier '{}' was found".format(datasetPublisherIdentifier.strip())
     elif (isinstance(datasetPublisherIdentifier, ArrayList)):
-      output = "The dataset publisher identifier '{}' was found (first of {} publisher identifiers)".format(datasetPublisherIdentifier[0].strip(), datasetPublisherIdentifier.size())
+      output = "The resource publisher identifier '{}' was found (first of {} publisher identifiers)".format(datasetPublisherIdentifier[0].strip(), datasetPublisherIdentifier.size())
     else:
-      output = "The dataset publisher identifier '{}' was found)".format(datasetPublisherIdentifier)
+      output = "The resource publisher identifier '{}' was found)".format(datasetPublisherIdentifier)
 
     status = "SUCCESS"
     return True

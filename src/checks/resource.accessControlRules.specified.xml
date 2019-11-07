@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>dataset.accessControlRules.specified.1</id>
+   <name>Access Control Rules</name>
+   <description>Check that access control rules exists.</description>
+   <type>Accessible</type>
+   <level>OPTIONAL</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+  
+  displayNchars = 20
+
+  # An access control rule is not present
+  if 'accessControlRules' not in globals() or accessControlRules is None:
+    output = "Access control rules were not found."
+    status = "FAILURE"
+    return False
+        
+  if (mvar.isBlank(accessControlRules)):
+    output = "The access control rules are blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if access control rules are a single string or arrayList
+    if(isinstance(accessControlRules, str) or isinstance(accessControlRules, unicode)):
+      outstr = accessControlRules.strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      output = "The access control rules '{}' were found".format(outstr)
+    elif (isinstance(accessControlRules, ArrayList)):
+      outstr = accessControlRules[0].strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      output = "The access control rules '{}' were found (first of {} access rules)".format(outstr, accessControlRules.size())
+    else:
+      outstr = accessControlRules[0].strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      output = "The access control rules '{}' were found)".format(outstr)
+    status = "SUCCESS"
+    return True
+      ]]></code>
+   <selector>
+      <name>accessControlRules</name>
+      <xpath>
+          /eml/dataset/intellectualRights |
+          /*/identificationInfo/*/resourceConstraints/MD_LegalConstraints/accessConstraints
+      </xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

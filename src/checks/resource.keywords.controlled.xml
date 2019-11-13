@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.keywords.controlled.1</id>
-   <name>Dataset Keywords Controlled</name>
+   <id>resource.keywords.controlled.1</id>
+   <name>Resource Keywords Controlled</name>
    <description>Check if a keyword thesaurus is present, indicating that the keywords are controlled.</description>
    <type>Findable</type>
    <level>REQUIRED</level>
@@ -18,8 +18,8 @@ def call():
   # For each resource, check that the attributes defined for it have unique names
   if(len(keywordGroups) == 0):
     output = "No keywords found, unable to check for controlled keywords."
-    status = "SKIP"
-    return True
+    status = "FAILURE"
+    return False
     
   for i in range(0, len(keywordGroups)):
     keywordGroupCount += 1

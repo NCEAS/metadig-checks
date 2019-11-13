@@ -35,8 +35,8 @@ def call():
   # For each entity, check that the attributes defined for it have unique names
   if(len(entities) == 0):
     output = "No entities found, unable to check for duplicate attribute names."
-    status = "SKIP"
-    return True
+    status = "FAILURE"
+    return False
   
   for i in range(0, len(entities)):
     entityCount += 1

@@ -17,9 +17,9 @@ def call():
   maxPrint = 5
   # Check if a name is present for each entity.
   if not entityPresent:
-    output = "No entities are  present so cannot check their name, skipping this check."
-    status = "SKIP"
-    return True 
+    output = "No entities are  present so cannot check their name."
+    status = "FAILURE"
+    return False
     
   entityCount = 0
   missing = []

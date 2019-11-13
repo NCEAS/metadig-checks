@@ -17,9 +17,9 @@ def call():
   # Check if a measurement precision is present for each attribute.
   
   if not attributesPresent:
-    output = "No attributes present that require measurement precision, check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attributes present that require measurement precision."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   missing = []

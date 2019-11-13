@@ -23,9 +23,9 @@ def call():
   
   # Check if definitions are present for each attribute.
   if not attributeDefinitionPresent:
-    output = "No attributes are present, so unable to check if defintions are sufficient. Check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attributes are present, so unable to check if defintions are sufficient."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   insufficient = []

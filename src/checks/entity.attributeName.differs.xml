@@ -21,8 +21,8 @@ def call():
   # For each entity, check that the attributes defined for it have unique names
   if(len(attributeDefinition) == 0):
     output = "No entity definitions found, unable to check that attribute names differ from definitions."
-    status = "SKIP"
-    return True
+    status = "FAILURE"
+    return False
   
   # Check each definition - see if it is blank or missing, then check if it is the same as the 
   # name

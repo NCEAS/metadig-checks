@@ -19,8 +19,8 @@ def call():
   # For each keyword, check if a type is specified
   if(len(keywords) == 0):
     output = "No keywords found, unable to check for keyword types."
-    status = "SKIP"
-    return True
+    status = "FAILURE"
+    return False
      
   # For each keyword, check if a type is specified.
   # Note that the quality engine returns xpath selections as ArrayLists when 

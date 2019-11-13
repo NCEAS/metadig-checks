@@ -18,9 +18,9 @@ def call():
   
   # Check if a entity description is present for each attribute.
   if not entityPresent:
-    output = "No entities are  present so cannot check their descriptions, skipping this check."
-    status = "SKIP"
-    return True 
+    output = "No entities are  present so cannot check their descriptions."
+    status = "FAILURE"
+    return False
     
   entityCount = 0
   missing = []

@@ -15,8 +15,8 @@ def call():
   
   if not attributesPresent:
     output = "No attributes present, unable to check if attributes have a measurement scale defined."
-    status = "SKIP"
-    return True 
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   missing = []

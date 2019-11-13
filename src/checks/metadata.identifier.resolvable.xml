@@ -10,6 +10,7 @@
 def call():
   import metadig.variable as mvar
   import metadig.checks as checks
+  import re
 
   # These global variables are read by the quality engine when
   # the check returns
@@ -28,11 +29,17 @@ def call():
     return False
   else:
     # TODO: Check if the identifier is an authority id (DOI, ARK, CURIE, RRID)
-    # doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
+    #   doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
+    # If the identifier is a 'bare' DOI (e.g. "doi:10.18739/A2027H"), then prepend with a DOI resolver link
+    # i.e. https://dx.doi.org
+    testId = metadataIdentifier
+    regex = re.compile('doi:')
+    if(regex.match(metadataIdentifier)):
+      testId = "https://dx.doi.org/{}".format(metadataIdentifier)
   
     # Check if the identifier is resolvable
     try:
-      (resolvable, msg) = checks.isResolvable(metadataIdentifier.strip())
+      (resolvable, msg) = checks.isResolvable(testId.strip())
     except Exception:
       output = 'Error resolving metadata identifier "{}"'.format(metadataIdentifier.strip())
       status = "ERROR"

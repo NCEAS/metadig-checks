@@ -3,7 +3,7 @@
    <id>dataset.title.length2.1</id>
    <name>Dataset Title Length</name>
    <description>Check that the title exists and is of suffient length.</description>
-   <type>discovery</type>
+   <type>identification</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[

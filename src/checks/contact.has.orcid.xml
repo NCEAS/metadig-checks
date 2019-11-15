@@ -4,7 +4,7 @@
 	<name>Check that a contact has an ORCID, email and address</name>
 	<description>Check if the contact contains a userId ORCID, email and address.</description>
 	<type>identification</type>
-	<level>INFO</level>
+	<level>REQUIRED</level>
 	<environment>rscript</environment>
 	<code><![CDATA[
 check <- function() {

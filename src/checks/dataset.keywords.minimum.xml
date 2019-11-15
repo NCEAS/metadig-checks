@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>dataset.keywords.minimum.1</id>
+   <name>Dataset Keyword Minimum</name>
+   <description>Check if there are a minumum number of keywords present, and no keywords in title.</description>
+   <type></type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  import re
+
+  keywordMinimumCount = 3
+ 
+  # Now check if any of the keywords are in the title. If yes, then the check fails
+  if (not 'keywords' in globals() or keywords is None):
+    output = "No dataset keywords found, unable to check keyword count."
+    status = "FAILURE"
+    return False
+
+  # Check if the minimun number of keywords are present
+  if(len(keywords) < keywordMinimumCount):
+    output = "Only {} keywords present, which is less than the minumum of {}".format(len(keywords), keywordMinimumCount)
+    status = "FAILURE"
+    return False
+    
+  # Now check if any of the keywords are in the title. If yes, then the check fails
+  if (not 'titlePresent' in globals() or titlePresent is None or not titlePresent):
+    output = "A dataset title is not present, cannot check if keywords are from title words."
+    status = "FAILURE"
+    return False
+
+  # Parse the title into works separated by spaces or commas
+  titleWords = re.split("\s|,", title.lower())    
+  
+  foundKeywords = ""
+  foundCount = 0
+  # Check each keyword to see if it is in the title
+  for i in range(0, len(keywords)):
+    # Keywords should not be from words in the title.
+    thisKeyword = keywords.get(i)
+    if(thisKeyword.lower() in titleWords):
+      foundCount += 1
+      if(foundKeywords == ""):
+        foundKeywords = thisKeyword
+      else:
+        foundKeywords += ", " + thisKeyword
+        
+  if(foundKeywords != ""):
+    if(foundCount > 1):
+      output = "The keywords '{}' were found in the title".format(foundKeywords);
+    else:
+      output = "The keyword '{}' was found in the title".format(foundKeywords);
+    status = "FAILURE"
+    return False
+      
+  output = "{} keywords found (minumum is {}), and none were found in the title".format(len(keywords), keywordMinimumCount);
+  status = "SUCCESS"
+  return True 
+      ]]></code>
+   <selector>
+      <name>keywords</name>
+      <xpath>
+           /*/identificationInfo/*/descriptiveKeywords/*/keywords |
+           /eml/dataset/keywordSet/keyword
+      </xpath>
+   </selector>
+   <selector>
+     <name>titlePresent</name>
+     <xpath>boolean(
+        /eml/dataset/title or 
+        /*/description or
+        /*/identificationInfo/*/citation/CI_Citation/title)
+     </xpath>
+   </selector>
+   <selector>
+     <name>title</name>
+     <xpath>/eml/dataset/title |
+       /*/description |
+       /*/identificationInfo/*/citation/CI_Citation/title
+     </xpath>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

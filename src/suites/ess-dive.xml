@@ -19,6 +19,9 @@
     <id>check.abstract.100.words.1</id>
   </check>
   <check>
+    <id>dataset.keywords.miminum.1</id>
+  </check>
+  <check>
     <id>dataset.title.length.1</id>
   </check>
   <check>

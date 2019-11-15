@@ -30,7 +30,7 @@ check <- function() {
     values[[length(values)+1]] <- list(value="A user identifier for any creator is not present, so a check for an ORCID cannot be made")
   } else {
     # creator/userId is present, so check if it is an orcid
-    hasORCID <- grepl("^\\s*http(s)?://(dx\\.)?doi\\.org/(doi:)?10\\..+", userId, perl=T) || grepl("^\\s*doi:10\\..+", userId, perl=T)
+    hasORCID <- grepl("^\\s*http(s)?://orcid\\.org.+", userId, perl=T) || grepl("^\\s*ORCID:.+", userId, perl=T)
     if(hasORCID) {
       values[[length(values)+1]] <- list(value="The user identifier for a creator is an ORCID")
     } else {

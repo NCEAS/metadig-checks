@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>dataset.title.length2.1</id>
+   <name>Dataset Title Length</name>
+   <description>Check that the title exists and is of suffient length.</description>
+   <type>discovery</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  # check: datasetAbstractLength
+  import re
+  import metadig.variable as mvar
+
+  global output
+  global status
+  minLength = 7
+  maxLength = 40
+  warnLength = 20
+  
+  if 'title' not in globals() or title is None:
+    output = "A title was not found."
+    status = "FAILURE"
+    return False
+
+  if(mvar.isBlank(title)):
+    output = "The title is blank"
+    status = "FAILURE"
+    return False
+    
+  # Parse the title into works separated by spaces or commas
+  titleWords = re.split("\s|,", title.strip().lower())    
+  
+  if (len(titleWords) < minLength):
+    output = "The title word count of {} is less than the required minimum of {}".format(len(titleWords), minLength)
+    status = "FAILURE"
+    return False
+    
+  if (len(titleWords) > maxLength):
+    output = "The title length word count of {} is greater than the required maximum of {}".format(len(titleWords), maxLength)
+    status = "FAILURE"
+    return False
+    
+  if (len(titleWords) > warnLength):
+    output = "Warning: the title length word count of {} is greater than the recommended maximum of {}".format(len(titleWords), warnLength)
+    status = "SUCCESS"
+    return True 
+    
+  output = "The title length word count of {} is sufficient (between {} and {} words)".format(len(titleWords), minLength, maxLength)
+  status = "SUCCESS"
+  return True 
+      ]]></code>
+      <selector>
+       <name>title</name>
+       <xpath>/eml/dataset/title |
+         /*/description |
+         /*/identificationInfo/*/citation/CI_Citation/title
+        </xpath>
+      </selector>
+      <dialect>
+         <name>DataCite 3.1</name>
+         <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+      </dialect>
+      <dialect>
+         <name>Dryad Data Package and Data File Modules</name>
+         <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+      </dialect>
+      <dialect>
+         <name>Ecological Metadata Language</name>
+         <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+      </dialect>
+      <dialect>
+         <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+         <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+      </dialect>
+</mdq:check>

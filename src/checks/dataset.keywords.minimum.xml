@@ -3,7 +3,7 @@
    <id>dataset.keywords.minimum.1</id>
    <name>Dataset Keyword Minimum</name>
    <description>Check if there are a minumum number of keywords present, and no keywords in title.</description>
-   <type></type>
+   <type>discovery</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[

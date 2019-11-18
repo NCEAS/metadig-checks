@@ -27,7 +27,7 @@
     <check>
         <id>resource.keywords.controlled.1</id>
         <type>Findable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>resource.keywords.present.1</id>

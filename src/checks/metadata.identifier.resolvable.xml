@@ -8,14 +8,16 @@
    <environment>python</environment>
    <code><![CDATA[
 def call():
-  import metadig.variable as mvar
-  import metadig.checks as checks
-  import re
-
-  # These global variables are read by the quality engine when
-  # the check returns
   global output
   global status
+
+  import java.util.ArrayList as ArrayList
+  import metadig.variable as mvar
+  import metadig.checks as checks
+  import urllib
+  import re
+
+  d1_resolve_service="https://cn.dataone.org/cn/v2/resolve/"
 
   # check if metadata identifier is present
   if 'metadataIdentifier' not in globals() or metadataIdentifier is None:
@@ -28,31 +30,48 @@ def call():
     status = "FAILURE"
     return False
   else:
-    # TODO: Check if the identifier is an authority id (DOI, ARK, CURIE, RRID)
-    #   doi:, https://doi.org/, urn, http:, https:, ark:, RRID:
+    # Check if metadata identifier is a single string or arrayList
+    if(isinstance(metadataIdentifier, str) or isinstance(metadataIdentifier, unicode)):
+      output = "The metadata identifier '{}' was found".format(metadataIdentifier)
+      id = metadataIdentifier
+    elif (isinstance(metadataIdentifier, ArrayList)):
+      output = "The metadata identifier '{}' was found (first of {} identifiers)".format(metadataIdentifier[0].strip(), metadataIdentifier.size())
+      id = metadataIdentifier.get(0)
+    else:
+      output = "The metadata identifier '{}' was found)".format(metadataIdentifier)
+      id = metadataIdentifier
+    
+  # Now check if the metadata identifier is a resolvable url. If it doesn't look like a URL, then 
+  # see if DataONE knows about it.
+  usedD1 = False
+  isDOI = False
+  if(re.match("^\s*http.*:\/", id)):
+    resolvable, msg = checks.isResolvable(id)
+  elif(re.match('doi:', id)):
+    isDOI = True
     # If the identifier is a 'bare' DOI (e.g. "doi:10.18739/A2027H"), then prepend with a DOI resolver link
     # i.e. https://dx.doi.org
-    testId = metadataIdentifier
-    regex = re.compile('doi:')
-    if(regex.match(metadataIdentifier)):
-      testId = "https://dx.doi.org/{}".format(metadataIdentifier)
-  
-    # Check if the identifier is resolvable
-    try:
-      (resolvable, msg) = checks.isResolvable(testId.strip())
-    except Exception:
-      output = 'Error resolving metadata identifier "{}"'.format(metadataIdentifier.strip())
-      status = "ERROR"
-      return False 
-    
-    if (resolvable):
-      output = 'The metadata identifier "{}" is resolvable.'.format(metadataIdentifier.strip())
-      status = "SUCCESS"
-      return True
+    resolvable, msg = checks.isResolvable("https://dx.doi.org/{}".format(id.strip()))
+  else:
+    usedD1 = True
+    url = "{}{}".format(d1_resolve_service,urllib.quote(id))
+    resolvable, msg = checks.isResolvable(url)
+        
+  if (resolvable):
+    if(usedD1):
+      output = '{} and is resolvable using the DataONE resolve service.'.format(output)
+    elif(isDOI):
+      output = '{} and is resolvable using a DOI resolver.'.format(output)      
     else:
-      output = 'The metadata identifier "{}" is not resolvable'.format(metadataIdentifier.strip(), msg)      
-      status = "FAILURE"
-      return False
+      output = '{} and is resolvable.'.format(output)      
+          
+    status = "SUCCESS"
+    return True
+  else:
+    # output = "{}, but is not resolvable: {}".format(output, msg)
+    output = "{}, but is not resolvable.".format(output)      
+    status = "FAILURE"
+    return False
    ]]></code>
    <selector>
       <name>metadataIdentifier</name>

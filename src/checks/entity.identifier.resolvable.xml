@@ -19,7 +19,7 @@ def call():
   
   d1_resolve_service="https://cn.dataone.org/cn/v2/resolve/"
 
-  # An attribute definition is not present
+  # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:
     output = "A entity identifier was not found."
     status = "FAILURE"
@@ -40,26 +40,36 @@ def call():
     else:
       output = "The entity identifier '{}' was found)".format(entityIdentifier)
       id = entityIdentifier
-
+      
   # Now check if the entity identifier is a resolvable url. If it doesn't look like a URL, then 
   # see if DataONE knows about it.
   usedD1 = False
+  isDOI = False
   if(re.match("^\s*http.*:\/", id)):
     resolvable, msg = checks.isResolvable(id)
+  elif(re.match('doi:', id)):
+    isDOI = True
+    # If the identifier is a 'bare' DOI (e.g. "doi:10.18739/A2027H"), then prepend with a DOI resolver link
+    # i.e. https://dx.doi.org
+    resolvable, msg = checks.isResolvable("https://dx.doi.org/{}".format(id.strip()))
   else:
     usedD1 = True
     url = "{}{}".format(d1_resolve_service,urllib.quote(id))
     resolvable, msg = checks.isResolvable(url)
-  
+    
   if (resolvable):
     if(usedD1):
-      output = '{} and is resolvable.'.format(output)
+      output = '{} and is resolvable using the DataONE resolve service.'.format(output)
+    elif(isDOI):
+      output = '{} and is resolvable using a DOI resolver.'.format(output)      
     else:
-      output = '{} and is resolvable as a DataONE identifier.'.format(output)      
+      output = '{} and is resolvable.'.format(output)      
+      
     status = "SUCCESS"
     return True
   else:
-    output = "{}, but is not resolvable: {}".format(output, msg)      
+    # output = "{}, but is not resolvable: {}".format(output, msg)
+    output = "{}, but is not resolvable.".format(output)      
     status = "FAILURE"
     return False
    ]]></code>

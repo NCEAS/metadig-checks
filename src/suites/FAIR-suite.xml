@@ -127,14 +127,11 @@
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    <!-- This check relies on the DataONE HEAD/resolve service, which is
-       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>metadata.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    -->
     <check>
         <id>resource.distribution.present.1</id>
         <type>Accessible</type>
@@ -160,14 +157,11 @@
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
-    <!-- This check relies on the DataONE HEAD/resolve service, which is
-       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>entity.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    -->
     <check>
         <id>entity.access.public.1</id>
         <type>Accessible</type>

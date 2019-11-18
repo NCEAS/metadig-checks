@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>resource.keywords.present.1</id>
+   <name>Resource Keywords Present</name>
+   <description>Check if keywords are present.</description>
+   <type>Findable</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  import re
+
+  # Fail if no keywords present
+  if (not 'keywords' in globals() or keywords is None):
+    output = "No keywords were found."
+    status = "FAILURE"
+    return False
+
+  # There may be just a single keyword, in which case the quality engine will return
+  # a unicde string instead of an array
+  if(isinstance(keywords, str) or isinstance(keywords, unicode)):
+    keywordCount = 1
+  else:
+    # If multiple keywords exist, they are returned as an arraylist
+    keywordCount = len(keywords)
+        
+  # Passed all tests!
+  output = "{} keywords are present".format(keywordCount)
+  # Passed all tests!
+  status = "SUCCESS"
+  return True 
+      ]]></code>
+   <selector>
+      <name>keywords</name>
+      <xpath>
+           /*/identificationInfo/*/descriptiveKeywords/*/keywords |
+           /eml/dataset/keywordSet/keyword
+      </xpath>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

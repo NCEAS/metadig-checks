@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.abstract.length.1</id>
-   <name>Dataset Abstract Length</name>
+   <id>resource.abstractLength.sufficient.1</id>
+   <name>Resource Abstract Length Sufficient</name>
    <description>Check that an abstract exists and is of suffient length.</description>
    <type>Findable</type>
    <level>REQUIRED</level>

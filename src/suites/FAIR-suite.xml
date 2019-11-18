@@ -30,6 +30,11 @@
         <level>REQUIRED</level>
     </check>
     <check>
+        <id>resource.keywords.present.1</id>
+        <type>Findable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
         <id>resource.keywordType.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
@@ -41,11 +46,6 @@
     </check>
     <check>
         <id>metadata.identifier.present.1</id>
-        <type>Findable</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>resource.naturalLanguageKeywords.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>

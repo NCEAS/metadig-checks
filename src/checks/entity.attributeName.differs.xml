@@ -58,7 +58,7 @@ def call():
       <selector>
          <name>attributeDefinitionPresent</name>
          <xpath>boolean(
-             /eml/dataset/*/attributeList/attribute or
+             /eml/dataset/*/attributeList/attribute/attributeDefinition or
              /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute/*/description or
              /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
              /*/contentInfo/*/dimension/MI_Band/descriptor or

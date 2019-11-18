@@ -27,7 +27,7 @@
     <check>
         <id>resource.keywords.controlled.1</id>
         <type>Findable</type>
-        <level>OPTIONAL</level>
+        <level>REQUIRED</level>
     </check>
     <check>
         <id>resource.keywordType.present.1</id>
@@ -47,7 +47,7 @@
     <check>
         <id>resource.naturalLanguageKeywords.present.1</id>
         <type>Findable</type>
-        <level>OPTIONAL</level>
+        <level>REQUIRED</level>
     </check>
     <check>
         <id>resource.creator.present.1</id>
@@ -197,7 +197,7 @@
     <check>
         <id>entity.attributeStorageType.present.1</id>
         <type>Interoperable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.checksum.present.1</id>
@@ -261,12 +261,12 @@
     <check>
         <id>entity.attributeMeasurementScale.present.1</id>
         <type>Reusable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.attributePrecision.present.1</id>
         <type>Reusable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.description.present.1</id>

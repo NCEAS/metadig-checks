@@ -21,6 +21,11 @@ def call():
     status = "FAILURE"
     return False
     
+  if not attributeStorageTypePresent:
+    output = "No attribute storage types are present."
+    status = "FAILURE"
+    return False
+    
   attributeCount = 0
   missing = []
   
@@ -48,7 +53,18 @@ def call():
     ]]></code>
    <selector>
       <name>attributesPresent</name>
-      <xpath>boolean(/eml/dataset/*/attributeList/attribute)
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute or
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute or
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute or
+          /*/contentInfo/*/dimension/MI_Band or
+          /*/contentInfo/*/dimension/MD_Band)
+      </xpath>
+   </selector>
+   <selector>
+      <name>attributeStorageTypePresent</name>
+      <!-- ISO doesn't have this concept, so no path for it -->
+      <xpath>boolean(
+          /eml/dataset/*/attributeList/attribute/storageType)
       </xpath>
    </selector>
    <selector>

@@ -80,7 +80,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.title.length.1</id>
+        <id>resource.titleLength.sufficient.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>

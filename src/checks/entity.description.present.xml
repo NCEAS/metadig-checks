@@ -103,7 +103,6 @@ def call():
          </xpath>
      </subSelector>
    </selector>
-
    <dialect>
       <name>DataCite 3.1</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>

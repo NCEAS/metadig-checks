@@ -38,6 +38,8 @@ def call():
    <selector>
       <name>entityFormat</name>
       <xpath>
+          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text() |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text() |
           /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
           /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
           /DryadDataFile/format/CharacterString |

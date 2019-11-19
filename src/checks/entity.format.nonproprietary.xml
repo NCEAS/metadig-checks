@@ -50,41 +50,57 @@ def call():
       for row in fmtreader:
         formats.append(row)
 
-  proprietaryFound = []
+  proprietaryFound = ArrayList()
   # An entity format is not present
   if 'entityFormat' not in globals() or entityFormat is None:
     output = "An entity format was not found."
     status = "FAILURE"
     return False
         
+  entityCount = 0
   if (mvar.isBlank(entityFormat)):
     output = "The entity format is blank."   
     status = "FAILURE"
     return False
-    
-  for i in range(0, len(entityFormat)):
-    # Check each entity format and see if it is in the 'proprietary' list, which
-    # is based on all formats from DataONE that have been manually determined to be
-    # proprietary.
-    thisFormat = entityFormat.get(i)
-    if(isProprietary(formats, thisFormat)):
-      proprietaryFound.append(thisFormat)
+  else:
+    # Check if the entity format is a single string or arrayList
+    if(isinstance(entityFormat, str) or isinstance(entityFormat, unicode)):
+      if(isProprietary(formats, entityFormat)):
+        proprietaryFound.append(entityFormat)
+      entityCount = 1
+    # process arraylist
+    elif (isinstance(entityFormat, ArrayList)):
+      for i in range(0, len(entityFormat)):
+        # Check each entity format and see if it is in the 'proprietary' list, which
+        # is based on all formats from DataONE that have been manually determined t  o be
+        # proprietary  .
+        thisFormat = entityFormat.get(i).trim()
+        if(isProprietary(formats, thisFormat)):
+          proprietaryFound.append(thisFormat)
+      entityCount = len(entityFormat)
+    else:
+      # Process something else
+      if(isProprietary(formats, entityFormat)):
+        proprietaryFound.append(entityFormat)
+      entityCount = 1
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = "These proprietary data entity formats were found: '{}' (out of {} total formats.)".format(', '.join(fmts), len(entityFormat))
+    output = "These proprietary data entity formats were found: '{}' (out of {} total formats.)".format(', '.join(fmts), entityCount)
     status = "FAILURE"
     return False
   else:
-    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormat))
+    output = "No proprietary data entity formats found (out of {} total formats.".format(entityCount)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
       <name>entityFormat</name>
       <xpath>
-          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name//text() |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name//text() |
+          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text() |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text() |
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
           /DryadDataFile/format/CharacterString |
           //resourceFormat/MD_Format/name | 
           /eml/dataset/*/physical/dataFormat//formatName |

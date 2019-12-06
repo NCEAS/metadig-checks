@@ -30,6 +30,7 @@
     <id>dataset.keywords.overlap.1</id>
     <type>discovery</type>
     <level>OPTIONAL</level>
+  </check>
   <check>
     <id>dataset.title.length2.1</id>
   </check>

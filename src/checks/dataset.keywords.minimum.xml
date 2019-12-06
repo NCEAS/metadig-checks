@@ -13,64 +13,32 @@ def call():
   import re
 
   keywordMinimumCount = 3
- 
+
   # Fail if no keywords present
   if (not 'keywords' in globals() or keywords is None):
     output = "No dataset keywords found, unable to check keyword count."
     status = "FAILURE"
     return False
 
-  # Check if a title is present
-  if (not 'titlePresent' in globals() or titlePresent is None or not titlePresent):
-    output = "A dataset title is not present, cannot check if keywords are from title words."
-    status = "FAILURE"
-    return False
-
-  # Parse the title into works separated by spaces or commas
-  titleWords = re.split("\s|,", title.lower())    
-  
-  foundKeywords = ""
-  foundCount = 0
   # Now check if any of the keywords are in the title. If yes, then the check fails
-  # Note There can be just a single keyword, in which case the quality engine will return 
+  # Note There can be just a single keyword, in which case the quality engine will return
   # a unicde string instead of an array
   # Single keyword
   if(isinstance(keywords, str) or isinstance(keywords, unicode)):
     keywordCount = 1
-    if(keywords.lower() in titleWords):
-      foundCount = 1
-      foundKeywords = keywords
   else:
     # Multiple keywords
     keywordCount = len(keywords)
-    for i in range(0, keywordCount):
-      # Keywords should not be from words in the title.
-      thisKeyword = keywords.get(i)
-      if(thisKeyword.lower() in titleWords):
-        foundCount += 1
-        if(foundKeywords == ""):
-          foundKeywords = thisKeyword
-        else:
-          foundKeywords += ", " + thisKeyword
-        
-  # If keywords were found in the title fail
-  if(foundKeywords != ""):
-    if(foundCount > 1):
-      output = "{} keywords present (minumum is {}); the keywords '{}' were found in the title".format(keywordCount, keywordMinimumCount, foundKeywords);
-    else:
-      output = "{} keywords present (minumum is {}); the keyword '{}' was found in the title".format(keywordCount, keywordMinimumCount, foundKeywords);
-    status = "FAILURE"
-    return False
-    
-  # If the keyword count less than the minimum then fail
-  output = "{} keywords present (minumum is {}); no keywords were found in the title".format(keywordCount, keywordMinimumCount);
+
+  # If the keyword count is less than the minimum then fail
+  output = "{} keywords present (minumum is {})".format(keywordCount, keywordMinimumCount);
   if(keywordCount < keywordMinimumCount):
     status = "FAILURE"
     return False
   else:
     # Passed all tests!
     status = "SUCCESS"
-    return True 
+    return True
       ]]></code>
    <selector>
       <name>keywords</name>
@@ -78,21 +46,6 @@ def call():
            /*/identificationInfo/*/descriptiveKeywords/*/keywords |
            /eml/dataset/keywordSet/keyword
       </xpath>
-   </selector>
-   <selector>
-     <name>titlePresent</name>
-     <xpath>boolean(
-        /eml/dataset/title or 
-        /*/description or
-        /*/identificationInfo/*/citation/CI_Citation/title)
-     </xpath>
-   </selector>
-   <selector>
-     <name>title</name>
-     <xpath>/eml/dataset/title |
-       /*/description |
-       /*/identificationInfo/*/citation/CI_Citation/title
-     </xpath>
    </selector>
    <dialect>
       <name>Ecological Metadata Language</name>

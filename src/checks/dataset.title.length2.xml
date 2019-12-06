@@ -37,7 +37,7 @@ def call():
     return False
     
   if (len(titleWords) > maxLength):
-    output = "The title length word count of {} is greater than the required maximum of {}".format(len(titleWords), maxLength)
+    output = "The title length word count of {} is greater than the maximum of {}".format(len(titleWords), maxLength)
     status = "FAILURE"
     return False
     

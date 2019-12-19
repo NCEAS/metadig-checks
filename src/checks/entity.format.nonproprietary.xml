@@ -74,7 +74,7 @@ def call():
         # Check each entity format and see if it is in the 'proprietary' list, which
         # is based on all formats from DataONE that have been manually determined t  o be
         # proprietary  .
-        thisFormat = entityFormat.get(i).trim()
+        thisFormat = entityFormat.get(i)
         if(isProprietary(formats, thisFormat)):
           proprietaryFound.append(thisFormat)
       entityCount = len(entityFormat)

@@ -14,12 +14,11 @@ def call():
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
-  # An attribute definition is not present
+  # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:
     output = "A entity identifier was not found."
     status = "FAILURE"
     return False
-        
         
   # check if the identifier is blank
   # TODO: check the identifier namespace

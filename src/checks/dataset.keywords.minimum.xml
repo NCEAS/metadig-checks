@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>dataset.keywords.minimum.1</id>
+   <name>Dataset Keyword Minimum</name>
+   <description>Check if there are a minumum number of keywords present, and no keywords in title.</description>
+   <type>discovery</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  import re
+
+  keywordMinimumCount = 3
+
+  # Fail if no keywords present
+  if (not 'keywords' in globals() or keywords is None):
+    output = "No dataset keywords found, unable to check keyword count."
+    status = "FAILURE"
+    return False
+
+  # Now check if any of the keywords are in the title. If yes, then the check fails
+  # Note There can be just a single keyword, in which case the quality engine will return
+  # a unicde string instead of an array
+  # Single keyword
+  if(isinstance(keywords, str) or isinstance(keywords, unicode)):
+    keywordCount = 1
+  else:
+    # Multiple keywords
+    keywordCount = len(keywords)
+
+  # If the keyword count is less than the minimum then fail
+  output = "{} keywords present (minumum is {})".format(keywordCount, keywordMinimumCount);
+  if(keywordCount < keywordMinimumCount):
+    status = "FAILURE"
+    return False
+  else:
+    # Passed all tests!
+    status = "SUCCESS"
+    return True
+      ]]></code>
+   <selector>
+      <name>keywords</name>
+      <xpath>
+           /*/identificationInfo/*/descriptiveKeywords/*/keywords |
+           /eml/dataset/keywordSet/keyword
+      </xpath>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

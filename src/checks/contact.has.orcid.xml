@@ -1,60 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-	<id>check.contact.has.orcid.1</id>
+	<id>contact.has.ORCID.1</id>
 	<name>Check that a contact has an ORCID, email and address</name>
 	<description>Check if the contact contains a userId ORCID, email and address.</description>
 	<type>identification</type>
-	<level>INFO</level>
+	<level>REQUIRED</level>
 	<environment>rscript</environment>
 	<code><![CDATA[
 check <- function() {
   library(base)
   # These variables are defined by the MQE from the <xpath> selectors.
   # "contactPresent" - is the dataset contact present
-  # "userId"         - the dataset contact/userId
-  # "emailPresent"   - the contact email
-  # "addressPresent" - the contact address
-  if(!contactPresent) {
-    return(list(status="FAILURE", output="A 'contact' is not present, so unable to check for an ORCID, electronicMailAddress or address."))
-  }
-  
-  # Assume that the check will succeed, until proven otherwise.
+  # "userId"         - the userIds for dataset contacts
   # The output messages will be gathered into a list
   status <- "SUCCESS"
   values <- list()
+  
+  if(!contactPresent) {
+    status <- "FAILURE"
+    values[[length(values)+1]] <- list(value="No contacts found, unable to check user identifier for an ORCID.")
+    return(list(status=status, values=values))
+  }
   
   # There could be multiple contacts, but just one contact with a 'userId' will satisfy this check
   if(is.null(userId)) {
     # Should this be a SKIP?
     status <- "FAILURE"
     values[[length(values)+1]] <- list(value="A user identifier for any contact is not present, unable to check for an ORCID")
+    return(list(status=status, values=values))
   } else {
-    # contact/userId is present, so check if it is an orcid
-    hasORCID <- grepl("^\\s*http(s)?://(dx\\.)?doi\\.org/(doi:)?10\\..+", userId, perl=T) || grepl("^\\s*doi:10\\..+", userId, perl=T)
-    if(hasORCID) {
-      values[[length(values)+1]] <- list(value="The user identifier for a contact contains an ORCID")
-    } else {
-      status <- "FAILURE"
-      values[[length(values)+1]] <- list(value="The user identifier for any contact does not contain an ORCID")
+    # Check that at least one contact has an ORCID
+    for(iUser in 1:length(userId)) {
+      thisUserId <- userId[[iUser]]
+      # contact/userId is present, so check if it is an orcid
+      hasORCID <- grepl("^\\s*http(s)?://orcid\\.org.+", thisUserId, perl=T) || grepl("^\\s*ORCID:.+", thisUserId, perl=T)
+      if(hasORCID) {
+        values[[length(values)+1]] <- list(value=sprintf("Found a contact user identifier that contains an ORCID: '%s'",thisUserId))
+        return(list(status="SUCCESS", values=values))
+      }
     }
-  }
-  
-  # There could be multiple contact, but just one contact with an 'email' will satisfy this check
-  if(emailPresent) {
-    values[[length(values)+1]] <- list(value="An email address for a contact is present")
-  } else {
-    status <- "FAILURE"
-    values[[length(values)+1]] <- list(value="An email address for any contact is not present")
   } 
   
-  # There could be multiple contact, but just one contact with an 'address' will satisfy this check
-  if(addressPresent) {
-    values[[length(values)+1]] <- list(value="An address for a contact is present")
-  } else {
-    status <- "FAILURE"
-    values[[length(values)+1]] <- list(value="An address for any contact is not present")
-  }
-  
+  # All userIds have been checked, with no sucees
+  status <- "FAILURE"
+  values[[length(values)+1]] <- list(value="No ORCIDs found for any contact user identifier.")
   return(list(status=status, values=values))
 }
 
@@ -64,21 +53,13 @@ mdq_result <- list(status=result$status, output=result$values)
   <selector>
 		 <name>contactPresent</name>
 		 <xpath>boolean(/*[local-name() = 'eml']/dataset/contact)</xpath>
-	 </selector>
-  <selector>
+	</selector>
+    <selector>
 		 <name>userId</name>
 		 <xpath>/*[local-name() = 'eml']/dataset/contact/userId</xpath>
-	 </selector>
-  <selector>
-		 <name>emailPresent</name>
-		 <xpath>boolean(/*[local-name() = 'eml']/dataset/contact/electronicMailAddress)</xpath>
-	 </selector>
-  <selector>
-		 <name>addressPresent</name>
-		 <xpath>boolean(/*[local-name() = 'eml']/dataset/contact/address)</xpath>
-	 </selector>
-	 <dialect>
+	</selector>
+	<dialect>
 		 <name>eml</name>
 		 <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-	 </dialect>
+	</dialect>
 </mdq:check>

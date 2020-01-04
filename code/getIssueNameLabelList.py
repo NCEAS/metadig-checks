@@ -12,6 +12,22 @@ Created on Thu Dec 19 13:22:23 2019
 import re
 import requests
 
+def findUseCase(labels):
+    FAIR = ['Findable','Accessible','Interoperable','Reusable']
+    for useCase in FAIR:
+        if useCase in labels:
+            return useCase
+    return 'None'
+
+
+def findLevel(labels):
+    levels = ['Essential','Supporting']
+    for level in levels:
+        if level in labels:
+            return level
+    return 'None'
+
+
 owner = 'NCEAS'
 repository = 'metadig-checks'
 maxIssuePage = 12
@@ -49,7 +65,7 @@ for page in range(1, maxIssuePage):
             checkNames.append(tokenList)
 
 with open('metaDIGIssueData.txt', 'w') as output:
-    print('ID\tTitle\tMilestone\tLabels\tt1\tt2\tt3\tt4\tt5\tt6\tt7', file=output)
+    print('ID\tTitle\tMilestone\tLabels\tUseCase\tLevel\tt1\tt2\tt3\tt4\tt5\tt6\tt7', file=output)
     
     for check in checkNames:
         #
@@ -61,9 +77,9 @@ with open('metaDIGIssueData.txt', 'w') as output:
             nameTokens += '\t '
             tokenCount += 1
                     
-        print("%s\t%s\t%s\t%s\t%s" %
+        print("%s\t%s\t%s\t%s\t%s\t%s\t%s" %
               (check[0], check[1], check[2],
-               ','.join(check[3]), nameTokens),
-              file=output)
+               ','.join(check[3]), findUseCase(check[3]),
+               findLevel(check[3]), nameTokens), file=output)
 
 print('metaDIGIssueData.txt created')

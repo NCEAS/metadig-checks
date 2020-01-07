@@ -56,7 +56,7 @@ def call():
     if(attributeNamesMissing):
       output = "{} attributes (of {} attributes) do not have a definition (also name not specified in metadata)".format(missingCount, attributeCount)
     else:
-      output = "These {} attributes (of {} total) do not have a definition: '{}'".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
+      output = "{} attributes (of {} total) do not have a definition: {}".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += ", ..."
     status = "FAILURE"

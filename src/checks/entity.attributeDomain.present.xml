@@ -10,8 +10,9 @@
 def call():
   global output
   global status
+  global attributeDomain
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   NoneType = type(None)
@@ -28,14 +29,22 @@ def call():
   maxPrint = 5
   
   # Check global variable (from XPath selector) to see if attribute names exist
-  if(isinstance(attributeName, NoneType) or attributeName.size == 0):
+  if(isinstance(attributeName, NoneType) or len(attributeName) == 0):
     attributeNamesMissing = True
     
-  for i in range(0, attributeDomain.size()):
+  attributeDomain = mvar.toUnicode(attributeDomain)
+  attributeName = mvar.toUnicode(attributeName)
+    
+  # If only a single value is returned, then convert to a list
+  # for easier processing
+  if(isinstance(attributeDomain, unicode)):
+    attributeDomain[0] = attributeDomain
+  
+  for i in range(0, len(attributeDomain)):
     attributeCount += 1
-    domain = attributeDomain.get(i)
+    domain = attributeDomain[i]
     if(not attributeNamesMissing):
-      name = attributeName.get(i)
+      name = attributeName[i]
     # Check if the attribute name is blank
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
       attributeNamesMissing = True
@@ -55,10 +64,16 @@ def call():
         continue
         
   if(missingCount > 0):
+    attrList = ""
     if(attributeNamesMissing):
       output = "{} attributes (of {} total) do not have a measurement domain defined".format(missingCount, attributeCount)
     else:
-      output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
+      if(missingCount > maxPrint):
+        attrList = "'{}, ...'".format(', '.join(missing[0:maxPrint]))
+      else:
+        attrList = "'{}'".format(', '.join(missing[0:maxPrint]))
+        
+      output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, attrList)
       
     if(len(missing) > maxPrint):
       output += ", ..."

@@ -10,9 +10,10 @@
 def call():
   global output
   global status
+  global coverageContentType
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  maxPrint = 3
 
   # A coverage content type is not present
   if 'coverageContentType' not in globals() or coverageContentType is None:
@@ -25,13 +26,15 @@ def call():
     status = "FAILURE"
     return False
   else:
+    coverageContentType = mvar.toUnicode(coverageContentType)
     # Check if coverage content type is a single string or arrayList
-    if(isinstance(coverageContentType, str) or isinstance(coverageContentType, unicode)):
+    if(isinstance(coverageContentType, list)):
+      output = "The coverage content types '{}".format(', '.join(coverageContentType[0:maxPrint]))
+      if(len(coverageContentType) > maxPrint):
+        output += ", ..."
+      output = "{}' were found ({} total).".format(output, len(coverageContentType))
+    else: 
       output = "The coverage content type '{}' was found".format(coverageContentType)
-    elif (isinstance(coverageContentType, ArrayList)):
-      output = "The coverage content type '{}' was found (first of {} types)".format(coverageContentType[0].strip(), coverageContentType.size())
-    else:
-      output = "The coverage content type '{}' was found)".format(coverageContentType)
     status = "SUCCESS"
     return True
       ]]></code>

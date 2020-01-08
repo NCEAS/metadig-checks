@@ -10,8 +10,9 @@
 def call():
   global output
   global status
+  global attributeDefinition
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   definitionIsSame = []
@@ -26,22 +27,32 @@ def call():
   
   # Check each definition - see if it is blank or missing, then check if it is the same as the 
   # name
+  attributeDefinition = mvar.toUnicode(attributeDefinition)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  # Convert to a list if only one element, if needed
+  if(isinstance(attributeDefinition, unicode)):
+    attributeDefinition = [attributeDefinition]
+    
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
+    
   for i in range(0, len(attributeDefinition)):
-    definition = attributeDefinition.get(i)
-    name = attributeName.get(i)
+    definition = attributeDefinition[i]
+    # If no name for this attribute, use the attribute sequence number
+    if(len(attributeName) >= i):
+      name = attributeName[i]
+    else:
+      name = "#{}".format(i)
+      
     # No definition for this attribute
     if(definition == None):
       missingDefinitions.append(name)
       continue
     else:
-      # If only one definition element for this attribute, the quality engine will return it as a string.
-      # If multiples exist, it will be returned as a Java Arraylist (jython)
-      if(isinstance(definition, str) or isinstance(definition, unicode)):
-        if(name == definition):
-          definitionIsSame.append(name)
-        continue
-      else:
-        continue
+      # Is the definition name the same as the definition
+      if(name == definition):
+        definitionIsSame.append(name)
         
   if(len(definitionIsSame) > 0):
     # Only print the max entries allowed - otherwise the report could get unweildy  

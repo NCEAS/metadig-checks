@@ -10,62 +10,55 @@
 def call():
   global output
   global status
-  import java.util.ArrayList as ArrayList
+  global keywords
+  global keywordNames
   import metadig.variable as mvar
 
-  missing = []
-  # Limit the number of missing keywords that will be listed
-  missingListMax = 5
+  maxPrint = 10
+  keywordTypesMissing = []
+  NoneType = type(None)
+  
   # For each keyword, check if a type is specified
-  if(len(keywords) == 0):
+  if(isinstance(keywords, NoneType) or len(keywords) == 0):
     output = "No keywords found, unable to check for keyword types."
     status = "FAILURE"
     return False
-     
-  # For each keyword, check if a type is specified.
-  # Note that the quality engine returns xpath selections as ArrayLists when 
-  # multiple items are returned.
+
+  # Make sure values are converted to type unicode
+  keywords = mvar.toUnicode(keywords)
+  keywordNames = mvar.toUnicode(keywordNames)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(keywords, unicode)):
+    keywords[0] = keywords
+    
+  if(isinstance(keywordNames, unicode)):
+    keywordNames[0] = keywordNames
+  
+  # For each keyword, check if a keyword type is specified.
   for i in range(0, len(keywords)):
-    keywordType = keywords.get(i)
-    thisKeywordName = keywordNames.get(i)
-    if(thisKeywordName is None):
-      thisKeywordName = "no name"
-    elif(isinstance(thisKeywordName, int)):
-      thisKeywordName = str(thisKeywordName)
-    elif(isinstance(thisKeywordName, ArrayList)):
-      for j in range(0, len(thisKeywordName)):
-        testStr = thisKeywordName.get(j)
-        # The quality engine assumes that a string that looks like an
-        # integer should be converted to an int, so convert it to
-        # a string!
-        if(isinstance(testStr, int)):
-          testStr = str(testStr)
+    keywordType = keywords[i]
+    keywordName = keywordNames[i]
+    
+    # Check if keywordName is blank
+    if(isinstance(keywordName, NoneType) or mvar.isBlank(keywordName)):
+      keywordName = "name N/A"
           
-        testStr = testStr.strip()
-        if(testStr == ""):
-          continue
-        else:
-          thisKeywordName = testStr
-          break
-          
-    if keywordType is None:
-      if(len(missing) > missingListMax):
-        missing.append('...')
-        break
-      else: 
-        missing.append(thisKeywordName)
-        continue
-          
-    if (mvar.isBlank(keywordType)):
-      if(len(missing) > missingListMax):
-        missing.append('...')
-        break
+    # No keyword type for this keyword was specified
+    if(isinstance(keywordType, NoneType) or len(keywordType) == 0):
+        keywordTypesMissing.append(keywordName)
+    else:
+      if(mvar.isBlank(keywordType)):
+          keywordTypesMissing.append(name)
       else:
-        missing.append(thisKeywordName)
         continue
 
-  if(len(missing) > 0):
-    output = "The following keywords do not have a type specified: '{}'".format(', '.join(missing))
+  # Add the list of resources that don't have keywords to the output
+  if(len(keywordTypesMissing) > 0):
+    output = "{} keywords (of {} total) do not have a type specified: '{}'".format(len(keywordTypesMissing), len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]).encode('utf-8'))
+    if(len(keywordTypesMissing) > maxPrint):
+      output += ", ..."
     status = "FAILURE"
     return False
   else:
@@ -83,7 +76,7 @@ def call():
       <subSelector>
         <name>type</name>
         <xpath>
-            attribute::keywordType |
+            ./@keywordType |
             ../type/MD_KeywordTypeCode
         </xpath>
       </subSelector>
@@ -96,7 +89,7 @@ def call():
       </xpath>
       <subSelector>
         <name>name</name>
-        <xpath>./text() | ./*/text()</xpath>
+        <xpath>text() | */text()</xpath>
       </subSelector>
    </selector>
    <dialect>

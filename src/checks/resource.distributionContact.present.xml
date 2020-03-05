@@ -11,7 +11,6 @@ def call():
   global output
   global status
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # A distribution contact is not present
@@ -25,21 +24,21 @@ def call():
     status = "FAILURE"
     return False
   else:
+    contact = mvar.toUnicode(distributionContact)
     # Check if resource identifier type is a single string or arrayList
-    if(isinstance(distributionContact, str) or isinstance(distributionContact, unicode)):
-      output = "The distribution contact '{}' was found".format(distributionContact)
-    elif (isinstance(distributionContact, ArrayList)):
-      output = "The distribution contact '{}' was found (first of {} contacts)".format(distributionContact[0].strip(), distributionContact.size())
+    if(isinstance(contact, list)):
+      output = u"The distribution contact '{}' was found (first of {} contacts)".format(contact[0], len(contact))
     else:
-      output = "The distribution contact '{}' was found)".format(distributionContact)
+      output = "The distribution contact '{}' was found".format(contact).encode("utf-8")
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
       <name>distributionContact</name>
       <xpath>
-          /eml/*/associatedParty/role[RoleType='distributor'] |
-          /eml/*/contact |
+          /eml/*/associatedParty/role[RoleType='distributor']//text()[normalize-space()] |
+          /eml/*/contact/individualName//text()[normalize-space()] |
+          /eml/*/contact/organizationName//text()[normalize-space()] |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/*/text() | 
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text() |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()

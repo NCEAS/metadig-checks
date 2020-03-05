@@ -10,16 +10,23 @@
 def call():
   global output
   global status
+  global entityIdentifier
   
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:
-    output = "A entity identifier was not found."
+    output = "An entity identifier was not found."
     status = "FAILURE"
     return False
         
+  entityIdentifier = mvar.toUnicode(entityIdentifier)
+  # If a single value, convert to a list for easier processing (i.e. don't have
+  # to keep checking if it's a single value or list)
+  if(isinstance(entityIdentifier, unicode)):
+    entityIdentifier = [entityIdentifier]
+    
   # check if the identifier is blank
   # TODO: check the identifier namespace
   if (mvar.isBlank(entityIdentifier)):
@@ -27,14 +34,11 @@ def call():
     status = "FAILURE"
     return False
   else:
-    # Check if entity identifier is a single string or arrayList
-    if(isinstance(entityIdentifier, str) or isinstance(entityIdentifier, unicode)):
-      output = "The entity identifier '{}' was found".format(entityIdentifier)
-    elif (isinstance(entityIdentifier, ArrayList)):
-      output = "The entity identifier '{}' was found (first of {} identifiers)".format(entityIdentifier[0].strip(), entityIdentifier.size())
+    if(len(entityIdentifier) > 1):
+      output = "The entity identifier '{}' was found (first of {} identifiers)".format(entityIdentifier[0].strip(), len(entityIdentifier))
     else:
-      output = "The entity identifier '{}' was found)".format(entityIdentifier)
-
+      output = "The entity identifier '{}' was found".format(entityIdentifier[0])
+      
     status = "SUCCESS"
     return True
       ]]></code>

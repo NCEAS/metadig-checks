@@ -10,6 +10,7 @@
 def call():
   global output
   global status
+  global datasetLicense
          
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
@@ -21,26 +22,32 @@ def call():
     status = "FAILURE"
     return False
 
+  datasetLicense = mvar.toUnicode(datasetLicense)
+  if(isinstance(datasetLicense, unicode)):
+    datasetLicense = [datasetLicense]
+  
   if (mvar.isBlank(datasetLicense)):
     output = "The dataset license is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if dataset license is a single string or arrayList
-    if(isinstance(datasetLicense, str) or isinstance(datasetLicense, unicode)):
+    if(isinstance(datasetLicense, unicode)):
+      # Create a unicode variable (not byte string) that can contain a unicode result
+      # This won't be needed when Java scripting engine has a compatible Python 3 version
       outstr = datasetLicense.strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The dataset license '{}' was found".format(outstr)
-    elif (isinstance(datasetLicense, ArrayList)):
+        outstr = u"{}...".format(outstr[:displayNchars])
+      output = u"The dataset license '{}' was found".format(outstr)
+    elif (isinstance(datasetLicense, list)):
       outstr = datasetLicense[0].strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The dataset license '{}' was found (first of {} licenses)".format(outstr, datasetLicense.size())
+        outstr = u"{}...".format(outstr[:displayNchars])
+      output = u"The dataset license '{}' was found (first of {} licenses)".format(outstr, len(datasetLicense))
     else:
-      output = "The dataset license '{}' was found)".format(datasetLicense)
+      output = u"   The dataset license '{}' was found".format(datasetLicense)
     status = "SUCCESS"
     return True
       ]]></code>

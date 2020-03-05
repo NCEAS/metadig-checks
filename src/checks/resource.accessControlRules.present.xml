@@ -11,6 +11,8 @@ def call():
   global output
   global status
   
+  global accessControlRules
+  
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
@@ -22,30 +24,29 @@ def call():
     status = "FAILURE"
     return False
         
+  accessControlRules = mvar.toUnicode(accessControlRules)
+
+  if(isinstance(accessControlRules, unicode)):
+    accessControlRules = [accessControlRules]
+
   if (mvar.isBlank(accessControlRules)):
     output = "The access control rules are blank."   
     status = "FAILURE"
     return False
   else:
     # Check if access control rules are a single string or arrayList
-    if(isinstance(accessControlRules, str) or isinstance(accessControlRules, unicode)):
+    if(isinstance(accessControlRules, unicode)):
       outstr = accessControlRules.strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The access control rules '{}' were found".format(outstr)
-    elif (isinstance(accessControlRules, ArrayList)):
+        outstr = u"{}...".format(outstr[:displayNchars])
+      output = u"The access control rules '{}' were found".format(outstr)
+    elif (isinstance(accessControlRules, list)):
       outstr = accessControlRules[0].strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The access control rules '{}' were found (first of {} access rules)".format(outstr, accessControlRules.size())
-    else:
-      outstr = accessControlRules[0].strip()
-      outstr.replace('\n', ' ').replace('\r', '')
-      if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The access control rules '{}' were found)".format(outstr)
+        outstr = u"{}...".format(outstr[:displayNchars])
+      output = u"The access control rules '{}' were found)".format(outstr)
     status = "SUCCESS"
     return True
       ]]></code>

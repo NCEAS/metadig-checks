@@ -10,6 +10,8 @@
 def call():
   global output
   global status
+  global attributeDefinition
+  global attributeName
   
   import metadig.variable as mvar
   
@@ -26,6 +28,18 @@ def call():
   attributeNamesMissing = False
   missingCount = 0
   maxPrint = 5
+  
+  attributeDefinition= mvar.toUnicode(attributeDefinition)
+  # If a single value, convert to a list for easier processing (i.e. don't have
+  # to keep checking if it's a single value or list)
+  if(isinstance(attributeDefinition, unicode)):
+    attributeDefinition = [attributeDefinition]
+
+  attributeName = mvar.toUnicode(attributeName)
+  # If a single value, convert to a list for easier processing (i.e. don't have
+  # to keep checking if it's a single value or list)
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
   
   if(isinstance(attributeName, NoneType) or len(attributeName)  == 0): 
     attributeNamesMissing = True
@@ -51,12 +65,12 @@ def call():
           missing.append(name)
       else:
         continue
-  
+        
   if(missingCount > 0):
     if(attributeNamesMissing):
-      output = "{} attributes (of {} attributes) do not have a definition (also name not specified in metadata)".format(missingCount, attributeCount)
+      output = u"{} attributes (of {} attributes) do not have a definition (also name not specified in metadata)".format(missingCount, attributeCount)
     else:
-      output = "{} attributes (of {} total) do not have a definition: {}".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
+      output = u"{} attributes (of {} total) do not have a definition: {}".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += ", ..."
     status = "FAILURE"

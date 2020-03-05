@@ -10,36 +10,44 @@
 def call():
   global output
   global status
+  global entityIdentifier
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import metadig.checks as checks
   import urllib
   import re
+  import numbers
   
   d1_resolve_service="https://cn.dataone.org/cn/v2/resolve/"
 
+  # TODO: This check is only inspecting the first entity identifier
+  # Update it to check the first N identifiers (where N is some
+  # reasonable number to check. Note that there may be hundreds or
+  # thousands of ids, and we probably don't want to check them all.
+  
   # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:
     output = "A entity identifier was not found."
     status = "FAILURE"
     return False
-        
+         
+  entityIdentifier = mvar.toUnicode(entityIdentifier)
+  # If a single value, convert to a list for easier processing (i.e. don't 
+  # have to keep checking if it's a single value or list)
+  if(isinstance(entityIdentifier, unicode)):
+    entityIdentifier = [entityIdentifier]
+
   if (mvar.isBlank(entityIdentifier)):
     output = "The entity identifier is blank."
     status = "FAILURE"
     return False
-  else:
-    # Check if entity identifier is a single string or arrayList
-    if(isinstance(entityIdentifier, str) or isinstance(entityIdentifier, unicode)):
-      output = "The entity identifier '{}' was found".format(entityIdentifier)
-      id = entityIdentifier
-    elif (isinstance(entityIdentifier, ArrayList)):
-      output = "The entity identifier '{}' was found (first of {} identifiers)".format(entityIdentifier[0].strip(), entityIdentifier.size())
-      id = entityIdentifier.get(0)
+  else: 
+    if(isinstance(entityIdentifier, list)):
+      id = entityIdentifier[0]
+      output = u"The entity identifier '{}' was found".format(id)
     else:
-      output = "The entity identifier '{}' was found)".format(entityIdentifier)
       id = entityIdentifier
+      output = "The entity identifier '{}' was found".format(id)
       
   # Now check if the entity identifier is a resolvable url. If it doesn't look like a URL, then 
   # see if DataONE knows about it.
@@ -54,16 +62,16 @@ def call():
     resolvable, msg = checks.isResolvable("https://dx.doi.org/{}".format(id.strip()))
   else:
     usedD1 = True
-    url = "{}{}".format(d1_resolve_service,urllib.quote(id))
+    url = u"{}{}".format(d1_resolve_service,urllib.quote(id))
     resolvable, msg = checks.isResolvable(url)
     
   if (resolvable):
     if(usedD1):
-      output = '{} and is resolvable using the DataONE resolve service.'.format(output)
+      output = u'{} and is resolvable using the DataONE resolve service.'.format(output)
     elif(isDOI):
-      output = '{} and is resolvable using a DOI resolver.'.format(output)      
+      output = u'{} and is resolvable using a DOI resolver.'.format(output)      
     else:
-      output = '{} and is resolvable.'.format(output)      
+      output = u'{} and is resolvable.'.format(output)      
       
     status = "SUCCESS"
     return True

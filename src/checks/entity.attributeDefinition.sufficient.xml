@@ -10,8 +10,9 @@
 def call():
   global output
   global status
+  global attributeDefinition
+  global attributeName 
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import re
   
@@ -31,15 +32,26 @@ def call():
   insufficient = []
   insufficientCount = 0
   
-  if(isinstance(attributeName, NoneType) or attributeName.size() == 0):
+  attributeDefinition = mvar.toUnicode(attributeDefinition)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  if(isinstance(attributeName, NoneType) or len(attributeName) == 0):
    attributeNamesMissing = True
+ 
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeDefinition, unicode)):
+    attributeDefinition = [attributeDefinition]
+  
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
 
   # Check each attribute definition to see if it is missing or blank.
-  for i in range(0, attributeDefinition.size()):
+  for i in range(0, len(attributeDefinition)):
     attributeCount += 1
-    definition = attributeDefinition.get(i)
+    definition = attributeDefinition[i]
     if(not attributeNamesMissing):
-      name = attributeName.get(i)
+      name = attributeName[i]
       # Check if the attribute name is blank
       if(isinstance(name, NoneType) or mvar.isBlank(name)):
         attributeNamesMissing = True
@@ -57,8 +69,8 @@ def call():
         continue
           
       # If for some reason there are multiple definitions for this entity, just use the first one
-      if(isinstance(definition, ArrayList)):
-        definition = definition.get(0)
+      if(isinstance(definition, list)):
+        definition = definition[0]
       # Now check the word count
       words = re.split('\s+', definition.strip())
       if(len(words) < minWordCount or len(words) > maxWordCount):
@@ -66,15 +78,14 @@ def call():
         if(not attributeNamesMissing):
           insufficient.append(name)
   
-  # Let the user know if defintions are missing, but don't fail the check based
+  # Let the user know if definitions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
   if(insufficientCount > 0):
     # Only print the max entries allowed - otherwise the report could get unweildy  
     if(attributeNamesMissing):
-      output = "{} attributes (of {} attributes) have insufficient definitions - less than {} words or greater than {} words.".format(insufficientCount, attributeCount, minWordCount, maxWordCount)
-      #output = "attributeCount {}, attributeDefinition.size() {}, attributeName.size() {} ".format(attributeCount, attributeDefinition.size(), attributeName.size())
+      output = u"{} attributes (of {} attributes) have insufficient definitions - less than {} words or greater than {} words.".format(insufficientCount, attributeCount, minWordCount, maxWordCount)
     else:
-      output = "These {} attributes (of {} total) have insufficient defintions less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
+      output = u"These {} attributes (of {} total) have insufficient defintions less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
       if(len(insufficient) > maxPrint):
         output += ", ..."
       

@@ -35,10 +35,13 @@ def call():
   attributeDomain = mvar.toUnicode(attributeDomain)
   attributeName = mvar.toUnicode(attributeName)
     
-  # If only a single value is returned, then convert to a list
+  # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
   if(isinstance(attributeDomain, unicode)):
     attributeDomain[0] = attributeDomain
+    
+  if(isinstance(attributeName, unicode)):
+    attributeName[0] = attributeName
   
   for i in range(0, len(attributeDomain)):
     attributeCount += 1
@@ -52,6 +55,7 @@ def call():
     # No domain for this attribute was specified
     if(isinstance(domain, NoneType) or len(domain) == 0):
       missingCount += 1
+      # If mssing and we have a name, append it
       if(not attributeNamesMissing):
         missing.append(name)
     else:
@@ -71,7 +75,7 @@ def call():
       if(missingCount > maxPrint):
         attrList = "'{}, ...'".format(', '.join(missing[0:maxPrint]))
       else:
-        attrList = "'{}'".format(', '.join(missing[0:maxPrint]))
+        attrList = "'{}'".format(', '.join(missing))
         
       output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, attrList)
       

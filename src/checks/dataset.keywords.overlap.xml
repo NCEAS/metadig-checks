@@ -53,11 +53,11 @@ def call():
 
   # If keywords were found in the title fail
   if(foundCount == 1):
-    output = "the keyword '{}' was found in the title".format(foundKeywords)
+    output = "the keyword '{}' was also found in the title".format(foundKeywords)
     status = "FAILURE"
     return False
   elif(foundCount > 1):
-    output = "The keywords '{}' were found in the title".format(foundKeywords)
+    output = "The keywords '{}' were also found in the title".format(foundKeywords)
     status = "FAILURE"
     return False
 

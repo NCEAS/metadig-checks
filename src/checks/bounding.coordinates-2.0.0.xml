@@ -10,9 +10,9 @@
     library(metadig)
     
     if (coordinatesPresent) >= 1) {
-      success("A set of bounding coordinates describing the geographic coverage of this dataset is present.")
+      success("Coordinates describing the point location or geographic area of this dataset are present.")
     } else {
-      failure("A set of bounding coordinates describing the geographic coverage of this dataset is not present.")
+      failure("Coordinates describing the point location or geographic area of this dataset are not present.")
     }
   </code>
   <selector namespaceAware="true">

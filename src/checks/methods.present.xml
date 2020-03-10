@@ -21,7 +21,7 @@ check <- function() {
     
     # Check that a <methods> section is present for the dataset.
     if(!methodsPresent) {
-        return(list(status = "FAILURE", output = sprintf("A methods section is not present, so unable to check method step descriptions word count.")))
+        return(list(status = "FAILURE", output = sprintf("A methods section is not present.")))
     }
 
     if (methodStepCount > 0) {

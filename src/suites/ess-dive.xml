@@ -45,9 +45,11 @@
   </check>
   <check>
     <id>check.geographic.description.1</id>
+    <level>OPTIONAL</level>
   </check>
   <check>
     <id>check.bounding.coordinates.1</id>
+    <level>OPTIONAL</level>
   </check>
   <check>
     <id>check.pub.date.1</id>

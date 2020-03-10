@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>dataset.keywords.minimum.1</id>
    <name>Dataset Keyword Minimum</name>
-   <description>Check if there are a minumum number of keywords present, and no keywords in title.</description>
+   <description>Check if there are a minimum number of keywords present, and no keywords in title.</description>
    <type>discovery</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -31,7 +31,7 @@ def call():
     keywordCount = len(keywords)
 
   # If the keyword count is less than the minimum then fail
-  output = "{} keywords present (minumum is {})".format(keywordCount, keywordMinimumCount);
+  output = "Only {} keywords are present, and {} or more keywords are required".format(keywordCount, keywordMinimumCount);
   if(keywordCount < keywordMinimumCount):
     status = "FAILURE"
     return False

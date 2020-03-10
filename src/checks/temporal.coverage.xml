@@ -9,9 +9,9 @@
   <code><![CDATA[
   check <- function() {
     if(!coveragePresent) {
-      return(list(status = "FAILURE", output = sprintf("A description of this dataset's temporal coverage is not present.")))
+      return(list(status = "FAILURE", output = sprintf("Start and end dates describing the temporal coverage of this dataset are not present.")))
     } else {
-      return(list(status = "SUCCESS", output = sprintf("A description of this dataset's temporal coverage is present.")))
+      return(list(status = "SUCCESS", output = sprintf("Start and end dates describing the temporal coverage of this dataset are present.")))
     }
   }
   result <- check()

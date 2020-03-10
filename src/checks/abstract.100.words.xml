@@ -22,10 +22,10 @@
 
       if (length(tokens) >= 100) {
         status <- "SUCCESS"
-        message <- paste0("The abstract is ", length(tokens), " word(s) long which is sufficient.")
+        message <- paste0("The abstract is ", length(tokens), " word(s) long, which is sufficient.")
       } else {
         status <- "FAILURE"
-        message <- paste0("The abstract is only ", length(tokens), " word(s) long but 100 or more is required.")
+        message <- paste0("The abstract is only ", length(tokens), " word(s) long, and 100 or more words are required.")
       }
     }
 

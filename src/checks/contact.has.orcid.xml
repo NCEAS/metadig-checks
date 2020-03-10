@@ -26,7 +26,7 @@ check <- function() {
   if(is.null(userId)) {
     # Should this be a SKIP?
     status <- "FAILURE"
-    values[[length(values)+1]] <- list(value="A user identifier for any contact is not present, unable to check for an ORCID")
+    values[[length(values)+1]] <- list(value="No ORCID is provided for the contact person.")
     return(list(status=status, values=values))
   } else {
     # Check that at least one contact has an ORCID

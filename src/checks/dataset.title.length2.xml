@@ -32,21 +32,21 @@ def call():
   titleWords = re.split("\s|,", title.strip().lower())    
   
   if (len(titleWords) < minLength):
-    output = "The title contains {} words, which is less than the required minimum of {}".format(len(titleWords), minLength)
+    output = "The title contains {} words, which is less than the required minimum of {}.".format(len(titleWords), minLength)
     status = "FAILURE"
     return False
     
   if (len(titleWords) > maxLength):
-    output = "The title contains {} words, which is greater than the maximum of {}".format(len(titleWords), maxLength)
+    output = "The title contains {} words, which is greater than the maximum of {}.".format(len(titleWords), maxLength)
     status = "FAILURE"
     return False
     
   if (len(titleWords) > warnLength):
-    output = "Warning: The title contains {} words, which is greater than the recommended maximum of {}".format(len(titleWords), warnLength)
+    output = "Warning: The title contains {} words, which is greater than the recommended maximum of {}.".format(len(titleWords), warnLength)
     status = "SUCCESS"
     return True 
     
-  output = "The title contains {} words, which is sufficient (between {} and {} words)".format(len(titleWords), minLength, maxLength)
+  output = "The title contains {} words, which is sufficient (between {} and {} words).".format(len(titleWords), minLength, maxLength)
   status = "SUCCESS"
   return True 
       ]]></code>

@@ -10,8 +10,11 @@
 def call():
   global output
   global status
+  global keywords
   import re
 
+  import metadig.variable as mvar
+  
   # Fail if no keywords present
   if (not 'keywords' in globals() or keywords is None):
     output = "No dataset keywords found, unable to check overlap with title words."
@@ -26,6 +29,15 @@ def call():
 
   # Parse the title into works separated by spaces or commas
   titleWords = re.split("\s|,", title.lower())
+  
+  # Convert all values to unicode, so no values outside ASCII range cause encoding problems
+  keywords = mvar.toUnicode(keywords)
+
+  # Note that the quality engine may return either a single value or a list of values.
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(keywords, unicode)):
+    keywords = [keywords]
 
   foundKeywords = ""
   foundCount = 0
@@ -33,31 +45,24 @@ def call():
   # Note There can be just a single keyword, in which case the quality engine will return
   # a unicde string instead of an array
   # Single keyword
-  if(isinstance(keywords, str) or isinstance(keywords, unicode)):
-    keywordCount = 1
-    if(keywords.lower() in titleWords):
-      foundCount = 1
-      foundKeywords = keywords
-  else:
-    # Multiple keywords
-    keywordCount = len(keywords)
-    for i in range(0, keywordCount):
-      # Keywords should not be from words in the title.
-      thisKeyword = keywords.get(i)
-      if(thisKeyword.lower() in titleWords):
-        foundCount += 1
-        if(foundKeywords == ""):
-          foundKeywords = thisKeyword
-        else:
-          foundKeywords += ", " + thisKeyword
+  keywordCount = len(keywords)
+  for i in range(0, keywordCount):
+    # Keywords should not be from words in the title.
+    thisKeyword = keywords[i]
+    if(thisKeyword.lower() in titleWords):    
+      foundCount += 1
+      if(foundKeywords == ""):
+        foundKeywords = thisKeyword
+      else:
+        foundKeywords += ", " + thisKeyword
 
   # If keywords were found in the title fail
   if(foundCount == 1):
-    output = "the keyword '{}' was also found in the title".format(foundKeywords)
+    output = "The keyword '{}' was found in the title".format(foundKeywords)
     status = "FAILURE"
     return False
   elif(foundCount > 1):
-    output = "The keywords '{}' were also found in the title".format(foundKeywords)
+    output = "The keywords '{}' were found in the title".format(foundKeywords)
     status = "FAILURE"
     return False
 

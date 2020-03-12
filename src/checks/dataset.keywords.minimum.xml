@@ -31,13 +31,14 @@ def call():
     keywordCount = len(keywords)
 
   # If the keyword count is less than the minimum then fail
-  output = "Only {} keywords are present, and {} or more keywords are required".format(keywordCount, keywordMinimumCount);
   if(keywordCount < keywordMinimumCount):
     status = "FAILURE"
+    output = "Only {} keywords are present, and {} or more keywords are required".format(keywordCount, keywordMinimumCount);
     return False
   else:
     # Passed all tests!
     status = "SUCCESS"
+    output = "{} keywords are present, which is sufficient".format(keywordCount);
     return True
       ]]></code>
    <selector>

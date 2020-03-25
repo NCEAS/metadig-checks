@@ -57,7 +57,6 @@ def call():
       <name>datasetLandingPage</name>
       <xpath>
           /eml/dataset/distribution/online/url[@function="information"] |
-          /eml/dataset/*/physical/distribution/online/url[@function="information"] |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode/@codeListValue="information"]/linkage/URL |
           /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL |
           /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL

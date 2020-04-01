@@ -30,12 +30,12 @@ def call():
       ]]></code>
    <selector>
       <name>provenanceTrace</name>
-      <xpath>
-          /*/resourceLineage/LI_Lineage/processStep/LI_ProcessStep |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/*/processStep |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/*/source/*/sourceStep/LI_ProcessStep |
-          /eml/*/methods/methodStep/dataSource |
-          /eml/*/methods/methodStep/subStep/dataSource
+      <xpath>boolean(
+          /*/resourceLineage/LI_Lineage/processStep/LI_ProcessStep or
+          /*/dataQualityInfo/DQ_DataQuality/lineage/*/processStep or
+          /*/dataQualityInfo/DQ_DataQuality/lineage/*/source/*/sourceStep/LI_ProcessStep or
+          /eml/*/methods/methodStep/dataSource or
+          /eml/*/methods/methodStep/subStep/dataSource)
       </xpath>
    </selector>
    <dialect>

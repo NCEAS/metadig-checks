@@ -38,9 +38,9 @@ def call():
    <selector>
       <name>serviceProvider</name>
       <xpath>
-          /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/individualName |
-          /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/organisationName |
-          /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/positionName
+          /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/individualName/*/text()[normalize-space()] |
+          /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/organisationName/*/text()[normalize-space()] |
+          /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/positionNam/*/text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

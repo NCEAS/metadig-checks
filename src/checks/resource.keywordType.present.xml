@@ -73,7 +73,7 @@ def call():
       <name>keywords</name>
       <xpath>
           /eml/dataset/keywordSet/keyword |
-          /*/identificationInfo/*/descriptiveKeywords/MD_Keywords/keyword
+          /*/identificationInfo/MD_DataIdentification/descriptiveKeywords/MD_Keywords/keyword
       </xpath>
       <subSelector>
         <name>type</name>
@@ -87,11 +87,11 @@ def call():
       <name>keywordNames</name>
       <xpath>
           /eml/dataset/keywordSet/keyword |
-          /*/identificationInfo/*/descriptiveKeywords/MD_Keywords/keyword
+          /*/identificationInfo/MD_DataIdentification/descriptiveKeywords/MD_Keywords/keyword
       </xpath>
       <subSelector>
         <name>name</name>
-        <xpath>text() | */text()</xpath>
+        <xpath>text()[normalize-space()] | */text()[normalize-space()]</xpath>
       </subSelector>
    </selector>
    <dialect>

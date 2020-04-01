@@ -116,7 +116,7 @@ def call():
          <xpath>
              ./attributeDefinition |
              ./*/description |
-             ./descriptor/*/text()
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>
@@ -124,15 +124,18 @@ def call():
       <name>attributeName</name>
       <xpath>
           /eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band
       </xpath>
       <subSelector>
          <name>name</name>
          <xpath>
-             ./attributeName | 
-             ./*/name/code/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text()
+             ./attributeName/text()[normalize-space()] | 
+             ./*/name/code/*/text()[normalize-space()] |
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

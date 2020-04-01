@@ -46,9 +46,9 @@ def call():
         /eml/dataset/licensed/identifier |
         /*/rights |
         /resource/rightsList/rights |
-        /*/metadataConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode |
-        /*/metadataConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode |
-        /*/metadataConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode
+        /*/metadataConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode/text()[normalize-space()] |
+        /*/metadataConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode/text()[normalize-space()] |
+        /*/metadataConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode/text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

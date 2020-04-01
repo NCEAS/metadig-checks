@@ -43,8 +43,8 @@ def call():
    <selector>
       <name>coverageContentType</name>
       <xpath>
-          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/contentType/MD_CoverageContentTypeCode |
-          /*/contentInfo/MD_CoverageDescription/contentType/MD_CoverageContentTypeCode 
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/contentType/MD_CoverageContentTypeCode/text()[normalize-space()] |
+          /*/contentInfo/MD_CoverageDescription/contentType/MD_CoverageContentTypeCode/text()[normalize-space()] 
       </xpath>
    </selector>
    <dialect>

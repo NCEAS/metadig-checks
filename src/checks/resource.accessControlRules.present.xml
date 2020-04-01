@@ -53,8 +53,8 @@ def call():
    <selector>
       <name>accessControlRules</name>
       <xpath>
-          /eml/dataset/intellectualRights |
-          /*/identificationInfo/*/resourceConstraints/MD_LegalConstraints/accessConstraints
+          /eml/dataset/intellectualRights/text()[normalize-space()] |
+          /*/identificationInfo/*/resourceConstraints/MD_LegalConstraints/accessConstraints/*/text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

@@ -37,11 +37,11 @@ def call():
       <name>distributionContact</name>
       <xpath>
           /eml/*/associatedParty/role[RoleType='distributor']//text()[normalize-space()] |
-          /eml/*/contact/individualName//text()[normalize-space()] |
-          /eml/*/contact/organizationName//text()[normalize-space()] |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/*/text() | 
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text() |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()
+          /eml/*/contact/individualName/surName/text()[normalize-space()] |
+          /eml/*/contact/organizationName/text()[normalize-space()] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/organisationName/*/text()[normalize-space()] | 
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text()[normalize-space()] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

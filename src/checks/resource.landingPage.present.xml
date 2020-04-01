@@ -50,9 +50,9 @@ def call():
       <name>datasetLandingPage</name>
       <xpath>
           /eml/dataset/distribution/online/url[@function="information"] |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode/@codeListValue="information"]/linkage/URL |
-          /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL |
-          /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode/@codeListValue="information"]/linkage/URL/text()[normalize-space()] |
+          /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL/text()[normalize-space()] |
+          /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL/text()[normalize-space() ]
   </xpath>
    </selector>
    <dialect>

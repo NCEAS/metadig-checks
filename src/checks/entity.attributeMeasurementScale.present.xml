@@ -59,7 +59,7 @@ def call():
    </selector>
    <selector>
       <name>attributeMeasurementScalePresent</name>
-      <xpath>/eml/dataset/*/attributeList/attribute/measurementScale</xpath>
+      <xpath>boolean(/eml/dataset/*/attributeList/attribute/measurementScale)</xpath>
    </selector>
    <selector>
       <name>attributeMeasurementScale</name>

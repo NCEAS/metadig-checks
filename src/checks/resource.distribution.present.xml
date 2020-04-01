@@ -51,11 +51,11 @@ def call():
    <selector>
       <name>datasetDistribution</name>
       <xpath>
-         /eml/dataset/distribution/online/url[@function="download"] |
-         /eml/dataset/*/physical/distribution/online/url[@function="download"] |
-         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL |
-         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL |
-         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL 
+         /eml/dataset/distribution/online/url[@function="download"]/text()[normalize-space()] |
+         /eml/dataset/*/physical/distribution/online/url[@function="download"]/text()[normalize-space()] |
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()] |
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()]|
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

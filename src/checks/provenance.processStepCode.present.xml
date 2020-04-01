@@ -36,8 +36,8 @@ def call():
     return True
       ]]></code>
    <selector>
-      <name>attributeMeasurementScale</name>
-      <xpath>/eml/*/methods/methodsStep/software</xpath>
+      <name>provenanceProcessStepCode</name>
+      <xpath>/eml/*/methods/methodStep/software//text()[normalize-space()]</xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

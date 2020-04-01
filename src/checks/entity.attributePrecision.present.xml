@@ -82,6 +82,7 @@ def call():
       <xpath>
           /eml/dataset/*/attributeList/attribute/measurementScale/interval |
           /eml/dataset/*/attributeList/attribute/measurementScale/ratio |
+          /eml/dataset/*/attributeList/attribute/measurementScale/dateTime |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band 
       </xpath>
@@ -99,6 +100,7 @@ def call():
       <xpath>
           /eml/dataset/*/attributeList/attribute/measurementScale/interval |
           /eml/dataset/*/attributeList/attribute/measurementScale/ratio |
+          /eml/dataset/*/attributeList/attribute/measurementScale/dateTime |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band
       </xpath>
@@ -106,10 +108,8 @@ def call():
          <name>name</name>
          <xpath>
              ../../attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./descriptor/*/text() |
-             attribute::id
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

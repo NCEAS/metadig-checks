@@ -78,12 +78,12 @@ def call():
           /*/contentInfo/MI_CoverageDescription 
       </xpath>
       <subSelector>
-          <name>attributeNames</name>
+          <name>names</name>
           <xpath>
-              ./attributeList/attribute/attributeName |
-              ./attributeDescription/RecordType |
-              ./dimension/MI_Band/sequenceIdentifier/MemberName/aName//text() |
-              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()
+              ./attributeList/attribute/attributeName/text()[normalize-space()] |
+              ./attributeDescription/RecordType/text()[normalize-space()] |
+              ./dimension/MI_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()] |
+              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()]
           </xpath>
       </subSelector>
    </selector>

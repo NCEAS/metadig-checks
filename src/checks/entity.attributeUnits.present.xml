@@ -75,8 +75,8 @@ def call():
    <selector>
       <name>attributesPresent</name>
       <xpath>boolean(
-          /eml/dataset/dataTable/attributeList/attribute/measurementScale/interval or
-          /eml/dataset/dataTable/attributeList/attribute/measurementScale/ratio or
+          /eml/dataset/*/attributeList/attribute or
+          /eml/dataset/*/attributeList/attribute or
           /*/contentInfo/*/dimension/MD_Band or
           /*/contentInfo/*/dimension/MI_Band
           )
@@ -98,8 +98,8 @@ def call():
       <subSelector>
          <name>units</name>
          <xpath>
-             ./unit/* |
-             ./units/*
+             ./unit/*/text()[normalize-space()] |
+             ./units//name/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>
@@ -114,10 +114,9 @@ def call():
       <subSelector>
          <name>name</name>
          <xpath>
-             ../../attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./descriptor/*/text() |
-             attribute::id
+             ../../attributeName/text()[normalize-space()] | 
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

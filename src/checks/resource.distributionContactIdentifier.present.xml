@@ -30,7 +30,8 @@ def call():
     if(isinstance(distributionContactIdentifier, unicode)):
       output = u"The distribution contact identifier '{}' was found".format(distributionContactIdentifier)
     else:
-      output = "The distribution contact identifier '{}' was found)".format(distributionContactIdentifier)
+      output = u"The distribution contact identifier '{}' was found (first of {} identifiers)".format(distributionContactIdentifier[0].strip(), len(distributionContactIdentifier))
+      
     status = "SUCCESS"
     return True
       ]]></code>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+    <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.attributeNames.unique.1</id>
    <name>Entity Attribute Names Are Unique</name>
@@ -63,6 +63,7 @@ def call():
         allDuplicates.extend(duplicates(attrList))
         
   if(len(allDuplicates) > 0):
+    output = u"These {} attributes (of {} total) had duplicate names: {}".format(len(allDuplicates), attributeCount, ', '.join(allDuplicates[0:maxPrint]))
     if(len(allDuplicates) > maxPrint):
       output += u", ..."
   else:

@@ -29,12 +29,10 @@ def call():
     return False
   else:
     # Check if resource publisher identifier is a single string or arrayList
-    if(isinstance(datasetPublisherIdentifier, str) or isinstance(datasetPublisherIdentifier, unicode)):
-      output = "The resource publisher identifier '{}' was found".format(datasetPublisherIdentifier.strip())
-    elif (isinstance(datasetPublisherIdentifier, ArrayList)):
-      output = "The resource publisher identifier '{}' was found (first of {} publisher identifiers)".format(datasetPublisherIdentifier[0].strip(), datasetPublisherIdentifier.size())
-    else:
-      output = "The resource publisher identifier '{}' was found)".format(datasetPublisherIdentifier)
+    if(isinstance(datasetPublisherIdentifier, unicode)):
+      output = u"The resource publisher identifier '{}' was found.".format(datasetPublisherIdentifier.strip())
+    elif (isinstance(datasetPublisherIdentifier, list)):
+      output = u"The resource publisher identifier '{}' was found (first of {} publisher identifiers).".format(datasetPublisherIdentifier[0].strip(), len(datasetPublisherIdentifier))
 
     status = "SUCCESS"
     return True

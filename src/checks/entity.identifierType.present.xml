@@ -10,6 +10,7 @@
 def call():
   global output
   global status
+  global entityIdentifierType
   
   import metadig.variable as mvar
 
@@ -19,7 +20,9 @@ def call():
     status = "FAILURE"
     return False
         
-  if (mvar.isBlank(resourceIdentifierType)):
+  entityIdentifierType = mvar.toUnicode(entityIdentifierType)
+
+  if (mvar.isBlank(entityIdentifierType)):
     output = "The entity identifier type is blank."   
     status = "FAILURE"
     return False

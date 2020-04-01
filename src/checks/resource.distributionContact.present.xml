@@ -18,7 +18,7 @@ def call():
     output = "A distribution contact was not found."
     status = "FAILURE"
     return False
-        
+    
   if (mvar.isBlank(distributionContact)):
     output = "The distribution contact is blank."   
     status = "FAILURE"
@@ -29,7 +29,8 @@ def call():
     if(isinstance(contact, list)):
       output = u"The distribution contact '{}' was found (first of {} contacts).".format(contact[0], len(contact))
     else:
-      output = "The distribution contact '{}' was found".format(contact).encode("utf-8")
+      output = u"The distribution contact '{}' was found.".format(contact)
+      
     status = "SUCCESS"
     return True
       ]]></code>

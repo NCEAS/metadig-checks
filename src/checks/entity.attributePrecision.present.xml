@@ -24,7 +24,6 @@ def call():
     status = "FAILURE"
     return False
     
-  attributeCount = 0
   missing = []
   
   attributePrecision = mvar.toUnicode(attributePrecision)
@@ -35,26 +34,31 @@ def call():
     
   if(isinstance(attributeName, unicode)):
     attributeName = [attributeName]
+    
+  # The metadata has attributes, but just none that require a precision, so give it a pass.
+  if(len(attributePrecision) == 0):
+    output = "No attributes found that require a measurement precision."
+    status = "SUCCESS"
+    return True
 
   for i in range(0, len(attributePrecision)):
-    attributeCount += 1
     precision = attributePrecision[i]
-    if(len(attributeName) >= i):
-      name = attributeName[i]
-      if(name is None):
-        name = "#{}".format(i)
-    else:
+    name = attributeName[i]
+    if(name is None or mvar.isBlank(name)):
       name = "#{}".format(i)
       
     # No precision for this attribute was specified
-    if(precision is None):
+    if(precision is None or mvar.isBlank(precision)):
       missing.append(name)
-    else:
-      # Precision value should be type int
-      try:
-        val = int(precision)
-      except:
-        missing.append(name)
+      continue
+    # Stop checking if the value can be converted to an int value 
+    # as EML dateTime precision can be a character string, i.e. NonEmptyStringType
+    #else:
+    #  # Precision value should be type int
+    #  try:
+    #    val = int(precision)
+    #  except:
+    #    missing.append(name)
   
   if(len(missing) > 0):
     output = "These {} attributes (of {} total) are missing a precision value or have an invalid value specified: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
@@ -85,7 +89,7 @@ def call():
           /eml/dataset/*/attributeList/attribute/measurementScale/dateTime |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band 
-      </xpath>
+      </xpath> 
       <subSelector>
          <name>domain</name>
          <xpath>

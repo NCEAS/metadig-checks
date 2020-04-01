@@ -10,8 +10,8 @@
 def call():
   global output
   global status
+  global datasetLandingPage
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import metadig.checks as checks
 
@@ -22,6 +22,8 @@ def call():
     status = "FAILURE"
     return False
         
+  datasetLandingPage = mvar.toUnicode(datasetLandingPage)
+
   if (mvar.isBlank(datasetLandingPage)):
     output = "The resource langing page url is blank."   
     status = "FAILURE"

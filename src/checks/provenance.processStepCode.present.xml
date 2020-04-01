@@ -10,8 +10,8 @@
 def call():
   global output
   global status
+  global provenanceProcessStepCode
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # Provenace step source code is not present
@@ -20,6 +20,9 @@ def call():
     status = "FAILURE"
     return False
         
+  # Convert all values to unicode
+  provenanceProcessStepCode = mvar.toUnicode(provenanceProcessStepCode)
+
   if (mvar.isBlank(provenanceProcessStepCode)):
     output = "The provenance process step code is blank."   
     status = "FAILURE"

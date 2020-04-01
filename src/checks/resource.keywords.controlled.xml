@@ -34,9 +34,14 @@ def call():
       naturalKeywordGroupCount += 1
            
   if(controlledKeywordGroupCount > 0):
-    output = "{} groups of controlled keywords (from a vocabulary) found (out of {} keyword groups.)".format(controlledKeywordGroupCount, keywordGroupCount)
-    status = "SUCCESS"
-    return True 
+    if(controlledKeywordGroupCount < keywordGroupCount):
+      output = "{} groups of keywords not controlled (from a vocabulary) (out of {} keyword groups.)".format(keywordGroupCount - controlledKeywordGroupCount, keywordGroupCount)
+      status = "FAILURE"
+      return False
+    else:
+      output = "All {} keyword groups are controlled (from a vocabulary).)".format(keywordGroupCount)
+      status = "SUCCESS"
+      return True 
   else:
     output = "No controlled keyword (from a vocabulary) groups found (out of {} keyword groups.".format(keywordGroupCount)
     status = "FAILURE"

@@ -10,8 +10,8 @@
 def call():
   global output
   global status
+  global distributionContactIdentifier
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # A distribution contact identifier is not present
@@ -25,11 +25,10 @@ def call():
     status = "FAILURE"
     return False
   else:
-    # Check if distribution contact identifier type is a single string or arrayList
-    if(isinstance(distributionContactIdentifier, str) or isinstance(distributionContactIdentifier, unicode)):
-      output = "The distribution contact identifier '{}' was found".format(distributionContactIdentifier)
-    elif (isinstance(distributionContactIdentifier, ArrayList)):
-      output = "The distribution contact identifier '{}' was found (first of {} identifiers)".format(distributionContactIdentifier[0].strip(), distributionContactIdentifier.size())
+    distributionContactIdentifier = mvar.toUnicode(distributionContactIdentifier)
+    # Check if distribution contact identifier type is a single string or list
+    if(isinstance(distributionContactIdentifier, unicode)):
+      output = u"The distribution contact identifier '{}' was found".format(distributionContactIdentifier)
     else:
       output = "The distribution contact identifier '{}' was found)".format(distributionContactIdentifier)
     status = "SUCCESS"

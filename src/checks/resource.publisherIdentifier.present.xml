@@ -10,15 +10,18 @@
 def call():
   global output
   global status
+  global datasetPublisherIdentifier
   
   import metadig.variable as mvar
-  import java.util.ArrayList as ArrayList
 
   # A resource publisher identifier is not present
   if 'datasetPublisherIdentifier' not in globals() or datasetPublisherIdentifier is None:
     output = "A resource publisher identifier was not found."
     status = "FAILURE"
     return False
+    
+  # Convert all values to unicode
+  datasetPublisherIdentifier = mvar.toUnicode(datasetPublisherIdentifier)
         
   if (mvar.isBlank(datasetPublisherIdentifier)):
     output = "The resource publisher identifier is blank."

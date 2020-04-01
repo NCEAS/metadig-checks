@@ -10,8 +10,8 @@
 def call():
   global output
   global status
+  global creator
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # A resource creator is not present
@@ -19,19 +19,27 @@ def call():
     output = "A resource creator identifier was not found."
     status = "FAILURE"
     return False
+    
+  # Convert all values to unicode
+  creator = mvar.toUnicode(creator)
+  
+  # Convert all values to unicode
+  if(isinstance(creator, unicode)):
+    creator = [creator]
         
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
   if (mvar.isBlank(creator)):
     output = "The resource creator identifier is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if resource creator identifier is a single string or arrayList
-    if(isinstance(creator, str) or isinstance(creator, unicode)):
-      output = "The resource creator identifier '{}' was found".format(creator)
-    elif (isinstance(creator, ArrayList)):
-      output = "The resource creator identifier '{}' was found (first of {} formats)".format(creator[0].strip(), creator.size())
-    else:
-      output = "The resource creator identifier '{}' was found)".format(creator)
+    if(isinstance(creator, unicode)):
+      output = u"The resource creator identifier '{}' was found.".format(creator)
+    elif (isinstance(creator, list)):
+      output = u"The resource creator identifier '{}' was found (first of {} creator identifiers).".format(creator[0].strip(), len(creator))
+      
     status = "SUCCESS"
     return True
       ]]></code>

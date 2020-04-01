@@ -11,35 +11,34 @@ def call():
   global output
   global status
 
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import metadig.checks as checks
   import urllib
   import re
+  global metadataIdentifier
 
   d1_resolve_service="https://cn.dataone.org/cn/v2/resolve/"
 
-  # check if metadata identifier is present
+  # check if a metadata identifier is present
   if 'metadataIdentifier' not in globals() or metadataIdentifier is None:
     output = "A metadata identifier was not found."
     status = "FAILURE"
     return False
     
+  metadataIdentifier = mvar.toUnicode(metadataIdentifier)
+  
+  # This should only be a single value, but if not (a list is returned) just get the first 
+  # one
+  if(isinstance(metadataIdentifier, list)):
+    metadataIdentifier = metadataIdentifier[0]
+
   if (mvar.isBlank(metadataIdentifier)):
     output = "The metadata identifier is blank."
     status = "FAILURE"
     return False
   else:
-    # Check if metadata identifier is a single string or arrayList
-    if(isinstance(metadataIdentifier, str) or isinstance(metadataIdentifier, unicode)):
-      output = "The metadata identifier '{}' was found".format(metadataIdentifier)
-      id = metadataIdentifier
-    elif (isinstance(metadataIdentifier, ArrayList)):
-      output = "The metadata identifier '{}' was found (first of {} identifiers)".format(metadataIdentifier[0].strip(), metadataIdentifier.size())
-      id = metadataIdentifier.get(0)
-    else:
-      output = "The metadata identifier '{}' was found)".format(metadataIdentifier)
-      id = metadataIdentifier
+    output = u"The metadata identifier '{}' was found)".format(metadataIdentifier)
+    id = metadataIdentifier
     
   # Now check if the metadata identifier is a resolvable url. If it doesn't look like a URL, then 
   # see if DataONE knows about it.

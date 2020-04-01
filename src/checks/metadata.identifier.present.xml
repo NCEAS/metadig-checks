@@ -14,12 +14,21 @@ def call():
   # the check returns
   global output
   global status
+  
+  global metadataIdentifier
 
   # check if metadata identifier is present
   if 'metadataIdentifier' not in globals() or metadataIdentifier is None:
     output = "A metadata identifier was not found."
     status = "FAILURE"
     return False
+     
+  metadataIdentifier = mvar.toUnicode(metadataIdentifier)
+  
+  # This should only be a single value, but if not (a list is returned) just get the first 
+  # one
+  if(isinstance(metadataIdentifier, list)):
+    metadataIdentifier = metadataIdentifier[0]
     
   if (mvar.isBlank(metadataIdentifier)):
     output = "The metadata identifier is blank."

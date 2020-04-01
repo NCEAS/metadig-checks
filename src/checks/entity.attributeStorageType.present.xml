@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.attributeStorageType.present.1</id>
    <name>Entity Attribute Storage Type Present</name>
-   <description>Check that a storage type exits for each relevant attribute.</description>
+   <description>Check that a storage type exits for each attribute.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -10,9 +10,12 @@
 def call():
   global output
   global status
+  global attributeStorageType
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  maxPrint = 5
+  NoneType = type(None)
   
   # Check if an attribute storage type is present for each attribute.
   
@@ -25,22 +28,30 @@ def call():
     output = "No attribute storage types are present."
     status = "FAILURE"
     return False
+
+  attributeStorageType = mvar.toUnicode(attributeStorageType)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeStorageType, unicode)):
+    attributeStorageType = [attributeStorageType]
+  
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
     
   attributeCount = 0
   missing = []
   
   for i in range(0, len(attributeStorageType)):
     attributeCount += 1
-    storageType = attributeStorageType.get(i)
-    name = attributeName.get(i)
+    storageType = attributeStorageType[i]
+    name = attributeName[i]
+    if(isinstance(name, NoneType) or mvar.isBlank(name)):
+      name = "attr #{}.format(i)"
     # No storageType for this attribute was specified
-    if(storageType == None or len(storageType) == 0):
-        missing.append(name)
-    else:
-      if(mvar.isBlank(storageType)):
-          missing.append(name)
-      else:
-        continue
+    if(storageType == None or mvar.isBlank(storageType)):
+      missing.append(name)
   
   if(len(missing) > 0):
     output = u"These attributes do not have a storage type: '{}'".format(', '.join(missing[0:maxPrint]))

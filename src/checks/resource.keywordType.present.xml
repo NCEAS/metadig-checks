@@ -23,7 +23,7 @@ def call():
     output = "No keywords found, unable to check for keyword types."
     status = "FAILURE"
     return False
-
+    
   # Make sure values are converted to type unicode
   keywords = mvar.toUnicode(keywords)
   keywordNames = mvar.toUnicode(keywordNames)
@@ -31,10 +31,10 @@ def call():
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
   if(isinstance(keywords, unicode)):
-    keywords[0] = keywords
+    keywords = [keywords]
     
   if(isinstance(keywordNames, unicode)):
-    keywordNames[0] = keywordNames
+    keywordNames = [keywordNames]
   
   # For each keyword, check if a keyword type is specified.
   for i in range(0, len(keywords)):
@@ -46,13 +46,8 @@ def call():
       keywordName = "name N/A"
           
     # No keyword type for this keyword was specified
-    if(isinstance(keywordType, NoneType) or len(keywordType) == 0):
-        keywordTypesMissing.append(keywordName)
-    else:
-      if(mvar.isBlank(keywordType)):
-          keywordTypesMissing.append(name)
-      else:
-        continue
+    if(isinstance(keywordType, NoneType) or mvar.isBlank(keywordType)):
+      keywordTypesMissing.append(keywordName)
 
   # Add the list of resources that don't have keywords to the output
   if(len(keywordTypesMissing) == 1):
@@ -61,6 +56,7 @@ def call():
     output = u"These {} keywords (of {} total) do not have a type specified: '{}'".format(len(keywordTypesMissing), len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
     if(len(keywordTypesMissing) > maxPrint):
       output += ", ..."
+      
     status = "FAILURE"
     return False
   else:

@@ -11,6 +11,9 @@ def call():
   global output
   global status
   import re
+  import metadig.variable as mvar
+
+  global keywords
 
   # Fail if no keywords present
   if (not 'keywords' in globals() or keywords is None):
@@ -18,14 +21,13 @@ def call():
     status = "FAILURE"
     return False
 
-  # There may be just a single keyword, in which case the quality engine will return
-  # a unicde string instead of an array
-  if(isinstance(keywords, str) or isinstance(keywords, unicode)):
-    keywordCount = 1
-  else:
-    # If multiple keywords exist, they are returned as an arraylist
-    keywordCount = len(keywords)
-        
+  # Convert all values to unicode
+  keywords = mvar.toUnicode(keywords)
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(keywords, unicode)):
+    keywords = [keywords]
+
   # Passed all tests!
   output = "{} keywords are present".format(keywordCount)
   # Passed all tests!

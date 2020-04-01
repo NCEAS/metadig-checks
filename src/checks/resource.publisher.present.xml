@@ -14,19 +14,19 @@ def call():
   import metadig.variable as mvar
  
   if ('datasetPublisherPresent' in globals() and datasetPublisherPresent is not None and datasetPublisherPresent):
-    status = "SUCCESS"
+    if (mvar.isBlank(datasetPublisher)):
+      output = "The resource publisher is blank."
+      status = "FAILURE"
+      return False
+    else:
+      publisher = mvar.toUnicode(datasetPublisher)
+      output = u"The resource publisher '{}' was found.".format(publisher.strip())
+      status = "SUCCESS"
+      return True 
   else:
-    output = "A resource publisher is not present"
+    output = "A resource publisher is not present."
     status = "FAILURE"
     return False
-    
-  if (mvar.isBlank(datasetPublisher)):
-    output = "The resource publisher is blank."
-    status = "FAILURE"
-    return False
-
-  output = "The resource publisher '{}' was found".format(datasetPublisher.strip())
-  return True 
       ]]></code>
    <selector>
       <name>datasetPublisherPresent</name>

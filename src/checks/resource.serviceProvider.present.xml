@@ -10,8 +10,8 @@
 def call():
   global output
   global status
+  global serviceProvider
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # A data service provider is not present
@@ -20,18 +20,23 @@ def call():
     status = "FAILURE"
     return False
         
+  serviceProvider = mvar.toUnicode(serviceProvider)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(serviceProvider, unicode)):
+    serviceProvider = [serviceProvider]
+
   if (mvar.isBlank(serviceProvider)):
     output = "The service provider is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if resource identifier type is a single string or arrayList
-    if(isinstance(serviceProvider, str) or isinstance(serviceProvider, unicode)):
-      output = "The service provider '{}' was found".format(serviceProvider)
-    elif (isinstance(serviceProvider, ArrayList)):
-      output = "The service provider '{}' was found (first of {} providers)".format(serviceProvider[0].strip(), serviceProvider.size())
-    else:
-      output = "The service provider '{}' was found)".format(serviceProvider)
+    if(len(serviceProvider) == 1):
+      output = u"The service provider '{}' was found".format(serviceProvider)
+    else: 
+      output = u"The service provider '{}' was found (first of {} providers)".format(serviceProvider[0].strip(), len(serviceProvider))
     status = "SUCCESS"
     return True
       ]]></code>

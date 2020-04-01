@@ -10,32 +10,36 @@
 def call():
   global output
   global status
+  global resourceDistribution
 
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import metadig.checks as checks
 
   # An attribute definition is not present
-  if 'datasetDistribution' not in globals() or datasetDistribution is None:
+  if 'resourceDistribution' not in globals() or resourceDistribution is None:
     output = "A resource distribution URL was not found."
     status = "FAILURE"
     return False
+    
+  resourceDistribution = mvar.toUnicode(resourceDistribution)
+
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(resourceDistribution, unicode)):
+    resourceDistribution = [resourceDistribution]
       
-  if (mvar.isBlank(datasetDistribution)):
+  if (mvar.isBlank(resourceDistribution)):
     output = "The resource distribution URL is blank."
     status = "FAILURE"
     return False
   else:
     # Check if resource distribution URL is a single string or arrayList
-    if(isinstance(datasetDistribution, str) or isinstance(datasetDistribution, unicode)):
-      output = "The resource distribution URL '{}' was found".format(datasetDistribution)
-      url = datasetDistribution.strip()
-    elif (isinstance(datasetDistribution, ArrayList)):
-      output = "The resource distribution URL '{}' was found (first of {} URLs)".format(datasetDistribution[0].strip(), datasetDistribution.size())
-      url = datasetDistribution[0].strip()
-    else:
-      output = "The resource distribution URL '{}' was found)".format(datasetDistribution.strip())
-      url = datasetDistribution.strip()
+    if(isinstance(resourceDistribution, unicode)):
+      output = u"The resource distribution URL '{}' was found".format(resourceDistribution)
+      url = resourceDistribution.strip()
+    elif (isinstance(resourceDistribution, list)):
+      output = u"The resource distribution URL '{}' was found (first of {} URLs)".format(resourceDistribution[0].strip(), len(resourceDistribution))
+      url = resourceDistribution[0].strip()
       
   # A distribution contact exists, now check if it is resolvable
   resolvable, msg = checks.isResolvable(url)

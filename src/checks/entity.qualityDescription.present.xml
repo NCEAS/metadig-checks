@@ -18,11 +18,6 @@ def call():
      output = "A data quality description was not found."
      status = "FAILURE"
      return False
-         
-   if (mvar.isBlank(dataQualityDescription)):
-     output = "The data quality description is blank."
-     status = "FAILURE"
-     return False
    else:
      output = "A data quality description was found."
      status = "SUCCESS"

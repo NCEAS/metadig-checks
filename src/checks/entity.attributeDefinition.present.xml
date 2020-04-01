@@ -19,52 +19,36 @@ def call():
   
   # Check if definitions are present for each attribute.
   if not attributeDefinitionPresent:
-    output = "No attributes are present, so unable to check for attribute defintions."
+    output = "No attributes definitions are present."
     status = "FAILURE"
     return False
     
   attributeCount = 0
   missing = []
-  attributeNamesMissing = False
-  missingCount = 0
   maxPrint = 5
   
-  attributeDefinition= mvar.toUnicode(attributeDefinition)
+  # Convert all values to unicode 
+  attributeDefinition = mvar.toUnicode(attributeDefinition)
   # If a single value, convert to a list for easier processing (i.e. don't have
   # to keep checking if it's a single value or list)
   if(isinstance(attributeDefinition, unicode)):
     attributeDefinition = [attributeDefinition]
-
+    
   attributeName = mvar.toUnicode(attributeName)
-  # If a single value, convert to a list for easier processing (i.e. don't have
-  # to keep checking if it's a single value or list)
   if(isinstance(attributeName, unicode)):
     attributeName = [attributeName]
-  
-  if(isinstance(attributeName, NoneType) or len(attributeName)  == 0): 
-    attributeNamesMissing = True
   
   for i in range(0, len(attributeDefinition)):
     attributeCount += 1
     definition = attributeDefinition[i]
-    if(not attributeNamesMissing):
-      name = attributeName[i]
+    name = attributeName[i]
     # Check if the name is missing or blank
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      attributeNamesMissing = True
+      name = "attr #{}.format(i)"
       
-    # No definition for this attribute was specified
-    if(isinstance(definition, NoneType) or len(definition) == 0): 
-      missingCount += 1
-      if(not attributeNamesMissing):
-        missing.append(name)
-    else:
-      if(mvar.isBlank(definition)):
-        missingCount += 1
-        if(not attributeNamesMissing):
-          missing.append(name)
-      else:
-        continue
+    # No definition for this attribute was specified, or it is blank
+    if(isinstance(definition, NoneType) or mvar.isBlank(definition)): 
+      missing.append(name)
         
   if(len(missing) == 1):
     output = u"This {} attribute (of {} total) does not have a definition: {}".format(len(missing), attributeCount, missing[0])

@@ -11,25 +11,26 @@ def call():
   global output
   global status
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
-  # A entity format is not present
+  # An entity format is not present
   if 'entityFormat' not in globals() or entityFormat is None:
-    output = "A entity format was not found."
+    output = "An entity format was not found."
     status = "FAILURE"
     return False
+    
+  format = mvar.toUnicode(entityFormat)
         
-  if (mvar.isBlank(entityFormat)):
+  if (mvar.isBlank(format)):
     output = "The entity format is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if the entity format is a single string or arrayList
-    if(isinstance(entityFormat, str) or isinstance(entityFormat, unicode)):
-      output = "The entity format '{}' was found".format(entityFormat)
-    elif (isinstance(entityFormat, ArrayList)):
-      output = "The entity format '{}' was found (first of {} formats)".format(entityFormat[0].strip(), entityFormat.size())
+    # Check if the entity format is a single string 
+    if(isinstance(format, unicode)):
+      output = u"The entity format '{}' was found.".format(format)
+    elif (isinstance(format, list)):
+      output = u"The entity format '{}' was found (first of {} formats.".format(format[0].strip(), len(format))
     else:
       output = u"The entity format '{}' was found.".format(format)
     status = "SUCCESS"

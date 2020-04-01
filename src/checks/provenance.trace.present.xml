@@ -8,25 +8,20 @@
    <environment>python</environment>
    <code><![CDATA[
 def call():
-   global output
-   global status
+  global output
+  global status
    
-   import metadig.variable as mvar
+  import metadig.variable as mvar
 
-   # An attribute definition is not present
-   if 'provenanceTrace' not in globals() or provenanceTrace is None:
-     output = "Provenance trace information was not found."
-     status = "FAILURE"
-     return False
-         
-   if (mvar.isBlank(provenanceTrace)):
-     output = "Provenance trace information is blank."
-     status = "FAILURE"
-     return False
-   else:
-     output = "Provenance trace information was found."
-     status = "SUCCESS"
-     return True
+  # A provenance trace is present
+  if ('provenanceTrace' in globals() and provenanceTrace is not None and provenanceTrace):
+    output = "Provenance trace information was found."
+    status = "SUCCESS"
+    return True
+  else:
+    output = "Provenance trace information was not found."
+    status = "SUCCESS"
+    return True
       ]]></code>
    <selector>
       <name>provenanceTrace</name>

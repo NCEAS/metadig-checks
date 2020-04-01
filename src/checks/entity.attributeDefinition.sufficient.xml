@@ -20,7 +20,6 @@ def call():
   minWordCount = 5
   maxWordCount = 20
   maxPrint = 5
-  attributeNamesMissing = False
   
   # Check if definitions are present for each attribute.
   if not attributeDefinitionPresent:
@@ -30,14 +29,10 @@ def call():
     
   attributeCount = 0
   insufficient = []
-  insufficientCount = 0
   
   attributeDefinition = mvar.toUnicode(attributeDefinition)
   attributeName = mvar.toUnicode(attributeName)
   
-  if(isinstance(attributeName, NoneType) or len(attributeName) == 0):
-   attributeNamesMissing = True
- 
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
   if(isinstance(attributeDefinition, unicode)):
@@ -50,33 +45,23 @@ def call():
   for i in range(0, len(attributeDefinition)):
     attributeCount += 1
     definition = attributeDefinition[i]
-    if(not attributeNamesMissing):
-      name = attributeName[i]
-      # Check if the attribute name is blank
-      if(isinstance(name, NoneType) or mvar.isBlank(name)):
-        attributeNamesMissing = True
-        
+    name = attributeName[i]
+    # Check if the name is missing or blank
+    if(isinstance(name, NoneType) or mvar.isBlank(name)):
+      name = "attr #{}"".format(i)
+
     # No definition for this attribute was specified
-    if(isinstance(definition, NoneType) or len(definition) == 0):
-      insufficientCount += 1
-      if(not attributeNamesMissing):
-        insufficient.append(name)
-    else:
-      if(mvar.isBlank(definition)):
-        insufficientCount += 1
-        if(not attributeNamesMissing):
-          insufficient.append(name)
-        continue
-          
-      # If for some reason there are multiple definitions for this entity, just use the first one
-      if(isinstance(definition, list)):
-        definition = definition[0]
-      # Now check the word count
-      words = re.split('\s+', definition.strip())
-      if(len(words) < minWordCount or len(words) > maxWordCount):
-        insufficientCount += 1
-        if(not attributeNamesMissing):
-          insufficient.append(name)
+    if(isinstance(definition, NoneType) or mvar.isBlank(definition)):
+      insufficient.append(name)
+      continue
+    # If for some reason there are multiple definitions for this entity, just use the first one
+    elif(isinstance(definition, list)):
+      definition = mvar.toUnicode(definition[0])
+        
+    # Now check the word count of the definition
+    words = re.split('\s+', definition.strip())
+    if(len(words) < minWordCount or len(words) > maxWordCount):
+      insufficient.append(name)
   
   # Let the user know if definitions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
@@ -90,7 +75,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All {} attribute have sufficient definitions.".format(attributeCount)
+    output = "All {} attribute have sufficient definitions of greater than {} and less than {} words.".format(attributeCount, minWordCount, maxWordCount)
     status = "SUCCESS"
     return True
     ]]></code>

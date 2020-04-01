@@ -24,67 +24,42 @@ def call():
     
   attributeCount = 0
   missing = []
-  missingCount = 0
-  attributeNamesMissing = False
   maxPrint = 5
   
-  # Check global variable (from XPath selector) to see if attribute names exist
-  if(isinstance(attributeName, NoneType) or len(attributeName) == 0):
-    attributeNamesMissing = True
-    
   attributeDomain = mvar.toUnicode(attributeDomain)
   attributeName = mvar.toUnicode(attributeName)
     
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
   if(isinstance(attributeDomain, unicode)):
-    attributeDomain[0] = attributeDomain
+    attributeDomain = [attributeDomain]
     
   if(isinstance(attributeName, unicode)):
-    attributeName[0] = attributeName
+    attributeName = [attributeName]
   
   for i in range(0, len(attributeDomain)):
     attributeCount += 1
     domain = attributeDomain[i]
-    if(not attributeNamesMissing):
-      name = attributeName[i]
-    # Check if the attribute name is blank
+    name = attributeName[i]
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      attributeNamesMissing = True
+      name = "attr #{}.format(i)"
 
     # No domain for this attribute was specified
-    if(isinstance(domain, NoneType) or len(domain) == 0):
-      missingCount += 1
-      # If mssing and we have a name, append it
-      if(not attributeNamesMissing):
-        missing.append(name)
-    else:
-      # Note: there may be more that one value returned for the domain, i.e for ISO the min and max values are returned
-      if(mvar.isBlank(domain)):
-        missingCount += 1
-        if(not attributeNamesMissing):
-          missing.append(name)
-      else:
-        continue
-        
-  if(missingCount > 0):
-    attrList = ""
-    if(attributeNamesMissing):
-      output = "{} attributes (of {} total) do not have a measurement domain defined".format(missingCount, attributeCount)
-    else:
-      if(missingCount > maxPrint):
-        attrList = "'{}, ...'".format(', '.join(missing[0:maxPrint]))
-      else:
-        attrList = "'{}'".format(', '.join(missing))
-        
-      output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, attrList)
-      
+    if(isinstance(domain, NoneType) or mvar.isBlank(domain)):
+      missing.append(name)
+
+  if(len(missing) == 1):
+    output = u"This {} attribute (of {} total) does not have a measurement domain defined: {}.".format(len(missing), attributeCount, missing[0])
+    status = "FAILURE"
+    return False
+  elif(len(missing) > 1):
+    output = u"The following {} attributes (of {} total) do not have a measurement domain specified: '{}'.".format(len(missing), attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have a measurement domain defined".format(attributeCount)
+    output = "All {} attributes have a measurement domain defined.".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>

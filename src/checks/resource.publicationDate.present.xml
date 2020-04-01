@@ -10,6 +10,7 @@
 def call():
   global output
   global status
+  global datasetPubDate
   
   import metadig.variable as mvar
 
@@ -19,6 +20,8 @@ def call():
     output = "A resource publication date is not present"
     status = "FAILURE"
     return False
+    
+  datasetPubDate = mvar.toUnicode(datasetPubDate)
     
   if (mvar.isBlank(datasetPubDate)):
     output = "The resource publication date is blank"

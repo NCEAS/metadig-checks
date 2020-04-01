@@ -12,7 +12,6 @@ def call():
   global status
   global datasetLicense
          
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   displayNchars = 40
@@ -33,8 +32,6 @@ def call():
   else:
     # Check if dataset license is a single string or arrayList
     if(isinstance(datasetLicense, unicode)):
-      # Create a unicode variable (not byte string) that can contain a unicode result
-      # This won't be needed when Java scripting engine has a compatible Python 3 version
       outstr = datasetLicense.strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):

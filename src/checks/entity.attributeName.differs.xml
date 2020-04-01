@@ -16,12 +16,11 @@ def call():
   import metadig.variable as mvar
   
   definitionIsSame = []
-  missingDefinitions = []
   maxPrint = 5
   
   # For each entity, check that the attributes defined for it have unique names
-  if(len(attributeDefinition) == 0):
-    output = "No entity definitions found, unable to check that attribute names differ from definitions."
+  if(not attributeDefinitionPresent):
+    output = "No entity definitions found, unable to check if attribute names differ from definitions."
     status = "FAILURE"
     return False
   
@@ -39,22 +38,25 @@ def call():
     
   for i in range(0, len(attributeDefinition)):
     definition = attributeDefinition[i]
-    # If no name for this attribute, use the attribute sequence number
-    if(len(attributeName) >= i):
-      name = attributeName[i]
-    else:
-      name = "#{}".format(i)
-      
-    # No definition for this attribute
+    
+    # No definition for this attribute, don't fail for this as there is 
+    # another test for this.
     if(definition == None):
-      missingDefinitions.append(name)
       continue
     else:
+      name = attributeName[i]
+      # If the name is blank, report it using the attribute number in the file
+      if(name is None or mvar.isBlank(name)):
+        definitionIsSame.append("attr #{}".format(i))
       # Is the definition name the same as the definition
-      if(name == definition):
+      elif(name == definition):
         definitionIsSame.append(name)
         
-  if(len(definitionIsSame) > 0):
+  if(len(definitionIsSame) == 1):
+    output = u"This {} attribute (out of {} total) has a name that is different than the definition (or is blank): {}".format(len(definitionIsSame), len(attributeDefinition), definitionIsSame[0])
+    status = "FAILURE"
+    return False
+  elif(len(definitionIsSame) > 1):
     # Only print the max entries allowed - otherwise the report could get unweildy  
     output = u"These {} attributes (out of {} total) have names that are different than the definition (or are blank): {}".format(len(definitionIsSame), len(attributeDefinition), ', '.join(definitionIsSame[0:maxPrint]))
     if(len(definitionIsSame) > maxPrint):

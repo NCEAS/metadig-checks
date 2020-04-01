@@ -10,10 +10,8 @@
 def call():
   global output
   global status
-  
   global accessControlRules
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   displayNchars = 20
@@ -23,18 +21,16 @@ def call():
     output = "Access control rules were not found."
     status = "FAILURE"
     return False
-        
-  accessControlRules = mvar.toUnicode(accessControlRules)
 
-  if(isinstance(accessControlRules, unicode)):
-    accessControlRules = [accessControlRules]
+  # Convert all values to unicode
+  accessControlRules = mvar.toUnicode(accessControlRules)
 
   if (mvar.isBlank(accessControlRules)):
     output = "The access control rules are blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if access control rules are a single string or arrayList
+    # Check if access control rules are a single string or list
     if(isinstance(accessControlRules, unicode)):
       outstr = accessControlRules.strip()
       outstr.replace('\n', ' ').replace('\r', '')

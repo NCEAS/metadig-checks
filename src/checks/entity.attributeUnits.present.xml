@@ -22,44 +22,29 @@ def call():
     return False
     
   attributeCount = 0
-  missing = ArrayList()
+  missing = []
   
-  if(isinstance(attributeUnits, str) or isinstance(attributeUnits, unicode)):
+  attributeUnits = mvar.toUnicode(attributeUnits)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeUnits, unicode)):
+    attributeUnits = [attributeUnits]
+  
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
+  
+  for i in range(0, len(attributeUnits)):
+    attributeCount += 1
+    units = attributeUnits[i]
+    name = attributeName[i]
+    if(name is None):
+      name = "#{}".format(i)
+
     # No units for this attribute was specified
-    if(units == None):
-      if(name == None): 
-        missing.append("name not specified")
-      else:
-        missing.append(name)
-    else:
-      if(name == None):   
-        missing.append("name not specified")
-      else:
-        missing.append(name)
-  else:
-    for i in range(0, len(attributeUnits)):
-      attributeCount += 1
-      units = attributeUnits.get(i)
-      name = attributeName.get(i)
-      # Multiple names may have been returned for an entity, especially for ISO, which has several different
-      # ways to identity one (@id, descriptor, aName)
-      if (name != None and isinstance(name, ArrayList)):
-         name = name.get(0)
-         
-      # No units for this attribute was specified
-      if(units == None):
-        if(name == None): 
-          missing.append("name not specified")
-        else:
-          missing.append(name)
-      else:
-        if(units == None or (isinstance(units, ArrayList) and len(units) == 0)):
-          if(name == None):   
-            missing.append("name not specified")
-          else:
-            missing.append(name)
-        else:
-         continue
+    if(units == None or mvar.isBlank(units)):
+      missing.append(name)
   
   if(len(missing) > 0):
     output = "The following attributes are missing a units value or have an invalid value specified: '{}'".format(', '.join(missing[0:maxPrint]))
@@ -67,8 +52,12 @@ def call():
       output += u", ..."
     status = "FAILURE"
     return False
+  elif(len(missing) == 0 and len(attributeUnits) == 0):
+    output = "Attributes exist, but none of them require unit defintions."
+    status = "SUCCESS"
+    return True
   else:
-    output = "All {} attributes that require units have them defined".format(attributeCount)
+    output = "All {} attributes that require units have them defined.".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>

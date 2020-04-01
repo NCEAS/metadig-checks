@@ -46,7 +46,6 @@ def call():
     if(len(entityIdentifier) > 1):
       output = u"The entity identifier '{}' was found (first of {} identifiers)".format(id, len(entityIdentifier))
     else:
-      id = entityIdentifier
       output = "The entity identifier '{}' was found".format(id)
       
   # Now check if the entity identifier is a resolvable url. If it doesn't look like a URL, then 
@@ -89,7 +88,6 @@ def call():
           /*/identifier |
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
           /eml/dataset/*/alternateIdentifier |
-          /eml/@id |
           /resource/identifier[identifierType='DOI'] |
           /resource/alternateIdentifiers/alternateIdentifier
       </xpath>

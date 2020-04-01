@@ -12,11 +12,11 @@ def call():
   global status
 
   if ('serviceType' in globals() and serviceType is not None and serviceType):
-    output = "A service type is present"
+    output = "A service type is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A service type is not present"
+    output = "A service type is not present."
     status = "FAILURE"
     return False
 

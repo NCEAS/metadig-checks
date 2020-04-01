@@ -19,10 +19,10 @@ def call():
   # For now, just the presence or absence is checked for with a boolean operator.
   if ('entityTypePresent' in globals() and entityTypePresent is not None and entityTypePresent):
     status = "SUCCESS"
-    output = "An entity type was found"
+    output = "An entity type was found."
     return True 
   else:
-    output = "An entity type was not found"
+    output = "An entity type was not found."
     status = "FAILURE"
     return False
     

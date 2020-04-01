@@ -12,11 +12,11 @@ def call():
   global status
  
   if ('temporalExtent' in globals() and temporalExtent is not None and temporalExtent):
-    output = "A temporal extent is present"
+    output = "A temporal extent is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A temporal extent is not present"
+    output = "A temporal extent is not present."
     status = "FAILURE"
     return False
       ]]></code>

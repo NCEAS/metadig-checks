@@ -12,11 +12,11 @@ def call():
   global status
 
   if ('spatialExtent' in globals() and spatialExtent is not None and spatialExtent):
-    output = "A spatial extent is present"
+    output = "A spatial extent is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A spatial extent is not present"
+    output = "A spatial extent is not present."
     status = "FAILURE"
     return False
       ]]></code>

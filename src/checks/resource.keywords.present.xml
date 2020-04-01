@@ -29,7 +29,7 @@ def call():
     keywords = [keywords]
 
   # Passed all tests!
-  output = "{} keywords are present".format(keywordCount)
+  output = "{} keywords are present".format(len(keywords))
   # Passed all tests!
   status = "SUCCESS"
   return True 

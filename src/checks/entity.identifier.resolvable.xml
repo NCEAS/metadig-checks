@@ -27,7 +27,7 @@ def call():
   
   # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:
-    output = "A entity identifier was not found."
+    output = "An entity identifier was not found."
     status = "FAILURE"
     return False
          

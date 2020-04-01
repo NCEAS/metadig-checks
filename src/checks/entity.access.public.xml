@@ -35,7 +35,7 @@ def call():
   #    <permission>read</permission>
   #  </allow>
   #  ...
-  # </accessPolicy
+  # </accessPolicy>
   
   rule = root.findall("./accessPolicy/allow[subject='public']")
   # No rules exist for 'public' subject
@@ -55,7 +55,7 @@ def call():
           return True
           
       status = "FAILURE"
-      output = "No Access rule for 'public' user found in DataONE system metadata. Data are not publicly available"
+      output = "No Access rule for 'public' user found in DataONE system metadata, metadata are not publicly available"
       return True
       
       ]]></code>

@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>resource.publicationDate.timeframe.1</id>
   <name>Publication date is not in the future</name>
-  <description>Publication Date Should Not Be In The Future</description>
+  <description>Publication date should not be in the future</description>
   <type>Findable</type>
   <level>OPTIONAL</level>
   <environment>rscript</environment>

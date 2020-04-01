@@ -47,7 +47,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All {} entities have names".format(entityCount)
+    output = "All {} entities have names.".format(len(entities))
     status = "SUCCESS"
     return True
     ]]></code>

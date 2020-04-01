@@ -53,7 +53,7 @@ def call():
     return False
       ]]></code>
    <selector>
-      <name>datasetDistribution</name>
+      <name>resourceDistribution</name>
       <xpath>
          /eml/dataset/distribution/online/url[@function="download"]/text()[normalize-space()] |
          /eml/dataset/*/physical/distribution/online/url[@function="download"]/text()[normalize-space()] |

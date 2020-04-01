@@ -63,7 +63,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes that require a measurement precision have one defined".format(attributeCount)
+    output = "All {} attributes that require a measurement precision have one defined".format(len(attributePrecision))
     status = "SUCCESS"
     return True
     ]]></code>

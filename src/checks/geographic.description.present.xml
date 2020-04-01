@@ -15,7 +15,7 @@
       failure("A textual description of the geographic coverage of this dataset is not present.")
     }
   </code>
-  <selector namespaceAware="true">
+  <selector>
     <name>descriptionPresent</name>
     <xpath>boolean(
         /eml/dataset/coverage/geographicCoverage/geographicDescription or

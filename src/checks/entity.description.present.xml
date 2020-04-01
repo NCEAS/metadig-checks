@@ -53,7 +53,7 @@ def call():
   
   # Add the list of deliquent entities, if any, to the output
   if(len(missing) > 0):
-    output = u"The following entities are missing a description: '{}'".format(', '.join(missing))
+    output = u"These entities are missing a description: {}".format(', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += u", ..."
     status = "FAILURE"

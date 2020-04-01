@@ -80,7 +80,7 @@ def call():
       output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, attrList)
       
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:

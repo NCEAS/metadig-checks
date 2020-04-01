@@ -45,10 +45,14 @@ def call():
       else:
         continue
   
-  if(len(missing) > 0):
-    output = "The following entities are missing a name: '{}'".format(', '.join(missing))
+  if(len(missing) == 1):
+    output = u"The following entity is missing a name: {}".format(missing[0])
+    status = "FAILURE"
+    return False
+  elif (len(missing) > 1):
+    output = u"The following {} entities are missing a name: '{}'".format(len(missing), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:

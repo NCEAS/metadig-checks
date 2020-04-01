@@ -26,12 +26,12 @@ def call():
     return False
   else:
     # Check if metadata license is a single string or arrayList
-    if(isinstance(metadataLicense, str) or isinstance(metadataLicense, unicode)):
-      output = "The metadata license '{}' was found".format(metadataLicense)
-    elif (isinstance(metadataLicense, ArrayList)):
-      output = "The metadata license '{}' was found (first of {} licenses)".format(metadataLicense[0].strip(), metadataLicense.size())
+    if(isinstance(metadataLicense, unicode)):
+      output = u"The metadata license '{}' was found".format(metadataLicense)
+    elif (isinstance(metadataLicense, list)):
+      output = u"The metadata license '{}' was found (first of {} licenses)".format(metadataLicense[0].strip(), len(metadataLicense))
     else:
-      output = "The metadata license '{}' was found)".format(metadataLicense)
+      output = u"The metadata license '{}' was found)".format(metadataLicense)
     status = "SUCCESS"
     return True
       ]]></code>

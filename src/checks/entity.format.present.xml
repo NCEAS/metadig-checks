@@ -31,7 +31,7 @@ def call():
     elif (isinstance(entityFormat, ArrayList)):
       output = "The entity format '{}' was found (first of {} formats)".format(entityFormat[0].strip(), entityFormat.size())
     else:
-      output = "The entity format '{}' was found)".format(entityFormat)
+      output = u"The entity format '{}' was found.".format(format)
     status = "SUCCESS"
     return True
       ]]></code>

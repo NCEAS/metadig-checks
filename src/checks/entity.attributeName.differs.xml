@@ -56,13 +56,13 @@ def call():
         
   if(len(definitionIsSame) > 0):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    output = "These attributes (out of {} total) have names and defintions that are the same: {}".format(len(attributeDefinition), ', '.join(definitionIsSame[0:maxPrint]))
+    output = u"These {} attributes (out of {} total) have names that are different than the definition (or are blank): {}".format(len(definitionIsSame), len(attributeDefinition), ', '.join(definitionIsSame[0:maxPrint]))
     if(len(definitionIsSame) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have definitions that differ from the name".format(len(attributeDefinition))
+    output = u"All {} attributes have definitions that differ from the name".format(len(attributeDefinition))
     status = "SUCCESS"
     return True 
       ]]></code>

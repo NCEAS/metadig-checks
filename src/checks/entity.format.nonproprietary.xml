@@ -87,6 +87,9 @@ def call():
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
     output = "These proprietary data entity formats were found: '{}' (out of {} total formats.)".format(', '.join(fmts), entityCount)
+    output = u"These {} proprietary data entity formats (out of {} total formats) were found: {}".format(len(fmts), len(entityFormat), ', '.join(fmts[0:maxPrint]))
+    if(len(fmts) > maxPrint):
+      output += u", ..."
     status = "FAILURE"
     return False
   else:

@@ -28,30 +28,23 @@ def call():
     return False
   else:
     # Check if variable type is a single string or arrayList
-    if(isinstance(datasetLandingPage, str) or isinstance(datasetLandingPage, unicode)):
-      output = "The resource landing page url '{}' was found".format(datasetLandingPage)
+    if(isinstance(datasetLandingPage, unicode)):
+      output = u"The resource landing page url '{}' was found".format(datasetLandingPage)
       url = datasetLandingPage.strip()
-    elif (isinstance(datasetLandingPage, ArrayList)):
-      output = "The resource landing page url '{}' was found (first of {} urls)".format(datasetLandingPage[0].strip(), datasetLandingPage.size())
+    else: 
+      output = u"The resource landing page url '{}' was found (first of {} urls)".format(datasetLandingPage[0].strip(), len(datasetLandingPage))
       url = datasetLandingPage[0].strip()
-    else:
-      output = "The resource landing page url '{}' was found)".format(datasetLandingPage)
-      url = datasetLandingPage.strip()
-      
-  # 2019-08-9 Note that the resolvability part of this check is currently disabled, until https://redmine.dataone.org/issues/881 is 
-  # closed and the fix is incorporated into a DataONE CCI release.
-  status = "SUCCESS"
-  return True
 
-  #resolvable, msg = checks.isResolvable(url)
-  #if (resolvable):
-  #  output = '{} and is resolvable.'.format(output)      
-  #  status = "SUCCESS"
-  #  return True
-  #else:
-  #  output = "{}, but is not resolvable: {}".format(output, msg)      
-  #  status = "FAILURE"
-  #  return False
+      
+  resolvable, msg = checks.isResolvable(url)
+  if (resolvable):
+    output = u'{} and is resolvable.'.format(output)
+    status = "SUCCESS"
+    return True
+  else:
+    output = u"{}, but is not resolvable: {}".format(output, msg)
+    status = "FAILURE"
+    return False
       ]]></code>
    <selector>
       <name>datasetLandingPage</name>

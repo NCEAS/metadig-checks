@@ -64,9 +64,7 @@ def call():
         
   if(len(allDuplicates) > 0):
     if(len(allDuplicates) > maxPrint):
-      output = "Duplicates ({} totoal) of these attribute names were found: {}, ...".format(len(allDuplicates), ', '.join(allDuplicates[0:maxPrint]))
-    else:
-      output = "Duplicates of these attribute names were found: {}".format(', '.join(allDuplicates))
+      output += u", ..."
   else:
     output = "No duplicate attribute names were found."
   status = "SUCCESS"

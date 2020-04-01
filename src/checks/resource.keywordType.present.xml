@@ -55,8 +55,10 @@ def call():
         continue
 
   # Add the list of resources that don't have keywords to the output
-  if(len(keywordTypesMissing) > 0):
-    output = "{} keywords (of {} total) do not have a type specified: '{}'".format(len(keywordTypesMissing), len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]).encode('utf-8'))
+  if(len(keywordTypesMissing) == 1):
+    output = u"This keyword (of {} total) does not have a type specified: '{}'".format(len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
+  elif (len(keywordTypesMissing) > 1):
+    output = u"These {} keywords (of {} total) do not have a type specified: '{}'".format(len(keywordTypesMissing), len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
     if(len(keywordTypesMissing) > maxPrint):
       output += ", ..."
     status = "FAILURE"

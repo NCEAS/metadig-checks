@@ -21,20 +21,22 @@ def call():
     status = "FAILURE"
     return False
         
+  # Convert all values to unicode
+  coverageContentType = mvar.toUnicode(coverageContentType)
+  
   if (mvar.isBlank(coverageContentType)):
     output = "The coverage content type is blank."   
     status = "FAILURE"
     return False
   else:
-    coverageContentType = mvar.toUnicode(coverageContentType)
-    # Check if coverage content type is a single string or arrayList
+    # Check if coverage content type is a single string or list
     if(isinstance(coverageContentType, list)):
-      output = "The coverage content types '{}".format(', '.join(coverageContentType[0:maxPrint]))
+      output = u"The coverage content types '{}".format(', '.join(coverageContentType[0:maxPrint]))
       if(len(coverageContentType) > maxPrint):
-        output += ", ..."
-      output = "{}' were found ({} total).".format(output, len(coverageContentType))
+        output += u", ..."
+      output = u"{}' were found ({} total).".format(output, len(coverageContentType))
     else: 
-      output = "The coverage content type '{}' was found".format(coverageContentType)
+      output = u"The coverage content type '{}' was found".format(coverageContentType)
     status = "SUCCESS"
     return True
       ]]></code>

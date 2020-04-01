@@ -80,15 +80,13 @@ def call():
   
   # Let the user know if definitions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
-  if(insufficientCount > 0):
+  if(len(insufficient) == 1):
+    output = u"Only this attribute (of {} total) has an insufficient definition of less than {} or greater than {} words: '{}".format(attributeCount, minWordCount, maxWordCount, insufficient[0])
+  elif(len(insufficient) > 1):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    if(attributeNamesMissing):
-      output = u"{} attributes (of {} attributes) have insufficient definitions - less than {} words or greater than {} words.".format(insufficientCount, attributeCount, minWordCount, maxWordCount)
-    else:
-      output = u"These {} attributes (of {} total) have insufficient defintions less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
-      if(len(insufficient) > maxPrint):
-        output += ", ..."
-      
+    output = u"These {} attributes (of {} total) have insufficient definitions of less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
+    if(len(insufficient) > maxPrint):
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

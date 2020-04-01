@@ -57,10 +57,9 @@ def call():
         missing.append(name)
   
   if(len(missing) > 0):
-    if(len(missing)> maxPrint):
-      output = "The following attributes ({} total) are missing a precision value or have an invalid value specified: '{}, ...'".format(len(missing), ', '.join(missing[0:maxPrint]))
-    else:
-      output = "The following attributes are missing a precision value or have an invalid value specified: '{}'".format(', '.join(missing))
+    output = "These {} attributes (of {} total) are missing a precision value or have an invalid value specified: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
+    if(len(missing) > maxPrint):
+      output += u", ..."
     status = "FAILURE"
     return False
   else:

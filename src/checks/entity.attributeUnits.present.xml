@@ -62,7 +62,9 @@ def call():
          continue
   
   if(len(missing) > 0):
-    output = "The following attributes are missing a units value or have an invalid value specified: '{}'".format(', '.join(missing))
+    output = "The following attributes are missing a units value or have an invalid value specified: '{}'".format(', '.join(missing[0:maxPrint]))
+    if(len(missing) > maxPrint):
+      output += u", ..."
     status = "FAILURE"
     return False
   else:

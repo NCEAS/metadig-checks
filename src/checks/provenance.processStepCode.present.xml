@@ -26,12 +26,12 @@ def call():
     return False
   else:
     # Check if provenance process step code is a single string or arrayList
-    if(isinstance(provenanceProcessStepCode, str) or isinstance(provenanceProcessStepCode, unicode)):
-      output = "Provenance process step code '{}' was found".format(provenanceProcessStepCode)
-    elif (isinstance(provenanceProcessStepCode, ArrayList)):
-      output = "A provenance process step code (software) '{}' was found (first of {} scales)".format(provenanceProcessStepCode[0].strip(), provenanceProcessStepCode.size())
+    if(isinstance(provenanceProcessStepCode, unicode)):
+      output = u"Provenance process step code '{}' was found".format(provenanceProcessStepCode)
+    elif (isinstance(provenanceProcessStepCode, list)):
+      output = u"A provenance process step code (software) '{}' was found (first of {})".format(provenanceProcessStepCode[0].strip(), len(provenanceProcessStepCode))
     else:
-      output = "A provenance process step code (software)'{}' was found)".format(provenanceProcessStepCode)
+      output = u"A provenance process step code (software)'{}' was found)".format(provenanceProcessStepCode.strip())
     status = "SUCCESS"
     return True
       ]]></code>

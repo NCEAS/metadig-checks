@@ -40,13 +40,13 @@ def call():
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
         outstr = u"{}...".format(outstr[:displayNchars])
-      output = u"The access control rules '{}' were found".format(outstr)
+      output = u"The access control rules '{}' were found.".format(outstr)
     elif (isinstance(accessControlRules, list)):
       outstr = accessControlRules[0].strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
         outstr = u"{}...".format(outstr[:displayNchars])
-      output = u"The access control rules '{}' were found)".format(outstr)
+      output = u"The access control rules '{}' were found.".format(outstr)
     status = "SUCCESS"
     return True
       ]]></code>

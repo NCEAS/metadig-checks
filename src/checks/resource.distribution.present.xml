@@ -37,20 +37,16 @@ def call():
       output = "The resource distribution URL '{}' was found)".format(datasetDistribution.strip())
       url = datasetDistribution.strip()
       
-  # 2019-08-9 Note that the resolvability part of this check is currently disabled, until https://redmine.dataone.org/issues/881 is 
-  # closed and the fix is incorporated into a DataONE CCI release.
-  status = "SUCCESS"
-  return True
-
-  #resolvable, msg = checks.isResolvable(url)
-  #if (resolvable):
-  #  output = '{} and is resolvable.'.format(output)      
-  #  status = "SUCCESS"
-  #  return True
-  #else:
-  #  output = "{}, but is not resolvable: {}".format(output, msg)      
-  #  status = "FAILURE"
-  #  return False
+  # A distribution contact exists, now check if it is resolvable
+  resolvable, msg = checks.isResolvable(url)
+  if (resolvable):
+    output = u'{} and is resolvable.'.format(output)      
+    status = "SUCCESS"
+    return True
+  else:
+    output = u"{}, but is not resolvable: {}".format(output, msg)
+    status = "FAILURE"
+    return False
       ]]></code>
    <selector>
       <name>datasetDistribution</name>

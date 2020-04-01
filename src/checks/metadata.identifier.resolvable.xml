@@ -59,17 +59,16 @@ def call():
         
   if (resolvable):
     if(usedD1):
-      output = '{} and is resolvable using the DataONE resolve service.'.format(output)
+      output = u'{} and is resolvable using the DataONE resolve service.'.format(output)
     elif(isDOI):
-      output = '{} and is resolvable using a DOI resolver.'.format(output)      
+      output = u'{} and is resolvable using a DOI resolver.'.format(output)      
     else:
-      output = '{} and is resolvable.'.format(output)      
+      output = u'{} and is resolvable.'.format(output)      
           
     status = "SUCCESS"
     return True
   else:
-    # output = "{}, but is not resolvable: {}".format(output, msg)
-    output = "{}, but is not resolvable.".format(output)      
+    output = u"{}, but is not resolvable.".format(output)      
     status = "FAILURE"
     return False
    ]]></code>

@@ -24,11 +24,12 @@ def call():
     status = "FAILURE"
     return False
   else:
-    # Check if resource identifier type is a single string or arrayList
-    if(isinstance(resourceIdentifierType, str) or isinstance(resourceIdentifierType, unicode)):
-      output = "The entity identifier type '{}' was found".format(resourceIdentifierType)
+    # Check if entity identifier type is a single string or list
+    if(isinstance(entityIdentifierType, unicode)):
+      output = u"The entity identifier type '{}' was found.".format(entityIdentifierType)
     else:
-      output = "The entity identifier type '{}' was found".format(resourceIdentifierType[0])
+      output = u"The entity identifier type '{}' was found.".format(entityIdentifierType[0])
+      
     status = "SUCCESS"
     return True
       ]]></code>

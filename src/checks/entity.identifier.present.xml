@@ -35,9 +35,11 @@ def call():
     return False
   else:
     if(len(entityIdentifier) > 1):
-      output = "The entity identifier '{}' was found (first of {} identifiers)".format(entityIdentifier[0].strip(), len(entityIdentifier))
+      output = u"These {} entity identifiers were found: {}".format(len(entityIdentifier), entityIdentifier[0:maxPrint])
+      if(len(entityIdentifier) > maxPrint):
+        output += u", ..."
     else:
-      output = "The entity identifier '{}' was found".format(entityIdentifier[0])
+      output = u"The entity identifier '{}' was found".format(entityIdentifier[0])
       
     status = "SUCCESS"
     return True

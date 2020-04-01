@@ -66,13 +66,14 @@ def call():
       else:
         continue
         
-  if(missingCount > 0):
-    if(attributeNamesMissing):
-      output = u"{} attributes (of {} attributes) do not have a definition (also name not specified in metadata)".format(missingCount, attributeCount)
-    else:
-      output = u"{} attributes (of {} total) do not have a definition: {}".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
+  if(len(missing) == 1):
+    output = u"This {} attribute (of {} total) does not have a definition: {}".format(len(missing), attributeCount, missing[0])
+    status = "FAILURE"
+    return False
+  elif(len(missing) > 1):
+    output = u"These {} attributes (of {} total) do not have a definition: {}".format(len(missing), attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:

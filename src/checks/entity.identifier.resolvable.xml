@@ -42,9 +42,9 @@ def call():
     status = "FAILURE"
     return False
   else: 
-    if(isinstance(entityIdentifier, list)):
-      id = entityIdentifier[0]
-      output = u"The entity identifier '{}' was found".format(id)
+    id = entityIdentifier[0]
+    if(len(entityIdentifier) > 1):
+      output = u"The entity identifier '{}' was found (first of {} identifiers)".format(id, len(entityIdentifier))
     else:
       id = entityIdentifier
       output = "The entity identifier '{}' was found".format(id)

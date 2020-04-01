@@ -14,7 +14,7 @@ def call():
    import metadig.variable as mvar
 
    # A data quality description is not present
-   if 'dataQualityDescription' not in globals() or dataQualityDescription is None:
+   if 'dataQualityDescription' not in globals() or not dataQualityDescription:
      output = "A data quality description was not found."
      status = "FAILURE"
      return False

@@ -10,9 +10,11 @@
 def call():
   global output
   global status
+  global attributeUnits
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  maxPrint = 5
   
   # Check if measurement units are present for each attribute.
   

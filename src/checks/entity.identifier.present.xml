@@ -12,8 +12,9 @@ def call():
   global status
   global entityIdentifier
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  
+  maxPrint = 3
 
   # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:

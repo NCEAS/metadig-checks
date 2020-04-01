@@ -15,6 +15,7 @@ def call():
   
   import metadig.variable as mvar
   
+  NoneType = type(None)
   maxPrint = 5
   
   # Check if a entity description is present for each attribute.

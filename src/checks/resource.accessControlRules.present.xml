@@ -8,43 +8,85 @@
    <environment>python</environment>
    <code><![CDATA[
 def call():
+  
+  import re
+  import metadig.variable as mvar
+  import xml.etree.ElementTree as ET
+
   global output
   global status
-  global accessControlRules
-  
-  import metadig.variable as mvar
-  
-  displayNchars = 20
-
-  # An access control rule is not present
-  if 'accessControlRules' not in globals() or accessControlRules is None:
-    output = "Access control rules were not found."
+   
+  # For the metadata object, check if access control rules are specified for a group of users, if public 
+  # access is not granted. However, if public access is granted, then this check always passes.
+  # Note that this check does not inspect the metadata, but instead evaluates the DataONE system 
+  # metadata
+ 
+  if ('systemMetadata' not in globals() or systemMetadata is None):
     status = "FAILURE"
+    output = "DataONE system metadata not available, unable to confirm access control rules"
+    return False
+  
+  root = ET.fromstring(systemMetadata)
+
+  # Check an access rule that allows 'read' permission to the 'public' subject.
+  # for example:
+  # <accessPolicy>
+  #  <allow>
+  #    <subject>public</subject>
+  #    <permission>read</permission>
+  #  </allow>
+  #  <allow>
+  #    <subject>http://orcid.org/0000-0002-9185-0144</subject>
+  #    <permission>read</permission>
+  #    <permission>write</permission>
+  #    <permission>changePermission</permission>
+  #  </allow>
+  #  ...
+  # </accessPolicy>
+  
+  rules = root.findall("./accessPolicy/allow")
+  # No access rules exist
+  if(len(rules) == 0):
+    status = "FAILURE"
+    output = "No access rules in system metadata, only rights holder can access this object"
     return False
 
-  # Convert all values to unicode
-  accessControlRules = mvar.toUnicode(accessControlRules)
-
-  if (mvar.isBlank(accessControlRules)):
-    output = "The access control rules are blank."   
-    status = "FAILURE"
-    return False
-  else:
-    # Check if access control rules are a single string or list
-    if(isinstance(accessControlRules, unicode)):
-      outstr = accessControlRules.strip()
-      outstr.replace('\n', ' ').replace('\r', '')
-      if(len(outstr) > displayNchars):
-        outstr = u"{}...".format(outstr[:displayNchars])
-      output = u"The access control rules '{}' were found.".format(outstr)
-    elif (isinstance(accessControlRules, list)):
-      outstr = accessControlRules[0].strip()
-      outstr.replace('\n', ' ').replace('\r', '')
-      if(len(outstr) > displayNchars):
-        outstr = u"{}...".format(outstr[:displayNchars])
-      output = u"The access control rules '{}' were found.".format(outstr)
+  # Loop through the access rules, checking for public access rule and any other rules
+  publicRead = False
+  otherUserRead = False
+  
+  for rule in rules:
+    subject = rule.find("subject").text
+    perms = rule.findall("permission")
+    read = False
+    changePermission = False
+    for perm in perms:
+      if perm.text == "read": 
+        read = True
+      if perm.text == "changePermission": 
+        changePermission = True
+    
+    if (subject == "public"):
+      if read or changePermission:
+        publicRead = True
+    else:
+      if read or changePermission:
+        otherUserRead = True
+        
+  if publicRead:
     status = "SUCCESS"
+    output = "Metadata are publicly available as public read is set in DataONE system metadata."
     return True
+  else:
+    if otherUserRead:
+      status = "SUCCESS"
+      output = "Metadata are not publicly available but have rules to allow access for specific users."
+      return True
+    else:
+      status = "FAILURE"
+      output = "Metadata are not publicly available but do not have rules to allow access for specific users."
+      return True
+    
       ]]></code>
    <selector>
       <name>accessControlRules</name>

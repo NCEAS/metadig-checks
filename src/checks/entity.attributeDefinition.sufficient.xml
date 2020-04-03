@@ -23,7 +23,7 @@ def call():
   
   # Check if definitions are present for each attribute.
   if not attributeDefinitionPresent:
-    output = "No attributes are present, so unable to check if definitions are sufficient."
+    output = "No attribute definitions are present, so unable to check if definitions are sufficient."
     status = "FAILURE"
     return False
     
@@ -119,7 +119,6 @@ def call():
          <xpath>
              ./attributeName/text()[normalize-space()] | 
              ./*/name/code/*/text()[normalize-space()] |
-             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
              ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
          </xpath>
      </subSelector>

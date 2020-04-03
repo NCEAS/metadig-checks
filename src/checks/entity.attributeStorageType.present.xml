@@ -24,6 +24,7 @@ def call():
     status = "FAILURE"
     return False
     
+  # If attributes are present, they can have a storage type (in EML), so fail if none are found.
   if not attributeStorageTypePresent:
     output = "No attribute storage types are present."
     status = "FAILURE"

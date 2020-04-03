@@ -1,4 +1,4 @@
-    <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.attributeNames.unique.1</id>
    <name>Entity Attribute Names Are Unique</name>
@@ -34,9 +34,9 @@ def call():
   entityCount = 0
   attributeCount = 0
   
-  # For each entity, check that the attributes defined for it have unique names
+  # The check fails if no attributes are found.
   if(len(entities) == 0):
-    output = "No entities found, unable to check for duplicate attribute names."
+    output = "No attributes found, unable to check for duplicate attribute names."
     status = "FAILURE"
     return False
   
@@ -46,6 +46,7 @@ def call():
   if(isinstance(entities, unicode)):
     entities = [entities]
     
+  # For each entity, check that the attributes defined for it have unique names
   for i in range(0, len(entities)):
     entityCount += 1
     attrList = entities[i]

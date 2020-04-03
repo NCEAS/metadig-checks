@@ -20,7 +20,7 @@ def call():
   
   # Check if a measurement precision is present for each attribute.
   if not attributesPresent:
-    output = "No attributes present that require measurement precision."
+    output = "No attributes present, unable to check if attribute measurement precision is defined."
     status = "FAILURE"
     return False
     
@@ -37,7 +37,7 @@ def call():
     
   # The metadata has attributes, but just none that require a precision, so give it a pass.
   if(len(attributePrecision) == 0):
-    output = "No attributes found that require a measurement precision."
+    output = "Attributes are present, but none require a measurement precision."
     status = "SUCCESS"
     return True
 
@@ -51,17 +51,9 @@ def call():
     if(precision is None or mvar.isBlank(precision)):
       missing.append(name)
       continue
-    # Stop checking if the value can be converted to an int value 
-    # as EML dateTime precision can be a character string, i.e. NonEmptyStringType
-    #else:
-    #  # Precision value should be type int
-    #  try:
-    #    val = int(precision)
-    #  except:
-    #    missing.append(name)
   
   if(len(missing) > 0):
-    output = "These {} attributes (of {} total) are missing a precision value or have an invalid value specified: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
+    output = "These {} attributes (of {} total) are missing a precision value: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += u", ..."
     status = "FAILURE"

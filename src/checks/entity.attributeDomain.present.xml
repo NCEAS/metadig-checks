@@ -18,7 +18,7 @@ def call():
   NoneType = type(None)
   # Check if a measurementScale is present for each attribute.
   if not attributesPresent:
-    output = "No relevant attributes are present so measurement domain cannot be checked."
+    output = "No attributes are present so attribute measurement domain cannot be checked."
     status = "FAILURE"
     return False
     
@@ -59,7 +59,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have a measurement domain defined.".format(attributeCount)
+    output = "All {} attributes that require a measurement domain have one defined.".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -77,7 +77,7 @@ def call():
           /*/contentInfo/*/dimension/MD_Band 
       </xpath>
       <subSelector>
-         <!-- if attributes are present, one of these domain types must be present (except for dateTimeDomain) -->
+         <!-- if attributes are present, one of these domain types must be present (even dateTimeDomain, which is optional in the EML spec) -->
          <name>domain</name>
          <xpath>
              ./measurementScale/nominal/nonNumericDomain |

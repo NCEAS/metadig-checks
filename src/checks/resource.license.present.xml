@@ -45,7 +45,7 @@ def call():
       if(len(datasetLicense) == 1):
         output = u"The resource license '{}' was found.".format(outstr)
       else:
-        output = u"The resource license '{}' was found (first of {} licenses).".format(outstr, len(datasetLicense))
+        output = u"The resource license '{}' was found. ".format(outstr)
     else:
       output = u"The resource license '{}' was found".format(datasetLicense)
     status = "SUCCESS"
@@ -65,7 +65,7 @@ def call():
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode[@codeListValue="license"] |
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode[@codeListValue="license"] |
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode[@codeListValue="license"] |
-        /eml/dataset/licensed/identifier
+        /eml/dataset/licensed/licenseName//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

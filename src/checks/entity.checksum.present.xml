@@ -5,35 +5,105 @@
   <description>Check that an entity checksum and algorithm are present.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
-  <environment>rscript</environment>
+  <environment>python</environment>
   <code><![CDATA[
-  check <- function() {
-    library(base)
-    
-    # Check if the checksum value and algorithm for at least one data entity exists
-    if(!checksumAndAlgorithmPresent) {
-      return(list(status = "FAILURE", output = sprintf("An entity checksum is not present.")))
-    }
-    
-    return(list(status = "SUCCESS", output = sprintf("An entity checksum and checksum algorithm are present (%s entities found).", checksumAlgorithmCount)))
-  }
-  result <- check()
-  mdq_result <- list(status=result$status, output=list(list(value=result$output)))
-  ]]></code>
+def call():
+ global output
+ global status
+ global checksums
+ global checksumAlgorithms
+ global entityNames
+ 
+ import metadig.variable as mvar
+ maxPrint = 5
+ 
+ # Check if measurement units are present for each attribute.
+ 
+ if not entitiesPresent:
+   output = "No data entities are present, so cannot check for entity checksums."
+   status = "FAILURE"
+   return False
+   
+ entityCount = 0
+ missing = []
+ 
+ checksums = mvar.toUnicode(checksums)
+ checksumAlgorithms = mvar.toUnicode(checksumAlgorithms)
+ 
+ # If only a single value is returned (vs type "list"), then convert to a list
+ # for easier processing
+ if(isinstance(checksums, unicode)):
+   checksums = [checksums]
+ 
+ if(isinstance(checksumAlgorithms, unicode)):
+   checksumAlgorithms = [checksumAlgorithms]
+   
+ if(isinstance(entityNames, unicode)):
+   entityNames = [entityNames]
+ 
+ for i in range(0, len(checksums)):
+   entityCount += 1
+   sum = checksums[i]
+   algorithm = checksumAlgorithms[i]
+   name = entityNames[i]
+   if(name is None):
+     name = "#{}".format(i)
+
+   # No units for this attribute was specified
+   if(sum == None or mvar.isBlank(sum)):
+     missing.append(name)
+   elif(algorithm == None or mvar.isBlank(algorithm)):
+     missing.append(name)
+     
+ if(len(missing) == 1):
+   output = "This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
+   status = "FAILURE"
+   return False
+ elif(len(missing) > 1):
+   output = "These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
+   if(len(missing) > maxPrint):
+     output += u", ..."
+   status = "FAILURE"
+   return False
+   
+ else:
+   output = "All {} entities have checksums and checksum algorithms specified.".format(entityCount)
+   status = "SUCCESS"
+   return True
+   ]]></code>
   <selector>
-    <name>checksumAndAlgorithmPresent</name>
-    <xpath>boolean(/eml/dataset/*/physical/authentication[@method])
+    <name>entitiesPresent</name>
+    <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])
     </xpath>
   </selector>
   <selector>
-    <name>checksumCount</name>
-    <xpath>count(/eml/dataset/*/physical/authentication)
-    </xpath>
+     <name>checksums</name>
+     <xpath>
+        /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
+     </xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/authentication</xpath>
+    </subSelector>
   </selector>
   <selector>
-    <name>checksumAlgorithmCount</name>
-    <xpath>count(/eml/dataset/*/physical/authentication[@method])
-    </xpath>
+     <name>checksumAlgorithms</name>
+     <xpath>
+        /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
+     </xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/authentication[@method]</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+     <name>entityNames</name>
+     <xpath> /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
+     </xpath>
+     <subSelector>
+        <name>name</name>
+        <xpath>./entityName</xpath>
+    </subSelector>
   </selector>
   <dialect>
      <name>Ecological Metadata Language</name>

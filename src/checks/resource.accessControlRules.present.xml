@@ -84,7 +84,7 @@ def call():
       return True
     else:
       status = "FAILURE"
-      output = "Metadata are not publicly available but do not have rules to allow access for specific users."
+      output = "Metadata are not publicly available  but do not have rules to allow access for specific users."
       return True
     
       ]]></code>

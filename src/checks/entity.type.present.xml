@@ -29,14 +29,15 @@ def call():
       ]]></code>
    <selector>
       <name>entityTypePresent</name>
-      <xpath>boolean(/*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode |
-         /*/type |
-         /*/hierarchyLevel/MD_ScopeCode |
-         /eml/dataset/dataTable | 
-         /eml/dataset/otherEntity | 
-         /eml/dataset/spatialVector |
-         /eml/dataset/spatialRaster | 
-         /eml/dataset/view |
+      <xpath>boolean(
+         /*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode or
+         /*/type or
+         /*/hierarchyLevel/MD_ScopeCode or
+         /eml/dataset/dataTable or
+         /eml/dataset/otherEntity or
+         /eml/dataset/spatialVector or
+         /eml/dataset/spatialRaster or
+         /eml/dataset/view or
          /resource/resourceType/@resourceTypeGeneral)
       </xpath>
    </selector>

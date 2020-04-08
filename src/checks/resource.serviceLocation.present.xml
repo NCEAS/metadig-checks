@@ -22,8 +22,7 @@ def call():
       ]]></code>
    <selector>
       <name>serviceLocation</name>
-      <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage)
-         or (/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL))
+      <xpath>boolean(/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL)
       </xpath>
    </selector>
    <dialect>

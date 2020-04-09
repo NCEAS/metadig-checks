@@ -56,11 +56,11 @@ def call():
      missing.append(name)
      
  if(len(missing) == 1):
-   output = "This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
+   output = u"This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
    status = "FAILURE"
    return False
  elif(len(missing) > 1):
-   output = "These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
+   output = u"These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
    if(len(missing) > maxPrint):
      output += u", ..."
    status = "FAILURE"

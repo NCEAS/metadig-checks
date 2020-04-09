@@ -10,9 +10,10 @@
 def call():
   global output
   global status
+  global coverageContentType
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  maxPrint = 3
 
   # A coverage content type is not present
   if 'coverageContentType' not in globals() or coverageContentType is None:
@@ -20,26 +21,30 @@ def call():
     status = "FAILURE"
     return False
         
+  # Convert all values to unicode
+  coverageContentType = mvar.toUnicode(coverageContentType)
+  
   if (mvar.isBlank(coverageContentType)):
     output = "The coverage content type is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if coverage content type is a single string or arrayList
-    if(isinstance(coverageContentType, str) or isinstance(coverageContentType, unicode)):
-      output = "The coverage content type '{}' was found".format(coverageContentType)
-    elif (isinstance(coverageContentType, ArrayList)):
-      output = "The coverage content type '{}' was found (first of {} types)".format(coverageContentType[0].strip(), coverageContentType.size())
-    else:
-      output = "The coverage content type '{}' was found)".format(coverageContentType)
+    # Check if coverage content type is a single string or list
+    if(isinstance(coverageContentType, list)):
+      output = u"The coverage content types '{}".format(', '.join(coverageContentType[0:maxPrint]))
+      if(len(coverageContentType) > maxPrint):
+        output += u", ..."
+      output = u"{}' were found ({} total).".format(output, len(coverageContentType))
+    else: 
+      output = u"The coverage content type '{}' was found".format(coverageContentType)
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
       <name>coverageContentType</name>
       <xpath>
-          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/contentType/MD_CoverageContentTypeCode |
-          /*/contentInfo/MD_CoverageDescription/contentType/MD_CoverageContentTypeCode 
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/contentType/MD_CoverageContentTypeCode/text()[normalize-space()] |
+          /*/contentInfo/MD_CoverageDescription/contentType/MD_CoverageContentTypeCode/text()[normalize-space()] 
       </xpath>
    </selector>
    <dialect>

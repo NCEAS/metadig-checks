@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.serviceLocation.present.1</id>
-   <name>Dataset Service Location Present</name>
-   <description>Check that a service location exists.</description>
-   <type>Accessible</type>
+   <id>resource.temporalExtent.present.1</id>
+   <name>Resource Temporal Extent Present</name>
+   <description>Check that a temporal extent exists.</description>
+   <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
-
-  if ('serviceLocation' in globals() and serviceLocation is not None and serviceLocation):
-    output = "A service location is present"
+ 
+  if ('temporalExtent' in globals() and temporalExtent is not None and temporalExtent):
+    output = "A temporal extent is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A service location is not present"
+    output = "A temporal extent is not present."
     status = "FAILURE"
     return False
       ]]></code>
    <selector>
-      <name>serviceLocation</name>
-      <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage)
-         or (/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL))
+      <name>temporalExtent</name>
+      <xpath>boolean(
+          /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
+          /*/temporal or
+          /eml/*/coverage/temporalCoverage)
       </xpath>
    </selector>
    <dialect>

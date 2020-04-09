@@ -10,59 +10,64 @@
 def call():
   global output
   global status
+  global attributeUnits
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  maxPrint = 5
   
   # Check if measurement units are present for each attribute.
   
   if not attributesPresent:
-    output = "No attributes present that require units, check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attributes present."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   missing = []
   
+  attributeUnits = mvar.toUnicode(attributeUnits)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeUnits, unicode)):
+    attributeUnits = [attributeUnits]
+  
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
+  
   for i in range(0, len(attributeUnits)):
     attributeCount += 1
-    units = attributeUnits.get(i)
-    name = attributeName.get(i)
-    # Multiple names may have been returned for an entity, especially for ISO, which has several different
-    # ways to identity one (@id, descriptor, aName)
-    if (name != None and isinstance(name, ArrayList)):
-         name = name.get(0)
-         
+    units = attributeUnits[i]
+    name = attributeName[i]
+    if(name is None):
+      name = "#{}".format(i)
+
     # No units for this attribute was specified
-    if(units == None):
-        if(name == None): 
-          missing.append("name not specified")
-        else:
-          missing.append(name)
-    else:
-      # Units value should be type int
-      if(units == None or (isinstance(units, ArrayList) and len(units) == 0)):
-        if(name == None): 
-          missing.append("name not specified")
-        else:
-          missing.append(name)
-      else:
-        continue
+    if(units == None or mvar.isBlank(units)):
+      missing.append(name)
   
   if(len(missing) > 0):
-    output = "The following attributes are missing a units value or have an invalid value specified: '{}'".format(', '.join(missing))
+    output = "The following attributes are missing a units value: '{}'".format(', '.join(missing[0:maxPrint]))
+    if(len(missing) > maxPrint):
+      output += u", ..."
     status = "FAILURE"
     return False
+  elif(len(missing) == 0 and len(attributeUnits) == 0):
+    output = "Attributes exist, but none of them require unit defintions."
+    status = "SUCCESS"
+    return True
   else:
-    output = "All {} attributes that require units have them defined".format(attributeCount)
+    output = "All {} attributes that require units have them defined.".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>
    <selector>
       <name>attributesPresent</name>
       <xpath>boolean(
-          /eml/dataset/dataTable/attributeList/attribute/measurementScale/interval or
-          /eml/dataset/dataTable/attributeList/attribute/measurementScale/ratio or
+          /eml/dataset/*/attributeList/attribute or
+          /eml/dataset/*/attributeList/attribute or
           /*/contentInfo/*/dimension/MD_Band or
           /*/contentInfo/*/dimension/MI_Band
           )
@@ -84,8 +89,8 @@ def call():
       <subSelector>
          <name>units</name>
          <xpath>
-             ./unit/* |
-             ./units/*
+             ./unit/*/text()[normalize-space()] |
+             ./units//name/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>
@@ -100,10 +105,9 @@ def call():
       <subSelector>
          <name>name</name>
          <xpath>
-             ../../attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./descriptor/*/text() |
-             attribute::id
+             ../../attributeName/text()[normalize-space()] | 
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

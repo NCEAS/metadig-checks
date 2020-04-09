@@ -14,13 +14,8 @@ def call():
    import metadig.variable as mvar
 
    # A data quality description is not present
-   if 'dataQualityDescription' not in globals() or dataQualityDescription is None:
+   if 'dataQualityDescription' not in globals() or not dataQualityDescription:
      output = "A data quality description was not found."
-     status = "FAILURE"
-     return False
-         
-   if (mvar.isBlank(dataQualityDescription)):
-     output = "The data quality description is blank."
      status = "FAILURE"
      return False
    else:
@@ -30,11 +25,11 @@ def call():
       ]]></code>
    <selector>
       <name>dataQualityDescription</name>
-      <xpath>/*/dataQualityInfo/DQ_DataQuality/report//text() |
-          /eml/dataset/methods/methodStep/qualityControl/description//text() |
-          /eml/dataset/methods/methodStep/qualityControl/description//text() |
-          /eml/dataset/*/methods/methodStep/qualityControl/description//text() |
-          /eml/dataset/attributeList/attribute/methods/methodStep/qualityControl/description//text()
+      <xpath>boolean(/*/dataQualityInfo/DQ_DataQuality/report or
+          /eml/dataset/methods/methodStep/qualityControl/description or
+          /eml/dataset/methods/methodStep/qualityControl/description or
+          /eml/dataset/*/methods/methodStep/qualityControl/description or
+          /eml/dataset/attributeList/attribute/methods/methodStep/qualityControl/description)
       </xpath>
    </selector>
    <dialect>

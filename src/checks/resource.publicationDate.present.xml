@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.publicationDate.present.1</id>
-   <name>Dataset Publication Date Present</name>
+   <id>resource.publicationDate.present.1</id>
+   <name>Resource Publication Date Present</name>
    <description>Check that a publication date exists.</description>
    <type>Findable</type>
    <level>OPTIONAL</level>
@@ -10,22 +10,25 @@
 def call():
   global output
   global status
+  global datasetPubDate
   
   import metadig.variable as mvar
 
   if ('datasetPubDate' in globals() and datasetPubDate is not None and datasetPubDate):
     status = "SUCCESS"
   else:
-    output = "A entity publication date is not present"
+    output = "A resource publication date is not present"
     status = "FAILURE"
     return False
     
+  datasetPubDate = mvar.toUnicode(datasetPubDate)
+    
   if (mvar.isBlank(datasetPubDate)):
-    output = "The entity publication date is blank"
+    output = "The resource publication date is blank"
     status = "FAILURE"
     return False
   else:
-    output = "The entity publication date '{}' was found".format(datasetPubDate)
+    output = u"The resource publication date '{}' was found".format(datasetPubDate)
     status = "SUCCESS"
     return True
       ]]></code>

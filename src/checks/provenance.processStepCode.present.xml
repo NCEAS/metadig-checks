@@ -10,8 +10,8 @@
 def call():
   global output
   global status
+  global provenanceProcessStepCode
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # Provenace step source code is not present
@@ -20,24 +20,27 @@ def call():
     status = "FAILURE"
     return False
         
+  # Convert all values to unicode
+  provenanceProcessStepCode = mvar.toUnicode(provenanceProcessStepCode)
+
   if (mvar.isBlank(provenanceProcessStepCode)):
     output = "The provenance process step code is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if provenance process step code is a single string or arrayList
-    if(isinstance(provenanceProcessStepCode, str) or isinstance(provenanceProcessStepCode, unicode)):
-      output = "Provenance process step code '{}' was found".format(provenanceProcessStepCode)
-    elif (isinstance(provenanceProcessStepCode, ArrayList)):
-      output = "A provenance process step code (software) '{}' was found (first of {} scales)".format(provenanceProcessStepCode[0].strip(), provenanceProcessStepCode.size())
+    if(isinstance(provenanceProcessStepCode, unicode)):
+      output = u"Provenance process step code '{}' was found".format(provenanceProcessStepCode)
+    elif (isinstance(provenanceProcessStepCode, list)):
+      output = u"A provenance process step code (software) '{}' was found (first of {})".format(provenanceProcessStepCode[0].strip(), len(provenanceProcessStepCode))
     else:
-      output = "A provenance process step code (software)'{}' was found)".format(provenanceProcessStepCode)
+      output = u"A provenance process step code (software)'{}' was found)".format(provenanceProcessStepCode.strip())
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>attributeMeasurementScale</name>
-      <xpath>/eml/*/methods/methodsStep/software</xpath>
+      <name>provenanceProcessStepCode</name>
+      <xpath>/eml/*/methods/methodStep/software//text()[normalize-space()]</xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

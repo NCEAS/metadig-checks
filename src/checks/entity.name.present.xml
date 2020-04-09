@@ -10,49 +10,44 @@
 def call():
   global output
   global status
+  global entities
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   maxPrint = 5
   # Check if a name is present for each entity.
   if not entityPresent:
-    output = "No entities are  present so cannot check their name, skipping this check."
-    status = "SKIP"
-    return True 
+    output = "No entities are present so cannot check their name."
+    status = "FAILURE"
+    return False
     
-  entityCount = 0
   missing = []
+  
+  # Convert all values, single or list, to unicode
+  entities = mvar.toUnicode(entities)
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(entities, unicode)):
+    entities = [entities]
     
   for i in range(0, len(entities)):
-    entityCount += 1
-    name = entities.get(i)
+    name = entities[i]
     # No name for this entity was specified
-    if(name == None):
+    if(name == None or mvar.isBlank(name)):
       missing.append("entity #{}".format(i))
-      if(len(missing) > maxPrint): 
-        continue
-    else:
-      # Description value should be a string or an array of strings
-      if(isinstance(name, ArrayList)):
-        continue
-      elif(not(isinstance(name, str) or isinstance(name, unicode))):
-        if(name == None): 
-          if(len(missing) > maxPrint):
-            missing.append("entity #{}".format(i))
-        else:
-          missing.append(name)
-      else:
-        continue
   
-  if(len(missing) > 0):
-    output = "The following entities are missing a name: '{}'".format(', '.join(missing))
+  if(len(missing) == 1):
+    output = u"The following entity is missing a name: {}".format(missing[0])
+    status = "FAILURE"
+    return False
+  elif (len(missing) > 1):
+    output = u"The following {} entities are missing a name: '{}'".format(len(missing), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} entities have names".format(entityCount)
+    output = "All {} entities have names.".format(len(entities))
     status = "SUCCESS"
     return True
     ]]></code>

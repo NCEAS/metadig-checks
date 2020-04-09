@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>entity.attributeEnumeratedDomains.present.1</id>
   <name>Entity Attribute Enumerated Domains Present</name>
-  <description>Enumerated domains should be defined</description>
+  <description>Check that enumerated domains are defined.</description>
   <type>interpretation</type>
   <level>OPTIONAL</level>
   <environment>rscript</environment>
@@ -15,14 +15,14 @@ idxs <- which(!is.na(enumerated_domains))
 for (i in idxs) {
   # Check the <code> element
   for (code in codes[i]) {
-    if (is.null(code) || nchar(code) <= 0) {
+    if (is.na(code) || is.null(code) || nchar(code) <= 0) {
       failure(paste0("A code for the attribute ", names[i], " (id: ", ids[i], ") was undefined. This is either because the <code> was missing or did not contain any content."))
     }
   }
 
   # Check the <definition> element
   for (definition in definitions[i]) {
-    if (is.null(definition) || nchar(definition) <= 0) {
+    if (is.na(definition) || is.null(definition) || nchar(definition) <= 0) {
       failure(paste0("A definition for the attribute ", names[i], " (id: ", ids[i], ") was undefined. This is either because the <definition> was missing or did not contain any content."))
     }
   }

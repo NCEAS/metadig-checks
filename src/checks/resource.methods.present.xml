@@ -1,36 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>provenance.trace.present.1</id>
-   <name>Provenance Trace Present</name>
-   <description>Check that provenance information is present.</description>
+   <id>resource.methods.present.1</id>
+   <name>Resource Methods Present</name>
+   <description>Check that a detailed methods section is present.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
-  global output
-  global status
+   global output
+   global status
    
-  import metadig.variable as mvar
+   import metadig.variable as mvar
 
-  # A provenance trace is present
-  if ('provenanceTrace' in globals() and provenanceTrace is not None and provenanceTrace):
-    output = "Provenance trace information was found."
-    status = "SUCCESS"
-    return True
-  else:
-    output = "Provenance trace information was not found."
-    status = "SUCCESS"
-    return True
+   # A detailed methods section is not present
+   if 'detailedMethodsText' not in globals() or detailedMethodsText is None:
+     output = "A detailed methods section was not found."
+     status = "FAILURE"
+     return False
+         
+   if (mvar.isBlank(detailedMethodsText)):
+     output = "The detailed methods section is blank."
+     status = "FAILURE"
+     return False
+   else:
+     output = "A detailed methods section was found."
+     status = "SUCCESS"
+     return True
       ]]></code>
    <selector>
-      <name>provenanceTrace</name>
-      <xpath>boolean(
-          /*/resourceLineage/LI_Lineage/processStep/LI_ProcessStep or
-          /*/dataQualityInfo/DQ_DataQuality/lineage/*/processStep or
-          /*/dataQualityInfo/DQ_DataQuality/lineage/*/source/*/sourceStep/LI_ProcessStep or
-          /eml/*/methods/methodStep/dataSource or
-          /eml/*/methods/methodStep/subStep/dataSource)
+      <name>detailedMethodsText</name>
+      <xpath>/*/resourceLineage/LI_Lineage/statement |
+          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text()[normalize-space()] |
+          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text()[normalize-space()] |
+          /*/provenance |
+          /eml/dataset/methods/methodStep/description//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

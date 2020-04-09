@@ -11,45 +11,55 @@ def call():
   global output
   global status
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
-  # Check if a measurement precision is present for each attribute.
+  global attributePrecision
+  global attributeName
   
+  maxPrint = 5
+  
+  # Check if a measurement precision is present for each attribute.
   if not attributesPresent:
-    output = "No attributes present that require measurement precision, check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attributes present, unable to check if attribute measurement precision is defined."
+    status = "FAILURE"
+    return False
     
-  attributeCount = 0
   missing = []
   
+  attributePrecision = mvar.toUnicode(attributePrecision)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  if(isinstance(attributePrecision, unicode)):
+    attributePrecision = [attributePrecision]
+    
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
+    
+  # The metadata has attributes, but just none that require a precision, so give it a pass.
+  if(len(attributePrecision) == 0):
+    output = "Attributes are present, but none require a measurement precision."
+    status = "SUCCESS"
+    return True
+
   for i in range(0, len(attributePrecision)):
-    attributeCount += 1
-    precision = attributePrecision.get(i)
-    name = attributeName.get(i)
+    precision = attributePrecision[i]
+    name = attributeName[i]
+    if(name is None or mvar.isBlank(name)):
+      name = "#{}".format(i)
+      
     # No precision for this attribute was specified
-    if(precision == None):
-        if(name == None): 
-          missing.append("name not specified")
-        else:
-          missing.append(name)
-    else:
-      # Precision value should be type int
-      if(not(isinstance(precision, int))):
-        if(name == None): 
-          missing.append("name not specified")
-        else:
-          missing.append(name)
-      else:
-        continue
+    if(precision is None or mvar.isBlank(precision)):
+      missing.append(name)
+      continue
   
   if(len(missing) > 0):
-    output = "The following attributes are missing a precision value or have an invalid value specified: '{}'".format(', '.join(missing))
+    output = "These {} attributes (of {} total) are missing a precision value: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
+    if(len(missing) > maxPrint):
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes that require a measurement precision have one defined".format(attributeCount)
+    output = "All {} attributes that require a measurement precision have one defined".format(len(attributePrecision))
     status = "SUCCESS"
     return True
     ]]></code>
@@ -68,9 +78,10 @@ def call():
       <xpath>
           /eml/dataset/*/attributeList/attribute/measurementScale/interval |
           /eml/dataset/*/attributeList/attribute/measurementScale/ratio |
+          /eml/dataset/*/attributeList/attribute/measurementScale/dateTime |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band 
-      </xpath>
+      </xpath> 
       <subSelector>
          <name>domain</name>
          <xpath>
@@ -85,6 +96,7 @@ def call():
       <xpath>
           /eml/dataset/*/attributeList/attribute/measurementScale/interval |
           /eml/dataset/*/attributeList/attribute/measurementScale/ratio |
+          /eml/dataset/*/attributeList/attribute/measurementScale/dateTime |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band
       </xpath>
@@ -92,10 +104,8 @@ def call():
          <name>name</name>
          <xpath>
              ../../attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text() |
-             ./descriptor/*/text() |
-             attribute::id
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

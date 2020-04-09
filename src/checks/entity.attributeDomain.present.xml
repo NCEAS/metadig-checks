@@ -10,62 +10,56 @@
 def call():
   global output
   global status
+  global attributeDomain
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   NoneType = type(None)
   # Check if a measurementScale is present for each attribute.
   if not attributesPresent:
-    output = "No attributes present so measurement domain cannot be checked, check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attributes are present so attribute measurement domain cannot be checked."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   missing = []
-  missingCount = 0
-  attributeNamesMissing = False
   maxPrint = 5
   
-  # Check global variable (from XPath selector) to see if attribute names exist
-  if(isinstance(attributeName, NoneType) or attributeName.size == 0):
-    attributeNamesMissing = True
+  attributeDomain = mvar.toUnicode(attributeDomain)
+  attributeName = mvar.toUnicode(attributeName)
     
-  for i in range(0, attributeDomain.size()):
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeDomain, unicode)):
+    attributeDomain = [attributeDomain]
+    
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
+  
+  for i in range(0, len(attributeDomain)):
     attributeCount += 1
-    domain = attributeDomain.get(i)
-    if(not attributeNamesMissing):
-      name = attributeName.get(i)
-    # Check if the attribute name is blank
+    domain = attributeDomain[i]
+    name = attributeName[i]
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      attributeNamesMissing = True
+      name = "attr #{}.format(i)"
 
     # No domain for this attribute was specified
-    if(isinstance(domain, NoneType) or len(domain) == 0):
-      missingCount += 1
-      if(not attributeNamesMissing):
-        missing.append(name)
-    else:
-      # Note: there may be more that one value returned for the domain, i.e for ISO the min and max values are returned
-      if(mvar.isBlank(domain)):
-        missingCount += 1
-        if(not attributeNamesMissing):
-          missing.append(name)
-      else:
-        continue
-        
-  if(missingCount > 0):
-    if(attributeNamesMissing):
-      output = "{} attributes (of {} total) do not have a measurement domain defined".format(missingCount, attributeCount)
-    else:
-      output = "The following {} attributes (of {} total) do not have a measurement domain specified: '{}'".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
-      
+    if(isinstance(domain, NoneType) or mvar.isBlank(domain)):
+      missing.append(name)
+
+  if(len(missing) == 1):
+    output = u"This {} attribute (of {} total) does not have a measurement domain defined: {}.".format(len(missing), attributeCount, missing[0])
+    status = "FAILURE"
+    return False
+  elif(len(missing) > 1):
+    output = u"The following {} attributes (of {} total) do not have a measurement domain specified: '{}'.".format(len(missing), attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have a measurement domain defined".format(attributeCount)
+    output = "All {} attributes that require a measurement domain have one defined.".format(attributeCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -83,7 +77,7 @@ def call():
           /*/contentInfo/*/dimension/MD_Band 
       </xpath>
       <subSelector>
-         <!-- if attributes are present, one of these domain types must be present (except for dateTimeDomain) -->
+         <!-- if attributes are present, one of these domain types must be present (even dateTimeDomain, which is optional in the EML spec) -->
          <name>domain</name>
          <xpath>
              ./measurementScale/nominal/nonNumericDomain |
@@ -106,8 +100,8 @@ def call():
       <subSelector>
          <name>name</name>
          <xpath>
-             ./attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text()
+             ./attributeName/text()[normalize-space()] | 
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

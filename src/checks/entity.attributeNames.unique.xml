@@ -10,9 +10,11 @@
 def call():
   global output
   global status
+  global entities
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  
+  maxPrint = 5
   
   # Determine if elements are repeated in a list
   def duplicates(x):
@@ -32,15 +34,22 @@ def call():
   entityCount = 0
   attributeCount = 0
   
-  # For each entity, check that the attributes defined for it have unique names
+  # The check fails if no attributes are found.
   if(len(entities) == 0):
-    output = "No entities found, unable to check for duplicate attribute names."
-    status = "SKIP"
-    return True
+    output = "No attributes found, unable to check for duplicate attribute names."
+    status = "FAILURE"
+    return False
   
+  # Convert all values to unicode
+  entities = mvar.toUnicode(entities)
+  # If a single string, convert to list for easier processing
+  if(isinstance(entities, unicode)):
+    entities = [entities]
+    
+  # For each entity, check that the attributes defined for it have unique names
   for i in range(0, len(entities)):
     entityCount += 1
-    attrList = entities.get(i)
+    attrList = entities[i]
     # No attributes for this entity
     if(attrList == None):
       continue
@@ -55,9 +64,11 @@ def call():
         allDuplicates.extend(duplicates(attrList))
         
   if(len(allDuplicates) > 0):
-    output = "{} entities total. Duplicates of these attribute names were found: {}".format(entityCount, ', '.join(allDuplicates))
+    output = u"These {} attributes (of {} total) had duplicate names: {}".format(len(allDuplicates), attributeCount, ', '.join(allDuplicates[0:maxPrint]))
+    if(len(allDuplicates) > maxPrint):
+      output += u", ..."
   else:
-    output = "{} entities, {} attributes total. No duplicate attribute names were found.".format(entityCount, attributeCount)
+    output = "No duplicate attribute names were found."
   status = "SUCCESS"
   return True 
       ]]></code>
@@ -69,12 +80,12 @@ def call():
           /*/contentInfo/MI_CoverageDescription 
       </xpath>
       <subSelector>
-          <name>attributeNames</name>
+          <name>names</name>
           <xpath>
-              ./attributeList/attribute/attributeName |
-              ./attributeDescription/RecordType |
-              ./dimension/MI_Band/sequenceIdentifier/MemberName/aName//text() |
-              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()
+              ./attributeList/attribute/attributeName/text()[normalize-space()] |
+              ./attributeDescription/RecordType/text()[normalize-space()] |
+              ./dimension/MI_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()] |
+              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()]
           </xpath>
       </subSelector>
    </selector>

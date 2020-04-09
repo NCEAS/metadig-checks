@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.attributeName.differs.1</id>
    <name>Entity Attribute Names Differ from Definitions</name>
-   <description>Check that attribute defintions are not simply the attribute name.</description>
+   <description>Check that attribute definitions are not simply the attribute name.</description>
    <type>Accessible</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -10,55 +10,68 @@
 def call():
   global output
   global status
+  global attributeDefinition
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   definitionIsSame = []
-  missingDefinitions = []
   maxPrint = 5
   
   # For each entity, check that the attributes defined for it have unique names
-  if(len(attributeDefinition) == 0):
-    output = "No entity definitions found, unable to check that attribute names differ from definitions."
-    status = "SKIP"
-    return True
+  if(not attributeDefinitionPresent):
+    output = "No attribute definitions found, unable to check if attribute names differ from definitions."
+    status = "FAILURE"
+    return False
   
   # Check each definition - see if it is blank or missing, then check if it is the same as the 
   # name
+  attributeDefinition = mvar.toUnicode(attributeDefinition)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  # Convert to a list if only one element, if needed
+  if(isinstance(attributeDefinition, unicode)):
+    attributeDefinition = [attributeDefinition]
+    
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
+    
   for i in range(0, len(attributeDefinition)):
-    definition = attributeDefinition.get(i)
-    name = attributeName.get(i)
-    # No definition for this attribute
+    definition = attributeDefinition[i]
+    
+    # No definition for this attribute, don't fail for this as there is 
+    # another test for this.
     if(definition == None):
-      missingDefinitions.append(name)
       continue
     else:
-      # If only one definition element for this attribute, the quality engine will return it as a string.
-      # If multiples exist, it will be returned as a Java Arraylist (jython)
-      if(isinstance(definition, str) or isinstance(definition, unicode)):
-        if(name == definition):
-          definitionIsSame.append(name)
-        continue
-      else:
-        continue
+      name = attributeName[i]
+      # If the name is blank, report it using the attribute number in the file
+      if(name is None or mvar.isBlank(name)):
+        definitionIsSame.append("attr #{}".format(i))
+      # Is the definition name the same as the definition
+      elif(name == definition):
+        definitionIsSame.append(name)
         
-  if(len(definitionIsSame) > 0):
+  if(len(definitionIsSame) == 1):
+    output = u"This {} attribute (out of {} total) has a name that is different than the definition (or is blank): {}".format(len(definitionIsSame), len(attributeDefinition), definitionIsSame[0])
+    status = "FAILURE"
+    return False
+  elif(len(definitionIsSame) > 1):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    output = "These attributes (out of {} total) have names and defintions that are the same: {}".format(len(attributeDefinition), ', '.join(definitionIsSame[0:maxPrint]))
+    output = u"These {} attributes (out of {} total) have names that are different than the definition (or are blank): {}".format(len(definitionIsSame), len(attributeDefinition), ', '.join(definitionIsSame[0:maxPrint]))
     if(len(definitionIsSame) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attributes have definitions that differ from the name".format(len(attributeDefinition))
+    output = u"All {} attributes have definitions that differ from the name".format(len(attributeDefinition))
     status = "SUCCESS"
     return True 
       ]]></code>
       <selector>
          <name>attributeDefinitionPresent</name>
          <xpath>boolean(
-             /eml/dataset/*/attributeList/attribute or
+             /eml/dataset/*/attributeList/attribute/attributeDefinition or
              /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute/*/description or
              /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
              /*/contentInfo/*/dimension/MI_Band/descriptor or
@@ -67,16 +80,16 @@ def call():
       <selector>
          <name>attributeDefinition</name>
          <xpath>/eml/dataset/*/attributeList/attribute |
-             /*/contentInfo/MD_CoverageDescription/attributeGroup/MD_AttributeGroup/attribute |
+             /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+             /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
              /*/contentInfo/*/dimension/MI_Band |
              /*/contentInfo/*/dimension/MD_Band 
          </xpath>
          <subSelector>
             <name>definition</name>
-            <xpath>
-                ./*/description |
-                ./descriptor/*/text() |
-                ./attributeDefinition
+            <xpath> ./attributeDefinition/text()[normalize-space()] |
+                ./*/description/text()[normalize-space()] |
+                ./descriptor/*/text()[normalize-space()]
             </xpath>
         </subSelector>
       </selector>
@@ -84,16 +97,17 @@ def call():
          <name>attributeName</name>
          <xpath>
              /eml/dataset/*/attributeList/attribute |
+             /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+             /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
              /*/contentInfo/*/dimension/MI_Band |
              /*/contentInfo/*/dimension/MD_Band
          </xpath>
          <subSelector>
             <name>name</name>
             <xpath>
-                ./attributeName | 
-                ./*/name/code/*/text() |
-                ./sequenceIdentifier/MemberName/aName/*/text() |
-                ./sequenceIdentifier/MemberName/aName/*/text()
+                ./attributeName/text()[normalize-space()] | 
+                ./*/name/code/*/text()[normalize-space()] |
+                ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
             </xpath>
         </subSelector>
       </selector>

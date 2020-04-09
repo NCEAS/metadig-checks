@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
    <id>entity.identifierType.present.1</id>
    <name>Entity Identifier Type Present</name>
-   <description>Check that an entity identifier type exists.</description>
+   <description>Check that a entity identifier type exists.</description>
    <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -10,34 +10,39 @@
 def call():
   global output
   global status
+  global entityIdentifierType
   
   import metadig.variable as mvar
 
-  # An attribute definition is not present
-  if 'resourceIdentifierType' not in globals() or resourceIdentifierType is None:
+  # An entity identifier type is not present
+  if 'entityIdentifierType' not in globals() or entityIdentifierType is None:
     output = "A entity identifier type was not found."
     status = "FAILURE"
     return False
         
-  if (mvar.isBlank(resourceIdentifierType)):
+  entityIdentifierType = mvar.toUnicode(entityIdentifierType)
+
+  if (mvar.isBlank(entityIdentifierType)):
     output = "The entity identifier type is blank."   
     status = "FAILURE"
     return False
   else:
-    # Check if resource identifier type is a single string or arrayList
-    if(isinstance(resourceIdentifierType, str) or isinstance(resourceIdentifierType, unicode)):
-      output = "The entity identifier type '{}' was found".format(resourceIdentifierType)
+    # Check if entity identifier type is a single string or list
+    if(isinstance(entityIdentifierType, unicode)):
+      output = u"The entity identifier type '{}' was found.".format(entityIdentifierType)
     else:
-      output = "The entity identifier type '{}' was found".format(resourceIdentifierType[0])
+      output = u"The entity identifier type '{}' was found.".format(entityIdentifierType[0])
+      
     status = "SUCCESS"
     return True
       ]]></code>
    <selector>
-      <name>resourceIdentifierType</name>
-      <xpath>/eml/@system |
-         /resource/identifier/@identifierType |
+      <name>entityIdentifierType</name>
+      <xpath>/resource/identifier/@identifierType |
          /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/codeSpace//text()[normalize-space()] |
-         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/authority//text()[normalize-space()]
+         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/authority//text()[normalize-space()] |
+         /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
+         /eml/dataset/*/alternateIdentifier/@system 
       </xpath>
    </selector>
    <dialect>

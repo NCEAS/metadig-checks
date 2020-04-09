@@ -11,7 +11,6 @@ def call():
   # check: is the dataset title sufficient - i.e. does it contain
   # the "who", "what", "where"?
   import re
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # These global variables are read by the quality engine when

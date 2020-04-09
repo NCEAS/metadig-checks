@@ -10,17 +10,24 @@
 def call():
   global output
   global status
+  global entityIdentifier
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
+  
+  maxPrint = 3
 
-  # An attribute definition is not present
+  # An entity identifier is not present
   if 'entityIdentifier' not in globals() or entityIdentifier is None:
-    output = "A entity identifier was not found."
+    output = "An entity identifier was not found."
     status = "FAILURE"
     return False
         
-        
+  entityIdentifier = mvar.toUnicode(entityIdentifier)
+  # If a single value, convert to a list for easier processing (i.e. don't have
+  # to keep checking if it's a single value or list)
+  if(isinstance(entityIdentifier, unicode)):
+    entityIdentifier = [entityIdentifier]
+    
   # check if the identifier is blank
   # TODO: check the identifier namespace
   if (mvar.isBlank(entityIdentifier)):
@@ -28,14 +35,13 @@ def call():
     status = "FAILURE"
     return False
   else:
-    # Check if entity identifier is a single string or arrayList
-    if(isinstance(entityIdentifier, str) or isinstance(entityIdentifier, unicode)):
-      output = "The entity identifier '{}' was found".format(entityIdentifier)
-    elif (isinstance(entityIdentifier, ArrayList)):
-      output = "The entity identifier '{}' was found (first of {} identifiers)".format(entityIdentifier[0].strip(), entityIdentifier.size())
+    if(len(entityIdentifier) > 1):
+      output = u"These {} entity identifiers were found: {}".format(len(entityIdentifier), entityIdentifier[0:maxPrint])
+      if(len(entityIdentifier) > maxPrint):
+        output += u", ..."
     else:
-      output = "The entity identifier '{}' was found)".format(entityIdentifier)
-
+      output = u"The entity identifier '{}' was found".format(entityIdentifier[0])
+      
     status = "SUCCESS"
     return True
       ]]></code>
@@ -45,9 +51,8 @@ def call():
           /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |
           /*/identifier |
-          /eml/@id |
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
           /eml/dataset/*/alternateIdentifier |
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
           /resource/identifier[identifierType='DOI'] |
           /resource/alternateIdentifiers/alternateIdentifier
       </xpath>

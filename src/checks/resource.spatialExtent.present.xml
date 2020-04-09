@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.temporalExtent.present.1</id>
-   <name>Dataset Temporal Extent Present</name>
-   <description>Check that a temporal extent exists.</description>
+   <id>resource.spatialExtent.present.1</id>
+   <name>Resource Spatial Extent Present</name>
+   <description>Check that at least one spatial extent exists.</description>
    <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -10,22 +10,26 @@
 def call():
   global output
   global status
- 
-  if ('temporalExtent' in globals() and temporalExtent is not None and temporalExtent):
-    output = "A temporal extent is present"
+
+  if ('spatialExtent' in globals() and spatialExtent is not None and spatialExtent):
+    output = "A spatial extent is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A temporal extent is not present"
+    output = "A spatial extent is not present."
     status = "FAILURE"
     return False
       ]]></code>
    <selector>
-      <name>temporalExtent</name>
+      <name>spatialExtent</name>
       <xpath>boolean(
-          /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
-          /*/temporal or
-          /eml/*/coverage/temporalCoverage)
+          /*/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement or
+    	  /*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
+          /*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
+          /*/spatial or
+          /*/identificationInfo/*/extent/EX_Extent/geographicElement or
+          /eml/*/coverage/geographicCoverage/boundingCoordinates or
+          /resource/geoLocations/geoLocation)
       </xpath>
    </selector>
    <dialect>

@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.methods.present.1</id>
-   <name>Dataset Methods Present</name>
-   <description>Check that a detailed methods section is present.</description>
-   <type>Reusable</type>
+   <id>resource.creator.present.1</id>
+   <name>Resource creator Present</name>
+   <description>Check that a resource creator exists.</description>
+   <type>Findable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
-   global output
-   global status
-   
-   import metadig.variable as mvar
+  global output
+  global status
 
-   # A detailed methods section is not present
-   if 'detailedMethodsText' not in globals() or detailedMethodsText is None:
-     output = "A detailed methods section was not found."
-     status = "FAILURE"
-     return False
-         
-   if (mvar.isBlank(detailedMethodsText)):
-     output = "The detailed methods section is blank."
-     status = "FAILURE"
-     return False
-   else:
-     output = "A detailed methods section was found."
-     status = "SUCCESS"
-     return True
+  if ('creator' in globals() and creator is not None and creator):
+    output = "A resource author/originator is present"
+    status = "SUCCESS"
+    return True
+  else:
+    output = "A dataset author/originator is not present"
+    status = "FAILURE"
+    return False
+
       ]]></code>
    <selector>
-      <name>detailedMethodsText</name>
-      <xpath>/*/resourceLineage/LI_Lineage/statement |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text() |
-          /*/provenance |
-          /eml/dataset/methods/methodStep/description//text()
+      <name>creator</name>
+      <xpath>boolean(
+         /resource/creators/creator/* or
+         /*/creator or
+         /eml/dataset/creator or
+         /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_ResponsibleParty[normalize-space(role/CI_RoleCode)='author']/individualName or
+         /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/name or
+         /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/name)
       </xpath>
    </selector>
    <dialect>

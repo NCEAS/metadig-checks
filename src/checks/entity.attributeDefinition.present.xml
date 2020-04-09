@@ -10,56 +10,54 @@
 def call():
   global output
   global status
+  global attributeDefinition
+  global attributeName
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   NoneType = type(None)
   
   # Check if definitions are present for each attribute.
   if not attributeDefinitionPresent:
-    output = "No attributes are present, so unable to check for attribute defintions. Check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attributes definitions are present."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   missing = []
-  attributeNamesMissing = False
-  missingCount = 0
   maxPrint = 5
   
-  if(isinstance(attributeName, NoneType) or attributeName.size() == 0): 
-    attributeNamesMissing = True
+  # Convert all values to unicode 
+  attributeDefinition = mvar.toUnicode(attributeDefinition)
+  # If a single value, convert to a list for easier processing (i.e. don't have
+  # to keep checking if it's a single value or list)
+  if(isinstance(attributeDefinition, unicode)):
+    attributeDefinition = [attributeDefinition]
+    
+  attributeName = mvar.toUnicode(attributeName)
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
   
-  for i in range(0, attributeDefinition.size()):
+  for i in range(0, len(attributeDefinition)):
     attributeCount += 1
-    definition = attributeDefinition.get(i)
-    if(not attributeNamesMissing):
-      name = attributeName.get(i)
+    definition = attributeDefinition[i]
+    name = attributeName[i]
     # Check if the name is missing or blank
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      attributeNamesMissing = True
+      name = "attr #{}.format(i)"
       
-    # No definition for this attribute was specified
-    if(isinstance(definition, NoneType) or len(definition) == 0): 
-      missingCount += 1
-      if(not attributeNamesMissing):
-        missing.append(name)
-    else:
-      if(mvar.isBlank(definition)):
-        missingCount += 1
-        if(not attributeNamesMissing):
-          missing.append(name)
-      else:
-        continue
-  
-  if(missingCount > 0):
-    if(attributeNamesMissing):
-      output = "{} attributes (of {} attributes) do not have a definition (also name not specified in metadata)".format(missingCount, attributeCount)
-    else:
-      output = "These {} attributes (of {} total) do not have a definition: '{}'".format(missingCount, attributeCount, ', '.join(missing[0:maxPrint]))
+    # No definition for this attribute was specified, or it is blank
+    if(isinstance(definition, NoneType) or mvar.isBlank(definition)): 
+      missing.append(name)
+        
+  if(len(missing) == 1):
+    output = u"This {} attribute (of {} total) does not have a definition: {}".format(len(missing), attributeCount, missing[0])
+    status = "FAILURE"
+    return False
+  elif(len(missing) > 1):
+    output = u"These {} attributes (of {} total) do not have a definition: {}".format(len(missing), attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
@@ -70,7 +68,7 @@ def call():
    <selector>
       <name>attributeDefinitionPresent</name>
       <xpath>boolean(
-          /eml/dataset/*/attributeList/attribute or
+          /eml/dataset/*/attributeList/attribute/attributeDefinition or
           /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute/*/description or
           /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
           /*/contentInfo/*/dimension/MI_Band/descriptor or
@@ -87,9 +85,9 @@ def call():
       <subSelector>
          <name>definition</name>
          <xpath>
-             ./attributeDefinition |
-             ./*/description |
-             ./descriptor/*/text()
+             ./attributeDefinition/text()[normalize-space()] |
+             ./*/description/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>
@@ -97,15 +95,17 @@ def call():
       <name>attributeName</name>
       <xpath>
           /eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band
       </xpath>
       <subSelector>
          <name>name</name>
          <xpath>
-             ./attributeName | 
-             ./*/name/code/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text() 
+             ./attributeName/text()[normalize-space()] | 
+             ./*/name/code/*/text()[normalize-space()] |
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

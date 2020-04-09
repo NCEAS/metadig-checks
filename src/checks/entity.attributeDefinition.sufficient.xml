@@ -10,8 +10,9 @@
 def call():
   global output
   global status
+  global attributeDefinition
+  global attributeName 
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import re
   
@@ -19,69 +20,62 @@ def call():
   minWordCount = 5
   maxWordCount = 20
   maxPrint = 5
-  attributeNamesMissing = False
   
   # Check if definitions are present for each attribute.
   if not attributeDefinitionPresent:
-    output = "No attributes are present, so unable to check if defintions are sufficient. Check skipped."
-    status = "SKIP"
-    return True 
+    output = "No attribute definitions are present, so unable to check if definitions are sufficient."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   insufficient = []
-  insufficientCount = 0
   
-  if(isinstance(attributeName, NoneType) or attributeName.size() == 0):
-   attributeNamesMissing = True
+  attributeDefinition = mvar.toUnicode(attributeDefinition)
+  attributeName = mvar.toUnicode(attributeName)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeDefinition, unicode)):
+    attributeDefinition = [attributeDefinition]
+  
+  if(isinstance(attributeName, unicode)):
+    attributeName = [attributeName]
 
   # Check each attribute definition to see if it is missing or blank.
-  for i in range(0, attributeDefinition.size()):
+  for i in range(0, len(attributeDefinition)):
     attributeCount += 1
-    definition = attributeDefinition.get(i)
-    if(not attributeNamesMissing):
-      name = attributeName.get(i)
-      # Check if the attribute name is blank
-      if(isinstance(name, NoneType) or mvar.isBlank(name)):
-        attributeNamesMissing = True
-        
+    definition = attributeDefinition[i]
+    name = attributeName[i]
+    # Check if the name is missing or blank
+    if(isinstance(name, NoneType) or mvar.isBlank(name)):
+      name = "attr #{}"".format(i)
+
     # No definition for this attribute was specified
-    if(isinstance(definition, NoneType) or len(definition) == 0):
-      insufficientCount += 1
-      if(not attributeNamesMissing):
-        insufficient.append(name)
-    else:
-      if(mvar.isBlank(definition)):
-        insufficientCount += 1
-        if(not attributeNamesMissing):
-          insufficient.append(name)
-        continue
-          
-      # If for some reason there are multiple definitions for this entity, just use the first one
-      if(isinstance(definition, ArrayList)):
-        definition = definition.get(0)
-      # Now check the word count
-      words = re.split('\s+', definition.strip())
-      if(len(words) < minWordCount or len(words) > maxWordCount):
-        insufficientCount += 1
-        if(not attributeNamesMissing):
-          insufficient.append(name)
+    if(isinstance(definition, NoneType) or mvar.isBlank(definition)):
+      insufficient.append(name)
+      continue
+    # If for some reason there are multiple definitions for this entity, just use the first one
+    elif(isinstance(definition, list)):
+      definition = mvar.toUnicode(definition[0])
+        
+    # Now check the word count of the definition
+    words = re.split('\s+', definition.strip())
+    if(len(words) < minWordCount or len(words) > maxWordCount):
+      insufficient.append(name)
   
-  # Let the user know if defintions are missing, but don't fail the check based
+  # Let the user know if definitions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
-  if(insufficientCount > 0):
+  if(len(insufficient) == 1):
+    output = u"Only this attribute (of {} total) has an insufficient definition of less than {} or greater than {} words: '{}".format(attributeCount, minWordCount, maxWordCount, insufficient[0])
+  elif(len(insufficient) > 1):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    if(attributeNamesMissing):
-      output = "{} attributes (of {} attributes) have insufficient definitions - less than {} words or greater than {} words.".format(insufficientCount, attributeCount, minWordCount, maxWordCount)
-      #output = "attributeCount {}, attributeDefinition.size() {}, attributeName.size() {} ".format(attributeCount, attributeDefinition.size(), attributeName.size())
-    else:
-      output = "These {} attributes (of {} total) have insufficient defintions less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
-      if(len(insufficient) > maxPrint):
-        output += ", ..."
-      
+    output = u"These {} attributes (of {} total) have insufficient definitions of less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
+    if(len(insufficient) > maxPrint):
+      output += ", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attribute have sufficient definitions.".format(attributeCount)
+    output = "All {} attribute have sufficient definitions of greater than {} and less than {} words.".format(attributeCount, minWordCount, maxWordCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -107,7 +101,7 @@ def call():
          <xpath>
              ./attributeDefinition |
              ./*/description |
-             ./descriptor/*/text()
+             ./descriptor/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>
@@ -115,15 +109,17 @@ def call():
       <name>attributeName</name>
       <xpath>
           /eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
           /*/contentInfo/*/dimension/MI_Band |
           /*/contentInfo/*/dimension/MD_Band
       </xpath>
       <subSelector>
          <name>name</name>
          <xpath>
-             ./attributeName | 
-             ./*/name/code/*/text() |
-             ./sequenceIdentifier/MemberName/aName/*/text()
+             ./attributeName/text()[normalize-space()] | 
+             ./*/name/code/*/text()[normalize-space()] |
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
          </xpath>
      </subSelector>
    </selector>

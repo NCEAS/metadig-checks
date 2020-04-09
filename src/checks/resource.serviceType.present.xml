@@ -1,36 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.creator.present.1</id>
-   <name>Dataset Creator Present</name>
-   <description>Check that a dataset creator exists.</description>
-   <type>Findable</type>
-   <level>REQUIRED</level>
+   <id>resource.serviceType.present.1</id>
+   <name>Resource Service Type Present</name>
+   <description>Check that a service type exists.</description>
+   <type>Accessible</type>
+   <level>OPTIONAL</level>
    <environment>python</environment>
    <code><![CDATA[
 def call():
   global output
   global status
 
-  if ('creator' in globals() and creator is not None and creator):
-    output = "A dataset author/originator is present"
+  if ('serviceType' in globals() and serviceType is not None and serviceType):
+    output = "A service type is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A dataset author/originator is not present"
+    output = "A service type is not present."
     status = "FAILURE"
     return False
 
       ]]></code>
    <selector>
-      <name>creator</name>
-      <xpath>boolean(
-         /resource/creators/creator/* or
-         /*/creator or
-         /eml/dataset/creator or
-         /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_ResponsibleParty[normalize-space(role/CI_RoleCode)='author']/individualName or
-         /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/name or
-         /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/name)
-      </xpath>
+      <name>serviceType</name>
+      <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/serviceType/LocalName))</xpath>
    </selector>
    <dialect>
       <name>DataCite 3.1</name>

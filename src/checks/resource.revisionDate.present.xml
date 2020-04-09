@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.revisionDate.present.1</id>
-   <name>Dataset Revision Date Present</name>
-   <description>Check that a revision date exists.</description>
+   <id>resource.revisionDate.present.1</id>
+   <name>Resource Revision Date Present</name>
+   <description>Check that a revision or creation date exists.</description>
    <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -12,11 +12,11 @@ def call():
   global status
  
   if ('datasetRevisionDatePresent' in globals() and datasetRevisionDatePresent is not None and datasetRevisionDatePresent):
-    output = "A dataset creation or revision date is present"
+    output = "A resource creation or revision date is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A dataset creation or revision date is not present"
+    output = "A resource creation or revision date is not present."
     status = "FAILURE"
     return False
       ]]></code>

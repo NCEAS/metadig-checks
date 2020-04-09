@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>dataset.title.length.1</id>
-  <name>Dataset title length is sufficient</name>
-  <description>Check that the dataset title is greater than 7 words and less than 20.</description>
+  <id>resource.titleLength.sufficient.1</id>
+  <name>Resource title length is sufficient</name>
+  <description>Check that the resource title is greater than 7 words and less than 20.</description>
   <type>identification</type>
   <level>REQUIRED</level>
   <environment>rscript</environment>
@@ -11,7 +11,7 @@
     library(base)
 
     if(!titlePresent) {
-      return(list(status = "FAILURE", output = sprintf("The dataset title is not present, so the check is unable to determine title word length.")))
+      return(list(status = "FAILURE", output = sprintf("The resource title is not present, so the check is unable to determine title word length.")))
     }
 
     # Required minimum word count for title
@@ -23,13 +23,13 @@
 
     wordCount <- length(unlist(strsplit(datasetTitle, "\\s+", perl=T)))
     if (wordCount < strictMinCount) {
-      return(list(status = "FAILURE", output = sprintf("The number of words in the dataset's title is %d. The minimum required word count is %s.", wordCount, minWordCount))) 
+      return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The minimum required word count is %s.", wordCount, minWordCount))) 
     } else if (wordCount < minWordCount) {
-      return(list(status = "FAILURE", output = sprintf("The number of words in the dataset's title is %d. The minimum recommended word count is %s.", wordCount, minWordCount))) 
+      return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The minimum recommended word count is %s.", wordCount, minWordCount))) 
     } else if (wordCount > maxWordCount) {
-      return(list(status = "FAILURE", output = sprintf("The number of words in the dataset's title is %d. The maximum recommended word count is %s.", wordCount, maxWordCount))) 
+      return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The maximum recommended word count is %s.", wordCount, maxWordCount))) 
     } else {
-      return(list(status = "SUCCESS", output = sprintf("The number of words in the dataset's title is sufficient because it is between %d and %d words long.", minWordCount, maxWordCount))) 
+      return(list(status = "SUCCESS", output = sprintf("The number of words in the resource's title is sufficient because it is between %d and %d words long.", minWordCount, maxWordCount))) 
     }
   }
   result <- check()

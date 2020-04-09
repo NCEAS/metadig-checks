@@ -10,57 +10,57 @@
 def call():
   global output
   global status
+  global entities
+  global entityNames
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
+  NoneType = type(None)
   maxPrint = 5
   
   # Check if a entity description is present for each attribute.
   if not entityPresent:
-    output = "No entities are  present so cannot check their descriptions, skipping this check."
-    status = "SKIP"
-    return True 
+    output = "No entities are present so cannot check their descriptions."
+    status = "FAILURE"
+    return False
     
   entityCount = 0
   missing = []
     
+  entities = mvar.toUnicode(entities)
+  entityNames = mvar.toUnicode(entityNames)
+
+  if(isinstance(entities, unicode)):
+    entities = [entitities]
+
+  if(isinstance(entityNames, unicode)):
+    entityNames = [entityNames]
+  
+  # Loop through the entities, checking if each entity has a description.
+  # If the entity does not have a description, then add the name to a list
+  # of delinquent entities. If no name is present, then use the entity 
+  # sequence number.
   for i in range(0, len(entities)):
     entityCount += 1
-    description = entities.get(i)
-    name = entityNames.get(i)
+    description = entities[i]
+    name = entityNames[i]
+    # Check if the name is missing or blank
+    if(isinstance(name, NoneType) or mvar.isBlank(name)):
+      name = "attr #{}.format(i)"
+      
     # No description for this entity was specified
     if(description == None):
-      if(name == None): 
-        missing.append("entity #{}".format(i))
-      else:
         missing.append(name)
-        
-      if(len(missing) > maxPrint): 
-        break
-    else:
-      # Description value should be a string or an array of strings
-      if(isinstance(description, ArrayList)):
-        continue
-      elif(not(isinstance(description, str) or isinstance(description, unicode))):
-        if(name == None): 
-          missing.append("entity #{}".format(i))
-        else:
-          missing.append(name)
-          
-        if(len(missing) > maxPrint): 
-          break
-      else:
-        continue
   
+  # Add the list of deliquent entities, if any, to the output
   if(len(missing) > 0):
-    output = "The following entities are missing a description: '{}'".format(', '.join(missing))
+    output = u"These entities are missing a description: {}".format(', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += ", ..."
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} entities have descriptions".format(entityCount)
+    output = "All {} entities have descriptions.".format(entityCount)
     status = "SUCCESS"
     return True
     ]]></code>
@@ -103,7 +103,6 @@ def call():
          </xpath>
      </subSelector>
    </selector>
-
    <dialect>
       <name>DataCite 3.1</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>

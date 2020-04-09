@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.naturalLanguageKeywords.present.1</id>
+   <id>resource.naturalLanguageKeywords.present.1</id>
    <name>Natural Language Keywords Present</name>
    <description>Check if kewords are present that are not controlled by a vocabulary (natural language keywords).</description>
    <type>Findable</type>
@@ -18,8 +18,8 @@ def call():
   # For each resource, check that the attributes defined for it have unique names
   if(len(keywordGroups) == 0)   :
     output = "No keywords found, unable to check for natural language keywords."
-    status = "SKIP"
-    return True
+    status = "FAILURE"
+    return False
     
   for i in range(0, len(keywordGroups)):
     keywordGroupCount += 1

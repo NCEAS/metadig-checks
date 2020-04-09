@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.entityLicense.present.1</id>
-   <name>Dataset Entity License Present</name>
-   <description>Check that an entity usage license exists.</description>
+   <id>resource.license.present.1</id>
+   <name>Resource License Present</name>
+   <description>Check that a resource license exists.</description>
    <type>Reusable</type>
    <level>REQUIRED</level>
    <environment>python</environment>
@@ -10,37 +10,44 @@
 def call():
   global output
   global status
+  global datasetLicense
          
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   
   displayNchars = 40
   # A dataset license is not present
   if 'datasetLicense' not in globals() or datasetLicense is None:
-    output = "A dataset license was not found."
+    output = "A resource license was not found."
     status = "FAILURE"
     return False
 
+  datasetLicense = mvar.toUnicode(datasetLicense)
+  if(isinstance(datasetLicense, unicode)):
+    datasetLicense = [datasetLicense]
+  
   if (mvar.isBlank(datasetLicense)):
-    output = "The dataset license is blank."   
+    output = "The resource license is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if dataset license is a single string or arrayList
-    if(isinstance(datasetLicense, str) or isinstance(datasetLicense, unicode)):
+    if(isinstance(datasetLicense, unicode)):
       outstr = datasetLicense.strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The dataset license '{}' was found".format(outstr)
-    elif (isinstance(datasetLicense, ArrayList)):
+        outstr = u"{}...".format(outstr[:displayNchars])
+      output = u"The resource license '{}' was found".format(outstr)
+    elif (isinstance(datasetLicense, list)):
       outstr = datasetLicense[0].strip()
       outstr.replace('\n', ' ').replace('\r', '')
       if(len(outstr) > displayNchars):
-        outstr = "{}...".format(outstr[:displayNchars])
-      output = "The dataset license '{}' was found (first of {} licenses)".format(outstr, datasetLicense.size())
+        outstr = u"{}...".format(outstr[:displayNchars])
+      if(len(datasetLicense) == 1):
+        output = u"The resource license '{}' was found.".format(outstr)
+      else:
+        output = u"The resource license '{}' was found. ".format(outstr)
     else:
-      output = "The dataset license '{}' was found)".format(datasetLicense)
+      output = u"The resource license '{}' was found".format(datasetLicense)
     status = "SUCCESS"
     return True
       ]]></code>
@@ -52,13 +59,11 @@ def call():
       for more details.
       -->
       <xpath>
-        /eml/dataset/intellectualRights |
+        /eml/dataset/intellectualRights//text()[normalize-space()] |
         /*/rights |
         /resource/rightsList/rights |
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode[@codeListValue="license"] |
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode[@codeListValue="license"] |
-        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode[@codeListValue="license"] |
-        /eml/dataset/licensed/identifier
+        /eml/dataset/licensed/licenseName//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

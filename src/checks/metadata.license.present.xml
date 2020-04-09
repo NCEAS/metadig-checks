@@ -10,28 +10,31 @@
 def call():
   global output
   global status
+  global metadataLicense
          
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
-
+  
   # A metadata license is not present
   if 'metadataLicense' not in globals() or metadataLicense is None:
     output = "A metadata license was not found."
     status = "FAILURE"
     return False
 
+  # Convert all values to unicode
+  metadataLicense = mvar.toUnicode(metadataLicense)
+  
   if (mvar.isBlank(metadataLicense)):
     output = "The metadata license is blank."   
     status = "FAILURE"
     return False
   else:
     # Check if metadata license is a single string or arrayList
-    if(isinstance(metadataLicense, str) or isinstance(metadataLicense, unicode)):
-      output = "The metadata license '{}' was found".format(metadataLicense)
-    elif (isinstance(metadataLicense, ArrayList)):
-      output = "The metadata license '{}' was found (first of {} licenses)".format(metadataLicense[0].strip(), metadataLicense.size())
+    if(isinstance(metadataLicense, unicode)):
+      output = u"The metadata license '{}' was found".format(metadataLicense)
+    elif (isinstance(metadataLicense, list)):
+      output = u"The metadata license '{}' was found (first of {} licenses)".format(metadataLicense[0].strip(), len(metadataLicense))
     else:
-      output = "The metadata license '{}' was found)".format(metadataLicense)
+      output = u"The metadata license '{}' was found)".format(metadataLicense)
     status = "SUCCESS"
     return True
       ]]></code>
@@ -46,9 +49,9 @@ def call():
         /eml/dataset/licensed/identifier |
         /*/rights |
         /resource/rightsList/rights |
-        /*/metadataConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode |
-        /*/metadataConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode |
-        /*/metadataConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode
+        /*/metadataConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode/text()[normalize-space()] |
+        /*/metadataConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode/text()[normalize-space()] |
+        /*/metadataConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode/text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

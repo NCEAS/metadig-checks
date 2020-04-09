@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../../src/main/resources/schemas/schema1.xsd">
-    <id>FAIR.suite.1</id>
+    <id>FAIR.suite-0.2.1</id>
     <name>FAIR Recommendation Metadata Suite</name>
     <check>
-        <id>dataset.abstract.length.1</id>
+        <id>resource.abstractLength.sufficient.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
@@ -25,17 +25,22 @@
     </check>
     -->
     <check>
-        <id>dataset.keywords.controlled.1</id>
+        <id>resource.keywords.controlled.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.keywordType.present.1</id>
+        <id>resource.keywords.present.1</id>
+        <type>Findable</type>
+        <level>REQUIRED</level>
+    </check>
+    <check>
+        <id>resource.keywordType.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.publicationDate.timeframe.1</id>
+        <id>resource.publicationDate.timeframe.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -45,22 +50,17 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.naturalLanguageKeywords.present.1</id>
-        <type>Findable</type>
-        <level>OPTIONAL</level>
-    </check>
-    <check>
-        <id>dataset.creator.present.1</id>
+        <id>resource.creator.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.creatorIdentifier.present.1</id>
+        <id>resource.creatorIdentifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.revisionDate.present.1</id>
+        <id>resource.revisionDate.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -75,17 +75,17 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.publicationDate.present.1</id>
+        <id>resource.publicationDate.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.title.length.1</id>
+        <id>resource.titleLength.sufficient.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.spatialExtent.present.1</id>
+        <id>resource.spatialExtent.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -95,12 +95,12 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.taxonomicExtent.present.1</id>
+        <id>resource.taxonomicExtent.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.temporalExtent.present.1</id>
+        <id>resource.temporalExtent.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -108,71 +108,68 @@
         Accessible 
     -->
     <check>
-        <id>dataset.accessControlRules.specified.1</id>
+        <id>resource.accessControlRules.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.landingPage.present.1</id>
+        <id>resource.landingPage.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>distribution.contact.present.1</id>
+        <id>resource.distributionContact.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>distribution.contactIdentifier.present.1</id>
+        <id>resource.distributionContactIdentifier.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    <!-- This check relies on the DataONE HEAD/resolve service, which is
-       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>metadata.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    -->
     <check>
-        <id>dataset.distribution.present.1</id>
+        <id>resource.distribution.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.publisher.present.1</id>
+        <id>resource.publisher.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.publisherIdentifier.present.1</id>
+        <id>resource.publisherIdentifier.present.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.serviceLocation.present.1</id>
+        <id>resource.serviceLocation.present.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.serviceProvider.present.1</id>
+        <id>resource.serviceProvider.present.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
-    <!-- This check relies on the DataONE HEAD/resolve service, which is
-       currently broken. See https://redmine.dataone.org/issues/8812
     <check>
         <id>entity.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    -->
+    <!-- Disable this check until an efficient way is developed to check 
+         all entities for a dataset or a representative sample.
     <check>
         <id>entity.access.public.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
+-   -->
     <!-- Interoperable -->    
     <check>
       <id>entity.attributeName.differs.1</id>
@@ -197,7 +194,7 @@
     <check>
         <id>entity.attributeStorageType.present.1</id>
         <type>Interoperable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.checksum.present.1</id>
@@ -237,7 +234,7 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>dataset.serviceType.present.1</id>
+        <id>resource.serviceType.present.1</id>
         <type>Interoperable</type>
         <level>OPTIONAL</level>
     </check>
@@ -261,12 +258,12 @@
     <check>
         <id>entity.attributeMeasurementScale.present.1</id>
         <type>Reusable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.attributePrecision.present.1</id>
         <type>Reusable</type>
-        <level>REQUIRED</level>
+        <level>OPTIONAL</level>
     </check>
     <check>
         <id>entity.description.present.1</id>
@@ -279,12 +276,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>dataset.methods.present.1</id>
-        <type>Reusable</type>
-        <level>REQUIRED</level>
-    </check>
-    <check>
-        <id>metadata.license.present.1</id>
+        <id>resource.methods.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
@@ -304,7 +296,7 @@
         <level>REQUIRED</level>
     </check> 
     <check>
-        <id>dataset.entityLicense.present.1</id>
+        <id>resource.license.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>

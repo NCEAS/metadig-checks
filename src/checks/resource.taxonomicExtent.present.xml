@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.spatialExtent.present.1</id>
-   <name>Dataset Spatial Extent Present</name>
-   <description>Check that at least one spatial extent exists.</description>
+   <id>resource.taxonomicExtent.present.1</id>
+   <name>Resource Taxonomic Extent Present</name>
+   <description>Check that a taxonomic extent exists.</description>
    <type>Findable</type>
    <level>OPTIONAL</level>
    <environment>python</environment>
@@ -10,26 +10,21 @@
 def call():
   global output
   global status
-
-  if ('spatialExtent' in globals() and spatialExtent is not None and spatialExtent):
-    output = "A spatial extent is present"
+ 
+  if ('taxonomicExtent' in globals() and taxonomicExtent is not None and taxonomicExtent):
+    output = "A taxonomic extent is present."
     status = "SUCCESS"
     return True
   else:
-    output = "A spatial extent is not present"
+    output = "A taxonomic extent is not present."
     status = "FAILURE"
     return False
       ]]></code>
    <selector>
-      <name>spatialExtent</name>
+      <name>taxonomicExtent</name>
       <xpath>boolean(
-          /*/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement or
-    	  /*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
-          /*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
-          /*/spatial or
-          /*/identificationInfo/*/extent/EX_Extent/geographicElement or
-          /eml/*/coverage/geographicCoverage/boundingCoordinates or
-          /resource/geoLocations/geoLocation)
+          /*/scientificName or
+          /eml/*/coverage/taxonomicCoverage)
       </xpath>
    </selector>
    <dialect>

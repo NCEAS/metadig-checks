@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>resource.distribution.present.1</id>
+   <name>Resource Distribution Information Present</name>
+   <description>Check that resource distribution information exists and is resolvable.</description>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  global resourceDistribution
+
+  import metadig.variable as mvar
+  import metadig.checks as checks
+
+  # An attribute definition is not present
+  if 'resourceDistribution' not in globals() or resourceDistribution is None:
+    output = "A resource distribution URL was not found."
+    status = "FAILURE"
+    return False
+    
+  resourceDistribution = mvar.toUnicode(resourceDistribution)
+
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(resourceDistribution, unicode)):
+    resourceDistribution = [resourceDistribution]
+      
+  if (mvar.isBlank(resourceDistribution)):
+    output = "The resource distribution URL is blank."
+    status = "FAILURE"
+    return False
+  else:
+    # Check if resource distribution URL is a single string or arrayList
+    if(isinstance(resourceDistribution, unicode)):
+      output = u"The resource distribution URL '{}' was found".format(resourceDistribution)
+      url = resourceDistribution.strip()
+    elif (isinstance(resourceDistribution, list)):
+      output = u"The resource distribution URL '{}' was found (first of {} URLs)".format(resourceDistribution[0].strip(), len(resourceDistribution))
+      url = resourceDistribution[0].strip()
+      
+  # A distribution contact exists, now check if it is resolvable
+  resolvable, msg = checks.isResolvable(url)
+  if (resolvable):
+    output = u'{} and is resolvable.'.format(output)      
+    status = "SUCCESS"
+    return True
+  else:
+    output = u"{}, but is not resolvable: {}".format(output, msg)
+    status = "FAILURE"
+    return False
+      ]]></code>
+   <selector>
+      <name>resourceDistribution</name>
+      <xpath>
+         /eml/dataset/distribution/online/url[@function="download"]/text()[normalize-space()] |
+         /eml/dataset/*/physical/distribution/online/url[@function="download"]/text()[normalize-space()] |
+         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()] |
+         /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()]|
+         /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()]
+      </xpath>
+   </selector>
+   <dialect>
+      <name>DataCite 3.1, 4.x</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Dryad Data Package and Data File Modules</name>
+      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115-1 / ISO 19115-3</name>
+      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

@@ -11,6 +11,7 @@ def call():
   global output
   global status
   global mdq_params
+  global entityFormat
   
   # Check the data formats for all data entities.
   # The check fails if the specified data format matches a format marked as proprietary.
@@ -18,9 +19,9 @@ def call():
   # /opt/local/metadig/DataONEformats.csv. This file is manually edited to mark specific formats as proprietary. This file is obtained using the DataONE 'formats'
   # service, i.e 'https://cn.dataone.org/cn/v2/formats'.
   
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
   import csv
+  maxPrint = 5
   
   def isProprietary(formats, thisFormat):
     for row in formats:
@@ -50,29 +51,35 @@ def call():
       for row in fmtreader:
         formats.append(row)
 
-  proprietaryFound = []
   # An entity format is not present
   if 'entityFormat' not in globals() or entityFormat is None:
     output = "An entity format was not found."
     status = "FAILURE"
     return False
+
+  entityFormat = mvar.toUnicode(entityFormat)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(entityFormat, unicode)):
+    entityFormat = [entityFormat]
+  
+  proprietaryFound = []
         
-  if (mvar.isBlank(entityFormat)):
-    output = "The entity format is blank."   
-    status = "FAILURE"
-    return False
-    
+  # Check each entity format and see if it is in the 'proprietary' list, which
+  # is based on all formats from DataONE that have been manually determined t  o be
+  # proprietary
   for i in range(0, len(entityFormat)):
-    # Check each entity format and see if it is in the 'proprietary' list, which
-    # is based on all formats from DataONE that have been manually determined to be
-    # proprietary.
-    thisFormat = entityFormat.get(i)
+    # Check if the entity format is a single string or arrayList
+    thisFormat = entityFormat[i]
     if(isProprietary(formats, thisFormat)):
       proprietaryFound.append(thisFormat)
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = "These proprietary data entity formats were found: '{}' (out of {} total formats.)".format(', '.join(fmts), len(entityFormat))
+    output = u"These {} proprietary data entity formats (out of {} total formats) were found: {}".format(len(fmts), len(entityFormat), ', '.join(fmts[0:maxPrint]))
+    if(len(fmts) > maxPrint):
+      output += u", ..."
     status = "FAILURE"
     return False
   else:
@@ -83,11 +90,13 @@ def call():
    <selector>
       <name>entityFormat</name>
       <xpath>
-          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name//text() |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name//text() |
+          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text()[normalize-space()] |
+              /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
           /DryadDataFile/format/CharacterString |
           //resourceFormat/MD_Format/name | 
-          /eml/dataset/*/physical/dataFormat//formatName |
+          /eml/dataset/*/physical/dataFormat//formatName/text()[normalize-space()] |
           /resource/formats/format
       </xpath>
    </selector>

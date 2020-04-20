@@ -8,27 +8,34 @@
   <environment>rscript</environment>
   <code><![CDATA[
     library(metadig)
+    library(stringr)
+    
     if (pubDatePresent) {
       # A publication date is present, so now check if it is in
       # the future
       # The R as.Date function assumes that you are specifying a date as number of
       # days since epoch, if a string is entered that looks like a number, i.e. "2017"
       # so we have to check to see if R got confused.
-      pubDate <- toString(datasetPubDate)
+      datasetPubDate <- str_trim(datasetPubDate, side=c("both"))
+      pubDate <- str_trim(toString(datasetPubDate), side = c("both"))
       # R handles ISO 8601 formatted dates, so specifying the year only will cause problems. In
       # this case, add month and day in the ISO way.
       if(nchar(pubDate) == 4) {
         pubDate <- sprintf("%s-01-01", pubDate)
+      } else if (grepl(pubDate, "T")) {
+        pubDate <- str_replace(pubDate, "T.*", "")
       }
+      
+      
       metadataDate <- as.Date(pubDate, optional = TRUE)
       # If the date wasn't parsable by R, return an error
       if(is.na(metadataDate)) {
-        metadataDate <- as.Date(pubDate, tryFormats = c("%d/%m/%y"), optional = TRUE)
-        if(is.na(metadataDate)) failure(sprintf("Unable to parse publication date '%s'.", pubDate))
+        metadataDate <- as.Date(pubDate, tryFormats = c("%d/%m/%y","%y-%m-%d"), optional = TRUE)
+        if(is.na(metadataDate)) failure(sprintf("Unable to parse publication date '%s'.", datasetPubDate))
       } else {
         currentDate <- Sys.Date()
         if(metadataDate > currentDate) {
-          failure(sprintf("The publication date '%s' is in the future.", pubDate))
+          failure(sprintf("The publication date '%s' is in the future.", datasetPubDate))
         } else {
           success(sprintf("The publication date '%s' was found and is not in the future.", datasetPubDate))
         }
@@ -53,9 +60,9 @@
        <xpath>/resource/publicationYear |
               /*/available |
               /eml/dataset/pubDate |
-              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date |
-              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime |
-              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime
+              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date//text()[normalize-space()] |
+              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime//text()[normalize-space()] |
+              /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime//text()[normalize-space()]
        </xpath>
    </selector>
    <dialect>

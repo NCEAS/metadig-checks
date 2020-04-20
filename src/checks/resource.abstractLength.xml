@@ -11,6 +11,8 @@ def call():
   # check: datasetAbstractLength
   import re
   import metadig.variable as mvar
+  
+  global abstract
 
   global output
   global status
@@ -25,6 +27,15 @@ def call():
     output = "The abstract is blank"
     status = "FAILURE"
     return False
+    
+  # Convert to unicode so that non-ascii characters don't cause decoding errors
+  abstract = mvar.toUnicode(abstract)
+  
+  # The abstract can be a textType element, so it may contain multiple subelements, i.e. <para>, etc 
+  # Since the metadig-engine is stuck at XPath 1.0, we cannot use the xpath to gather these into 
+  # a single string.
+  if(isinstance(abstract, list)):
+    abstract = ' '.join(abstract)
   
   numWords = len(re.split('\s+', abstract.strip()))
   if (numWords < minLength):

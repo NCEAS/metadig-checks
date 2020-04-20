@@ -8,68 +8,66 @@
   <environment>python</environment>
   <code><![CDATA[
 def call():
- global output
- global status
- global checksums
- global checksumAlgorithms
- global entityNames
+  global output
+  global status
+  global checksums
+  global checksumAlgorithms
+  global entityNames
  
- import metadig.variable as mvar
- maxPrint = 5
+  import metadig.variable as mvar
+  maxPrint = 5
  
- # Check if measurement units are present for each attribute.
+  # Check if measurement units are present for each attribute.
+  if not entitiesPresent:
+    output = "No data entities are present, so cannot check for entity checksums."
+    status = "FAILURE"
+    return False
+    
+  entityCount = 0
+  missing = []
  
- if not entitiesPresent:
-   output = "No data entities are present, so cannot check for entity checksums."
-   status = "FAILURE"
-   return False
+  checksums = mvar.toUnicode(checksums)
+  checksumAlgorithms = mvar.toUnicode(checksumAlgorithms)
+ 
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(checksums, unicode)):
+    checksums = [checksums]
+ 
+  if(isinstance(checksumAlgorithms, unicode)):
+    checksumAlgorithms = [checksumAlgorithms]
    
- entityCount = 0
- missing = []
+  if(isinstance(entityNames, unicode)):
+    entityNames = [entityNames]
  
- checksums = mvar.toUnicode(checksums)
- checksumAlgorithms = mvar.toUnicode(checksumAlgorithms)
- 
- # If only a single value is returned (vs type "list"), then convert to a list
- # for easier processing
- if(isinstance(checksums, unicode)):
-   checksums = [checksums]
- 
- if(isinstance(checksumAlgorithms, unicode)):
-   checksumAlgorithms = [checksumAlgorithms]
-   
- if(isinstance(entityNames, unicode)):
-   entityNames = [entityNames]
- 
- for i in range(0, len(checksums)):
-   entityCount += 1
-   sum = checksums[i]
-   algorithm = checksumAlgorithms[i]
-   name = entityNames[i]
-   if(name is None):
-     name = "#{}".format(i)
+  for i in range(0, len(checksums)):
+    entityCount += 1
+    sum = checksums[i]
+    algorithm = checksumAlgorithms[i]
+    name = entityNames[i]
+    if(name is None):
+      name = "#{}".format(i)
 
-   # No units for this attribute was specified
-   if(sum == None or mvar.isBlank(sum)):
-     missing.append(name)
-   elif(algorithm == None or mvar.isBlank(algorithm)):
-     missing.append(name)
+    # No units for this attribute was specified
+    if(sum is None or mvar.isBlank(sum)):
+      missing.append(mvar.toUnicode(name))
+    elif(algorithm is None or mvar.isBlank(algorithm)):
+      missing.append(mvar.toUnicode(name))
      
- if(len(missing) == 1):
-   output = u"This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
-   status = "FAILURE"
-   return False
- elif(len(missing) > 1):
-   output = u"These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
-   if(len(missing) > maxPrint):
-     output += u", ..."
-   status = "FAILURE"
-   return False
-   
- else:
-   output = "All {} entities have checksums and checksum algorithms specified.".format(entityCount)
-   status = "SUCCESS"
-   return True
+  if(len(missing) == 1):
+    output = u"This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
+    status = "FAILURE"
+    return False
+  elif(len(missing) > 1):
+    output = u"These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
+    if(len(missing) > maxPrint):
+      output += u", ..."
+    status = "FAILURE"
+    return False
+  else:
+    output = "All entities have checksums and checksum algorithms specified."
+    status = "SUCCESS"
+    return True
    ]]></code>
   <selector>
     <name>entitiesPresent</name>

@@ -13,14 +13,18 @@ def call():
   
   import metadig.variable as mvar
  
-  if ('datasetPublisherPresent' in globals() and datasetPublisherPresent is not None and datasetPublisherPresent):
+  if ('datasetPublisher' in globals() and datasetPublisher is not None):
     if (mvar.isBlank(datasetPublisher)):
       output = "The resource publisher is blank."
       status = "FAILURE"
       return False
     else:
       publisher = mvar.toUnicode(datasetPublisher)
-      output = u"The resource publisher '{}' was found.".format(publisher.strip())
+      # A single value or list could be returned by the engine, so convert a single
+      # value to a list for easier processing
+      if(isinstance(publisher, unicode)):
+        publisher = [publisher]
+      output = u"The resource publisher '{}' was found.".format(publisher[0].strip())
       status = "SUCCESS"
       return True 
   else:

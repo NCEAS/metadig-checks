@@ -12,10 +12,11 @@ def call():
   import re
   import metadig.variable as mvar
   import xml.etree.ElementTree as ET
+  global systemMetadata
 
   global output
   global status
-   
+  
   # For the metadata object, check if access control rules are specified for a group of users, if public 
   # access is not granted. However, if public access is granted, then this check always passes.
   # Note that this check does not inspect the metadata, but instead evaluates the DataONE system 
@@ -26,8 +27,13 @@ def call():
     output = "DataONE system metadata not available, unable to confirm access control rules"
     return False
   
+  # Turns out that the string that contains the sysmeta xml can have non-ascii
+  # characters in the <fileName> element (maybe others), so convert it to unicode.
+  # Python 2.x xml.etree can't handle non-ascii characters, so remove them from the system metadata
+  # as they will only be in the uncontrolled elements like fileName, which we are not using for this check
+  systemMetadata = systemMetadata.encode('ascii',errors='ignore')
   root = ET.fromstring(systemMetadata)
-
+  
   # Check an access rule that allows 'read' permission to the 'public' subject.
   # for example:
   # <accessPolicy>

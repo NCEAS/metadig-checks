@@ -21,7 +21,7 @@
     # Recommended max word count
     maxWordCount <- 20
 
-    wordCount <- length(unlist(strsplit(datasetTitle, "\\s+", perl=T)))
+    wordCount <- length(unlist(strsplit(as.character(datasetTitle), "\\s+", perl=T)))
     if (wordCount < strictMinCount) {
       return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The minimum required word count is %s.", wordCount, minWordCount))) 
     } else if (wordCount < minWordCount) {

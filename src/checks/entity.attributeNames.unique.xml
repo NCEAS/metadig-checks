@@ -85,7 +85,8 @@ def call():
               ./attributeList/attribute/attributeName/text()[normalize-space()] |
               ./attributeDescription/RecordType/text()[normalize-space()] |
               ./dimension/MI_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()] |
-              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()]
+              ./dimension/MD_Band/sequenceIdentifier/MemberName/aName//text()[normalize-space()] |
+              ./descriptor/*/text()[normalize-space()]
           </xpath>
       </subSelector>
    </selector>

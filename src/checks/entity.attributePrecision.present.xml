@@ -53,7 +53,7 @@ def call():
       continue
   
   if(len(missing) > 0):
-    output = "These {} attributes (of {} total) are missing a precision value: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
+    output = u"These {} attributes (of {} total) are missing a precision value: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += u", ..."
     status = "FAILURE"
@@ -102,10 +102,11 @@ def call():
       </xpath>
       <subSelector>
          <name>name</name>
+         <!-- Multiple paths may be present and return values, but we need just one -->
          <xpath>
-             ../../attributeName | 
-             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
-             ./descriptor/*/text()[normalize-space()]
+             (../../attributeName | 
+             ./sequenceIdentifier/MemberName/aName[1]/*/text()[normalize-space()] |
+             ./descriptor[1]/*/text()[normalize-space()])[1]
          </xpath>
      </subSelector>
    </selector>

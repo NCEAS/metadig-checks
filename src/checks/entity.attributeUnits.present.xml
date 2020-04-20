@@ -49,7 +49,7 @@ def call():
       missing.append(name)
   
   if(len(missing) > 0):
-    output = "The following attributes are missing a units value: '{}'".format(', '.join(missing[0:maxPrint]))
+    output = u"The following attributes are missing a units value: '{}'".format(', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
       output += u", ..."
     status = "FAILURE"
@@ -104,10 +104,11 @@ def call():
       </xpath>
       <subSelector>
          <name>name</name>
+         <!-- Multiple paths may be present and return values, but we need just one -->
          <xpath>
-             ../../attributeName/text()[normalize-space()] | 
+             (../../attributeName/text()[normalize-space()] | 
              ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
-             ./descriptor/*/text()[normalize-space()]
+             ./descriptor/*/text()[normalize-space()])[1]
          </xpath>
      </subSelector>
    </selector>

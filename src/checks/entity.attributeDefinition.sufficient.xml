@@ -116,10 +116,11 @@ def call():
       </xpath>
       <subSelector>
          <name>name</name>
+         <!-- Multiple paths may be present and return values, but we need just one -->
          <xpath>
-             ./attributeName/text()[normalize-space()] | 
-             ./*/name/code/*/text()[normalize-space()] |
-             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
+             (./attributeName/text()[normalize-space()] | 
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()])[1]
          </xpath>
      </subSelector>
    </selector>

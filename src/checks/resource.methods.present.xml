@@ -10,6 +10,7 @@
 def call():
    global output
    global status
+   global detailedMethodsText
    
    import metadig.variable as mvar
 
@@ -19,6 +20,7 @@ def call():
      status = "FAILURE"
      return False
          
+   detailedMethodsText = mvar.toUnicode(detailedMethodsText)     
    if (mvar.isBlank(detailedMethodsText)):
      output = "The detailed methods section is blank."
      status = "FAILURE"

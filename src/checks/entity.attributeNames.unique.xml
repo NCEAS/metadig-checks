@@ -18,16 +18,19 @@ def call():
   
   # Determine if elements are repeated in a list
   def duplicates(x):
+   
     repeated = []
     nElements = len(x)
       
+    # Ensure that the list is unicode
+    x = mvar.toUnicode(x)
     for i in range(nElements):
       k = i + 1
       for j in range(k, nElements):
         if x[i] == x[j] and x[i] not in repeated:
-          if(str(x[i]).strip() == ""): 
+          if(x[i].strip() == ""): 
             continue
-          repeated.append(str(x[i]))
+          repeated.append(x[i])
     return repeated
     
   allDuplicates = []
@@ -49,7 +52,7 @@ def call():
   # For each entity, check that the attributes defined for it have unique names
   for i in range(0, len(entities)):
     entityCount += 1
-    attrList = entities[i]
+    attrList = mvar.toUnicode(entities[i])
     # No attributes for this entity
     if(attrList == None):
       continue

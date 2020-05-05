@@ -49,7 +49,7 @@ def call():
     storageType = attributeStorageType[i]
     name = attributeName[i]
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      name = "attr #{}.format(i)"
+      name = "attr #{}".format(i)
     # No storageType for this attribute was specified
     if(storageType == None or mvar.isBlank(storageType)):
       missing.append(name)

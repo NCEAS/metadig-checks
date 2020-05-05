@@ -42,7 +42,7 @@ def call():
     domain = attributeDomain[i]
     name = attributeName[i]
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      name = "attr #{}.format(i)"
+      name = "attr #{}".format(i)
 
     # No domain for this attribute was specified
     if(isinstance(domain, NoneType) or mvar.isBlank(domain)):
@@ -102,7 +102,7 @@ def call():
          <!-- Multiple paths may be present and return values, but we need just one -->
          <xpath>
              (./attributeName/text()[normalize-space()] | 
-             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()]
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
              ./descriptor/*/text()[normalize-space()])[1]
          </xpath>
      </subSelector>

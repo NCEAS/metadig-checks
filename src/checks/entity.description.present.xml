@@ -46,7 +46,7 @@ def call():
     name = entityNames[i]
     # Check if the name is missing or blank
     if(isinstance(name, NoneType) or mvar.isBlank(name)):
-      name = "attr #{}.format(i)"
+      name = "attr #{}".format(i)
       
     # No description for this entity was specified
     if(description == None):

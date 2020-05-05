@@ -11,33 +11,58 @@
     library(stringr)
     
     if (pubDatePresent) {
-      # A publication date is present, so now check if it is in
-      # the future
-      # The R as.Date function assumes that you are specifying a date as number of
-      # days since epoch, if a string is entered that looks like a number, i.e. "2017"
-      # so we have to check to see if R got confused.
-      datasetPubDate <- str_trim(datasetPubDate, side=c("both"))
-      pubDate <- str_trim(toString(datasetPubDate), side = c("both"))
-      # R handles ISO 8601 formatted dates, so specifying the year only will cause problems. In
-      # this case, add month and day in the ISO way.
-      if(nchar(pubDate) == 4) {
-        pubDate <- sprintf("%s-01-01", pubDate)
-      } else if (grepl(pubDate, "T")) {
-        pubDate <- str_replace(pubDate, "T.*", "")
-      }
-      
-      
-      metadataDate <- as.Date(pubDate, optional = TRUE)
-      # If the date wasn't parsable by R, return an error
-      if(is.na(metadataDate)) {
-        metadataDate <- as.Date(pubDate, tryFormats = c("%d/%m/%y","%y-%m-%d"), optional = TRUE)
-        if(is.na(metadataDate)) failure(sprintf("Unable to parse publication date '%s'.", datasetPubDate))
+      if(is.na(datasetPubDate) || length(datasetPubDate) == 0) {
+        failure("The publication date is blank.")
       } else {
-        currentDate <- Sys.Date()
-        if(metadataDate > currentDate) {
-          failure(sprintf("The publication date '%s' is in the future.", datasetPubDate))
+        # A publication date is present, so now check if it is in
+        # the future
+        # The R as.Date function assumes that you are specifying a date as number of
+        # days since epoch, if a string is entered that looks like a number, i.e. "2017"
+        # so we have to check to see if R got confused.
+        datasetPubDate <- str_trim(datasetPubDate, side=c("both"))
+        pubDate <- str_trim(toString(datasetPubDate), side = c("both"))
+        # If ISO 8806 formatted date, remove the time portion in case this was formatted in a way that
+        # R can't handle.
+        if (grepl(pubDate, "T")) {
+          pubDate <- str_replace(pubDate, "T.*", "")
+        }
+              
+        # First try to parse date string with default date format (should be ISO 8601)
+        # Note: the 'as.Date' function is supposed to not throw an ERROR if 'optional=TRUE', but 
+        #   this is not happending on the version of R used by the quality engine. Because of this
+        #   we have to do this extra error checking.
+        metadataDate <- tryCatch({
+          md <- NA
+          md <- as.Date(pubDate, optional = TRUE)
+          return (md)
+        }, warning = function(w) {
+          return(md)
+        }, error = function(e) {
+          return(md)
+        })
+        
+        # If the date wasn't parsable then try parsing again with specific formats
+        if(is.na(metadataDate)) {
+          metadataDate <- tryCatch({
+            md <- NA
+            md <- as.Date(pubDate, tryFormats = c("%d/%m/%Y","%Y-%m-%d","%d-%m-%Y", "%Y%m%d","%B %d %Y","%Y"), optional = TRUE)
+            return (md)
+          }, warning = function(w) {
+            return(md)
+          }, error = function(e) {
+            return(md)
+          })
+        }
+      
+        if(! is.na(metadataDate)) {
+          currentDate <- Sys.Date()
+          if(metadataDate > currentDate) {
+            failure(sprintf("The publication date '%s' is in the future.", datasetPubDate))
+          } else {
+            success(sprintf("The publication date '%s' was found and is not in the future.", datasetPubDate))
+          }
         } else {
-          success(sprintf("The publication date '%s' was found and is not in the future.", datasetPubDate))
+          failure(sprintf("Unable to parse publication date '%s'.", datasetPubDate))
         }
       }
     } else {

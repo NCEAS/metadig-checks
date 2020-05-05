@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../../src/main/resources/schemas/schema1.xsd">
-    <id>FAIR.suite-0.2.1</id>
+    <id>FAIR-suite-0.3.0</id>
     <name>FAIR Recommendation Metadata Suite</name>
     <check>
         <id>resource.abstractLength.sufficient.1</id>

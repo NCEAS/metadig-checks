@@ -84,7 +84,7 @@ def call():
              ./measurementScale/ordinal/nonNumericDomain |
              ./measurementScale/interval/numericDomain |
              ./measurementScale/ratio/numericDomain |
-             ./measurementScale/dateTime/dateTimeDomain |
+             ./measurementScale/dateTime |
              ./minValue |
              ./maxValue
          </xpath>

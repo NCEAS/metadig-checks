@@ -56,7 +56,6 @@ def call():
       <name>resourceDistribution</name>
       <xpath>
          /eml/dataset/distribution/online/url[@function="download"]/text()[normalize-space()] |
-         /eml/dataset/*/physical/distribution/online/url[@function="download"]/text()[normalize-space()] |
          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorTransferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()] |
          /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()]|
          /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL//text()[normalize-space()]

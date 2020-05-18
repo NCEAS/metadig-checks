@@ -53,6 +53,7 @@ def call():
           /*/identifier |
           /eml/dataset/*/alternateIdentifier |
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
+          /eml/dataset/*/physical/distribution/online/url |
           /resource/identifier[identifierType='DOI'] |
           /resource/alternateIdentifiers/alternateIdentifier
       </xpath>

@@ -10,6 +10,7 @@
 def call():
   global output
   global status
+  global entityFormat
   
   import metadig.variable as mvar
 
@@ -19,33 +20,30 @@ def call():
     status = "FAILURE"
     return False
     
-  format = mvar.toUnicode(entityFormat)
-        
-  if (mvar.isBlank(format)):
-    output = "The entity format is blank."   
-    status = "FAILURE"
-    return False
-  else:
-    # Check if the entity format is a single string 
-    if(isinstance(format, unicode)):
-      output = u"The entity format '{}' was found.".format(format)
-    elif (isinstance(format, list)):
-      output = u"The entity format '{}' was found (first of {} formats.".format(format[0].strip(), len(format))
-    else:
-      output = u"The entity format '{}' was found.".format(format)
-    status = "SUCCESS"
-    return True
+  entityFormat = mvar.toUnicode(entityFormat)
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(entityFormat, unicode)):
+    entityFormat = [entityFormat]
+
+  # Check if the entity format is a single string 
+  if(len(entityFormat) == 1):
+    output = "No entity formats were found."
+  else: 
+    output = "{} entity formats were found".format(len(entityFormat))
+      
+  status = "SUCCESS"
+  return True
       ]]></code>
    <selector>
       <name>entityFormat</name>
       <xpath>
-          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text()[normalize-space()] |
-          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
-          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
-          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
-          /DryadDataFile/format/CharacterString |
-          //resourceFormat/MD_Format/name | 
-          /eml/dataset/*/physical/dataFormat//formatName/text()[normalize-space()] |
+          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format |
+          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format |
+          /DryadDataFile/format |
+          //resourceFormat/MD_Format | 
+          /eml/dataset/*/physical/dataFormat |
           /resource/formats/format
       </xpath>
    </selector>

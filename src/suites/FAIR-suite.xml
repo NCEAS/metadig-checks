@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../../src/main/resources/schemas/schema1.xsd">
-    <id>FAIR-suite-0.3.0</id>
+    <id>FAIR-suite-0.3.1</id>
     <name>FAIR Recommendation Metadata Suite</name>
     <check>
         <id>resource.abstractLength.sufficient.1</id>
@@ -157,11 +157,12 @@
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
-    <check>
+    <!-- Removed 2020 05 18 FAIR suite v0.3.1 https://github.com/NCEAS/metadig-checks/issues/373 -->
+    <!-- <check>
         <id>entity.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
-    </check>
+    </check> -->
     <!-- Disable this check until an efficient way is developed to check 
          all entities for a dataset or a representative sample.
     <check>

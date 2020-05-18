@@ -11,7 +11,8 @@ def call():
   global output
   global status
   global mdq_params
-  global entityFormat
+  global entityFormats
+  global entityFormatNames
   
   # Check the data formats for all data entities.
   # The check fails if the specified data format matches a format marked as proprietary.
@@ -33,6 +34,25 @@ def call():
         
     return False
   
+  # Are any entity formats present at all, even ones that don't specify 
+  # a format name. This is the list of all formats present.
+  if ('entityFormats' not in globals() or entityFormats is None):
+    output = "No entity formats are present, so cannot check for proprietary formats."
+    status = "FAILURE"
+    return False
+    
+  entityFormats = mvar.toUnicode(entityFormats)
+  if(isinstance(entityFormats, unicode)):
+    entityFormats = [entityFormats]
+    
+  # Entity formats are present, but non that could explicitly define a format type
+  # so give them credit for having any formats defined, i.e. no formats that 
+  # require explicitly defined format names are present.
+  if ('entityFormatNames' not in globals() or entityFormatNames is None):
+    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormats))
+    status = "SUCCESS"
+    return True
+    
   dataFilename = "DataONEformats.csv"
   formatsFile = ""
   # The checks data directory is passed via the 'mdq_params' hash
@@ -51,52 +71,58 @@ def call():
       for row in fmtreader:
         formats.append(row)
 
-  # An entity format is not present
-  if 'entityFormat' not in globals() or entityFormat is None:
-    output = "An entity format was not found."
-    status = "FAILURE"
-    return False
-
-  entityFormat = mvar.toUnicode(entityFormat)
+  entityFormatNames = mvar.toUnicode(entityFormatNames)
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entityFormat, unicode)):
-    entityFormat = [entityFormat]
+  if(isinstance(entityFormatNames, unicode)):
+    entityFormatNames = [entityFormatNames]
   
   proprietaryFound = []
         
   # Check each entity format and see if it is in the 'proprietary' list, which
   # is based on all formats from DataONE that have been manually determined t  o be
   # proprietary
-  for i in range(0, len(entityFormat)):
+  for i in range(0, len(entityFormatNames)):
     # Check if the entity format is a single string or arrayList
-    thisFormat = entityFormat[i]
+    thisFormat = entityFormatNames[i]
     if(isProprietary(formats, thisFormat)):
       proprietaryFound.append(thisFormat)
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = u"These {} proprietary data entity formats (out of {} total formats) were found: {}".format(len(fmts), len(entityFormat), ', '.join(fmts[0:maxPrint]))
+    output = u"These {} proprietary data entity formats (out of {} total formats) were found: {}".format(len(fmts), len(entityFormats), ', '.join(fmts[0:maxPrint]))
     if(len(fmts) > maxPrint):
       output += u", ..."
     status = "FAILURE"
     return False
   else:
-    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormat))
+    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormats))
     status = "SUCCESS"
     return True
       ]]></code>
-   <selector>
-      <name>entityFormat</name>
+    <selector>
+      <name>entityFormats</name>
+      <xpath>
+        /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format |
+        /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format |
+        /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format |
+        /DryadDataFile/format |
+        //resourceFormat/MD_Format |
+        /eml/dataset/*/physical/dataFormat |
+        /resource/formats/format
+      </xpath>
+    </selector>
+    <selector>
+      <name>entityFormatNames</name>
       <xpath>
           /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text()[normalize-space()] |
-              /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
           /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
           /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
           /DryadDataFile/format/CharacterString |
           //resourceFormat/MD_Format/name | 
-          /eml/dataset/*/physical/dataFormat//formatName/text()[normalize-space()] |
+          /eml/dataset/*/physical/dataFormat/externallyDefinedFormat/formatName/text()[normalize-space()] |
           /resource/formats/format
       </xpath>
    </selector>

@@ -17,8 +17,7 @@ def call():
   import re
   
   NoneType = type(None)
-  minWordCount = 5
-  maxWordCount = 20
+  minWordCount = 3
   maxPrint = 5
   
   # Check if definitions are present for each attribute.
@@ -60,22 +59,22 @@ def call():
         
     # Now check the word count of the definition
     words = re.split('\s+', definition.strip())
-    if(len(words) < minWordCount or len(words) > maxWordCount):
+    if(len(words) < minWordCount):
       insufficient.append(name)
   
   # Let the user know if definitions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
   if(len(insufficient) == 1):
-    output = u"Only this attribute (of {} total) has an insufficient definition of less than {} or greater than {} words: '{}".format(attributeCount, minWordCount, maxWordCount, insufficient[0])
+    output = u"This attribute (of {} total) has an insufficient definition of less than {} words: '{}'".format(attributeCount, minWordCount, insufficient[0])
   elif(len(insufficient) > 1):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    output = u"These {} attributes (of {} total) have insufficient definitions of less than {} or greater than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount, maxWordCount, ", ".join(insufficient[0:maxPrint]))
+    output = u"These {} attributes (of {} total) have insufficient definitions of less than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount,  ", ".join(insufficient[0:maxPrint]))
     if(len(insufficient) > maxPrint):
       output += ", ..."
     status = "FAILURE"
     return False
   else:
-    output = "All {} attribute have sufficient definitions of greater than {} and less than {} words.".format(attributeCount, minWordCount, maxWordCount)
+    output = "All {} attribute have sufficient definitions of greater than {} words".format(attributeCount, minWordCount)
     status = "SUCCESS"
     return True
     ]]></code>

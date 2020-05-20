@@ -132,11 +132,12 @@
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
-    <check>
+    <!-- Replaced by entity.distributionURL.resolvable 2020 05 20 -->
+    <!-- <check>
         <id>resource.distribution.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
-    </check>
+    </check> -->
     <check>
         <id>resource.publisher.present.1</id>
         <type>Accessible</type>
@@ -165,7 +166,7 @@
         </check> -->
     <!-- Added 2020 05 19 FAIR suite v0.3.1  https://github.com/NCEAS/metadig-checks/issues/379 -->
     <check>
-        <id>entity.distributionUrl.resolvable.1</id>
+        <id>entity.distributionURL.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>

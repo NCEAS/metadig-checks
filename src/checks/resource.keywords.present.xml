@@ -37,6 +37,7 @@ def call():
    <selector>
       <name>keywords</name>
       <xpath>
+           /resource/subjects/subject |
            /*/identificationInfo/*/descriptiveKeywords/*/keyword |
            /eml/dataset/keywordSet/keyword
       </xpath>

@@ -37,6 +37,7 @@ def call():
    <selector>
       <name>distributionContact</name>
       <xpath>
+          /resource/contributors/contributor[contributorType='ContactPerson']/text()[normalize-space()] |
           /eml/*/associatedParty/role[RoleType='distributor']//text()[normalize-space()] |
           /eml/*/contact/individualName/surName/text()[normalize-space()] |
           /eml/*/contact/organizationName/text()[normalize-space()] |

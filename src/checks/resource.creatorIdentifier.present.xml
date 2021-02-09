@@ -46,7 +46,7 @@ def call():
    <selector>
       <name>creator</name>
       <xpath>
-          /resource/contributors/contributor/nameIdentifier/text()[normalize-space()] |
+          /resource/creators/creator/nameIdentifier/text()[normalize-space()] |
           /eml/*/creator/userId/text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='creator']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()] |

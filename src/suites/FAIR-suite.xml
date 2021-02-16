@@ -25,6 +25,11 @@
     </check>
     -->
     <check>
+        <id>resource.type.valid.1</id>
+        <type>Findable</type>
+        <level>INFO</level>
+    </check>
+    <check>
         <id>resource.keywords.controlled.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>

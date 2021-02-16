@@ -3,7 +3,7 @@
 	<id>resource.type.valid.1</id>
 	<name>Check Resource Type</name>
 	<description>Check if the resource type is present and known.</description>
-	<type>identification</type>
+	<type>Findable</type>
 	<level>INFO</level>
 	<environment>rscript</environment>
 	<code><![CDATA[

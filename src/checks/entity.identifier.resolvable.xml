@@ -87,9 +87,7 @@ def call():
           /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |
           /*/identifier |
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
-          /eml/dataset/*/alternateIdentifier |
-          /resource/identifier[identifierType='DOI'] |
-          /resource/alternateIdentifiers/alternateIdentifier
+          /eml/dataset/*/alternateIdentifier
       </xpath>
    </selector>
    <dialect>

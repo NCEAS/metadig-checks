@@ -53,7 +53,7 @@ def call():
           /*/description//text()[normalize-space()] |
           /eml/*/abstract//text()[normalize-space()] |
           /*/identificationInfo/*/abstract//text()[normalize-space()] |
-          /*/identificationInfo/*/abstrac//text()[normalize-space()]
+          /*/identificationInfo/*/abstract//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

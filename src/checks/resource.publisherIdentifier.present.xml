@@ -40,7 +40,6 @@ def call():
    <selector>
       <name>datasetPublisherIdentifier</name>
       <xpath>
-          /resource/publisher |
           /eml/dataset/publisher/userId/text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_ResponsibleParty[normalize-space(role/CI_RoleCode)='publisher']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='publisher']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()]

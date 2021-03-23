@@ -18,6 +18,7 @@
   <selector>
     <name>descriptionPresent</name>
     <xpath>boolean(
+        /resource/geoLocations/geoLocation/geoLocationPlace or
         /eml/dataset/coverage/geographicCoverage/geographicDescription or
         /*/identificationInfo/*/extent/EX_Extent/description or
         /*/spatial)

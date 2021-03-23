@@ -38,9 +38,10 @@
   <selector>
     <name>titlePresent</name>
     <xpath>boolean(
-	/eml/dataset/title or 
-	/*/description or
-      	/*/identificationInfo/*/citation/CI_Citation/title)
+           /dataset/title or
+	         /eml/dataset/title or 
+	         /*/description or
+      	   /*/identificationInfo/*/citation/CI_Citation/title)
     </xpath>
   </selector>
   <selector>

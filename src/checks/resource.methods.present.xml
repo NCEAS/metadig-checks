@@ -32,7 +32,9 @@ def call():
       ]]></code>
    <selector>
       <name>detailedMethodsText</name>
-      <xpath>/*/resourceLineage/LI_Lineage/statement |
+      <xpath>
+          /resource/descriptions/description[descriptionType='Methods']/text()[normalize-space() |
+          /*/resourceLineage/LI_Lineage/statement |
           /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text()[normalize-space()] |
           /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text()[normalize-space()] |
           /*/provenance |

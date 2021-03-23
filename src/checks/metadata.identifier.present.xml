@@ -44,7 +44,9 @@ def call():
    ]]></code>
    <selector>
       <name>metadataIdentifier</name>
-      <xpath>/*/metadataIdentifier/MD_Identifier |
+      <xpath>
+             /resource/identifier |
+             /*/metadataIdentifier/MD_Identifier |
              /*/fileIdentifier |
              /eml/@packageId
       </xpath>

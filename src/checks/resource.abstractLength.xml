@@ -52,7 +52,6 @@ def call():
       <xpath>/resource/descriptions/description[@descriptionType='Abstract'] |
           /*/description//text()[normalize-space()] |
           /eml/*/abstract//text()[normalize-space()] |
-          /*/identificationInfo/*/abstract//text()[normalize-space()] |
           /*/identificationInfo/*/abstract//text()[normalize-space()]
       </xpath>
    </selector>

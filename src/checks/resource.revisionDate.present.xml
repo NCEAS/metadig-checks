@@ -22,18 +22,11 @@ def call():
       ]]></code>
    <selector>
       <name>datasetRevisionDatePresent</name>
-      <xpath>boolean((/resource/dates/date)
+      <xpath>boolean((/resource/dates/date/dateType = 'Updated')
          or (/eml/*/maintenance/changeHistory/changeDate)
-         or (/eml/*/pubDate)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='creation']/date/Date)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='creation']/date/DateTime)
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/Date)
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='creation']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime))
+         )
       </xpath>
    </selector>
    <dialect>

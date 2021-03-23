@@ -118,8 +118,6 @@ def call():
       <xpath>
           /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text()[normalize-space()] |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
-          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/identifier/MD_Identifier/code |
-          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format/formatSpecificationCitation/CI_Citation/title | 
           /DryadDataFile/format/CharacterString |
           //resourceFormat/MD_Format/name | 
           /eml/dataset/*/physical/dataFormat/externallyDefinedFormat/formatName/text()[normalize-space()] |

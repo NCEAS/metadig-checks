@@ -35,7 +35,6 @@ def call():
       <xpath>/*/resourceLineage/LI_Lineage/statement |
           /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text()[normalize-space()] |
           /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text()[normalize-space()] |
-          /*/provenance |
           /eml/dataset/methods/methodStep/description//text()[normalize-space()]
       </xpath>
    </selector>

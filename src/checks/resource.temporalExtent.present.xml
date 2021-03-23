@@ -24,7 +24,6 @@ def call():
       <name>temporalExtent</name>
       <xpath>boolean(
           /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
-          /*/temporal or
           /eml/*/coverage/temporalCoverage)
       </xpath>
    </selector>

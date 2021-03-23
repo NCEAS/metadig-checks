@@ -73,7 +73,6 @@
      <name>pubDatePresent</name>
      <xpath>boolean(
             /resource/publicationYear or
-            /*/available or
             /eml/dataset/pubDate or
             /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date or
             /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime or
@@ -83,7 +82,6 @@
    <selector>
        <name>datasetPubDate</name>
        <xpath>/resource/publicationYear |
-              /*/available |
               /eml/dataset/pubDate |
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date//text()[normalize-space()] |
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime//text()[normalize-space()] |

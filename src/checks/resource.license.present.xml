@@ -60,7 +60,6 @@ def call():
       -->
       <xpath>
         /eml/dataset/intellectualRights//text()[normalize-space()] |
-        /*/rights |
         /resource/rightsList/rights |
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode[@codeListValue="license"] |
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode[@codeListValue="license"] |

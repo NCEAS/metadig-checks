@@ -48,8 +48,6 @@ def call():
    <selector>
       <name>entityIdentifier</name>
       <xpath>
-          /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/code//text()[normalize-space()] |
-          /*/identificationInfo/*/citation/CI_Citation/identifier/RS_Identifier/code//text()[normalize-space()] |
           /*/identifier |
           /eml/dataset/*/alternateIdentifier |
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |

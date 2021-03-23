@@ -38,9 +38,7 @@ def call():
       ]]></code>
    <selector>
       <name>entityIdentifierType</name>
-      <xpath>
-         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/codeSpace//text()[normalize-space()] |
-         /*/identificationInfo/*/citation/CI_Citation/identifier/MD_Identifier/authority//text()[normalize-space()] |
+      <xpath>/resource/identifier/@identifierType |
          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
          /eml/dataset/*/alternateIdentifier/@system 
       </xpath>

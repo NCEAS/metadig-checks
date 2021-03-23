@@ -62,15 +62,12 @@ def call():
    <selector>
       <name>entities</name>
       <xpath>
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
-          /*/contentInfo/MD_CoverageDescription |
-          /*/contentInfo/MI_CoverageDescription
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
       </xpath>
       <subSelector>
          <name>name</name>
          <xpath>
-             ./entityName |
-             ./attributeDescription/RecordType
+             ./entityName 
          </xpath>
      </subSelector>
    </selector>

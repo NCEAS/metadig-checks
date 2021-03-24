@@ -106,8 +106,6 @@ def call():
       <xpath>
         /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format |
         /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format |
-        /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format |
-        /DryadDataFile/format |
         //resourceFormat/MD_Format |
         /eml/dataset/*/physical/dataFormat |
         /resource/formats/format
@@ -118,7 +116,6 @@ def call():
       <xpath>
           /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text()[normalize-space()] |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
-          /DryadDataFile/format/CharacterString |
           //resourceFormat/MD_Format/name | 
           /eml/dataset/*/physical/dataFormat/externallyDefinedFormat/formatName/text()[normalize-space()] |
           /resource/formats/format

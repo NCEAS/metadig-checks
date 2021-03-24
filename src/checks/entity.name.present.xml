@@ -54,9 +54,7 @@ def call():
    <selector>
       <name>entityPresent</name>
       <xpath>boolean(
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] or
-          /*/contentInfo/MD_CoverageDescription or
-          /*/contentInfo/MI_CoverageDescription)
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
       </xpath>
    </selector>
    <selector>

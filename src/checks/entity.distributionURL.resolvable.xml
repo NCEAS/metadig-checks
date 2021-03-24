@@ -47,7 +47,7 @@ def call():
     if(len(distributionUrl) > 1):
       output = u"The entity distribution URL '{}' was found (first of {} URLs)".format(url, len(distributionUrl))
     else:
-      output = "The entity distribution URL '{}' was found".format(url)
+      output = u"The entity distribution URL '{}' was found".format(url)
       
   # Now check if the entity identifier is a resolvable url as is. Do not attempt to use any resolver service,
   # just use the bare URL.
@@ -58,7 +58,7 @@ def call():
     status = "SUCCESS"
     return True
   else:
-    output = "{}, but is not resolvable.".format(output)      
+    output = u"{}, but is not resolvable.".format(output)      
     status = "FAILURE"
     return False
    ]]></code>

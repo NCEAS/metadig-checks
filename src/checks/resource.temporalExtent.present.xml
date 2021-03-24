@@ -25,7 +25,6 @@ def call():
       <xpath>boolean(
           /resource/dates/date[dateType='Collected'] or
           /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
-          /*/temporal or
           /eml/*/coverage/temporalCoverage)
       </xpath>
    </selector>

@@ -26,7 +26,6 @@ def call():
           /*/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement or
     	  /*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
           /*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
-          /*/spatial or
           /*/identificationInfo/*/extent/EX_Extent/geographicElement or
           /eml/*/coverage/geographicCoverage/boundingCoordinates or
           /resource/geoLocations/geoLocation)

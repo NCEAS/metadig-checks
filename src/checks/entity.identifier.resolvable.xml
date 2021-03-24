@@ -83,7 +83,6 @@ def call():
    <selector>
       <name>entityIdentifier</name>
       <xpath>
-          /*/identifier |
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
           /eml/dataset/*/alternateIdentifier
       </xpath>

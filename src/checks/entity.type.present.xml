@@ -30,7 +30,6 @@ def call():
    <selector>
       <name>entityTypePresent</name>
       <xpath>boolean(
-         /*/type or
          /eml/dataset/dataTable or
          /eml/dataset/otherEntity or
          /eml/dataset/spatialVector or

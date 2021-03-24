@@ -75,7 +75,6 @@ def call():
       <name>metadataIdentifier</name>
       <xpath>
              /resource/identifier |
-             /*/metadataIdentifier/MD_Identifier |
              /*/fileIdentifier/*/text()[normalize-space()] |
              /eml/@packageId
       </xpath>

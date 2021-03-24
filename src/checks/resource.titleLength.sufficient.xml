@@ -38,17 +38,16 @@
   <selector>
     <name>titlePresent</name>
     <xpath>boolean(
-           /dataset/title or
-	         /eml/dataset/title or 
-	         /*/description or
+           /resource/title or
+	       /eml/dataset/title or 
       	   /*/identificationInfo/*/citation/CI_Citation/title)
     </xpath>
   </selector>
   <selector>
     <name>datasetTitle</name>
-    <xpath>/eml/dataset/title |
-      /*/description |
-      /*/identificationInfo/*/citation/CI_Citation/title
+    <xpath>/resource/title |
+           /eml/dataset/title |
+           /*/identificationInfo/*/citation/CI_Citation/title
     </xpath>
   </selector>
   <dialect>

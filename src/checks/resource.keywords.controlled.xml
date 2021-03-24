@@ -57,7 +57,7 @@ def call():
       <subSelector>
         <name>thesaurusPresent</name>
         <xpath>boolean( 
-            (.subject/[subjectScheme=text()[normalize-space()])
+            (./subject/[subjectScheme=text()[normalize-space()])
             (./MD_Keywords/thesaurusName and not (./MD_keywords/thesaurusName[@nilReason="unknown"])) or
             (./keywordThesaurus))
         </xpath>

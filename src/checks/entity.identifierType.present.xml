@@ -38,8 +38,7 @@ def call():
       ]]></code>
    <selector>
       <name>entityIdentifierType</name>
-      <xpath>/resource/identifier/@identifierType |
-         /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
+      <xpath>/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
          /eml/dataset/*/alternateIdentifier/@system 
       </xpath>
    </selector>

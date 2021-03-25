@@ -20,7 +20,7 @@ def call():
     return True
   else:
     output = "Provenance trace information was not found."
-    status = "SUCCESS"
+    status = "FAILURE"
     return True
       ]]></code>
    <selector>

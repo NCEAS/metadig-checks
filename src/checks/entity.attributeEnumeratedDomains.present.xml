@@ -66,4 +66,16 @@ success("All enumerated domain descriptions found had codes and definitions.")
       <xpath>./measurementScale/nominal/nonNumericDomain/enumeratedDomain/codeDefinition/definition</xpath>
     </subSelector>
   </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
 </mdq:check>

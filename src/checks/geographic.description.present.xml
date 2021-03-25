@@ -23,13 +23,14 @@
         /*/identificationInfo/*/extent/EX_Extent/description)
     </xpath>
   </selector>
+
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
   <dialect>
     <name>eml</name>
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-  </dialect>
-  <dialect>
-    <name>Dryad Data Package and Data File Modules</name>
-    <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
   </dialect>
   <dialect>
     <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>

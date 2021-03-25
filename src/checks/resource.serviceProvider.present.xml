@@ -16,7 +16,7 @@ def call():
 
   # A data service provider is not present
   if 'serviceProvider' not in globals() or serviceProvider is None:
-    output = "A service provider was not found."
+    output = "No service provider was found."
     status = "FAILURE"
     return False
         

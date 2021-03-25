@@ -16,7 +16,7 @@ def call():
 
   # An entity format is not present
   if 'entityFormat' not in globals() or entityFormat is None:
-    output = "An entity format was not found."
+    output = "No entity formats were found."
     status = "FAILURE"
     return False
     
@@ -28,7 +28,7 @@ def call():
 
   # Check if the entity format is a single string 
   if(len(entityFormat) == 1):
-    output = "No entity formats were found."
+    output = "1 entity format was found."
   else: 
     output = "{} entity formats were found".format(len(entityFormat))
       

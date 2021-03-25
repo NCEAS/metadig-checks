@@ -10,9 +10,9 @@
     library(metadig)
     
     if (descriptionPresent) {
-      success("A textual description of the geographic coverage of this dataset is present.")
+      success("A textual description of the geographic coverage of this dataset was found.")
     } else {
-      failure("A textual description of the geographic coverage of this dataset is not present.")
+      failure("No textual description of the geographic coverage of this dataset was found.")
     }
   </code>
   <selector>

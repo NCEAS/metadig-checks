@@ -17,7 +17,7 @@ def call():
 
   # A coverage content type is not present
   if 'coverageContentType' not in globals() or coverageContentType is None:
-    output = "A coverage content type was not found."
+    output = "No coverage content type was found."
     status = "FAILURE"
     return False
         

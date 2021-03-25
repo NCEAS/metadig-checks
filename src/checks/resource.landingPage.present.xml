@@ -18,7 +18,7 @@ def call():
   displayLength = 20
   # A resource landing page is not present
   if 'datasetLandingPage' not in globals() or datasetLandingPage is None:
-    output = "A resource landing page url was not found."
+    output = "No resource landing page url was found."
     status = "FAILURE"
     return False
         

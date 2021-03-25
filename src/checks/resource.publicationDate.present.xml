@@ -17,7 +17,7 @@ def call():
   if ('datasetPubDate' in globals() and datasetPubDate is not None and datasetPubDate):
     status = "SUCCESS"
   else:
-    output = "A resource publication date is not present"
+    output = "No resource publication date was found."
     status = "FAILURE"
     return False
     

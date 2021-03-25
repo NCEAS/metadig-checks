@@ -29,7 +29,11 @@ def call():
     keywords = [keywords]
 
   # Passed all tests!
-  output = "{} keywords are present".format(len(keywords))
+  if(len(keywords) == 1):
+    output = "1 keyword was found."
+  else:
+    output = "{} keywords were found.".format(len(keywords))
+    
   # Passed all tests!
   status = "SUCCESS"
   return True 

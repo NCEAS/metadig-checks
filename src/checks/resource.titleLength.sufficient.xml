@@ -11,7 +11,7 @@
     library(base)
 
     if(!titlePresent) {
-      return(list(status = "FAILURE", output = sprintf("The resource title is not present, so the check is unable to determine title word length.")))
+      return(list(status = "FAILURE", output = sprintf("A resource title was not found so unable to check title word length.")))
     }
 
     # Required minimum word count for title

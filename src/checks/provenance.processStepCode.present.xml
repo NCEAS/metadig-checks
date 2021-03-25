@@ -16,7 +16,7 @@ def call():
 
   # Provenace step source code is not present
   if 'provenanceProcessStepCode' not in globals() or provenanceProcessStepCode is None:
-    output = "Provenance process step source code (software) was not found."
+    output = "No provenance process step source code (software) sections were found."
     status = "FAILURE"
     return False
         

@@ -27,7 +27,7 @@ def call():
   
   # An entity distribution URL is not present
   if 'distributionUrl' not in globals() or distributionUrl is None:
-    output = "An entity distribution URL was not found."
+    output = "No entity distribution URL was found."
     status = "FAILURE"
     return False
          

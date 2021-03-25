@@ -37,7 +37,7 @@ def call():
   # Are any entity formats present at all, even ones that don't specify 
   # a format name. This is the list of all formats present.
   if ('entityFormats' not in globals() or entityFormats is None):
-    output = "No entity formats are present, so cannot check for proprietary formats."
+    output = "No entity formats were found so unable to check for proprietary formats."
     status = "FAILURE"
     return False
     

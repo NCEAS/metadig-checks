@@ -28,7 +28,7 @@ def call():
       status = "SUCCESS"
       return True 
   else:
-    output = "A resource publisher is not present."
+    output = "No resource publisher was found."
     status = "FAILURE"
     return False
       ]]></code>

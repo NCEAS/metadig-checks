@@ -20,7 +20,7 @@ def call():
   
   # For each entity, check that the attributes defined for it have unique names
   if(not attributeDefinitionPresent):
-    output = "No attribute definitions found, unable to check if attribute names differ from definitions."
+    output = "No attributes were found, unable to check if attribute names differ from definitions."
     status = "FAILURE"
     return False
   

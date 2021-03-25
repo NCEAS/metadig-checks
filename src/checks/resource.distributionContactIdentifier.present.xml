@@ -16,7 +16,7 @@ def call():
 
   # A distribution contact identifier is not present
   if 'distributionContactIdentifier' not in globals() or distributionContactIdentifier is None:
-    output = "A distribution contact identifier was not found."
+    output = "No distribution contact identifier was found."
     status = "FAILURE"
     return False
         

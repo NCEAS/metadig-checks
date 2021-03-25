@@ -18,7 +18,7 @@ def call():
   NoneType = type(None)
   # Check if a measurementScale is present for each attribute.
   if not attributesPresent:
-    output = "No attributes are present so attribute measurement domain cannot be checked."
+    output = "No attributes were found so attribute measurement domain cannot be checked."
     status = "FAILURE"
     return False
     

@@ -15,7 +15,7 @@ def call():
 
   # A distribution contact is not present
   if 'distributionContact' not in globals() or distributionContact is None:
-    output = "A distribution contact was not found."
+    output = "No distribution contact was found."
     status = "FAILURE"
     return False
     

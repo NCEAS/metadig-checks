@@ -12,11 +12,11 @@ def call():
   global status
  
   if ('datasetRevisionDatePresent' in globals() and datasetRevisionDatePresent is not None and datasetRevisionDatePresent):
-    output = "A resource creation or revision date is present."
+    output = "A resource creation or revision date was found."
     status = "SUCCESS"
     return True
   else:
-    output = "A resource creation or revision date is not present."
+    output = "No resource creation or revision date was found."
     status = "FAILURE"
     return False
       ]]></code>

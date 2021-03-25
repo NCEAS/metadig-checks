@@ -16,7 +16,7 @@ def call():
 
   # An entity identifier type is not present
   if 'entityIdentifierType' not in globals() or entityIdentifierType is None:
-    output = "A entity identifier type was not found."
+    output = "No entity identifier types were found."
     status = "FAILURE"
     return False
         

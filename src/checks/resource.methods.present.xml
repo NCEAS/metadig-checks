@@ -16,7 +16,7 @@ def call():
 
    # A detailed methods section is not present
    if 'detailedMethodsText' not in globals() or detailedMethodsText is None:
-     output = "A detailed methods section was not found."
+     output = "No detailed methods section were found."
      status = "FAILURE"
      return False
          

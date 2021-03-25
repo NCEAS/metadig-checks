@@ -12,11 +12,11 @@ def call():
   global status
 
   if ('serviceLocation' in globals() and serviceLocation is not None and serviceLocation):
-    output = "A service location is present."
+    output = "A service location was found."
     status = "SUCCESS"
     return True
   else:
-    output = "A service location is not present."
+    output = "No service location was found."
     status = "FAILURE"
     return False
       ]]></code>

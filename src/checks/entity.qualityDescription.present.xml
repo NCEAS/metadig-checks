@@ -15,7 +15,7 @@ def call():
 
    # A data quality description is not present
    if 'dataQualityDescription' not in globals() or not dataQualityDescription:
-     output = "A data quality description was not found."
+     output = "No data quality descriptions were found."
      status = "FAILURE"
      return False
    else:

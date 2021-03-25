@@ -12,11 +12,11 @@ def call():
   global status
  
   if ('Source' in globals() and Source is not None and Source):
-    output = "A lineage source entity is present."
+    output = "A lineage source entity was found."
     status = "SUCCESS"
     return True
   else:
-    output = "A lineage source entity is not present."
+    output = "No lineage source entities were found."
     status = "FAILURE"
     return False
 

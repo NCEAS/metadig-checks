@@ -22,7 +22,7 @@ def call():
     output = "An entity type was found."
     return True 
   else:
-    output = "An entity type was not found."
+    output = "No entity types were found."
     status = "FAILURE"
     return False
     

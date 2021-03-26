@@ -35,17 +35,18 @@
   result <- check()
   mdq_result <- list(status=result$status, output=list(list(value=result$output)))
   ]]></code>
+  <!-- For DataCite, the main title does not have attributes -->
   <selector>
     <name>titlePresent</name>
     <xpath>boolean(
-           /resource/title or
+           /resource/titles/title[not(@titleType)] or
 	       /eml/dataset/title or 
       	   /*/identificationInfo/*/citation/CI_Citation/title)
     </xpath>
   </selector>
   <selector>
     <name>datasetTitle</name>
-    <xpath>/resource/title |
+    <xpath>/resource/titles/title[not(@titleType)]  |
            /eml/dataset/title |
            /*/identificationInfo/*/citation/CI_Citation/title
     </xpath>

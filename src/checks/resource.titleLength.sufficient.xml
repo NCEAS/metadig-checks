@@ -46,9 +46,9 @@
   </selector>
   <selector>
     <name>datasetTitle</name>
-    <xpath>/resource/titles/title[not(@titleType)]  |
-           /eml/dataset/title |
-           /*/identificationInfo/*/citation/CI_Citation/title
+    <xpath>/resource/titles/title[not(@titleType)]/text()  |
+           /eml/dataset/title/text() |
+           /*/identificationInfo/*/citation/CI_Citation/title/text()
     </xpath>
   </selector>
   <dialect>

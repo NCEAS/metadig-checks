@@ -25,7 +25,7 @@ check <- function() {
   validTypes <- c(ISOtypes, EMLtypes, DataCiteTypes)
   
   values <- list()
-  if(is.na(resourceType) || length(resourceType) == 0) {
+  if(is.na(resourceType) || length(resourceType) == 0 || nchar(resourceType) == 0) {
     values[[1]] <- list(value=sprintf("A resource type is not present."))
     status <- "FAILURE"
   } else {

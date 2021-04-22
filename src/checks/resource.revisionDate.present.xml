@@ -22,7 +22,7 @@ def call():
       ]]></code>
    <selector>
       <name>datasetRevisionDatePresent</name>
-      <xpath>boolean((/resource/dates/date/dateType='Updated')
+      <xpath>boolean((/resource/dates/date[@dateType='Updated'])
          or (/eml/*/maintenance/changeHistory/changeDate)
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/Date)
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/DateTime)

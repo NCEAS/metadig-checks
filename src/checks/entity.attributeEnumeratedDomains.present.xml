@@ -12,6 +12,10 @@ library(metadig)
 # Find the <attribute> elements that have enumerated domains in them
 idxs <- which(!is.na(enumerated_domains))
 
+if(length(idxs) == 0) {
+    failure(paste0("No entity attribute enumerated domains found."))
+}
+
 for (i in idxs) {
   # Check the <code> element
   for (code in codes[i]) {

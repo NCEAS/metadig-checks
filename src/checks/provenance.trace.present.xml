@@ -19,7 +19,7 @@ def call():
     status = "SUCCESS"
     return True
   else:
-    output = "Provenance trace information was not found."
+    output = "No provenance trace information was found."
     status = "FAILURE"
     return True
       ]]></code>

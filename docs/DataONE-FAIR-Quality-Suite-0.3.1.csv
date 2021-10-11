@@ -1,0 +1,78 @@
+Name,Category,Level,Description,Xpath (EML),
+entity.distributionURL.resolvable,Accessible,REQUIRED,Check that the entity distribution URL is resolvable.,"/eml/dataset/*/physical/distribution/online/url[@function=""download""]/text()[normalize-space()]",
+metadata.identifier.resolvable,Accessible,REQUIRED,Check that the metadata identifier exists and is resolvable.,/eml/@packageId,
+resource.accessControlRules.present,Accessible,REQUIRED,Check that access control rules exists.,/eml/dataset/intellectualRights/text()[normalize-space()],
+resource.distributionContact.present,Accessible,REQUIRED,Check that a distribution contact exists.,"/eml/*/associatedParty/role[RoleType='distributor']//text()[normalize-space()] |
+/eml/*/contact/individualName/surName/text()[normalize-space()] |
+/eml/*/contact/organizationName/text()[normalize-space()]",
+resource.distributionContactIdentifier.present,Accessible,REQUIRED,Check that a distribution contact identifier exists.,"/eml/*/associatedParty/role[RoleType='distributor']/text()[normalize-space()] |
+/eml/*/contact/userId/text()[normalize-space()]",
+resource.landingPage.present,Accessible,REQUIRED,Check that a resource landing page exists and is resolvable.,"/eml/dataset/distribution/online/url[@function=""information""]",
+resource.publisher.present,Accessible,REQUIRED,Check that a publisher exists.,/eml/dataset/publisher/organizationName/text()[normalize-space()],
+resource.publisherIdentifier.present,Accessible,OPTIONAL,Check that a resource publisher identifier exists.,/eml/dataset/publisher/userId/text()[normalize-space()],
+resource.serviceLocation.present,Accessible,OPTIONAL,Check that a service location exists.,N/A,
+resource.serviceProvider.present,Accessible,OPTIONAL,Check that a service provider is present.,N/A,
+entity.identifier.present,Findable,REQUIRED,Check that each entity has an identifier.,"/eml/dataset/*/alternateIdentifier |
+/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
+/eml/dataset/*/physical/distribution/online/url",
+metadata.identifier.present,Findable,REQUIRED,Check that a metadata identifier exists.,/eml/@packageId,
+resource.abstractLength.sufficient,Findable,REQUIRED,Check that an abstract exists and is of sufficient length.,/eml/*/abstract//text()[normalize-space()],
+resource.creator.present,Findable,REQUIRED,Check that a resource creator exists.,/eml/dataset/creator,
+resource.creatorIdentifier.present,Findable,REQUIRED,Check that a resource creator identifier exists.,/eml/*/creator/userId/text()[normalize-space()],
+resource.keywords.present,Findable,REQUIRED,Check if keywords are present.,/eml/dataset/keywordSet/keyword,
+resource.publicationDate.present,Findable,REQUIRED,Check that a publication date exists.,/eml/dataset/pubDate,
+resource.titleLength.sufficient,Findable,REQUIRED,Check that the resource title is greater than 7 words and less than 20.,/eml/dataset/title/text(),
+entity.identifierType.present,Findable,OPTIONAL,Check that a entity identifier type exists.,"/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
+/eml/dataset/*/alternateIdentifier/@system",
+geographic.description.present,Findable,OPTIONAL,Geographic coverage description should be present at the dataset level.,/eml/dataset/coverage/geographicCoverage/geographicDescription,
+resource.keywordType.present,Findable,OPTIONAL,Check if each keyword has a type specified..,/eml/dataset/keywordSet/keyword/@keywordType,
+resource.keywords.controlled,Findable,OPTIONAL,"Check if a keyword thesaurus is present, indicating that the keywords are controlled.",/eml/dataset/keywordSet/keywordThesaurus,
+resource.publicationDate.timeframe,Findable,OPTIONAL,Publication date should not be in the future,/eml/dataset/pubDate,
+resource.revisionDate.present,Findable,OPTIONAL,Check that a revision or creation date exists.,/eml/*/maintenance/changeHistory/changeDate,
+resource.spatialExtent.present,Findable,OPTIONAL,Check that at least one spatial extent exists.,/eml/*/coverage/geographicCoverage/boundingCoordinates,
+resource.taxonomicExtent.present,Findable,OPTIONAL,Check that a taxonomic extent exists.,/eml/*/coverage/taxonomicCoverage,
+resource.temporalExtent.present,Findable,OPTIONAL,Check that a temporal extent exists.,/eml/*/coverage/temporalCoverage,
+resource.type.valid,Findable,INFO,Check if the resource type is present and known.,"concat(/*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode/text()[normalize-space()],
+           /*/hierarchyLevel/MD_ScopeCode/text()[normalize-space()],
+           string(/resource/resourceType/@resourceTypeGeneral),
+           name(/eml/dataset),
+           name(/eml/citation),
+           name(/eml/software),
+           name(/eml/protocol))",
+entity.attributeDefinition.present,Interoperable,REQUIRED,Check that an attribute definition exists.,/eml/dataset/*/attributeList/attribute/attributeDefinition/text()[normalize-space()],
+entity.attributeDefinition.sufficient,Interoperable,REQUIRED,Check that each attribute definition is sufficient (e.g. word count).,/eml/dataset/*/attributeList/attribute/attributeDefinition/text()[normalize-space()],
+entity.attributeEnumeratedDomains.present,Interoperable,REQUIRED,Check that enumerated domains are defined.,/eml/dataset/dataTable/attributeList/attribute/measurementScale/nominal/nonNumericDomain/enumeratedDomain,
+entity.attributeName.differs,Interoperable,REQUIRED,Check that attribute definitions are not simply the attribute name.,"/eml/dataset/*/attributeList/attribute/attributeDefinition/text()[normalize-space()], /eml/dataset/*/attributeList/attribute/attributeDefinition/attributeName/text()[normalize-space()",
+entity.attributeNames.unique,Interoperable,REQUIRED,Check that attribute names are unique.,/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/attributeList/attribute/attributeName/text()[normalize-space()],
+entity.checksum.present,Interoperable,REQUIRED,Check that an entity checksum and algorithm are present.,"/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/physical/authentication
+/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/physical/authentication[@method]",
+entity.format.present,Interoperable,REQUIRED,Check that each entity has a format specified.,/eml/dataset/*/physical/dataFormat,
+entity.name.present,Interoperable,REQUIRED,Check that a name is specified for every entity.,/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/entityName,
+entity.attributeCoverageContentType.present,Interoperable,OPTIONAL,Check that a coverage content type exists.,N/A,
+entity.attributeStorageType.present,Interoperable,OPTIONAL,Check that a storage type exits for each attribute.,/eml/dataset/*/attributeList/attribute/storageType,
+entity.type.present,Interoperable,OPTIONAL,Check that an entity type exists.,"/eml/dataset/dataTable or
+/eml/dataset/otherEntity or
+/eml/dataset/spatialVector or
+/eml/dataset/spatialRaster or
+/eml/dataset/view",
+resource.serviceType.present,Interoperable,OPTIONAL,Check that a service type exists.,N/A,
+entity.attributeDomain.present,Reusable,REQUIRED,Check that an attribute domain is defined for each relevant attribute.,"/eml/dataset/*/attributeList/attribute//measurementScale/nominal/nonNumericDomain |
+/eml/dataset/*/attributeList/attribute//measurementScale/ordinal/nonNumericDomain |
+/eml/dataset/*/attributeList/attribute//measurementScale/interval/numericDomain |
+/eml/dataset/*/attributeList/attribute//measurementScale/ratio/numericDomain |
+/eml/dataset/*/attributeList/attribute//measurementScale/dateTime",
+entity.attributeUnits.present,Reusable,REQUIRED,Check that units are defined for each attribute that should have them.,"/eml/dataset/dataTable/attributeList/attribute/measurementScale/interval/unit/*/text()[normalize-space()] |
+/eml/dataset/dataTable/attributeList/attribute/measurementScale/ratio/unit/*/text()[normalize-space()]",
+entity.description.present,Reusable,REQUIRED,Check that a description is available for every entity.,/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/entityDescription,
+entity.format.nonproprietary,Reusable,REQUIRED,Check that all entities use non-propietary formats.,/eml/dataset/*/physical/dataFormat,
+entity.qualityDescription.present,Reusable,REQUIRED,Check that a description of data quality practices and protocols used is present.,/eml/dataset/methods/methodStep/qualityControl/description,
+provenance.processStepCode.present,Reusable,REQUIRED,Check that provenance process step software is specified.,/eml/*/methods/methodStep/software//text()[normalize-space()],
+provenance.sourceEntity.present,Reusable,REQUIRED,Check if a lineage source entity is specified.,N/A,
+provenance.trace.present,Reusable,REQUIRED,Check that provenance information is present.,"/eml/*/methods/methodStep/dataSource or
+/eml/*/methods/methodStep/subStep/dataSource",
+resource.license.present,Reusable,REQUIRED,Check that a resource license exists.,/eml/dataset/intellectualRights//text()[normalize-space()],
+resource.methods.present,Reusable,REQUIRED,Check that a detailed methods section is present.,/eml/dataset/methods/methodStep/description//text()[normalize-space()],
+entity.attributeMeasurementScale.present,Reusable,OPTIONAL,Check that an attribute measurement scale exists.,/eml/dataset/*/attributeList/attribute/measurementScale,
+entity.attributePrecision.present,Reusable,OPTIONAL,Check that attributes have a measurement precision defined.,"/eml/dataset/*/attributeList/attribute/measurementScale/interval/precision |
+/eml/dataset/*/attributeList/attribute/measurementScale/ratio/precision |
+/eml/dataset/*/attributeList/attribute/measurementScale/dateTime/dateTimePrecision",

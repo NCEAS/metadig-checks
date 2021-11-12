@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>resource.projectTitle.controlled.1</id>
+   <name>Resource Project Title Controlled</name>
+   <description>Check if the project title is contained in a list of known projects.</description>
+   <type>Findable</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+  global output
+  global status
+  global projectTitle
+  global data
+  displayNchars = 40
+
+  import json
+  import metadig.variable as mvar
+  
+  # Read ESS-DIVE project file from remote location
+  dataFilename = "ess-dive-projects.json"
+  formatsFile = ""
+  # The checks data directory is passed via the 'mdq_params' hash
+  # The filename is known only to this check.
+  if('mdq_params' not in globals()):
+    output = "Internal error running check, mdq_params not available to check."
+    status = "ERROR"
+    return False
+  else:
+    projectFile = "{}/{}".format(mdq_params['metadigDataDir'], dataFilename)
+
+  # Retrieve the project name from the metadata
+  # A project title is not present
+  if 'projectTitle' not in globals() or projectTitle is None:
+    output = "No project name was found."
+    status = "FAILURE"
+    return False
+        
+  projectTitle = mvar.toUnicode(projectTitle)     
+  
+  # If the title in the metadata is blank, then return
+  if (mvar.isBlank(projectTitle)):
+    output = "The project name is blank."
+    status = "FAILURE"
+    return False
+  else:
+    if(len(projectTitle) > displayNchars):
+      titleShort = u"{}...".format(projectTitle[:displayNchars])
+    else:
+      titleShort = projectTitle
+  
+  # Loop through the projects in the list and see if there is 
+  # a match with the name from the metadig
+  with open(projectFile, "r") as content:
+    data = json.load(content)
+    
+  for key in data:
+    thisTitle = data[key]['projectTitle']
+    if(projectTitle == thisTitle):
+      output = "The project title was found in the project list."
+      if(len(thisTitle) > displayNchars):
+        outstr = u"{}...".format(thisTitle[:displayNchars])
+      else:
+        outstr = thisTitle
+        
+      output = "The project name \"{}\" was found.".format(outstr)
+      status = "SUCCESS"
+      return False
+      
+  output = "The project title \"{}\" was not found in the project list.".format(titleShort)
+  status = "SUCCESS"
+  return False
+      ]]></code>
+   <selector>
+      <name>projectTitle</name>
+      <xpath>/eml/dataset/project/title
+      </xpath>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+</mdq:check>

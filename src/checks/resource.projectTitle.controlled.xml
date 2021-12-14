@@ -5,76 +5,80 @@
    <description>Check if the project title is contained in a list of known projects.</description>
    <type>Findable</type>
    <level>REQUIRED</level>
-   <environment>python</environment>
+   <environment>rscript</environment>
    <code><![CDATA[
-def call():
-  global output
-  global status
-  global projectTitle
-  global data
-  displayNchars = 40
-
-  import json
-  import metadig.variable as mvar
-  
-  # Read ESS-DIVE project file from remote location
-  dataFilename = "ess-dive-projects.json"
-  formatsFile = ""
-  # The checks data directory is passed via the 'mdq_params' hash
-  # The filename is known only to this check.
-  if('mdq_params' not in globals()):
-    output = "Internal error running check, mdq_params not available to check."
-    status = "ERROR"
-    return False
-  else:
-    projectFile = "{}/{}".format(mdq_params['metadigDataDir'], dataFilename)
-
-  # Retrieve the project name from the metadata
-  # A project title is not present
-  if 'projectTitle' not in globals() or projectTitle is None:
-    output = "No project name was found."
-    status = "FAILURE"
-    return False
-        
-  projectTitle = mvar.toUnicode(projectTitle)     
-  
-  # If the title in the metadata is blank, then return
-  if (mvar.isBlank(projectTitle)):
-    output = "The project name is blank."
-    status = "FAILURE"
-    return False
-  else:
-    if(len(projectTitle) > displayNchars):
-      titleShort = u"{}...".format(projectTitle[:displayNchars])
-    else:
-      titleShort = projectTitle
-  
-  # Loop through the projects in the list and see if there is 
-  # a match with the name from the metadig
-  with open(projectFile, "r") as content:
-    data = json.load(content)
+    library(jsonlite)
+    library(stringdist)
     
-  for key in data:
-    thisTitle = data[key]['projectTitle']
-    if(projectTitle == thisTitle):
-      output = "The project title was found in the project list."
-      if(len(thisTitle) > displayNchars):
-        outstr = u"{}...".format(thisTitle[:displayNchars])
-      else:
-        outstr = thisTitle
-        
-      output = "The project name \"{}\" was found.".format(outstr)
-      status = "SUCCESS"
-      return False
+    if (length(projectTitle) == 0) {
+      status <- "FAILURE"
+      message <- "No project title was found."
+    } else if (length(projectTitle) > 1) {
+      status <- "FAILURE"
+      message <- "More than one project title is present, only one is allowed."
+    } else {
+      library(stringr)
+      # Trim whitespace, split abstract on whitespace
+      projectTitle <- trimws(projectTitle)
       
-  output = "The project title \"{}\" was not found in the project list.".format(titleShort)
-  status = "SUCCESS"
-  return False
+      projectListFn <- "ess-dive-projects.json"
+      projectListPath <- sprintf("%s/%s", mdq_params[['metadigDataDir']], projectListFn)
+      projects <- read_json(projectListPath, simplifyVector = FALSE)
+      controlledProjectTitles = list()
+      # Load project titles into a simple list, for use by the string distance functions
+      for (i in 1:length(projects)) {
+          controlledProjectTitles[i] <- projects[[i]]$projectTitle
+      }
+    }  
+
+    maxDist = 100
+    diffTolerance = 0.65
+    noMatchFound <- 0
+    closestDist = maxDist
+    closestDistIndex = NA
+    smallestPercentDiff <- 10000
+    exactMatchFound <- FALSE
+    message <- list()
+    for (ictrl in 1:length(controlledProjectTitles)) {
+        dist <- stringdist(projectTitle, controlledProjectTitles[[ictrl]], method=c("lv"))
+        percentDiff <- dist/nchar(projectTitle)
+        if(percentDiff < smallestPercentDiff) {
+            smallestPercentDiff <- percentDiff
+        }
+        if(dist == 0) {
+            exactMatchFound <- TRUE
+            break
+        } else if (dist < closestDist) {
+            closestDist <- dist
+            closestDistIndex <- ictrl
+        } 
+    }
+    
+    status <- "FAILURE"
+    message <- list()
+    if (exactMatchFound) {
+        message[1] <- "The DOE project title was found in the controlled list of ESS projects."
+        message[2] <- "foo"
+        status <- "SUCCESS"
+    } else {
+        if(smallestPercentDiff < diffTolerance) {
+            # close match found
+            status <- "FAILURE"
+            message <- sprintf("The DOE project title listed is not from the controlled list of ESS projects: %s. \nThe closest match is: %s", projectTitle, controlledProjectTitles[[closestDistIndex]])
+        } else {
+            # No match found
+            message <- sprintf("The DOE project title listed is not from the controlled list of ESS projects: %s\n", projectTitle)
+            status <- "FAILURE"
+        }
+    }
+
+     mdq_result <- list(status = status,
+                        #output = list(list(value = message)))
+                        output = list(message)
       ]]></code>
    <selector>
       <name>projectTitle</name>
-      <xpath>/eml/dataset/project/title
-      </xpath>
+      <xpath>/eml/dataset/project/title</xpath>
    </selector>
    <dialect>
       <name>Ecological Metadata Language</name>

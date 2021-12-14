@@ -10,6 +10,10 @@
     library(jsonlite)
     library(stringdist)
     
+    # This check extracts the project tilte from the metadata document and compares it
+    # to a controlled list of DOE projects for an exact match. If an exact match is not 
+    # found, the closest fuzzy match is found and displayed in the check output.
+    # Check the project title extracted from the metadata document
     if (length(projectTitle) == 0) {
       status <- "FAILURE"
       message <- "No project title was found."
@@ -21,18 +25,20 @@
       # Trim whitespace, split abstract on whitespace
       projectTitle <- trimws(projectTitle)
       
+      # Read in the controlled project title list
       projectListFn <- "ess-dive-projects.json"
       projectListPath <- sprintf("%s/%s", mdq_params[['metadigDataDir']], projectListFn)
       projects <- read_json(projectListPath, simplifyVector = FALSE)
       controlledProjectTitles = list()
-      # Load project titles into a simple list, for use by the string distance functions
+      # Load project titles into a simple list, for use with the string distance functions
       for (i in 1:length(projects)) {
           controlledProjectTitles[i] <- projects[[i]]$projectTitle
       }
     }  
 
+    # When using the fuzzy match, a candidate match cannot be more different than this percent.
+    diffTolerance = 65.0 
     maxDist = 100
-    diffTolerance = 0.65
     noMatchFound <- 0
     closestDist = maxDist
     closestDistIndex = NA
@@ -41,7 +47,7 @@
     message <- list()
     for (ictrl in 1:length(controlledProjectTitles)) {
         dist <- stringdist(projectTitle, controlledProjectTitles[[ictrl]], method=c("lv"))
-        percentDiff <- dist/nchar(projectTitle)
+        percentDiff <- (dist/nchar(projectTitle)) * 100.0
         if(percentDiff < smallestPercentDiff) {
             smallestPercentDiff <- percentDiff
         }
@@ -56,25 +62,25 @@
     
     status <- "FAILURE"
     message <- list()
+    # An exact match was found
     if (exactMatchFound) {
-        message[1] <- "The DOE project title was found in the controlled list of ESS projects."
-        message[2] <- "foo"
+        message <- "The DOE project title was found in the controlled list of ESS projects."
         status <- "SUCCESS"
     } else {
+        # An exact match was not found, print out the closest match
         if(smallestPercentDiff < diffTolerance) {
             # close match found
             status <- "FAILURE"
             message <- sprintf("The DOE project title listed is not from the controlled list of ESS projects: %s. \nThe closest match is: %s", projectTitle, controlledProjectTitles[[closestDistIndex]])
         } else {
-            # No match found
+            # No match was found within the difference tolerance
             message <- sprintf("The DOE project title listed is not from the controlled list of ESS projects: %s\n", projectTitle)
             status <- "FAILURE"
         }
     }
 
      mdq_result <- list(status = status,
-                        #output = list(list(value = message)))
-                        output = list(message)
+                        output = list(list(value = message)))
       ]]></code>
    <selector>
       <name>projectTitle</name>

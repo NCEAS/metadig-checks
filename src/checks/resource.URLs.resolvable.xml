@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>resource.URLs.resolvable.1</id>
+   <name>Metadata Identifier Resolvable</name>
+   <description>Check that the metadata identifier exists and is resolvable.</description>
+   <type>Accessible</type>
+   <level>REQUIRED</level>
+   <environment>python</environment>
+   <code><![CDATA[
+def call():
+
+  import metadig.variable as mvar
+  import metadig.checks as checks
+  import urllib
+  import re
+  global output
+  global status
+  global textFields
+  global uniqueUrls
+  global unresolvableUrls
+
+  urls = []
+
+  # Get all URLs from these fields abstract, location description, methods, and related references
+
+  # first get all fields and concat into one string
+  # tokenize the string
+  # extract all tokens that match a url pattern, e.g. 'http*://', doi:*, https://doi.org, etc
+  # remove duplicates
+  # 
+
+  if 'textFields' not in globals() or textFields is None:
+    output = "Unable to retrieve required text fields."
+    status = "FAILURE"
+    return False
+
+  if(mvar.isBlank(textFields)):
+    output = "The required text fields are blank."
+    status = "FAILURE"
+    return False
+  
+  # Convert to unicode so that non-ascii characters don't cause decoding errors
+  textFields = mvar.toUnicode(textFields)
+  
+  # The text fields can be a textType element, so it may contain multiple subelements, i.e. <para>, etc 
+  # Since the metadig-engine is stuck at XPath 1.0, we cannot use the xpath to gather these into 
+  # a single string.
+  if(isinstance(textFields, list)):
+    textFields = ' '.join(textFields)
+    
+  # Tokenize the string and extract possible URLs
+  textTokens = textFields.split(' ')
+  for token in textTokens:
+    if(re.match("^\s*http.*:\/", token)):
+      urls.append(token)
+      # If the identifier is a 'bare' DOI (e.g. "doi:10.18739/A2027H"), then prepend with a DOI resolver link
+      # i.e. https://dx.doi.org
+    elif (re.match("^\s*doi:.*", token)):
+      urls.append("https://dx.doi.org/{}".format(token.strip()))
+      
+  uniqueUrls = list(set(urls))
+  
+  unresolvableUrls = []
+  for url in uniqueUrls:
+       resolvable, msg = checks.isResolvable(url)
+       if (not resolvable):
+         unresolvableUrls.append(url);
+         
+  output = 'unresolved: ' + ' '.join(unresolvableUrls)
+  status = "SUCCESS"
+  return True
+       
+  #if (resolvable):
+  #  if(usedD1):
+  #    output = u'{} and is resolvable using the DataONE resolve service.'.format(output)
+  #  elif(isDOI):
+  #    output = u'{} and is resolvable using a DOI resolver.'.format(output)      
+  #  else:
+  #    output = u'{} and is resolvable.'.format(output)      
+  #        
+  #  status = "SUCCESS"
+  #  return True
+  #else:
+  #  output = u"{}, but is not resolvable.".format(output)      
+  #  status = "FAILURE"
+  #  return False
+   ]]></code>
+   <selector>
+      <name>textFields</name>
+      <!--Get all URLs from these fields abstract, location description, methods, and related references. -->
+      <xpath>
+          /eml/dataset/abstract//text()[normalize-space()] |
+          /eml/dataset/abstract//ulink/@url |
+          /eml/dataset/coverage/geographicCoverage/geographicDescription/text()[normalize-space] |
+          /eml/dataset/methods/methodStep/description//text()[normalize-space()] 
+      </xpath>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+</mdq:check>

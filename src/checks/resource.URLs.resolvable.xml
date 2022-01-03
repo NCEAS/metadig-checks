@@ -18,6 +18,7 @@ def call():
   global textFields
   global uniqueUrls
   global unresolvableUrls
+  maxPrint = 5
 
   urls = []
 
@@ -59,31 +60,31 @@ def call():
       urls.append("https://dx.doi.org/{}".format(token.strip()))
       
   uniqueUrls = list(set(urls))
-  
   unresolvableUrls = []
+  
+  # Check each unique URL to see if it is resolvable. The 'isResolvable' function sends an HTTP 'Head'
+  # request to the URL.
   for url in uniqueUrls:
        resolvable, msg = checks.isResolvable(url)
        if (not resolvable):
          unresolvableUrls.append(url);
          
-  output = 'unresolved: ' + ' '.join(unresolvableUrls)
-  status = "SUCCESS"
-  return True
-       
-  #if (resolvable):
-  #  if(usedD1):
-  #    output = u'{} and is resolvable using the DataONE resolve service.'.format(output)
-  #  elif(isDOI):
-  #    output = u'{} and is resolvable using a DOI resolver.'.format(output)      
-  #  else:
-  #    output = u'{} and is resolvable.'.format(output)      
-  #        
-  #  status = "SUCCESS"
-  #  return True
-  #else:
-  #  output = u"{}, but is not resolvable.".format(output)      
-  #  status = "FAILURE"
-  #  return False
+  if (len(unresolvableUrls) > 0):
+    if(len(unresolvableUrls) == 1):
+      output = u'1 unresolvable URL found: {}'.format(', '.join(unresolvableUrls[0:maxPrint]))
+    # If unresolved is more than 'maxPrint' URLs, only print first maxPrint entries
+    elif(len(unresolvableUrls) <= maxPrint):
+      output = u'{} unresolvabled URLs found: {}'.format(len(unresolvableUrls), ', '.join(unresolvableUrls))
+    else:
+      output = u'{} unresolvable URLs found, here are the first {}: {}'.format(len(unresolvableUrls), maxPrint, ', '.join(unresolvableUrls[0:maxPrint]))
+      output += u", ..."
+      
+    status = "FAILURE"
+    return False
+  else:
+    output = u"{} No unresolvable URLs were found."
+    status = "SUCCESS"
+    return True
    ]]></code>
    <selector>
       <name>textFields</name>

@@ -71,20 +71,29 @@ def call():
          
   if (len(unresolvableUrls) > 0):
     if(len(unresolvableUrls) == 1):
-      output = u'1 unresolvable URL found: {}'.format(', '.join(unresolvableUrls[0:maxPrint]))
+      output = u'1 URL found provided in the metadata does not resolve correctly: {}'.format(', '.join(unresolvableUrls[0:maxPrint]))
     # If unresolved is more than 'maxPrint' URLs, only print first maxPrint entries
     elif(len(unresolvableUrls) <= maxPrint):
-      output = u'{} unresolvabled URLs found: {}'.format(len(unresolvableUrls), ', '.join(unresolvableUrls))
+      output = u'{} URLS provided in the metadadta do not resolve correctly: {}'.format(len(unresolvableUrls), ', '.join(unresolvableUrls))
     else:
-      output = u'{} unresolvable URLs found, here are the first {}: {}'.format(len(unresolvableUrls), maxPrint, ', '.join(unresolvableUrls[0:maxPrint]))
+      output = u'{} URLs provided in the metadata do not resolve correctly, here are the first {}: {}'.format(len(unresolvableUrls), maxPrint, ', '.join(unresolvableUrls[0:maxPrint]))
       output += u", ..."
       
     status = "FAILURE"
     return False
   else:
-    output = u"{} No unresolvable URLs were found."
-    status = "SUCCESS"
-    return True
+    if(len(uniqueUrls) == 0):
+      output = u'No URL were found in the metadata.'
+      status = "SUCCESS"
+      return True
+    elif (len(uniqueUrls) == 1):
+      output = u'The one URL found in the metadata resolves correctly'
+      status = "SUCCESS"
+      return True
+    else:
+      output = u'All {} URLs found in the metadata resolve correctly.'.format(len(uniqueUrls))
+      status = "SUCCESS"
+      return True
    ]]></code>
    <selector>
       <name>textFields</name>

@@ -18,11 +18,13 @@
     <type>Findable</type>
     <level>REQUIRED</level>
   </check>
+  <!--
   <check>
     <id>resource.landingPage.present.1</id>
     <type>Accessible</type>
     <level>REQUIRED</level>
   </check>
+-->
   <check>
     <id>resource.funderName.controlled-1.0.0</id>
     <type>Findable</type>

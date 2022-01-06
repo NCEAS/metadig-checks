@@ -18,7 +18,7 @@ def call():
   global textFields
   global uniqueUrls
   global unresolvableUrls
-  maxPrint = 5
+  maxPrint = 3
 
   urls = []
 
@@ -71,7 +71,7 @@ def call():
          
   if (len(unresolvableUrls) > 0):
     if(len(unresolvableUrls) == 1):
-      output = u'1 URL found provided in the metadata does not resolve correctly: {}'.format(', '.join(unresolvableUrls[0:maxPrint]))
+      output = u'1 URL provided in the metadata does not resolve correctly: {}'.format(', '.join(unresolvableUrls[0:maxPrint]))
     # If unresolved is more than 'maxPrint' URLs, only print first maxPrint entries
     elif(len(unresolvableUrls) <= maxPrint):
       output = u'{} URLS provided in the metadadta do not resolve correctly: {}'.format(len(unresolvableUrls), ', '.join(unresolvableUrls))

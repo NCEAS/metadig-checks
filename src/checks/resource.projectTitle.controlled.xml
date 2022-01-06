@@ -10,6 +10,9 @@
     library(jsonlite)
     library(stringdist)
     
+    # Currenlty fuzzy matching is disabled, but may be used in a future version of this check.
+    useFuzzyMatch <- FALSE
+    
     # This check extracts the project tilte from the metadata document and compares it
     # to a controlled list of DOE projects for an exact match. If an exact match is not 
     # found, the closest fuzzy match is found and displayed in the check output.
@@ -19,7 +22,7 @@
       message <- "No project title was found."
     } else if (length(projectTitle) > 1) {
       status <- "FAILURE"
-      message <- "More than one project title is present, only one is allowed."
+      message <- "More than one project name is present, only one is allowed."
     } else {
       library(stringr)
       # Trim whitespace, split abstract on whitespace
@@ -64,19 +67,23 @@
     message <- list()
     # An exact match was found
     if (exactMatchFound) {
-        message <- "The DOE project title was found in the controlled list of ESS projects."
+        message <- "The DOE project name was found in the controlled list of ESS projects."
         status <- "SUCCESS"
-    } else {
+    } else if (useFuzzyMatch) {
         # An exact match was not found, print out the closest match
         if(smallestPercentDiff < diffTolerance) {
             # close match found
             status <- "FAILURE"
-            message <- sprintf("The DOE project title listed is not from the controlled list of ESS projects: %s. \nThe closest match is: %s", projectTitle, controlledProjectTitles[[closestDistIndex]])
+            message <- sprintf("The DOE project name listed is not from the controlled list of ESS projects: %s. \nThe closest match is: %s", projectTitle, controlledProjectTitles[[closestDistIndex]])
         } else {
             # No match was found within the difference tolerance
-            message <- sprintf("The DOE project title listed is not from the controlled list of ESS projects: %s\n", projectTitle)
+            message <- sprintf("The DOE project name listed is not from the controlled list of ESS projects: %s\n", projectTitle)
             status <- "FAILURE"
         }
+    } else {
+        # No match was found within the difference tolerance
+        message <- sprintf("The DOE project name is not from the controlled list of ESS projects: \"%s\"\n", projectTitle)
+        status <- "FAILURE"
     }
 
      mdq_result <- list(status = status,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>resource.projectTitle.controlled.1</id>
+   <id>resource.projectTitle.controlled-1.0.0</id>
    <name>Resource Project Title Controlled</name>
    <description>Check if the project title is contained in a list of known projects.</description>
    <type>Findable</type>
@@ -12,6 +12,8 @@
     
     # Currenlty fuzzy matching is disabled, but may be used in a future version of this check.
     useFuzzyMatch <- FALSE
+    
+    errorMessge <- "Warning: The DOE project name listed is not from the controlled list of projects. When entering project name, use the autocomplete feature to choose from the existing projects. If you can not find your project name, try entering the PI name."
     
     # This check extracts the project tilte from the metadata document and compares it
     # to a controlled list of DOE projects for an exact match. If an exact match is not 
@@ -74,15 +76,15 @@
         if(smallestPercentDiff < diffTolerance) {
             # close match found
             status <- "FAILURE"
-            message <- sprintf("The DOE project name listed is not from the controlled list of ESS projects: %s. \nThe closest match is: %s", projectTitle, controlledProjectTitles[[closestDistIndex]])
+            message <- sprintf("%s The closest match is: %s\n", errorMessge, controlledProjectTitles[[closestDistIndex]])
         } else {
             # No match was found within the difference tolerance
-            message <- sprintf("The DOE project name listed is not from the controlled list of ESS projects: %s\n", projectTitle)
+            message <- sprintf("%s\n", errorMessge)
             status <- "FAILURE"
         }
     } else {
         # No match was found within the difference tolerance
-        message <- sprintf("The DOE project name is not from the controlled list of ESS projects: \"%s\"\n", projectTitle)
+        message <- sprintf("%s\n", errorMessage)
         status <- "FAILURE"
     }
 

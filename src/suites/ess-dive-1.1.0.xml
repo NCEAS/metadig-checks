@@ -115,6 +115,12 @@
     <type>Interoperable</type>
     <level>REQUIRED</level>
   </check>
+  <check>
+    <id>check.entity.present.1</id>
+    <type>Interoperable</type>
+    <level>INFO</level>
+  </check>
+      
   <!-- This check has been removed 2019 12 06 per LBL request
   <check>
     <id>dataset.keywords.controlled.1</id>

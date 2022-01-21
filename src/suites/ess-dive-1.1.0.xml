@@ -43,7 +43,7 @@
   <check>
     <id>check.creator.info.1</id>
     <type>Findable</type>
-    <level>REQUIRED</level>
+    <level>INFO</level>
   </check>
   <check>
     <id>check.contact.1</id>
@@ -58,7 +58,7 @@
   <check>
     <id>check.contact.info.1</id>
     <type>Findable</type>
-    <level>REQUIRED</level>
+    <level>INFO</level>
   </check>
   <check>
     <id>check.abstract.100.words.1</id>
@@ -93,17 +93,17 @@
   <check>
     <id>check.temporal.coverage.1</id>
     <type>Findable</type>
-    <level>OPTIONAL</level>
+    <level>REQUIRED</level>
   </check>
   <check>
     <id>check.geographic.description.1</id>
     <type>Findable</type>
-    <level>REQUIRED</level>
+    <level>OPTIONAL</level>
   </check>
   <check>
     <id>check.bounding.coordinates.1</id>
     <type>Findable</type>
-    <level>REQUIRED</level>
+    <level>OPTIONAL</level>
   </check>
   <check>
     <id>check.pub.date.1</id>

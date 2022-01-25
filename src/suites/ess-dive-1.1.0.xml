@@ -31,7 +31,7 @@
     <level>REQUIRED</level>
   </check>
   <check>
-    <id>entity.format.nonproprietary.1</id>
+    <id>entity.format.nonproprietary-1.0.1</id>
     <type>Reusable</type>
     <level>REQUIRED</level>
   </check>

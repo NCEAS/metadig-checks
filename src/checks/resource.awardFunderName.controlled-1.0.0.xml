@@ -8,7 +8,7 @@
     <environment>python</environment>
     <code><![CDATA[
 def call():
-  # check: does an awardFunder exist?
+  # check: does the necessary awardFunder exist?
   import re
   import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
@@ -17,27 +17,41 @@ def call():
   # the check returns
   global output
   global status
-  global awardFunder
+  global awardFunders
   
   # Approved funder name, with python regex special characters escaped
+  # Note that this program properly decodes both &#x3E; and &gt; as the '>' character.
   approvedFunder = "U\.S\. DOE \> Office of Science \> Biological and Environmental Research \(BER\)"
 
-  # Item is not present
-  if 'awardFunder' not in globals() or awardFunder is None:
+  # No award funders are present
+  if 'awardFunders' not in globals() or awardFunders is None:
     output = "An award funder was not found."
     status = "FAILURE"
     return False
     
-  if(mvar.isBlank(awardFunder)):
+  if(mvar.isBlank(awardFunders)):
     output = "The award funder is blank."
     status = "FAILURE"
     return False
     
-  awardFunder = re.sub(' +', ' ', awardFunder)
+  # Convert all values to unicode
+  awardFunders = mvar.toUnicode(awardFunders)
+  # If only a single value is returned (type "unicode" vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(awardFunders, unicode)):
+    awardFunders = [awardFunders]
+    
+  found = False
+  for i in range(0, len(awardFunders)):
+    thisFunder = re.sub(' +', ' ', awardFunders[i])
   
-  # Allow additional characters before and after the approved funder, for example:
-  #  U.S. DOE > Office of Science (SC) &gt; Biological and Environmental Research (BER) (SC-23)
-  if(re.search(approvedFunder, awardFunder.strip())):
+    # Allow additional characters before and after the approved funder, for example:
+    #  U.S. DOE > Office of Science (SC) &gt; Biological and Environmental Research (BER) (SC-23)
+    if(re.search(approvedFunder, thisFunder.strip())):
+      found = True
+      break
+      
+  if(found):
     output = "The funding organzation \"{}\" was found in the metadata.".format(approvedFunder.replace('\\',''))
     status = "SUCCESS"
     return True
@@ -45,9 +59,9 @@ def call():
     output = "The funding organzation \"{}\" was not found in the metadata.".format(approvedFunder.replace('\\',''))
     status = "FAILURE"
     return False
-      ]]></code>
+    ]]></code>
     <selector>
-        <name>awardFunder</name>
+        <name>awardFunders</name>
         <xpath>/eml/dataset/associatedParty[role/text()='fundingOrganization']/organizationName/text()[normalize-space()]</xpath>
     </selector>
     <dialect>

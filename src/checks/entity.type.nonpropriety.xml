@@ -84,7 +84,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "No proprietary data formats found (out of {} total formats.".format(len(entityTypes))
+    output = "No proprietary data formats found (out of {} total formats).".format(len(entityTypes))
     status = "SUCCESS"
     return True
       ]]></code>

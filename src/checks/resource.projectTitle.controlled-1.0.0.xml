@@ -8,12 +8,13 @@
    <environment>rscript</environment>
    <code><![CDATA[
     library(jsonlite)
-    library(stringdist)
+    #library(stringdist)
     
     # Currenlty fuzzy matching is disabled, but may be used in a future version of this check.
-    useFuzzyMatch <- FALSE
+    # The ESS-DIVE project title list is located at https://data.ess-dive.lbl.gov/js/themes/ess-dive/data/projects.json
+    #useFuzzyMatch <- FALSE
     
-    errorMessge <- "Warning: The DOE project name listed is not from the controlled list of projects. When entering project name, use the autocomplete feature to choose from the existing projects. If you can not find your project name, try entering the PI name."
+    errorMessage <- "Warning: The DOE project name listed is not from the controlled list of projects. When entering the project name, use the autocomplete feature to choose from the existing projects. If you can not find your project name, try entering the PI name."
     
     # This check extracts the project tilte from the metadata document and compares it
     # to a controlled list of DOE projects for an exact match. If an exact match is not 
@@ -51,18 +52,21 @@
     exactMatchFound <- FALSE
     message <- list()
     for (ictrl in 1:length(controlledProjectTitles)) {
-        dist <- stringdist(projectTitle, controlledProjectTitles[[ictrl]], method=c("lv"))
-        percentDiff <- (dist/nchar(projectTitle)) * 100.0
-        if(percentDiff < smallestPercentDiff) {
-            smallestPercentDiff <- percentDiff
-        }
-        if(dist == 0) {
+        if(tolower(projectTitle) == tolower(controlledProjectTitles[[ictrl]])) {
             exactMatchFound <- TRUE
-            break
-        } else if (dist < closestDist) {
-            closestDist <- dist
-            closestDistIndex <- ictrl
-        } 
+        }
+    #    dist <- stringdist(projectTitle, controlledProjectTitles[[ictrl]], method=c("lv"))
+    #    percentDiff <- (dist/nchar(projectTitle)) * 100.0
+    #    if(percentDiff < smallestPercentDiff) {
+    #        smallestPercentDiff <- percentDiff
+    #    }
+    #    if(dist == 0) {
+    #        exactMatchFound <- TRUE
+    #        break
+    #    } else if (dist < closestDist) {
+    #        closestDist <- dist
+    #        closestDistIndex <- ictrl
+    #    } 
     }
     
     status <- "FAILURE"
@@ -71,17 +75,17 @@
     if (exactMatchFound) {
         message <- "The DOE project name was found in the controlled list of ESS projects."
         status <- "SUCCESS"
-    } else if (useFuzzyMatch) {
-        # An exact match was not found, print out the closest match
-        if(smallestPercentDiff < diffTolerance) {
-            # close match found
-            status <- "FAILURE"
-            message <- sprintf("%s The closest match is: %s\n", errorMessge, controlledProjectTitles[[closestDistIndex]])
-        } else {
-            # No match was found within the difference tolerance
-            message <- sprintf("%s\n", errorMessge)
-            status <- "FAILURE"
-        }
+    #} else if (useFuzzyMatch) {
+    #    # An exact match was not found, print out the closest match
+    #    if(smallestPercentDiff < diffTolerance) {
+    #        # close match found
+    #        status <- "FAILURE"
+    #        message <- sprintf("%s The closest match is: %s\n", errorMessge, controlledProjectTitles[[closestDistIndex]])
+    #    } else {
+    #        # No match was found within the difference tolerance
+    #        message <- sprintf("%s\n", errorMessge)
+    #        status <- "FAILURE"
+    #    }
     } else {
         # No match was found within the difference tolerance
         message <- sprintf("%s\n", errorMessage)

@@ -52,7 +52,12 @@ def call():
   # Tokenize the string and extract possible URLs
   textTokens = textFields.split(' ')
   for token in textTokens:
-    if(re.match("^\s*http.*:\/", token.strip())):
+    token = token.strip()
+    token = token.strip('.')
+    token = token.strip(';')
+    token = token.strip('(')
+    token = token.strip(')')
+    if(re.match(".*http.*:\/\/", token.strip())):
       urls.append(token.strip())
     #elif (re.match("^\s*doi:.*", token)):
       # If the identifier is a 'bare' DOI (e.g. "doi:10.18739/A2027H"), then prepend with a DOI resolver link
@@ -85,7 +90,7 @@ def call():
   else:
     # Print out success message.
     if(len(uniqueUrls) == 0):
-      output = u'No URL were found in the metadata.'
+      output = u'No URLs were found in the metadata.'
       status = "SUCCESS"
       return True
     elif (len(uniqueUrls) == 1):
@@ -104,7 +109,8 @@ def call():
           /eml/dataset/abstract//text()[normalize-space()] |
           /eml/dataset/abstract//ulink/@url |
           /eml/dataset/coverage/geographicCoverage/geographicDescription/text()[normalize-space] |
-          /eml/dataset/methods/methodStep/description//text()[normalize-space()] 
+          /eml/dataset/methods/methodStep/description//text()[normalize-space()] |
+          /eml/dataset/additionalInfo//text()[normalize-space()]
       </xpath>
    </selector>
    <dialect>

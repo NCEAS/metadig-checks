@@ -67,9 +67,16 @@ def call():
     status = "SUCCESS"
     return True
   else:
-    output = u"{}, but is not resolvable.".format(output)      
-    status = "FAILURE"
-    return False
+    # If the URL is unresolvable because it is private, and it is a DataONE identifier, then this
+    # special case will pass. Print an appropriate messge explaining this.
+    isPrivate = re.search("unauthorized", str.lower())
+    if(isPrivate && useD1):
+      output = u'{} and is resolvable using the DataONE resolve service, but is not publicly readable'.format(output)
+      status = "SUCCESS"
+    else:  
+      output = u"{}, but is not resolvable.".format(output)      
+      status = "FAILURE"
+      return False
    ]]></code>
    <selector>
       <name>metadataIdentifier</name>

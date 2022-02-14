@@ -6,7 +6,7 @@
   <check>
       <id>resource.projectTitle.controlled-1.0.0</id>
       <type>Findable</type>
-      <level>REQUIRED</level>
+      <level>OPTIONAL</level>
   </check>
   <check>
     <id>resource.URLs.resolvable-1.0.0</id>
@@ -16,7 +16,7 @@
   <check>
     <id>resource.awardFunderName.controlled-1.0.0</id>
     <type>Findable</type>
-    <level>REQUIRED</level>
+    <level>OPTIONAL</level>
   </check>
   <!-- Not included in 1.1.0 suite
   <check>
@@ -28,12 +28,12 @@
   <check>
     <id>metadata.identifier.resolvable.1</id>
     <type>Accessible</type>
-    <level>REQUIRED</level>
+    <level>OPTIONAL</level>
   </check>
   <check>
     <id>entity.type.nonproprietary-1.0.0</id>
     <type>Reusable</type>
-    <level>REQUIRED</level>
+    <level>OPTIONAL</level>
   </check>
   <check>
     <id>check.creator.present.1</id>

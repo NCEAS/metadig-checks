@@ -14,7 +14,7 @@
     # The ESS-DIVE project title list is located at https://data.ess-dive.lbl.gov/js/themes/ess-dive/data/projects.json
     #useFuzzyMatch <- FALSE
     
-    errorMessage <- "Warning: The DOE project name listed is not from the controlled list of projects. When entering the project name, use the autocomplete feature to choose from the existing projects. If you can not find your project name, try entering the PI name."
+    errorMessage <- "The DOE project name listed is not from the controlled list of projects. When entering the project name, use the autocomplete feature to choose from the existing projects. If you can not find your project name, try entering the PI name."
     
     # This check extracts the project tilte from the metadata document and compares it
     # to a controlled list of DOE projects for an exact match. If an exact match is not 

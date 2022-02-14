@@ -9,10 +9,10 @@
   <code><![CDATA[
 if (length(identifier) > 0) {
 mdq_result <- list(status = "SUCCESS",
-                   output = list(list(value = "An identifier is present.")))
+                   output = list(list(value = "An identifier associated with this metadata document is present.")))
 } else {
 mdq_result <- list(status = "FAILURE",
-                   output = list(list(value = "An identifier is not present.")))
+                   output = list(list(value = "An identifier associated with this metadata document is not present.")))
 }
     ]]>
   </code>

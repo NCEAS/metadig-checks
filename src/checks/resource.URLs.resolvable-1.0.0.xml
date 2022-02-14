@@ -54,6 +54,7 @@ def call():
   for token in textTokens:
     token = token.strip()
     token = token.strip('.')
+    token = token.strip(',')
     token = token.strip(';')
     token = token.strip('(')
     token = token.strip(')')

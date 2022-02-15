@@ -20,9 +20,15 @@ def call():
   # /opt/local/metadig/DataONEformats.csv. This file is manually edited to mark specific formats as proprietary. This file is obtained using the DataONE 'formats'
   # service, i.e 'https://cn.dataone.org/cn/v2/formats'.
   
+  # An additional step is made in this check - if any entities with a Microsoft Excel mediaType are found, then an informational message is printed as a tip to 
+  # ensure that CSV files are included that correspond to the Excel file. As it is not possible to know if the dataset author has exported tabs from the
+  # Excel file into more reusable CSV format, this tip is printed.
+  
   import metadig.variable as mvar
   import csv
   maxPrint = 5
+  excelMediaTypes = ("application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  excelFileFound = False
   
   def isProprietary(formats, thisFormat):
     for row in formats:
@@ -72,19 +78,29 @@ def call():
   # proprietary
   for i in range(0, len(entityTypes)):
     # Check if the entity format is a single string or arrayList
-    thisFormat = entityTypes[i]
+    thisFormat = entityTypes[i].strip()
     if(isProprietary(formats, thisFormat)):
       proprietaryFound.append(thisFormat)
+    # Check if an Excel file was encountered
+    if(thisFormat.lower().strip() in excelMediaTypes):
+      excelFileFound = True
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
     output = u"It is recommended that non-proprietary file formats be used where possible. These {} proprietary data formats (out of {} total formats) were found: {}".format(len(fmts), len(entityTypes), ', '.join(fmts[0:maxPrint]))
     if(len(fmts) > maxPrint):
       output += u", ..."
+    else:
+      output += u"."
+      
+    if(excelFileFound):
+      output += u" TIP: If you have not already, upload a csv version for any excel file(s) included."
     status = "FAILURE"
     return False
   else:
     output = "No proprietary data formats found (out of {} total formats).".format(len(entityTypes))
+    if(excelFileFound):
+      output += u" TIP: If you have not already, upload a csv version for any excel file(s) included."
     status = "SUCCESS"
     return True
       ]]></code>

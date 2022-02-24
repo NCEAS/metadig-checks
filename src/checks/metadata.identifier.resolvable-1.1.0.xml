@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>metadata.identifier.resolvable.1</id>
+   <id>metadata.identifier.resolvable-1.1.0</id>
    <name>Metadata Identifier Resolvable</name>
    <description>Check that the metadata identifier exists and is resolvable.</description>
    <type>Accessible</type>
@@ -67,9 +67,16 @@ def call():
     status = "SUCCESS"
     return True
   else:
-    output = u"{}, but is not resolvable.".format(output)      
-    status = "FAILURE"
-    return False
+    # If the URL is unresolvable because it is private, and it is a DataONE identifier, then this
+    # special case will pass. Print an appropriate messge explaining this.
+    isPrivate = re.search("unauthorized", msg.lower())
+    if(isPrivate and usedD1):
+      output = u'{} and is resolvable using the DataONE resolve service, but is not publicly readable'.format(output)
+      status = "SUCCESS"
+    else:  
+      output = u"{}, but is not resolvable.".format(output)      
+      status = "FAILURE"
+      return False
    ]]></code>
    <selector>
       <name>metadataIdentifier</name>

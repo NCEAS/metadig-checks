@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+	<id>resource.type.valid.1</id>
+	<name>Check Resource Type</name>
+	<description>Check if the resource type is present and known.</description>
+	<type>Findable</type>
+	<level>INFO</level>
+	<environment>rscript</environment>
+	<code><![CDATA[
+check <- function() {
+  library(base)
+  library(stringr)
+  
+  # Define valid resource types from controlled lists for supported dialects
+  # From https://data.noaa.gov/resources/iso19139/schema/resources/Codelist/gmxCodelists.xml
+  ISOtypes <- c("attribute","attributeType" ,"collectionHardware" ,"collectionSession" ,"dataset" ,"series" ,"nonGeographicDataset",
+                  "dimensionGroup" ,"feature" ,"featureType" ,"propertyType" ,"fieldSession" ,"software" ,"service" ,"model",
+                  "tile" ,"metadata" ,"initiative" ,"sample" ,"document" ,"repository" ,"aggregate" ,"product" ,"collection" ,"coverage",
+                  "application") 
+  EMLtypes <- c("dataset", "citation", "software", "protocol")
+  # From https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf
+  DataCiteTypes <- c("Audiovisual" ,"Collection" ,"DataPaper" ,"Dataset" ,"Event" ,"Image",
+                  "InteractiveResource" ,"Model" ,"PhysicalObject" ,"Service" ,"Software" ,"Sound" ,"Text" ,"Workflow" ,"Other")
+
+  validTypes <- c(ISOtypes, EMLtypes, DataCiteTypes)
+  
+  values <- list()
+  if(is.na(resourceType) || length(resourceType) == 0 || nchar(resourceType) == 0) {
+    values[[1]] <- list(value=sprintf("A resource type is not present."))
+    status <- "FAILURE"
+  } else {
+    if (str_trim(resourceType) %in% validTypes) {
+      values[[1]] <- list(value=sprintf("The resource type is: %s", str_trim(resourceType, "both")))
+      status <- "SUCCESS"
+    } else {
+      values[[1]] <- list(value=sprintf("Unknown resource type: %s", str_trim(resourceType, "both")))
+      status <- "FAILURE"
+    }
+  }
+    
+  return(list(status=status, values=values))
+}
+
+result <- check()
+mdq_result <- list(status=result$status, output=result$values)
+]]></code>
+  <selector>
+    <name>resourceType</name>
+    <!-- Programmer's note: when javax.xml.xpath supports xpath > 1.0, a more useful XPath
+      could be used that retrieves either the path name or text value of each node, as
+      1.0 doesn't support paths such as '//element/*[@id='elid']/name()' -->
+    <xpath>concat(/*/metadataScope/MD_MetadataScope/resourceScope/MD_ScopeCode/text()[normalize-space()],
+           /*/hierarchyLevel/MD_ScopeCode/text()[normalize-space()],
+           string(/resource/resourceType/@resourceTypeGeneral),
+           name(/eml/dataset),
+           name(/eml/citation),
+           name(/eml/software), 
+           name(/eml/protocol))
+    </xpath>
+  </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+   <dialect>
+      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+   </dialect>
+</mdq:check>

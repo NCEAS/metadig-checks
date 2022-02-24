@@ -29,7 +29,11 @@ def call():
     keywords = [keywords]
 
   # Passed all tests!
-  output = "{} keywords are present".format(len(keywords))
+  if(len(keywords) == 1):
+    output = "1 keyword was found."
+  else:
+    output = "{} keywords were found.".format(len(keywords))
+    
   # Passed all tests!
   status = "SUCCESS"
   return True 
@@ -37,10 +41,15 @@ def call():
    <selector>
       <name>keywords</name>
       <xpath>
+           /resource/subjects/subject |
            /*/identificationInfo/*/descriptiveKeywords/*/keyword |
            /eml/dataset/keywordSet/keyword
       </xpath>
    </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>

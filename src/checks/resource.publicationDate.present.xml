@@ -17,7 +17,7 @@ def call():
   if ('datasetPubDate' in globals() and datasetPubDate is not None and datasetPubDate):
     status = "SUCCESS"
   else:
-    output = "A resource publication date is not present"
+    output = "No resource publication date was found."
     status = "FAILURE"
     return False
     
@@ -36,7 +36,6 @@ def call():
       <name>datasetPubDate</name>
       <xpath>boolean(
          /resource/publicationYear or
-         /*/available or
          /eml/dataset/pubDate or
          /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date or
          /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime or
@@ -46,7 +45,6 @@ def call():
    <selector>
        <name>datasetPubDate</name>
        <xpath>/resource/publicationYear |
-              /*/available |
               /eml/dataset/pubDate |
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date |
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime |
@@ -54,12 +52,8 @@ def call():
        </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
@@ -68,9 +62,5 @@ def call():
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

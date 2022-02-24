@@ -17,7 +17,7 @@ def call():
   maxPrint = 5
   # Check if a name is present for each entity.
   if not entityPresent:
-    output = "No entities are present so cannot check their name."
+    output = "No entities were found so unable to check entity names."
     status = "FAILURE"
     return False
     
@@ -54,33 +54,24 @@ def call():
    <selector>
       <name>entityPresent</name>
       <xpath>boolean(
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] or
-          /*/contentInfo/MD_CoverageDescription or
-          /*/contentInfo/MI_CoverageDescription)
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
       </xpath>
    </selector>
    <selector>
       <name>entities</name>
       <xpath>
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity] |
-          /*/contentInfo/MD_CoverageDescription |
-          /*/contentInfo/MI_CoverageDescription
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
       </xpath>
       <subSelector>
          <name>name</name>
          <xpath>
-             ./entityName |
-             ./attributeDescription/RecordType
+             ./entityName 
          </xpath>
      </subSelector>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>

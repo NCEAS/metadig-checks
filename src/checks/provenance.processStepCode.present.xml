@@ -16,7 +16,7 @@ def call():
 
   # Provenace step source code is not present
   if 'provenanceProcessStepCode' not in globals() or provenanceProcessStepCode is None:
-    output = "Provenance process step source code (software) was not found."
+    output = "No provenance process step source code (software) sections were found."
     status = "FAILURE"
     return False
         
@@ -43,12 +43,8 @@ def call():
       <xpath>/eml/*/methods/methodStep/software//text()[normalize-space()]</xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>

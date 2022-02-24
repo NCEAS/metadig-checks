@@ -12,38 +12,26 @@ def call():
   global status
  
   if ('datasetRevisionDatePresent' in globals() and datasetRevisionDatePresent is not None and datasetRevisionDatePresent):
-    output = "A resource creation or revision date is present."
+    output = "A resource creation or revision date was found."
     status = "SUCCESS"
     return True
   else:
-    output = "A resource creation or revision date is not present."
+    output = "No resource creation or revision date was found."
     status = "FAILURE"
     return False
       ]]></code>
    <selector>
       <name>datasetRevisionDatePresent</name>
-      <xpath>boolean((/resource/dates/date)
-         or (/*/dateSubmitted)
+      <xpath>boolean((/resource/dates/date[@dateType='Updated'])
          or (/eml/*/maintenance/changeHistory/changeDate)
-         or (/eml/*/pubDate)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='creation']/date/Date)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='creation']/date/DateTime)
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/Date)
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/Date)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='creation']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/DateTime)
-         or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime))
+         )
       </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
@@ -52,9 +40,5 @@ def call():
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

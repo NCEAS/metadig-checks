@@ -18,13 +18,13 @@
       
       # Skip check if no dataTables
       if(!entityPresent) {
-        return(list(status="SKIP", output = "No data table descriptions are present, so unable to check entity name lenghts."))
+        return(list(status="SKIP", output = "No data entities were found so unable to check entity name lengths."))
       }
       
       # Assume that the check will pass, but one problem will cause failure
       status <- "SUCCESS"
       if(is.null(entityNames) || entityCount == 0) {
-        return(list(status = "FAILURE", output = sprintf("No data table description names found, so the check is unable to determine entity name lengths.")))
+        return(list(status = "FAILURE", output = sprintf("No data entity names were found so unable to check entity name lengths.")))
       }
       
       # The dataset may have multiple entities, so check each one

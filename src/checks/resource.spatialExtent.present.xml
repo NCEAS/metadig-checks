@@ -12,11 +12,11 @@ def call():
   global status
 
   if ('spatialExtent' in globals() and spatialExtent is not None and spatialExtent):
-    output = "A spatial extent is present."
+    output = "A spatial extent was found."
     status = "SUCCESS"
     return True
   else:
-    output = "A spatial extent is not present."
+    output = "No spatial extent was found."
     status = "FAILURE"
     return False
       ]]></code>
@@ -26,19 +26,14 @@ def call():
           /*/identificationInfo/MD_DataIdentification/extent/EX_Extent/geographicElement or
     	  /*/identificationInfo/*/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
           /*/identificationInfo/SV_ServiceIdentification/extent/EX_Extent/geographicElement/EX_GeographicBoundingBox//* or
-          /*/spatial or
           /*/identificationInfo/*/extent/EX_Extent/geographicElement or
           /eml/*/coverage/geographicCoverage/boundingCoordinates or
           /resource/geoLocations/geoLocation)
       </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
@@ -47,9 +42,5 @@ def call():
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

@@ -16,7 +16,7 @@ def call():
 
   # A distribution contact identifier is not present
   if 'distributionContactIdentifier' not in globals() or distributionContactIdentifier is None:
-    output = "A distribution contact identifier was not found."
+    output = "No distribution contact identifier was found."
     status = "FAILURE"
     return False
         
@@ -45,12 +45,8 @@ def call():
       </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>

@@ -12,29 +12,25 @@ def call():
   global status
  
   if ('temporalExtent' in globals() and temporalExtent is not None and temporalExtent):
-    output = "A temporal extent is present."
+    output = "A temporal extent was found."
     status = "SUCCESS"
     return True
   else:
-    output = "A temporal extent is not present."
+    output = "No temporal extent was found."
     status = "FAILURE"
     return False
       ]]></code>
    <selector>
       <name>temporalExtent</name>
       <xpath>boolean(
+          /resource/dates/date[dateType='Collected'] or
           /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
-          /*/temporal or
           /eml/*/coverage/temporalCoverage)
       </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
@@ -43,9 +39,5 @@ def call():
    <dialect>
       <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
       <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115-1 / ISO 19115-3</name>
-      <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
    </dialect>
 </mdq:check>

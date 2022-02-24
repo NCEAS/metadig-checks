@@ -39,7 +39,7 @@ def call():
   
   # The check fails if no attributes are found.
   if(len(entities) == 0):
-    output = "No attributes found, unable to check for duplicate attribute names."
+    output = "No attributes were found, unable to check for duplicate attribute names."
     status = "FAILURE"
     return False
   
@@ -93,6 +93,10 @@ def call():
           </xpath>
       </subSelector>
    </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>

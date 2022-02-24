@@ -16,7 +16,7 @@ def call():
 
   # An entity format is not present
   if 'entityFormat' not in globals() or entityFormat is None:
-    output = "An entity format was not found."
+    output = "No entity formats were found."
     status = "FAILURE"
     return False
     
@@ -28,7 +28,7 @@ def call():
 
   # Check if the entity format is a single string 
   if(len(entityFormat) == 1):
-    output = "No entity formats were found."
+    output = "1 entity format was found."
   else: 
     output = "{} entity formats were found".format(len(entityFormat))
       
@@ -40,7 +40,6 @@ def call():
       <xpath>
           /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format |
-          /*/identificationInfo/MD_DataIdentification/resourceFormat/MD_Format |
           /DryadDataFile/format |
           //resourceFormat/MD_Format | 
           /eml/dataset/*/physical/dataFormat |
@@ -48,12 +47,8 @@ def call():
       </xpath>
    </selector>
    <dialect>
-      <name>DataCite 3.1</name>
+      <name>DataCite 4</name>
       <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Dryad Data Package and Data File Modules</name>
-      <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
    </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>

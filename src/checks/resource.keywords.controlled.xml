@@ -50,17 +50,23 @@ def call():
    <selector>
       <name>keywordGroups</name>
       <xpath>
+           /resource/subjects |
            /*/identificationInfo/*/descriptiveKeywords |
            /eml/dataset/keywordSet
       </xpath>
       <subSelector>
         <name>thesaurusPresent</name>
         <xpath>boolean( 
+            (./subject/[subjectScheme=text()[normalize-space()])
             (./MD_Keywords/thesaurusName and not (./MD_keywords/thesaurusName[@nilReason="unknown"])) or
             (./keywordThesaurus))
         </xpath>
       </subSelector>
    </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>

@@ -19,7 +19,7 @@ def call():
  
   # Check if measurement units are present for each attribute.
   if not entitiesPresent:
-    output = "No data entities are present, so cannot check for entity checksums."
+    output = "No data entities were found so unable to check for entity checksums."
     status = "FAILURE"
     return False
     
@@ -103,6 +103,10 @@ def call():
         <xpath>./entityName</xpath>
     </subSelector>
   </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
   <dialect>
      <name>Ecological Metadata Language</name>
      <xpath>boolean(/*[local-name() = 'eml'])</xpath>

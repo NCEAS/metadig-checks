@@ -20,7 +20,7 @@ def call():
   
   # For each keyword, check if a type is specified
   if(isinstance(keywords, NoneType) or len(keywords) == 0):
-    output = "No keywords found, unable to check for keyword types."
+    output = "No keyword types were found."
     status = "FAILURE"
     return False
     
@@ -90,6 +90,10 @@ def call():
         <xpath>text()[normalize-space()] | */text()[normalize-space()]</xpath>
       </subSelector>
    </selector>
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
    <dialect>
       <name>Ecological Metadata Language</name>
       <xpath>boolean(/*[local-name() = 'eml'])</xpath>

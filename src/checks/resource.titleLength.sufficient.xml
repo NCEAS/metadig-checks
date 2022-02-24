@@ -11,7 +11,7 @@
     library(base)
 
     if(!titlePresent) {
-      return(list(status = "FAILURE", output = sprintf("The resource title is not present, so the check is unable to determine title word length.")))
+      return(list(status = "FAILURE", output = sprintf("A resource title was not found so unable to check title word length.")))
     }
 
     # Required minimum word count for title
@@ -35,21 +35,26 @@
   result <- check()
   mdq_result <- list(status=result$status, output=list(list(value=result$output)))
   ]]></code>
+  <!-- For DataCite, the main title does not have attributes -->
   <selector>
     <name>titlePresent</name>
     <xpath>boolean(
-	/eml/dataset/title or 
-	/*/description or
-      	/*/identificationInfo/*/citation/CI_Citation/title)
+           /resource/titles/title[not(@titleType)] or
+	       /eml/dataset/title or 
+      	   /*/identificationInfo/*/citation/CI_Citation/title)
     </xpath>
   </selector>
   <selector>
     <name>datasetTitle</name>
-    <xpath>/eml/dataset/title |
-      /*/description |
-      /*/identificationInfo/*/citation/CI_Citation/title
+    <xpath>/resource/titles/title[not(@titleType)]/text()  |
+           /eml/dataset/title/text() |
+           /*/identificationInfo/*/citation/CI_Citation/title/text()
     </xpath>
   </selector>
+  <dialect>
+     <name>DataCite 4</name>
+     <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
   <dialect>
     <name>eml</name>
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
@@ -57,9 +62,5 @@
   <dialect>
     <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
     <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-  </dialect>
-  <dialect>
-    <name>Dryad Data Package and Data File Modules</name>
-    <xpath>boolean(/*[local-name() = 'DryadDataFile' or local-name() = 'DryadDataPackage'])</xpath>
   </dialect>
 </mdq:check>

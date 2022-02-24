@@ -69,8 +69,8 @@ def call():
   else:
     # If the URL is unresolvable because it is private, and it is a DataONE identifier, then this
     # special case will pass. Print an appropriate messge explaining this.
-    isPrivate = re.search("unauthorized", str.lower())
-    if(isPrivate && useD1):
+    isPrivate = re.search("unauthorized", msg.lower())
+    if(isPrivate and usedD1):
       output = u'{} and is resolvable using the DataONE resolve service, but is not publicly readable'.format(output)
       status = "SUCCESS"
     else:  

@@ -48,14 +48,20 @@ def call():
   # a single string.
   if(isinstance(textFields, list)):
     textFields = ' '.join(textFields)
-    
+
+  # If the text spans multiple lines, convert line breaks to spaces
+  textFields = textFields.replace('\n', ' ')
+  textFields = textFields.replace('\r', ' ')
+  # Convert separater characters to spaces to assist parsing
+  textFields = textFields.replace(",", " ")
+  textFields = textFields.replace(";", " ")
+  
   # Tokenize the string and extract possible URLs
   textTokens = textFields.split(' ')
+  
   for token in textTokens:
     token = token.strip()
     token = token.strip('.')
-    token = token.strip(',')
-    token = token.strip(';')
     token = token.strip('(')
     token = token.strip(')')
     if(re.match(".*http.*:\/\/", token.strip())):

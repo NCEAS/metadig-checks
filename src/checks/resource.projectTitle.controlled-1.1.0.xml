@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+   <id>resource.projectTitle.controlled-1.1.0</id>
+   <name>Resource Project Title Controlled</name>
+   <description>Check if the project title is contained in a list of known projects.</description>
+   <type>Findable</type>
+   <level>REQUIRED</level>
+   <environment>rscript</environment>
+   <code><![CDATA[
+    library(jsonlite)
+    #library(stringdist)
+    
+    # Currenlty fuzzy matching is disabled, but may be used in a future version of this check.
+    # The ESS-DIVE project title list is located at https://mule-stage.ess-dive.lbl.gov/api/v1/project
+    #useFuzzyMatch <- FALSE
+    
+    errorMessage <- "The DOE project name listed is not from the controlled list of projects. When entering the project name, use the autocomplete feature to choose from the existing projects. If you can not find your project name, try entering the PI name."
+    
+    # This check extracts the project tilte from the metadata document and compares it
+    # to a controlled list of DOE projects for an exact match. If an exact match is not 
+    # found, the closest fuzzy match is found and displayed in the check output.
+    # Check the project title extracted from the metadata document
+    if (length(projectTitle) == 0) {
+      status <- "FAILURE"
+      message <- "No project title was found."
+    } else if (length(projectTitle) > 1) {
+      status <- "FAILURE"
+      message <- "More than one project name is present, only one is allowed."
+    } else {
+      library(stringr)
+      # Trim whitespace, split abstract on whitespace
+      projectTitle <- trimws(projectTitle)
+      
+      # Read in the controlled project title list
+      # The URL for the ESS-DIVE project API is stored in the metadig.properties file
+      projectListFn <- "ess-dive-project-list-v2.json"
+      projectListPath <- sprintf("%s/%s", mdq_params[['metadigDataDir']], projectListFn)
+      projects <- read_json(projectListPath, simplifyVector = FALSE)
+      controlledProjectTitles = list()
+      # Load project titles into a simple list, for use with the string distance functions
+      for (i in 1:length(projects$result)) {
+          controlledProjectTitles[i] <- projects$result[[i]]$project_title
+      }
+    }  
+
+    # When using the fuzzy match, a candidate match cannot be more different than this percent.
+    diffTolerance = 65.0 
+    maxDist = 100
+    noMatchFound <- 0
+    closestDist = maxDist
+    closestDistIndex = NA
+    smallestPercentDiff <- 10000
+    exactMatchFound <- FALSE
+    message <- list()
+    for (ictrl in 1:length(controlledProjectTitles)) {
+        if(tolower(projectTitle) == tolower(controlledProjectTitles[[ictrl]])) {
+            exactMatchFound <- TRUE
+        }
+    #    dist <- stringdist(projectTitle, controlledProjectTitles[[ictrl]], method=c("lv"))
+    #    percentDiff <- (dist/nchar(projectTitle)) * 100.0
+    #    if(percentDiff < smallestPercentDiff) {
+    #        smallestPercentDiff <- percentDiff
+    #    }
+    #    if(dist == 0) {
+    #        exactMatchFound <- TRUE
+    #        break
+    #    } else if (dist < closestDist) {
+    #        closestDist <- dist
+    #        closestDistIndex <- ictrl
+    #    } 
+    }
+    
+    status <- "FAILURE"
+    message <- list()
+    # An exact match was found
+    if (exactMatchFound) {
+        message <- "The DOE project name was found in the controlled list of ESS projects."
+        status <- "SUCCESS"
+    #} else if (useFuzzyMatch) {
+    #    # An exact match was not found, print out the closest match
+    #    if(smallestPercentDiff < diffTolerance) {
+    #        # close match found
+    #        status <- "FAILURE"
+    #        message <- sprintf("%s The closest match is: %s\n", errorMessge, controlledProjectTitles[[closestDistIndex]])
+    #    } else {
+    #        # No match was found within the difference tolerance
+    #        message <- sprintf("%s\n", errorMessge)
+    #        status <- "FAILURE"
+    #    }
+    } else {
+        # No match was found within the difference tolerance
+        message <- sprintf("%s\n", errorMessage)
+        status <- "FAILURE"
+    }
+
+     mdq_result <- list(status = status,
+                        output = list(list(value = message)))
+      ]]></code>
+   <selector>
+      <name>projectTitle</name>
+      <xpath>/eml/dataset/project/title</xpath>
+   </selector>
+   <dialect>
+      <name>Ecological Metadata Language</name>
+      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+   </dialect>
+</mdq:check>

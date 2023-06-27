@@ -32,13 +32,12 @@
       projectTitle <- trimws(projectTitle)
       
       # Read in the controlled project title list
-      projectListFn <- "ess-dive-projects.json"
-      projectListPath <- sprintf("%s/%s", mdq_params[['metadigDataDir']], projectListFn)
+      projectListPath <- "https://mule.ess-dive.lbl.gov/api/project/"
       projects <- read_json(projectListPath, simplifyVector = FALSE)
       controlledProjectTitles = list()
       # Load project titles into a simple list, for use with the string distance functions
-      for (i in 1:length(projects)) {
-          controlledProjectTitles[i] <- projects[[i]]$projectTitle
+      for (i in 1:length(projects$result)) {
+        controlledProjectTitles[i] <- projects$result[[i]]$projectTitle
       }
     }  
 

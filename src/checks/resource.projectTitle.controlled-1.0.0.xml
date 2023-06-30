@@ -20,7 +20,7 @@
     # to a controlled list of DOE projects for an exact match. If an exact match is not 
     # found, the closest fuzzy match is found and displayed in the check output.
     # Check the project title extracted from the metadata document
-    if (length(projectTitle) == 0) {
+    if (length(projectTitle) == 0 | is.null(projectTitle)) {
       status <- "FAILURE"
       message <- "No project title was found."
     } else if (length(projectTitle) > 1) {
@@ -37,7 +37,7 @@
       controlledProjectTitles = list()
       # Load project titles into a simple list, for use with the string distance functions
       for (i in 1:length(projects$result)) {
-        controlledProjectTitles[i] <- projects$result[[i]]$projectTitle
+        controlledProjectTitles[i] <- projects$result[[i]]$project_title
       }
     }  
 

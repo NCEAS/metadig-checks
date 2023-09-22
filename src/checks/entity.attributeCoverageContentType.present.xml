@@ -31,12 +31,12 @@ def call():
   else:
     # Check if coverage content type is a single string or list
     if(isinstance(coverageContentType, list)):
-      output = u"The coverage content types '{}".format(', '.join(coverageContentType[0:maxPrint]))
+      output = "The coverage content types '{}".format(', '.join(coverageContentType[0:maxPrint]))
       if(len(coverageContentType) > maxPrint):
-        output += u", ..."
-      output = u"{}' were found ({} total).".format(output, len(coverageContentType))
+        output += ", ..."
+      output = "{}' were found ({} total).".format(output, len(coverageContentType))
     else: 
-      output = u"The coverage content type '{}' was found".format(coverageContentType)
+      output = "The coverage content type '{}' was found".format(coverageContentType)
     status = "SUCCESS"
     return True
       ]]></code>

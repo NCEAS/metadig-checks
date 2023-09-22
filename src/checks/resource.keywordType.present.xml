@@ -30,10 +30,10 @@ def call():
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(keywords, unicode)):
+  if(isinstance(keywords, str)):
     keywords = [keywords]
     
-  if(isinstance(keywordNames, unicode)):
+  if(isinstance(keywordNames, str)):
     keywordNames = [keywordNames]
   
   # For each keyword, check if a keyword type is specified.
@@ -51,9 +51,9 @@ def call():
 
   # Add the list of resources that don't have keywords to the output
   if(len(keywordTypesMissing) == 1):
-    output = u"This keyword (of {} total) does not have a type specified: '{}'".format(len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
+    output = "This keyword (of {} total) does not have a type specified: '{}'".format(len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
   elif (len(keywordTypesMissing) > 1):
-    output = u"These {} keywords (of {} total) do not have a type specified: '{}'".format(len(keywordTypesMissing), len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
+    output = "These {} keywords (of {} total) do not have a type specified: '{}'".format(len(keywordTypesMissing), len(keywords), ', '.join(keywordTypesMissing[0:maxPrint]))
     if(len(keywordTypesMissing) > maxPrint):
       output += ", ..."
       

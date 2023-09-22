@@ -46,7 +46,7 @@ def call():
   # Convert all values to unicode
   entities = mvar.toUnicode(entities)
   # If a single string, convert to list for easier processing
-  if(isinstance(entities, unicode)):
+  if(isinstance(entities, str)):
     entities = [entities]
     
   # For each entity, check that the attributes defined for it have unique names
@@ -59,7 +59,7 @@ def call():
     else:
       # If only one attribute, the quality engine will return it as a string. Don't
       # check for dupes (characters) in a single string, only check a list of strings
-      if(isinstance(attrList, str) or isinstance(attrList, unicode)):
+      if(isinstance(attrList, str) or isinstance(attrList, str)):
         attributeCount += 1
         continue
       else:
@@ -67,9 +67,9 @@ def call():
         allDuplicates.extend(duplicates(attrList))
         
   if(len(allDuplicates) > 0):
-    output = u"These {} attributes (of {} total) had duplicate names: {}".format(len(allDuplicates), attributeCount, ', '.join(allDuplicates[0:maxPrint]))
+    output = "These {} attributes (of {} total) had duplicate names: {}".format(len(allDuplicates), attributeCount, ', '.join(allDuplicates[0:maxPrint]))
     if(len(allDuplicates) > maxPrint):
-      output += u", ..."
+      output += ", ..."
   else:
     output = "No duplicate attribute names were found."
   status = "SUCCESS"

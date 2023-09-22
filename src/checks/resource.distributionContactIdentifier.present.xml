@@ -27,10 +27,10 @@ def call():
   else:
     distributionContactIdentifier = mvar.toUnicode(distributionContactIdentifier)
     # Check if distribution contact identifier type is a single string or list
-    if(isinstance(distributionContactIdentifier, unicode)):
-      output = u"The distribution contact identifier '{}' was found".format(distributionContactIdentifier)
+    if(isinstance(distributionContactIdentifier, str)):
+      output = "The distribution contact identifier '{}' was found".format(distributionContactIdentifier)
     else:
-      output = u"The distribution contact identifier '{}' was found (first of {} identifiers)".format(distributionContactIdentifier[0].strip(), len(distributionContactIdentifier))
+      output = "The distribution contact identifier '{}' was found (first of {} identifiers)".format(distributionContactIdentifier[0].strip(), len(distributionContactIdentifier))
       
     status = "SUCCESS"
     return True

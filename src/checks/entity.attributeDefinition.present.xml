@@ -31,11 +31,11 @@ def call():
   attributeDefinition = mvar.toUnicode(attributeDefinition)
   # If a single value, convert to a list for easier processing (i.e. don't have
   # to keep checking if it's a single value or list)
-  if(isinstance(attributeDefinition, unicode)):
+  if(isinstance(attributeDefinition, str)):
     attributeDefinition = [attributeDefinition]
     
   attributeName = mvar.toUnicode(attributeName)
-  if(isinstance(attributeName, unicode)):
+  if(isinstance(attributeName, str)):
     attributeName = [attributeName]
   
   for i in range(0, len(attributeDefinition)):
@@ -51,13 +51,13 @@ def call():
       missing.append(name)
         
   if(len(missing) == 1):
-    output = u"This {} attribute (of {} total) does not have a definition: {}".format(len(missing), attributeCount, missing[0])
+    output = "This {} attribute (of {} total) does not have a definition: {}".format(len(missing), attributeCount, missing[0])
     status = "FAILURE"
     return False
   elif(len(missing) > 1):
-    output = u"These {} attributes (of {} total) do not have a definition: {}".format(len(missing), attributeCount, ', '.join(missing[0:maxPrint]))
+    output = "These {} attributes (of {} total) do not have a definition: {}".format(len(missing), attributeCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

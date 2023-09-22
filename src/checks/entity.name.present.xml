@@ -27,7 +27,7 @@ def call():
   entities = mvar.toUnicode(entities)
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entities, unicode)):
+  if(isinstance(entities, str)):
     entities = [entities]
     
   for i in range(0, len(entities)):
@@ -37,13 +37,13 @@ def call():
       missing.append("entity #{}".format(i))
   
   if(len(missing) == 1):
-    output = u"The following entity is missing a name: {}".format(missing[0])
+    output = "The following entity is missing a name: {}".format(missing[0])
     status = "FAILURE"
     return False
   elif (len(missing) > 1):
-    output = u"The following {} entities are missing a name: '{}'".format(len(missing), ', '.join(missing[0:maxPrint]))
+    output = "The following {} entities are missing a name: '{}'".format(len(missing), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

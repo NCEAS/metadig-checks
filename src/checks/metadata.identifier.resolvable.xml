@@ -13,7 +13,7 @@ def call():
 
   import metadig.variable as mvar
   import metadig.checks as checks
-  import urllib
+  import urllib.request, urllib.parse, urllib.error
   import re
   global metadataIdentifier
 
@@ -37,7 +37,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = u"The metadata identifier '{}' was found ".format(metadataIdentifier)
+    output = "The metadata identifier '{}' was found ".format(metadataIdentifier)
     id = metadataIdentifier
     
   # Now check if the metadata identifier is a resolvable url. If it doesn't look like a URL, then 
@@ -53,21 +53,21 @@ def call():
     resolvable, msg = checks.isResolvable("https://dx.doi.org/{}".format(id.strip()))
   else:
     usedD1 = True
-    url = "{}{}".format(d1_resolve_service,urllib.quote(id))
+    url = "{}{}".format(d1_resolve_service,urllib.parse.quote(id))
     resolvable, msg = checks.isResolvable(url)
         
   if (resolvable):
     if(usedD1):
-      output = u'{} and is resolvable using the DataONE resolve service.'.format(output)
+      output = '{} and is resolvable using the DataONE resolve service.'.format(output)
     elif(isDOI):
-      output = u'{} and is resolvable using a DOI resolver.'.format(output)      
+      output = '{} and is resolvable using a DOI resolver.'.format(output)      
     else:
-      output = u'{} and is resolvable.'.format(output)      
+      output = '{} and is resolvable.'.format(output)      
           
     status = "SUCCESS"
     return True
   else:
-    output = u"{}, but is not resolvable.".format(output)      
+    output = "{}, but is not resolvable.".format(output)      
     status = "FAILURE"
     return False
    ]]></code>

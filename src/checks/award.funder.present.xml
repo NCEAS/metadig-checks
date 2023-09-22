@@ -104,4 +104,3 @@ def call():
     <xpath>boolean(/*[local-name() = 'MD_Metadata'])</xpath>
   </dialect>
 </mdq:check>
-

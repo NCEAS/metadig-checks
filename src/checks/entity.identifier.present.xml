@@ -25,7 +25,7 @@ def call():
   entityIdentifier = mvar.toUnicode(entityIdentifier)
   # If a single value, convert to a list for easier processing (i.e. don't have
   # to keep checking if it's a single value or list)
-  if(isinstance(entityIdentifier, unicode)):
+  if(isinstance(entityIdentifier, str)):
     entityIdentifier = [entityIdentifier]
     
   # check if the identifier is blank
@@ -36,11 +36,11 @@ def call():
     return False
   else:
     if(len(entityIdentifier) > 1):
-      output = u"These {} entity identifiers were found: {}".format(len(entityIdentifier), entityIdentifier[0:maxPrint])
+      output = "These {} entity identifiers were found: {}".format(len(entityIdentifier), entityIdentifier[0:maxPrint])
       if(len(entityIdentifier) > maxPrint):
-        output += u", ..."
+        output += ", ..."
     else:
-      output = u"The entity identifier '{}' was found".format(entityIdentifier[0])
+      output = "The entity identifier '{}' was found".format(entityIdentifier[0])
       
     status = "SUCCESS"
     return True

@@ -28,7 +28,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = u"The resource publication date '{}' was found".format(datasetPubDate)
+    output = "The resource publication date '{}' was found".format(datasetPubDate)
     status = "SUCCESS"
     return True
       ]]></code>

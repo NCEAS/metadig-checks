@@ -24,7 +24,7 @@ def call():
   # Note There can be just a single keyword, in which case the quality engine will return
   # a unicde string instead of an array
   # Single keyword
-  if(isinstance(keywords, str) or isinstance(keywords, unicode)):
+  if(isinstance(keywords, str)):
     keywordCount = 1
   else:
     # Multiple keywords

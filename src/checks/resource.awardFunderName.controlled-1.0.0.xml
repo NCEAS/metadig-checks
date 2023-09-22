@@ -38,7 +38,7 @@ def call():
   awardFunders = mvar.toUnicode(awardFunders)
   # If only a single value is returned (type "unicode" vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(awardFunders, unicode)):
+  if(isinstance(awardFunders, str)):
     awardFunders = [awardFunders]
     
   found = False
@@ -69,4 +69,3 @@ def call():
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
   </dialect>
 </mdq:check>
-

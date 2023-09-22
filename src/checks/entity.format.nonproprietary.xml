@@ -42,7 +42,7 @@ def call():
     return False
     
   entityFormats = mvar.toUnicode(entityFormats)
-  if(isinstance(entityFormats, unicode)):
+  if(isinstance(entityFormats, str)):
     entityFormats = [entityFormats]
     
   # Entity formats are present, but non that could explicitly define a format type
@@ -75,7 +75,7 @@ def call():
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entityFormatNames, unicode)):
+  if(isinstance(entityFormatNames, str)):
     entityFormatNames = [entityFormatNames]
   
   proprietaryFound = []
@@ -91,9 +91,9 @@ def call():
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = u"These {} proprietary data entity formats (out of {} total formats) were found: {}".format(len(fmts), len(entityFormats), ', '.join(fmts[0:maxPrint]))
+    output = "These {} proprietary data entity formats (out of {} total formats) were found: {}".format(len(fmts), len(entityFormats), ', '.join(fmts[0:maxPrint]))
     if(len(fmts) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

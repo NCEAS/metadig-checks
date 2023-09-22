@@ -31,13 +31,13 @@ def call():
  
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(checksums, unicode)):
+  if(isinstance(checksums, str)):
     checksums = [checksums]
  
-  if(isinstance(checksumAlgorithms, unicode)):
+  if(isinstance(checksumAlgorithms, str)):
     checksumAlgorithms = [checksumAlgorithms]
    
-  if(isinstance(entityNames, unicode)):
+  if(isinstance(entityNames, str)):
     entityNames = [entityNames]
  
   for i in range(0, len(checksums)):
@@ -55,13 +55,13 @@ def call():
       missing.append(mvar.toUnicode(name))
      
   if(len(missing) == 1):
-    output = u"This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
+    output = "This 1 entity (of {} total) is missing a checksum value or algorithm: '{}'".format(entityCount, missing[0])
     status = "FAILURE"
     return False
   elif(len(missing) > 1):
-    output = u"These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
+    output = "These {} entities (of {} total) are missing a checksum value or algorithm: '{}'".format(len(missing), entityCount, ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

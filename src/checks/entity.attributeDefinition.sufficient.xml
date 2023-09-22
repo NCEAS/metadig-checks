@@ -34,10 +34,10 @@ def call():
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(attributeDefinition, unicode)):
+  if(isinstance(attributeDefinition, str)):
     attributeDefinition = [attributeDefinition]
   
-  if(isinstance(attributeName, unicode)):
+  if(isinstance(attributeName, str)):
     attributeName = [attributeName]
 
   # Check each attribute definition to see if it is missing or blank.
@@ -65,10 +65,10 @@ def call():
   # Let the user know if definitions are missing, but don't fail the check based
   # on this (unless all are missing), as that is part of a different check
   if(len(insufficient) == 1):
-    output = u"This attribute (of {} total) has an insufficient definition of less than {} words: '{}'".format(attributeCount, minWordCount, insufficient[0])
+    output = "This attribute (of {} total) has an insufficient definition of less than {} words: '{}'".format(attributeCount, minWordCount, insufficient[0])
   elif(len(insufficient) > 1):
     # Only print the max entries allowed - otherwise the report could get unweildy  
-    output = u"These {} attributes (of {} total) have insufficient definitions of less than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount,  ", ".join(insufficient[0:maxPrint]))
+    output = "These {} attributes (of {} total) have insufficient definitions of less than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount,  ", ".join(insufficient[0:maxPrint]))
     if(len(insufficient) > maxPrint):
       output += ", ..."
     status = "FAILURE"

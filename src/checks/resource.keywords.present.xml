@@ -25,7 +25,7 @@ def call():
   keywords = mvar.toUnicode(keywords)
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(keywords, unicode)):
+  if(isinstance(keywords, str)):
     keywords = [keywords]
 
   # Passed all tests!

@@ -25,7 +25,7 @@ def call():
 
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(resourceDistribution, unicode)):
+  if(isinstance(resourceDistribution, str)):
     resourceDistribution = [resourceDistribution]
       
   if (mvar.isBlank(resourceDistribution)):
@@ -34,21 +34,21 @@ def call():
     return False
   else:
     # Check if resource distribution URL is a single string or arrayList
-    if(isinstance(resourceDistribution, unicode)):
-      output = u"The resource distribution URL '{}' was found".format(resourceDistribution)
+    if(isinstance(resourceDistribution, str)):
+      output = "The resource distribution URL '{}' was found".format(resourceDistribution)
       url = resourceDistribution.strip()
     elif (isinstance(resourceDistribution, list)):
-      output = u"The resource distribution URL '{}' was found (first of {} URLs)".format(resourceDistribution[0].strip(), len(resourceDistribution))
+      output = "The resource distribution URL '{}' was found (first of {} URLs)".format(resourceDistribution[0].strip(), len(resourceDistribution))
       url = resourceDistribution[0].strip()
       
   # A distribution contact exists, now check if it is resolvable
   resolvable, msg = checks.isResolvable(url)
   if (resolvable):
-    output = u'{} and is resolvable.'.format(output)      
+    output = '{} and is resolvable.'.format(output)      
     status = "SUCCESS"
     return True
   else:
-    output = u"{}, but is not resolvable: {}".format(output, msg)
+    output = "{}, but is not resolvable: {}".format(output, msg)
     status = "FAILURE"
     return False
       ]]></code>

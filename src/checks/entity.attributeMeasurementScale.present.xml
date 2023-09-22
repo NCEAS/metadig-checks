@@ -31,11 +31,11 @@ def call():
   missing = []
   
   attributeMeasurementScale = mvar.toUnicode(attributeMeasurementScale)
-  if(isinstance(attributeMeasurementScale, unicode)):
+  if(isinstance(attributeMeasurementScale, str)):
     attributeMeasurementScale = [attributeMeasurementScale]
 
   attributeName = mvar.toUnicode(attributeName)
-  if(isinstance(attributeName, unicode)):
+  if(isinstance(attributeName, str)):
     attributeName = [attributeName]
     
   for i in range(0, len(attributeMeasurementScale)):
@@ -47,9 +47,9 @@ def call():
       missing.append(name)
   
   if(len(missing) > 0):
-    output = u"The following {} attributes do not have a measurement scale: '{}'.".format(len(missing), ', '.join(missing[0:maxPrint]))
+    output = "The following {} attributes do not have a measurement scale: '{}'.".format(len(missing), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-        output += u", ..."
+        output += ", ..."
     status = "FAILURE"
     return False
   else:

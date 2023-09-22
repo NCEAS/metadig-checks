@@ -14,7 +14,7 @@ def call():
   
   import metadig.variable as mvar
   import metadig.checks as checks
-  import urllib
+  import urllib.request, urllib.parse, urllib.error
   import re
   import numbers
   
@@ -35,7 +35,7 @@ def call():
   distributionUrl = mvar.toUnicode(distributionUrl)
   # If a single value, convert to a list for easier processing (i.e. don't 
   # have to keep checking if it's a single value or list)
-  if(isinstance(distributionUrl, unicode)):
+  if(isinstance(distributionUrl, str)):
     distributionUrl = [distributionUrl]
 
   if (mvar.isBlank(distributionUrl)):
@@ -45,20 +45,20 @@ def call():
   else: 
     url = distributionUrl[0].strip()
     if(len(distributionUrl) > 1):
-      output = u"The entity distribution URL '{}' was found (first of {} URLs)".format(url, len(distributionUrl))
+      output = "The entity distribution URL '{}' was found (first of {} URLs)".format(url, len(distributionUrl))
     else:
-      output = u"The entity distribution URL '{}' was found".format(url)
+      output = "The entity distribution URL '{}' was found".format(url)
       
   # Now check if the entity identifier is a resolvable url as is. Do not attempt to use any resolver service,
   # just use the bare URL.
   resolvable, msg = checks.isResolvable(url)
     
   if (resolvable):
-    output = u'{} and is resolvable.'.format(output)      
+    output = '{} and is resolvable.'.format(output)      
     status = "SUCCESS"
     return True
   else:
-    output = u"{}, but is not resolvable.".format(output)      
+    output = "{}, but is not resolvable.".format(output)      
     status = "FAILURE"
     return False
    ]]></code>

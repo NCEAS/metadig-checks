@@ -36,7 +36,7 @@ def call():
   # Note that the quality engine may return either a single value or a list of values.
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(keywords, unicode)):
+  if(isinstance(keywords, str)):
     keywords = [keywords]
 
   foundKeywords = ""

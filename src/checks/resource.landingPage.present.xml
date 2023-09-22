@@ -30,21 +30,21 @@ def call():
     return False
   else:
     # Check if variable type is a single string or arrayList
-    if(isinstance(datasetLandingPage, unicode)):
-      output = u"The resource landing page url '{}' was found".format(datasetLandingPage)
+    if(isinstance(datasetLandingPage, str)):
+      output = "The resource landing page url '{}' was found".format(datasetLandingPage)
       url = datasetLandingPage.strip()
     else: 
-      output = u"The resource landing page url '{}' was found (first of {} urls)".format(datasetLandingPage[0].strip(), len(datasetLandingPage))
+      output = "The resource landing page url '{}' was found (first of {} urls)".format(datasetLandingPage[0].strip(), len(datasetLandingPage))
       url = datasetLandingPage[0].strip()
 
       
   resolvable, msg = checks.isResolvable(url)
   if (resolvable):
-    output = u'{} and is resolvable.'.format(output)
+    output = '{} and is resolvable.'.format(output)
     status = "SUCCESS"
     return True
   else:
-    output = u"{}, but is not resolvable: {}".format(output, msg)
+    output = "{}, but is not resolvable: {}".format(output, msg)
     status = "FAILURE"
     return False
       ]]></code>

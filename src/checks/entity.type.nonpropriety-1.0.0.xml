@@ -68,7 +68,7 @@ def call():
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entityTypes, unicode)):
+  if(isinstance(entityTypes, str)):
     entityTypes = [entityTypes]
   
   proprietaryFound = []
@@ -87,20 +87,20 @@ def call():
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = u"It is recommended that non-proprietary file formats be used where possible. These {} proprietary data formats (out of {} total formats) were found: {}".format(len(fmts), len(entityTypes), ', '.join(fmts[0:maxPrint]))
+    output = "It is recommended that non-proprietary file formats be used where possible. These {} proprietary data formats (out of {} total formats) were found: {}".format(len(fmts), len(entityTypes), ', '.join(fmts[0:maxPrint]))
     if(len(fmts) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     else:
-      output += u"."
+      output += "."
       
     if(excelFileFound):
-      output += u" TIP: If you have not already, upload a csv version for any excel file(s) included."
+      output += " TIP: If you have not already, upload a csv version for any excel file(s) included."
     status = "FAILURE"
     return False
   else:
     output = "No proprietary data formats found (out of {} total formats).".format(len(entityTypes))
     if(excelFileFound):
-      output += u" TIP: If you have not already, upload a csv version for any excel file(s) included."
+      output += " TIP: If you have not already, upload a csv version for any excel file(s) included."
     status = "SUCCESS"
     return True
       ]]></code>

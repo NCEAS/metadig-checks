@@ -22,9 +22,9 @@ def call():
       publisher = mvar.toUnicode(datasetPublisher)
       # A single value or list could be returned by the engine, so convert a single
       # value to a list for easier processing
-      if(isinstance(publisher, unicode)):
+      if(isinstance(publisher, str)):
         publisher = [publisher]
-      output = u"The resource publisher '{}' was found.".format(publisher[0].strip())
+      output = "The resource publisher '{}' was found.".format(publisher[0].strip())
       status = "SUCCESS"
       return True 
   else:

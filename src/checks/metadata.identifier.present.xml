@@ -35,7 +35,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = u"The metadata identifier '{}' was found.".format(metadataIdentifier.strip())
+    output = "The metadata identifier '{}' was found.".format(metadataIdentifier.strip())
     status = "SUCCESS"
     return True 
     

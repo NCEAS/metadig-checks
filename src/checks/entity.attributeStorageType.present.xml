@@ -35,10 +35,10 @@ def call():
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(attributeStorageType, unicode)):
+  if(isinstance(attributeStorageType, str)):
     attributeStorageType = [attributeStorageType]
   
-  if(isinstance(attributeName, unicode)):
+  if(isinstance(attributeName, str)):
     attributeName = [attributeName]
     
   attributeCount = 0
@@ -55,9 +55,9 @@ def call():
       missing.append(name)
   
   if(len(missing) > 0):
-    output = u"These attributes do not have a storage type: '{}'".format(', '.join(missing[0:maxPrint]))
+    output = "These attributes do not have a storage type: '{}'".format(', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

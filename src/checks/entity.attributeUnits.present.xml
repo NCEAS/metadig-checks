@@ -31,10 +31,10 @@ def call():
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(attributeUnits, unicode)):
+  if(isinstance(attributeUnits, str)):
     attributeUnits = [attributeUnits]
   
-  if(isinstance(attributeName, unicode)):
+  if(isinstance(attributeName, str)):
     attributeName = [attributeName]
   
   for i in range(0, len(attributeUnits)):
@@ -49,9 +49,9 @@ def call():
       missing.append(name)
   
   if(len(missing) > 0):
-    output = u"The following attributes are missing a units value: '{}'".format(', '.join(missing[0:maxPrint]))
+    output = "The following attributes are missing a units value: '{}'".format(', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   elif(len(missing) == 0 and len(attributeUnits) == 0):

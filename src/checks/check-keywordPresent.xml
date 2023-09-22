@@ -23,7 +23,6 @@ def call():
     return True
 call()
 	]]></code>
-	
   <selector>
     <name>keywords</name>
     <xpath>

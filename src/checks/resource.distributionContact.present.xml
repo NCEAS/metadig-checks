@@ -27,9 +27,9 @@ def call():
     contact = mvar.toUnicode(distributionContact)
     # Check if resource identifier type is a single string or arrayList
     if(isinstance(contact, list)):
-      output = u"The distribution contact '{}' was found (first of {} contacts).".format(contact[0], len(contact))
+      output = "The distribution contact '{}' was found (first of {} contacts).".format(contact[0], len(contact))
     else:
-      output = u"The distribution contact '{}' was found.".format(contact)
+      output = "The distribution contact '{}' was found.".format(contact)
       
     status = "SUCCESS"
     return True

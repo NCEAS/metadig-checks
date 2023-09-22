@@ -29,10 +29,10 @@ def call():
   attributePrecision = mvar.toUnicode(attributePrecision)
   attributeName = mvar.toUnicode(attributeName)
   
-  if(isinstance(attributePrecision, unicode)):
+  if(isinstance(attributePrecision, str)):
     attributePrecision = [attributePrecision]
     
-  if(isinstance(attributeName, unicode)):
+  if(isinstance(attributeName, str)):
     attributeName = [attributeName]
     
   # The metadata has attributes, but just none that require a precision, so give it a pass.
@@ -53,9 +53,9 @@ def call():
       continue
   
   if(len(missing) > 0):
-    output = u"These {} attributes (of {} total) are missing a precision value: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
+    output = "These {} attributes (of {} total) are missing a precision value: '{}'".format(len(missing), len(attributePrecision), ', '.join(missing[0:maxPrint]))
     if(len(missing) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     status = "FAILURE"
     return False
   else:

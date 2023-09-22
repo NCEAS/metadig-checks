@@ -23,7 +23,7 @@ def call():
   entityFormat = mvar.toUnicode(entityFormat)
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entityFormat, unicode)):
+  if(isinstance(entityFormat, str)):
     entityFormat = [entityFormat]
 
   # Check if the entity format is a single string 

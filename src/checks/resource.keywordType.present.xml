@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>resource.keywordType.present.1</id>
-   <name>Resource keyword Type Present</name>
-   <description>Check if each keyword has a type specified..</description>
-   <type>Findable</type>
-   <level>OPTIONAL</level>
-   <environment>python</environment>
-   <code><![CDATA[
+  <id>resource.keywordType.present.1</id>
+  <name>Resource keyword Type Present</name>
+  <description>Check if each keyword has a type specified..</description>
+  <type>Findable</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
 def call():
   global output
   global status
@@ -65,41 +65,41 @@ def call():
     return True
 
     ]]></code>
-   <selector>
-      <name>keywords</name>
-      <xpath>
+  <selector>
+    <name>keywords</name>
+    <xpath>
           /eml/dataset/keywordSet/keyword |
           /*/identificationInfo/MD_DataIdentification/descriptiveKeywords/MD_Keywords/keyword
       </xpath>
-      <subSelector>
-        <name>type</name>
-        <xpath>
+    <subSelector>
+      <name>type</name>
+      <xpath>
             ./@keywordType |
             ../type/MD_KeywordTypeCode
         </xpath>
-      </subSelector>
-    </selector>
-    <selector>
-      <name>keywordNames</name>
-      <xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>keywordNames</name>
+    <xpath>
           /eml/dataset/keywordSet/keyword |
           /*/identificationInfo/MD_DataIdentification/descriptiveKeywords/MD_Keywords/keyword
       </xpath>
-      <subSelector>
-        <name>name</name>
-        <xpath>text()[normalize-space()] | */text()[normalize-space()]</xpath>
-      </subSelector>
-   </selector>
-   <dialect>
-      <name>DataCite 4</name>
-      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Ecological Metadata Language</name>
-      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
-      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
+    <subSelector>
+      <name>name</name>
+      <xpath>text()[normalize-space()] | */text()[normalize-space()]</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
 </mdq:check>

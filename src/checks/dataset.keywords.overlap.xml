@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>dataset.keywords.overlap.1</id>
-   <name>Dataset Keywords Overlap wi</name>
-   <description>Check that keywords don't appear in the title.</description>
-   <type>discovery</type>
-   <level>OPTIONAL</level>
-   <environment>python</environment>
-   <code><![CDATA[
+  <id>dataset.keywords.overlap.1</id>
+  <name>Dataset Keywords Overlap wi</name>
+  <description>Check that keywords don't appear in the title.</description>
+  <type>discovery</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
 def call():
   global output
   global status
@@ -71,34 +71,34 @@ def call():
   status = "SUCCESS"
   return True
       ]]></code>
-   <selector>
-      <name>keywords</name>
-      <xpath>
+  <selector>
+    <name>keywords</name>
+    <xpath>
            /*/identificationInfo/*/descriptiveKeywords/*/keywords |
            /eml/dataset/keywordSet/keyword
       </xpath>
-   </selector>
-   <selector>
-     <name>titlePresent</name>
-     <xpath>boolean(
+  </selector>
+  <selector>
+    <name>titlePresent</name>
+    <xpath>boolean(
         /eml/dataset/title or
         /*/description or
         /*/identificationInfo/*/citation/CI_Citation/title)
      </xpath>
-   </selector>
-   <selector>
-     <name>title</name>
-     <xpath>/eml/dataset/title |
+  </selector>
+  <selector>
+    <name>title</name>
+    <xpath>/eml/dataset/title |
        /*/description |
        /*/identificationInfo/*/citation/CI_Citation/title
      </xpath>
-   </selector>
-   <dialect>
-      <name>Ecological Metadata Language</name>
-      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
-      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
 </mdq:check>

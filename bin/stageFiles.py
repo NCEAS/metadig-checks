@@ -1,4 +1,4 @@
-#!/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
+#!/usr/local/bin/python3
 
 import xml.etree.ElementTree as ET
 import os
@@ -71,3 +71,4 @@ if __name__ == '__main__':
                         dstfile = "{}/{}/checks/{}".format(cwd, dst, fname)
                         print("cp {} {}".format(srcfile, dstfile))
                         copyfile(srcfile, dstfile)
+

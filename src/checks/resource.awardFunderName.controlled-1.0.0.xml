@@ -10,7 +10,6 @@
 def call():
   # check: does the necessary awardFunder exist?
   import re
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # These global variables are read by the quality engine when

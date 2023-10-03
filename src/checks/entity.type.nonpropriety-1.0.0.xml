@@ -59,10 +59,12 @@ def call():
   
   # Create list with the DataONE formats
   formats = []
-  with open(formatsFile, 'rb') as csvfile:
+  with open(formatsFile, 'r', newline='', encoding='utf-8') as csvfile:
       fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
       for row in fmtreader:
-        formats.append(row)
+          # Ensure that each item in the row is decoded to a string
+          row = [item if isinstance(item, str) else item.decode('utf-8') for item in row]
+          formats.append(row)
 
   entityTypes = mvar.toUnicode(entityTypes)
   

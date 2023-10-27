@@ -69,8 +69,6 @@ def call():
   with open(formatsFile, 'r', newline='', encoding='utf-8') as csvfile:
       fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
       for row in fmtreader:
-          # Ensure that each item in the row is decoded to a string
-          row = [item if isinstance(item, str) else item.decode('utf-8') for item in row]
           formats.append(row)
 
   entityFormatNames = mvar.toUnicode(entityFormatNames)

@@ -47,7 +47,7 @@ def call():
   
   # Create list of the CrossRef Funder Registry
   funders = []
-  with open(funderFile, 'rb') as csvfile:
+  with open(funderFile, 'r') as csvfile:
       fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
       for row in fmtreader:
         funders.append(row)

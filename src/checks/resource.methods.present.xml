@@ -19,8 +19,8 @@ def call():
      output = "No detailed methods section were found."
      status = "FAILURE"
      return False
-         
-   detailedMethodsText = mvar.toUnicode(detailedMethodsText)     
+   
+   detailedMethodsText = mvar.toUnicode(detailedMethodsText)   
    if (mvar.isBlank(detailedMethodsText)):
      output = "The detailed methods section is blank."
      status = "FAILURE"
@@ -33,11 +33,11 @@ def call():
   <selector>
     <name>detailedMethodsText</name>
     <xpath>
-          /resource/descriptions/description[descriptionType='Methods']/text()[normalize-space() |
-          /*/resourceLineage/LI_Lineage/statement |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text()[normalize-space()] |
-          /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text()[normalize-space()] |
-          /eml/dataset/methods/methodStep/description//text()[normalize-space()]
+        /resource/descriptions/description[descriptionType='Methods']/text()[normalize-space()] |
+        /*/resourceLineage/LI_Lineage/statement |
+        /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/statement//text()[normalize-space()] |
+        /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text()[normalize-space()] |
+        /eml/dataset/methods/methodStep/description//text()[normalize-space()]
       </xpath>
   </selector>
   <dialect>

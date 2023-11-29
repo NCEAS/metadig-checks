@@ -4,7 +4,7 @@
   <name>Metadata Identifier Resolvable</name>
   <description>Check that the metadata identifier exists and is resolvable.</description>
   <type>Accessible</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 def call():

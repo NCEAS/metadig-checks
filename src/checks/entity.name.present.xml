@@ -53,8 +53,7 @@ def call():
     ]]></code>
   <selector>
     <name>entityPresent</name>
-    <xpath>boolean(
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
+    <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])
       </xpath>
   </selector>
   <selector>

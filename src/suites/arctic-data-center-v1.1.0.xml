@@ -4,7 +4,7 @@
   <name>Arctic Data Center Quality Suite v1.1.0</name>
   <description>This is a provisional Arctic Data Center Quality Suite. It is modeled after the submission guidelines used on the Arctic Data Center (arcticdata.io).</description>
   <check>
-    <id>check.nsf.award.numbers.present.1</id>
+    <id>check.nsf.award.numbers.present-v1.1.0</id>
   </check>
   <check>
     <id>check.nsf.award.numbers.in.nsf.database.2.0.0</id>

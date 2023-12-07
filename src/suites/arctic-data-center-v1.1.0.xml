@@ -7,7 +7,7 @@
     <id>check.nsf.award.numbers.present-v1.1.0</id>
   </check>
   <check>
-    <id>check.nsf.award.numbers.in.nsf.database.2.0.0</id>
+    <id>check.nsf.award.numbers.in.nsf.database.1</id>
   </check>
   <check>
     <id>check.creator.present.1</id>
@@ -25,7 +25,7 @@
     <id>check.abstract.100.words.1</id>
   </check>
   <check>
-    <id>dataset.title.length.1</id>
+    <id>dataset.title.length2.1</id>
   </check>
   <check>
     <id>check.identifier.is.present.1</id>

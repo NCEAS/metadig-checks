@@ -133,7 +133,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>metadata.identifier.resolvable.1</id>
+        <id>metadata.identifier.resolvable-1.1.0</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>

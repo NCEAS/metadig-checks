@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>resource.keywordType.present.1</id>
+  <id>resource.keywordType.present-2.0.0</id>
   <name>Resource keyword Type Present</name>
   <description>Check if each keyword has a type specified..</description>
   <type>Findable</type>

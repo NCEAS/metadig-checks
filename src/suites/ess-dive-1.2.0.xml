@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>ess-dive.data.center.suite-1.1.0</id>
+  <id>ess-dive.data.center.suite-1.2.0</id>
   <name>ESS-DIVE Quality Suite</name>
   <description>This is a the ESS-DIVE Quality Suite</description>
   <check>
@@ -9,29 +9,29 @@
       <level>OPTIONAL</level>
   </check>
   <check>
-    <id>resource.URLs.resolvable-1.0.0</id>
+    <id>resource.URLs.resolvable-2.0.0</id>
     <type>Findable</type>
-    <level>REQUIRED</level>
+    <level>OPTIONAL</level>
   </check>
   <check>
-    <id>resource.awardFunderName.controlled-1.0.0</id>
+    <id>resource.awardFunderName.controlled-2.0.0</id>
     <type>Findable</type>
     <level>OPTIONAL</level>
   </check>
   <!-- Not included in 1.1.0 suite
   <check>
-    <id>resource.landingPage.present.1</id>
+    <id>resource.landingPage.present-2.0.0</id>
     <type>Accessible</type>
     <level>REQUIRED</level>
   </check>
   -->
   <check>
-    <id>metadata.identifier.resolvable-1.1.0</id>
+    <id>metadata.identifier.resolvable-2.0.0</id>
     <type>Accessible</type>
     <level>OPTIONAL</level>
   </check>
   <check>
-    <id>entity.type.nonproprietary-1.0.0</id>
+    <id>entity.type.nonproprietary-2.0.0</id>
     <type>Reusable</type>
     <level>OPTIONAL</level>
   </check>
@@ -66,12 +66,12 @@
     <level>REQUIRED</level>
   </check>
   <check>
-    <id>dataset.keywords.minimum.1</id>
+    <id>dataset.keywords.minimum-2.0.0</id>
     <type>Findable</type>
     <level>REQUIRED</level>
   </check>
   <check>
-    <id>dataset.keywords.overlap.1</id>
+    <id>dataset.keywords.overlap-2.0.0</id>
     <type>Findable</type>
     <level>OPTIONAL</level>
   </check>

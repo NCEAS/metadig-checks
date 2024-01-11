@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>resource.landingPage.present.1</id>
+  <id>resource.landingPage.present-2.0.0</id>
   <name>Resource Landing Page Present</name>
   <description>Check that a resource landing page exists and is resolvable.</description>
   <type>Accessible</type>

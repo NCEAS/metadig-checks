@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>resource.awardFunderName.controlled-1.0.0</id>
+  <id>resource.awardFunderName.controlled-2.0.0</id>
   <name>Award Funder Name Controlled</name>
   <description>Check that an award funder name exists and is known (controlled)</description>
   <type>Findable</type>

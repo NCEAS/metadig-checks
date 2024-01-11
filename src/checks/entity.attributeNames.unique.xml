@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>entity.attributeNames.unique.1</id>
+  <id>entity.attributeNames.unique-2.0.0</id>
   <name>Entity Attribute Names Are Unique</name>
   <description>Check that attribute names are unique.</description>
   <type>Accessible</type>

@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-	<id>check.nsf.award.numbers.in.nsf.database.1</id>
+	<id>check.nsf.award.numbers.in.nsf.database-2.0.0</id>
 	<name>NSF awards in database</name>
 	<description>All entered NSF award numbers should be present in the NSF award database.</description>
 	<type>identification</type>

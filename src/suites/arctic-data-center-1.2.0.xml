@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>arctic.data.center.suite-v2.0.0</id>
-  <name>Arctic Data Center Quality Suite v1.1.0</name>
+  <name>Arctic Data Center Quality Suite v1.2.0</name>
   <description>This is a provisional Arctic Data Center Quality Suite. It is modeled after the submission guidelines used on the Arctic Data Center (arcticdata.io).</description>
   <check>
-    <id>check.nsf.award.numbers.present-v1.1.0</id>
+    <id>check.nsf.award.numbers.present-2.0.0</id>
   </check>
   <check>
-    <id>check.nsf.award.numbers.in.nsf.database.1</id>
+    <id>check.nsf.award.numbers.in.nsf.database-2.0.0</id>
   </check>
   <check>
     <id>check.creator.present.1</id>

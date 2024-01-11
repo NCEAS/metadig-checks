@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>entity.attributeCoverageContentType.present.1</id>
+  <id>entity.attributeCoverageContentType.present-2.0.0</id>
   <name>Attribute Coverage Content Type</name>
   <description>Check that a coverage content type exists.</description>
   <type>Interoperable</type>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>dataset.keywords.overlap.1</id>
-  <name>Dataset Keywords Overlap wi</name>
+  <id>dataset.keywords.overlap-2.0.0</id>
+  <name>Dataset Keywords Overlap</name>
   <description>Check that keywords don't appear in the title.</description>
   <type>discovery</type>
   <level>OPTIONAL</level>

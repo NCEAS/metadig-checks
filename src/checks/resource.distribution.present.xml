@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>resource.distribution.present.1</id>
+  <id>resource.distribution.present-2.0.0</id>
   <name>Resource Distribution Information Present</name>
   <description>Check that resource distribution information exists and is resolvable.</description>
   <type>Accessible</type>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../../src/main/resources/schemas/schema1.xsd">
-    <id>FAIR-suite-0.4.0</id>
+    <id>FAIR-suite-0.3.1</id>
     <name>FAIR Recommendation Metadata Suite</name>
     <check>
         <id>resource.abstractLength.sufficient.1</id>
@@ -9,7 +9,7 @@
     </check>
     <!-- Not ready for 0.2.0 release
     <check>
-        <id>award.funder.present-2.0.0</id>
+        <id>award.funder.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -35,12 +35,12 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>resource.keywords.present-2.0.0</id>
+        <id>resource.keywords.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.keywordType.present-2.0.0</id>
+        <id>resource.keywordType.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -50,7 +50,7 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>metadata.identifier.present-2.0.0</id>
+        <id>metadata.identifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
@@ -60,7 +60,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.creatorIdentifier.present-2.0.0</id>
+        <id>resource.creatorIdentifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
@@ -70,17 +70,17 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.identifier.present-2.0.0</id>
+        <id>entity.identifier.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.identifierType.present-2.0.0</id>
+        <id>entity.identifierType.present.1</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>resource.publicationDate.present-2.0.0</id>
+        <id>resource.publicationDate.present.1</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
@@ -118,38 +118,38 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.landingPage.present-2.0.0</id>
+        <id>resource.landingPage.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.distributionContact.present-2.0.0</id>
+        <id>resource.distributionContact.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.distributionContactIdentifier.present-2.0.0</id>
+        <id>resource.distributionContactIdentifier.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>metadata.identifier.resolvable-2.0.0</id>
+        <id>metadata.identifier.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <!-- Replaced by entity.distributionURL.resolvable 2020 05 20 -->
     <!-- <check>
-        <id>resource.distribution.present-2.0.0</id>
+        <id>resource.distribution.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check> -->
     <check>
-        <id>resource.publisher.present-2.0.0</id>
+        <id>resource.publisher.present.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.publisherIdentifier.present-2.0.0</id>
+        <id>resource.publisherIdentifier.present.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
@@ -159,7 +159,7 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>resource.serviceProvider.present-2.0.0</id>
+        <id>resource.serviceProvider.present.1</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
@@ -171,7 +171,7 @@
         </check> -->
     <!-- Added 2020 05 19 FAIR suite v0.3.1  https://github.com/NCEAS/metadig-checks/issues/379 -->
     <check>
-        <id>entity.distributionURL.resolvable-2.0.0</id>
+        <id>entity.distributionURL.resolvable.1</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
@@ -185,32 +185,32 @@
 -   -->
     <!-- Interoperable -->    
     <check>
-      <id>entity.attributeName.differs-2.0.0</id>
+      <id>entity.attributeName.differs.1</id>
       <type>Interoperable</type>
       <level>REQUIRED</level>
     </check>
     <check>
-      <id>entity.attributeNames.unique-2.0.0</id>
+      <id>entity.attributeNames.unique.1</id>
       <type>Interoperable</type>
       <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeDefinition.present-2.0.0</id>
+        <id>entity.attributeDefinition.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-      <id>entity.attributeDefinition.sufficient-2.0.0</id>
+      <id>entity.attributeDefinition.sufficient.1</id>
       <type>Interoperable</type>
       <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeStorageType.present-2.0.0</id>
+        <id>entity.attributeStorageType.present.1</id>
         <type>Interoperable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.checksum.present-2.0.0</id>
+        <id>entity.checksum.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
@@ -222,7 +222,7 @@
     </check>
     -->
     <check>
-        <id>entity.attributeCoverageContentType.present-2.0.0</id>
+        <id>entity.attributeCoverageContentType.present.1</id>
         <type>Interoperable</type>
         <level>OPTIONAL</level>
     </check>
@@ -232,12 +232,12 @@
          <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.format.present-2.0.0</id>
+        <id>entity.format.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.name.present-2.0.0</id>
+        <id>entity.name.present.1</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
@@ -254,32 +254,32 @@
     
     <!-- Reusable -->
     <check>
-        <id>entity.format.nonproprietary-2.0.0</id>
+        <id>entity.format.nonproprietary.1</id>
         <type>Reusable</type>
          <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeDomain.present-2.0.0</id>
+        <id>entity.attributeDomain.present.1</id>
         <type>Reusable</type>
          <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeUnits.present-2.0.0</id>
+        <id>entity.attributeUnits.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeMeasurementScale.present-2.0.0</id>
+        <id>entity.attributeMeasurementScale.present.1</id>
         <type>Reusable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.attributePrecision.present-2.0.0</id>
+        <id>entity.attributePrecision.present.1</id>
         <type>Reusable</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.description.present-2.0.0</id>
+        <id>entity.description.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
@@ -294,7 +294,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>provenance.ProcessStepCode.present-2.0.0</id>
+        <id>provenance.processStepCode.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
@@ -309,7 +309,7 @@
         <level>REQUIRED</level>
     </check> 
     <check>
-        <id>resource.license.present-2.0.0</id>
+        <id>resource.license.present.1</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>

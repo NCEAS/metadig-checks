@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>entity.type.nonproprietary-1.0.0</id>
+  <name>Non proprietary entity format</name>
+  <description>Check that all entities use non-propietary formats.</description>
+  <type>Reusable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global mdq_params
+  global entityTypes
+  global entityNames
+  
+  # Check the data formats for all data entities.
+  # The check fails if the specified data format matches a format marked as proprietary.
+  # This check uses a reformatted copy of the DataONE format list, that is usually kept in the file 
+  # /opt/local/metadig/DataONEformats.csv. This file is manually edited to mark specific formats as proprietary. This file is obtained using the DataONE 'formats'
+  # service, i.e 'https://cn.dataone.org/cn/v2/formats'.
+  
+  # An additional step is made in this check - if any entities with a Microsoft Excel mediaType are found, then an informational message is printed as a tip to 
+  # ensure that CSV files are included that correspond to the Excel file. As it is not possible to know if the dataset author has exported tabs from the
+  # Excel file into more reusable CSV format, this tip is printed.
+  
+  import metadig.variable as mvar
+  import csv
+  maxPrint = 5
+  excelMediaTypes = ("application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+  excelFileFound = False
+  
+  def isProprietary(formats, thisFormat):
+    for row in formats:
+      if (row[4].lower().strip() in ("yes", "y", "true", "t", "1")):
+        if(row[2].lower().strip() == thisFormat.lower().strip()):
+          return True
+        if(row[3].lower().strip() == thisFormat.lower().strip()):
+          return True
+        
+    return False
+  
+  # Are any entity formats present?
+  if ('entityTypes' not in globals() or entityTypes is None):
+    output = "No data entities (files) were found so unable to check for proprietary formats."
+    status = "FAILURE"
+    return False
+    
+  dataFilename = "DataONEformats.csv"
+  formatsFile = ""
+  # The checks data directory is passed via the 'mdq_params' hash
+  # The filename is known only to this check.
+  if('mdq_params' not in globals()):
+    output = "Internal error running check, mdq_params not available to check."
+    status = "ERROR"
+    return False
+  else:
+    formatsFile = "{}/{}".format(mdq_params['metadigDataDir'], dataFilename)
+  
+  # Create list with the DataONE formats
+  formats = []
+  with open(formatsFile, 'r', newline='', encoding='utf-8') as csvfile:
+      fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+      for row in fmtreader:
+          formats.append(row)
+
+  entityTypes = mvar.toUnicode(entityTypes)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(entityTypes, str)):
+    entityTypes = [entityTypes]
+  
+  proprietaryFound = []
+        
+  # Check each entity format and see if it is in the 'proprietary' list, which
+  # is based on all formats from DataONE that have been manually determined t  o be
+  # proprietary
+  for i in range(0, len(entityTypes)):
+    # Check if the entity format is a single string or arrayList
+    thisFormat = entityTypes[i].strip()
+    if(isProprietary(formats, thisFormat)):
+      proprietaryFound.append(thisFormat)
+    # Check if an Excel file was encountered
+    if(thisFormat.lower().strip() in excelMediaTypes):
+      excelFileFound = True
+      
+  if(len(proprietaryFound) > 0):
+    fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
+    output = "It is recommended that non-proprietary file formats be used where possible. These {} proprietary data formats (out of {} total formats) were found: {}".format(len(fmts), len(entityTypes), ', '.join(fmts[0:maxPrint]))
+    if(len(fmts) > maxPrint):
+      output += ", ..."
+    else:
+      output += "."
+      
+    if(excelFileFound):
+      output += " TIP: If you have not already, upload a csv version for any excel file(s) included."
+    status = "FAILURE"
+    return False
+  else:
+    output = "No proprietary data formats found (out of {} total formats).".format(len(entityTypes))
+    if(excelFileFound):
+      output += " TIP: If you have not already, upload a csv version for any excel file(s) included."
+    status = "SUCCESS"
+    return True
+      ]]></code>
+  <selector>
+    <name>entityTypes</name>
+    <xpath>/eml/dataset/otherEntity/entityType</xpath>
+  </selector>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/otherEntity/entityNames</xpath>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

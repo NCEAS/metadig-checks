@@ -21,7 +21,6 @@ def call():
     status = "FAILURE"
     return False
     
-  datasetPubDate = mvar.toUnicode(datasetPubDate)
     
   if (mvar.isBlank(datasetPubDate)):
     output = "The resource publication date is blank"

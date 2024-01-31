@@ -30,7 +30,7 @@
         <level>INFO</level>
     </check>
     <check>
-        <id>resource.keywords.controlled.1</id>
+        <id>resource.keywords.controlled-2.0.0</id>
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>

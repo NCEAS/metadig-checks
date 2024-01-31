@@ -9,50 +9,47 @@
 	<level>OPTIONAL</level>
 	<environment>rscript</environment>
 	<code><![CDATA[
-    library(httr)
-    library(stringr)
-    
-    if (is.null(awardNumber) & is.null(awardText)) {
-        mdq_result <- list(status = "SKIP",
-                           output = list(
-                               list(value = "No NSF award numbers are present in the metadata document so this check was skipped.")
-                           ))
-    } else if (!is.null(awardText) &&
-               str_detect(tolower(awardText), "nsf|national  science foundation")) {
-        awards <- str_extract(awardText, "[0-9]{6-7}")
-    } else if (!is.null(awardNumber)) {
-        awards <- awardNumber
-    }
-    
-    if (!is.null(awards) | length(awards) > 0) {
-        # Search for each awardNumber
-        responses <- lapply(awards, function(award) {
-            tryCatch({
-                req <- GET(paste0("https://arcticdata.io/research.gov/awardapi-service/v1/awards.json?id=", award))
-                stopifnot(req$status_code == 200) # Throw an error if the HTTP status isn't 200
-                content(req)
-            },
-            error = function(e) { list() })
-        })
+        library(httr)
+        library(stringr)
         
-        # Determine if each award was found
-        is_found <- sapply(responses, function(r) ifelse(!is.null(r$response$award) && length(r$response$award) == 1, TRUE, FALSE))
+        if (is.null(awardNumber) & is.null(awardText)) {
+            mdq_result <- list(status = "SKIP",
+                               output = list(
+                                   list(value = "No NSF award numbers are present in the metadata document, so this check was skipped.")
+                               ))
+        } else if (!is.null(awardText) &&
+                   str_detect(tolower(awardText), "nsf|national science foundation")) {
+            awards <- str_extract(awardText, "[0-9]{6,7}")
+        } else if (!is.null(awardNumber)) {
+            awards <- awardNumber
+        }
         
-        
-        if (all(is_found)) {
-            mdq_result <- list(status = "SUCCESS",
-                               output = list(list(value = "All award numbers were found in the NSF award database.")))
-        } else {
+        if (!is.null(awards) && length(awards) > 0) {
+            # Search for each awardNumber
+            responses <- lapply(awards, function(award) {
+                tryCatch({
+                    req <- GET(paste0("https://arcticdata.io/research.gov/awardapi-service/v1/awards.json?id=", award))
+                    stopifnot(req$status_code == 200) # Throw an error if the HTTP status isn't 200
+                    content(req)
+                },
+                error = function(e) { list() })
+            })
             
-            outputs <- paste0("The award number '", awards[!is_found], "' was not found in the NSF award database.")
-            mdq_result <- list(status = "ERROR",
-                               output = lapply(outputs, function(message) { list(value = message)}))
+            # Determine if each award was found
+            is_found <- sapply(responses, function(r) ifelse(!is.null(r$response$award) && length(r$response$award) == 1, TRUE, FALSE))
+            
+            if (all(is_found)) {
+                mdq_result <- list(status = "SUCCESS",
+                                   output = list(list(value = "All award numbers were found in the NSF award database.")))
+            } else {
+                outputs <- paste0("The award number '", awards[!is_found], "' was not found in the NSF award database.")
+                mdq_result <- list(status = "ERROR",
+                                   output = lapply(outputs, function(message) { list(value = message) }))
+            }
         } else {
-        mdq_result <- list(status = "SKIP",
-                           output = list(list(value = "No NSF award numbers are present in the metadata document so this check was skipped.")))
-        
-    }
-
+            mdq_result <- list(status = "SKIP",
+                               output = list(list(value = "No NSF award numbers are present in the metadata document, so this check was skipped.")))
+        }
 ]]></code>
     <selector>
       <name>awardNumber</name>

@@ -11,7 +11,8 @@
 	<code><![CDATA[
         library(httr)
         library(stringr)
-        
+
+        awards <- NULL
         if (is.null(awardNumber) & is.null(awardText)) {
             mdq_result <- list(status = "SKIP",
                                output = list(
@@ -24,7 +25,7 @@
             awards <- awardNumber
         }
         
-        if (!is.null(awards) && length(awards) > 0) {
+        if (!is.null(awards)) {
             # Search for each awardNumber
             responses <- lapply(awards, function(award) {
                 tryCatch({

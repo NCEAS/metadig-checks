@@ -22,8 +22,6 @@ def call():
     repeated = []
     nElements = len(x)
       
-    # Ensure that the list is unicode
-    x = mvar.toUnicode(x)
     for i in range(nElements):
       k = i + 1
       for j in range(k, nElements):
@@ -42,9 +40,7 @@ def call():
     output = "No attributes were found, unable to check for duplicate attribute names."
     status = "FAILURE"
     return False
-  
-  # Convert all values to unicode
-  entities = mvar.toUnicode(entities)
+
   # If a single string, convert to list for easier processing
   if(isinstance(entities, str)):
     entities = [entities]
@@ -52,7 +48,7 @@ def call():
   # For each entity, check that the attributes defined for it have unique names
   for i in range(0, len(entities)):
     entityCount += 1
-    attrList = mvar.toUnicode(entities[i])
+    attrList = entities[i]
     # No attributes for this entity
     if(attrList == None):
       continue

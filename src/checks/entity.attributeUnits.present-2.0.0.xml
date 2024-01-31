@@ -26,9 +26,6 @@ def call():
   attributeCount = 0
   missing = []
   
-  attributeUnits = mvar.toUnicode(attributeUnits)
-  attributeName = mvar.toUnicode(attributeName)
-  
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
   if(isinstance(attributeUnits, str)):

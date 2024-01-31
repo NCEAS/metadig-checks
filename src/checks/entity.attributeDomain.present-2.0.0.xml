@@ -25,9 +25,7 @@ def call():
   attributeCount = 0
   missing = []
   maxPrint = 5
-  
-  attributeDomain = mvar.toUnicode(attributeDomain)
-  attributeName = mvar.toUnicode(attributeName)
+
     
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing

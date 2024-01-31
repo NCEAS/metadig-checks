@@ -27,14 +27,11 @@ def call():
   missing = []
   maxPrint = 5
   
-  # Convert all values to unicode 
-  attributeDefinition = mvar.toUnicode(attributeDefinition)
   # If a single value, convert to a list for easier processing (i.e. don't have
   # to keep checking if it's a single value or list)
   if(isinstance(attributeDefinition, str)):
     attributeDefinition = [attributeDefinition]
     
-  attributeName = mvar.toUnicode(attributeName)
   if(isinstance(attributeName, str)):
     attributeName = [attributeName]
   

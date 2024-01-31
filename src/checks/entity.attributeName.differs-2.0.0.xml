@@ -24,11 +24,6 @@ def call():
     status = "FAILURE"
     return False
   
-  # Check each definition - see if it is blank or missing, then check if it is the same as the 
-  # name
-  attributeDefinition = mvar.toUnicode(attributeDefinition)
-  attributeName = mvar.toUnicode(attributeName)
-  
   # Convert to a list if only one element, if needed
   if(isinstance(attributeDefinition, str)):
     attributeDefinition = [attributeDefinition]

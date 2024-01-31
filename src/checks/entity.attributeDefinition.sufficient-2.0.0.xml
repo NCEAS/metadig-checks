@@ -29,9 +29,6 @@ def call():
   attributeCount = 0
   insufficient = []
   
-  attributeDefinition = mvar.toUnicode(attributeDefinition)
-  attributeName = mvar.toUnicode(attributeName)
-  
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
   if(isinstance(attributeDefinition, str)):

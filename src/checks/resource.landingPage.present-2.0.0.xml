@@ -22,7 +22,7 @@ def call():
     status = "FAILURE"
     return False
         
-  datasetLandingPage = mvar.toUnicode(datasetLandingPage)
+  # datasetLandingPage = mvar.toUnicode(datasetLandingPage)
 
   if (mvar.isBlank(datasetLandingPage)):
     output = "The resource langing page url is blank."   

@@ -30,11 +30,9 @@ def call():
   attributeCount = 0
   missing = []
   
-  attributeMeasurementScale = mvar.toUnicode(attributeMeasurementScale)
   if(isinstance(attributeMeasurementScale, str)):
     attributeMeasurementScale = [attributeMeasurementScale]
 
-  attributeName = mvar.toUnicode(attributeName)
   if(isinstance(attributeName, str)):
     attributeName = [attributeName]
     

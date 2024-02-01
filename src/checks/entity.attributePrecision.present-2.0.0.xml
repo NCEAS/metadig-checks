@@ -26,9 +26,6 @@ def call():
     
   missing = []
   
-  attributePrecision = mvar.toUnicode(attributePrecision)
-  attributeName = mvar.toUnicode(attributeName)
-  
   if(isinstance(attributePrecision, str)):
     attributePrecision = [attributePrecision]
     

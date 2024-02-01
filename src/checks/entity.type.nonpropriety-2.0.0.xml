@@ -59,12 +59,10 @@ def call():
   
   # Create list with the DataONE formats
   formats = []
-  with open(formatsFile, 'r', newline='', encoding='utf-8') as csvfile:
-      fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
-      for row in fmtreader:
-          formats.append(row)
-
-  entityTypes = mvar.toUnicode(entityTypes)
+  with open(formatsFile, 'r') as csvfile:
+    fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+    for row in fmtreader:
+      formats.append(row)
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
@@ -104,6 +102,7 @@ def call():
     status = "SUCCESS"
     return True
       ]]></code>
+  <inheritState>false</inheritState>  
   <selector>
     <name>entityTypes</name>
     <xpath>/eml/dataset/otherEntity/entityType</xpath>

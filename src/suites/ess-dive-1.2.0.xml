@@ -56,7 +56,7 @@
     <level>REQUIRED</level>
   </check>
   <check>
-    <id>check.contact.info.1</id>
+    <id>check.contact.info.2</id>
     <type>Findable</type>
     <level>INFO</level>
   </check>

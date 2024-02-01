@@ -23,14 +23,16 @@ check <- function() {
   if(emailCount == contactCount) {
     values[[length(values)+1]] <- list(value=sprintf("All contacts have email addresses."))
   } else {
-    values[[length(values)+1]] <- list(value=sprintf("%d of %d contacts have email addresses.", emailCount, contactCount))
+    values[[length(values)+1]] <- list(value = paste(emailCount, "of", contactCount, "contacts have email addresses."))
+
   }
   
   # Output number of contact that have addresses
   if(addressCount == contactCount) {
     values[[length(values)+1]] <- list(value=sprintf("All contacts have addresses."))
   } else {
-    values[[length(values)+1]] <- list(value=sprintf("%d of %d contacts have addresses.", addressCount, contactCount))
+    values[[length(values)+1]] <- list(value = paste(addressCount, "of", contactCount, "contacts have addresses."))
+
   }
   
   return(list(status=status, values=values))

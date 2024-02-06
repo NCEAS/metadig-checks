@@ -11,6 +11,8 @@
 	<code>edu.ucsb.nceas.mdqengine.processor.AwardLookupCheck</code>
 	<selector>
 		<name>awards</name>
-		<xpath>/*[local-name() = 'eml']/dataset/project/funding//text()[normalize-space()]</xpath>
+		<xpath>/*[local-name() = 'eml']/dataset/project/funding//text()[normalize-space()] |
+			/*/dataset/project/award/awardNumber/text()[normalize-space()]
+		</xpath>
 	</selector>
 </mdq:check>

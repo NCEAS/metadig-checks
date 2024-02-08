@@ -73,7 +73,7 @@
     <id>check.methods.present.1</id>
   </check>
   <check>
-    <id>missing.value.codes.1</id>
+    <id>missing.value.codes-2.0.0</id>
   </check>
   <check>
     <id>enumerated.domains.1</id>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>entity.attributeName.differs-2.0.0</id>
+  <name>Entity Attribute Names Differ from Definitions</name>
+  <description>Check that attribute definitions are not simply the attribute name.</description>
+  <type>Accessible</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global attributeDefinition
+  global attributeName
+  
+  import metadig.variable as mvar
+  
+  definitionIsSame = []
+  maxPrint = 5
+  
+  # For each entity, check that the attributes defined for it have unique names
+  if(not attributeDefinitionPresent):
+    output = "No attributes were found, unable to check if attribute names differ from definitions."
+    status = "FAILURE"
+    return False
+  
+  # Convert to a list if only one element, if needed
+  if(isinstance(attributeDefinition, str)):
+    attributeDefinition = [attributeDefinition]
+    
+  if(isinstance(attributeName, str)):
+    attributeName = [attributeName]
+    
+  for i in range(0, len(attributeDefinition)):
+    definition = attributeDefinition[i]
+    
+    # No definition for this attribute, don't fail for this as there is 
+    # another test for this.
+    if(definition == None):
+      continue
+    else:
+      name = attributeName[i]
+      # If the name is blank, report it using the attribute number in the file
+      if(name is None or mvar.isBlank(name)):
+        definitionIsSame.append("attr #{}".format(i))
+      # Is the definition name the same as the definition
+      elif(name == definition):
+        definitionIsSame.append(name)
+        
+  if(len(definitionIsSame) == 1):
+    output = "This {} attribute (out of {} total) has a name that is different than the definition (or is blank): {}".format(len(definitionIsSame), len(attributeDefinition), definitionIsSame[0])
+    status = "FAILURE"
+    return False
+  elif(len(definitionIsSame) > 1):
+    # Only print the max entries allowed - otherwise the report could get unweildy  
+    output = "These {} attributes (out of {} total) have names that are different than the definition (or are blank): {}".format(len(definitionIsSame), len(attributeDefinition), ', '.join(definitionIsSame[0:maxPrint]))
+    if(len(definitionIsSame) > maxPrint):
+      output += ", ..."
+    status = "FAILURE"
+    return False
+  else:
+    output = "All {} attributes have definitions that differ from the name".format(len(attributeDefinition))
+    status = "SUCCESS"
+    return True 
+      ]]></code>
+  <selector>
+    <name>attributeDefinitionPresent</name>
+    <xpath>boolean(
+             /eml/dataset/*/attributeList/attribute/attributeDefinition or
+             /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute/*/description or
+             /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
+             /*/contentInfo/*/dimension/MI_Band/descriptor or
+             /*/contentInfo/*/dimension/MD_Band/descriptor)</xpath>
+  </selector>
+  <selector>
+    <name>attributeDefinition</name>
+    <xpath>/eml/dataset/*/attributeList/attribute |
+             /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+             /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
+             /*/contentInfo/*/dimension/MI_Band |
+             /*/contentInfo/*/dimension/MD_Band 
+         </xpath>
+    <subSelector>
+      <name>definition</name>
+      <xpath> ./attributeDefinition/text()[normalize-space()] |
+                ./*/description/text()[normalize-space()] |
+                ./descriptor/*/text()[normalize-space()]
+            </xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>attributeName</name>
+    <xpath>
+             /eml/dataset/*/attributeList/attribute |
+             /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+             /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
+             /*/contentInfo/*/dimension/MI_Band |
+             /*/contentInfo/*/dimension/MD_Band
+         </xpath>
+    <subSelector>
+      <name>name</name>
+      <!-- Multiple paths may be present and return values, but we need just one -->
+      <xpath>
+                (./attributeName/text()[normalize-space()] | 
+                ./*/name/code/*/text()[normalize-space()] |
+                ./descriptor/*/text()[normalize-space()] |
+                ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()])[1]
+            </xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+</mdq:check>

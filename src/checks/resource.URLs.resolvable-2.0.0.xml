@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>resource.URLs.resolvable-2.0.0</id>
+  <name>Metadata Identifier Resolvable</name>
+  <description>Check that the metadata identifier exists and is resolvable.</description>
+  <type>Accessible</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+
+  import metadig.variable as mvar
+  import metadig.checks as checks
+  import urllib.request, urllib.parse, urllib.error
+  import re
+  global output
+  global status
+  global textFields
+  global uniqueUrls
+  global unresolvableUrls
+  maxPrint = 3
+
+  urls = []
+
+  # Get all URLs from these fields abstract, location description, methods, and related references
+
+  # first get all fields and concat into one string
+  # tokenize the string
+  # extract all tokens that match a url pattern, e.g. 'http*://', doi:*, https://doi.org, etc
+  # remove duplicates
+  # 
+
+  if 'textFields' not in globals() or textFields is None:
+    output = "Unable to retrieve required text fields."
+    status = "FAILURE"
+    return False
+
+  if(mvar.isBlank(textFields)):
+    output = "The required text fields are blank."
+    status = "FAILURE"
+    return False
+  
+  # Convert to unicode so that non-ascii characters don't cause decoding errors
+  textFields = mvar.toUnicode(textFields)
+  
+  # The text fields can be a textType element, so it may contain multiple subelements, i.e. <para>, etc 
+  # Since the metadig-engine is stuck at XPath 1.0, we cannot use the xpath to gather these into 
+  # a single string.
+  if(isinstance(textFields, list)):
+    textFields = ' '.join(textFields)
+
+  # If the text spans multiple lines, convert line breaks to spaces
+  textFields = textFields.replace('\n', ' ')
+  textFields = textFields.replace('\r', ' ')
+  # Convert separater characters to spaces to assist parsing
+  textFields = textFields.replace(",", " ")
+  textFields = textFields.replace(";", " ")
+  
+  # Tokenize the string and extract possible URLs
+  textTokens = textFields.split(' ')
+  
+  for token in textTokens:
+    token = token.strip()
+    token = token.strip('.')
+    token = token.strip('(')
+    token = token.strip(')')
+    if(re.match(".*http.*:\/\/", token.strip())):
+      urls.append(token.strip())
+    #elif (re.match("^\s*doi:.*", token)):
+      # If the identifier is a 'bare' DOI (e.g. "doi:10.18739/A2027H"), then prepend with a DOI resolver link
+      # i.e. https://dx.doi.org
+      #urls.append("https://dx.doi.org/{}".format(token.strip()))
+      
+  uniqueUrls = list(set(urls))
+  unresolvableUrls = []
+  
+  # Check each unique URL to see if it is resolvable. The 'isResolvable' function sends an HTTP 'Head'
+  # request to the URL.
+  for url in uniqueUrls:
+       resolvable, msg = checks.isResolvable(url)
+       if (not resolvable):
+         unresolvableUrls.append(url);
+
+  # Print errors message if unresolved URLs were found, and printing the first few unresolved.
+  if (len(unresolvableUrls) > 0):
+    if(len(unresolvableUrls) == 1):
+      output = '1 of {} URLs provided in the metadata does not resolve correctly: {}'.format(len(uniqueUrls), ', '.join(unresolvableUrls[0:maxPrint]))
+    # If unresolved is more than 'maxPrint' URLs, only print first maxPrint entries
+    elif(len(unresolvableUrls) <= maxPrint):
+      output = '{} of {} URLS provided in the metadata do not resolve correctly: {}'.format(len(unresolvableUrls), len(uniqueUrls), ', '.join(unresolvableUrls))
+    else:
+      output = '{} of {} URLs provided in the metadata do not resolve correctly, here are the first {}: {}'.format(len(unresolvableUrls), len(uniqueUrls), maxPrint, ', '.join(unresolvableUrls[0:maxPrint]))
+      output += ", ..."
+      
+    status = "FAILURE"
+    return False
+  else:
+    # Print out success message.
+    if(len(uniqueUrls) == 0):
+      output = 'No URLs were found in the metadata.'
+      status = "SUCCESS"
+      return True
+    elif (len(uniqueUrls) == 1):
+      output = 'The one URL found in the metadata resolves correctly.'
+      status = "SUCCESS"
+      return True
+    else:
+      output = 'All {} URLs found in the metadata resolve correctly.'.format(len(uniqueUrls))
+      status = "SUCCESS"
+      return True
+   ]]></code>
+  <selector>
+    <name>textFields</name>
+    <!--Get all URLs from these fields abstract, location description, methods, and related references. -->
+    <xpath>
+          /eml/dataset/abstract//text()[normalize-space()] |
+          /eml/dataset/abstract//ulink/@url |
+          /eml/dataset/coverage/geographicCoverage/geographicDescription/text()[normalize-space] |
+          /eml/dataset/methods/methodStep/description//text()[normalize-space()] |
+          /eml/dataset/additionalInfo//text()[normalize-space()]
+      </xpath>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

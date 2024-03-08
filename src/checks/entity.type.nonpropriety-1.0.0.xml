@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>entity.type.nonproprietary-1.0.0</id>
-   <name>Non proprietary entity format</name>
-   <description>Check that all entities use non-propietary formats.</description>
-   <type>Reusable</type>
-   <level>REQUIRED</level>
-   <environment>python</environment>
-   <code><![CDATA[
+  <id>entity.type.nonproprietary-1.0.0</id>
+  <name>Non proprietary entity format</name>
+  <description>Check that all entities use non-propietary formats.</description>
+  <type>Reusable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
 def call():
   global output
   global status
@@ -59,16 +59,16 @@ def call():
   
   # Create list with the DataONE formats
   formats = []
-  with open(formatsFile, 'rb') as csvfile:
+  with open(formatsFile, 'r', newline='', encoding='utf-8') as csvfile:
       fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
       for row in fmtreader:
-        formats.append(row)
+          formats.append(row)
 
   entityTypes = mvar.toUnicode(entityTypes)
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entityTypes, unicode)):
+  if(isinstance(entityTypes, str)):
     entityTypes = [entityTypes]
   
   proprietaryFound = []
@@ -87,33 +87,33 @@ def call():
       
   if(len(proprietaryFound) > 0):
     fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
-    output = u"It is recommended that non-proprietary file formats be used where possible. These {} proprietary data formats (out of {} total formats) were found: {}".format(len(fmts), len(entityTypes), ', '.join(fmts[0:maxPrint]))
+    output = "It is recommended that non-proprietary file formats be used where possible. These {} proprietary data formats (out of {} total formats) were found: {}".format(len(fmts), len(entityTypes), ', '.join(fmts[0:maxPrint]))
     if(len(fmts) > maxPrint):
-      output += u", ..."
+      output += ", ..."
     else:
-      output += u"."
+      output += "."
       
     if(excelFileFound):
-      output += u" TIP: If you have not already, upload a csv version for any excel file(s) included."
+      output += " TIP: If you have not already, upload a csv version for any excel file(s) included."
     status = "FAILURE"
     return False
   else:
     output = "No proprietary data formats found (out of {} total formats).".format(len(entityTypes))
     if(excelFileFound):
-      output += u" TIP: If you have not already, upload a csv version for any excel file(s) included."
+      output += " TIP: If you have not already, upload a csv version for any excel file(s) included."
     status = "SUCCESS"
     return True
       ]]></code>
-    <selector>
-      <name>entityTypes</name>
-      <xpath>/eml/dataset/otherEntity/entityType</xpath>
-    </selector>
-    <selector>
-      <name>entityNames</name>
-      <xpath>/eml/dataset/otherEntity/entityNames</xpath>
-   </selector>
-   <dialect>
-      <name>Ecological Metadata Language</name>
-      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
+  <selector>
+    <name>entityTypes</name>
+    <xpath>/eml/dataset/otherEntity/entityType</xpath>
+  </selector>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/otherEntity/entityNames</xpath>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
 </mdq:check>

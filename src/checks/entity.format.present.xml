@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-   <id>entity.format.present.1</id>
-   <name>Entity Format Present</name>
-   <description>Check that each entity has a format specified.</description>
-   <type>Interoperable</type>
-   <level>REQUIRED</level>
-   <environment>python</environment>
-   <code><![CDATA[
+  <id>entity.format.present.1</id>
+  <name>Entity Format Present</name>
+  <description>Check that each entity has a format specified.</description>
+  <type>Interoperable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
 def call():
   global output
   global status
@@ -23,7 +23,7 @@ def call():
   entityFormat = mvar.toUnicode(entityFormat)
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(entityFormat, unicode)):
+  if(isinstance(entityFormat, str)):
     entityFormat = [entityFormat]
 
   # Check if the entity format is a single string 
@@ -35,9 +35,9 @@ def call():
   status = "SUCCESS"
   return True
       ]]></code>
-   <selector>
-      <name>entityFormat</name>
-      <xpath>
+  <selector>
+    <name>entityFormat</name>
+    <xpath>
           /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format |
           /DryadDataFile/format |
@@ -45,17 +45,17 @@ def call():
           /eml/dataset/*/physical/dataFormat |
           /resource/formats/format
       </xpath>
-   </selector>
-   <dialect>
-      <name>DataCite 4</name>
-      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
-   </dialect>
-   <dialect>
-      <name>Ecological Metadata Language</name>
-      <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-   </dialect>
-   <dialect>
-      <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
-      <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
-   </dialect>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
 </mdq:check>

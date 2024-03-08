@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>dataset.keywords.overlap-2.0.0</id>
+  <name>Dataset Keywords Overlap</name>
+  <description>Check that keywords don't appear in the title.</description>
+  <type>discovery</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global keywords
+  import re
+
+  import metadig.variable as mvar
+  
+  # Fail if no keywords present
+  if (not 'keywords' in globals() or keywords is None):
+    output = "No dataset keywords found, unable to check overlap with title words."
+    status = "FAILURE"
+    return False
+
+  # Check if a title is present
+  if (not 'titlePresent' in globals() or titlePresent is None or not titlePresent):
+    output = "A dataset title is not present, cannot check if keywords are found in the title."
+    status = "FAILURE"
+    return False
+
+  # Parse the title into works separated by spaces or commas
+  titleWords = re.split("\s|,", title.lower())
+  
+  # Convert all values to unicode, so no values outside ASCII range cause encoding problems
+  keywords = mvar.toUnicode(keywords)
+
+  # Note that the quality engine may return either a single value or a list of values.
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(keywords, str)):
+    keywords = [keywords]
+
+  foundKeywords = ""
+  foundCount = 0
+  # Now check if any of the keywords are in the title. If yes, then the check fails
+  # Note There can be just a single keyword, in which case the quality engine will return
+  # a unicde string instead of an array
+  # Single keyword
+  keywordCount = len(keywords)
+  for i in range(0, keywordCount):
+    # Keywords should not be from words in the title.
+    thisKeyword = keywords[i]
+    if(thisKeyword.lower() in titleWords):    
+      foundCount += 1
+      if(foundKeywords == ""):
+        foundKeywords = thisKeyword
+      else:
+        foundKeywords += ", " + thisKeyword
+
+  # If keywords were found in the title fail
+  if(foundCount == 1):
+    output = "The keyword '{}' was also found in the title.".format(foundKeywords)
+    status = "FAILURE"
+    return False
+  elif(foundCount > 1):
+    output = "The keywords '{}' were also found in the title.".format(foundKeywords)
+    status = "FAILURE"
+    return False
+
+  # If the keyword count less than the minimum then fail
+  output = "No keywords were found in the title"
+  status = "SUCCESS"
+  return True
+      ]]></code>
+  <selector>
+    <name>keywords</name>
+    <xpath>
+           /*/identificationInfo/*/descriptiveKeywords/*/keywords |
+           /eml/dataset/keywordSet/keyword
+      </xpath>
+  </selector>
+  <selector>
+    <name>titlePresent</name>
+    <xpath>boolean(
+        /eml/dataset/title or
+        /*/description or
+        /*/identificationInfo/*/citation/CI_Citation/title)
+     </xpath>
+  </selector>
+  <selector>
+    <name>title</name>
+    <xpath>/eml/dataset/title |
+       /*/description |
+       /*/identificationInfo/*/citation/CI_Citation/title
+     </xpath>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+</mdq:check>

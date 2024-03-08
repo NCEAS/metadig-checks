@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-    <id>resource.awardFunderName.controlled-1.0.0</id>
-    <name>Award Funder Name Controlled</name>
-    <description>Check that an award funder name exists and is known (controlled)</description>
-    <type>Findable</type>
-    <level>OPTIONAL</level>
-    <environment>python</environment>
-    <code><![CDATA[
+  <id>resource.awardFunderName.controlled-1.0.0</id>
+  <name>Award Funder Name Controlled</name>
+  <description>Check that an award funder name exists and is known (controlled)</description>
+  <type>Findable</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
 def call():
   # check: does the necessary awardFunder exist?
   import re
-  import java.util.ArrayList as ArrayList
   import metadig.variable as mvar
 
   # These global variables are read by the quality engine when
@@ -38,7 +37,7 @@ def call():
   awardFunders = mvar.toUnicode(awardFunders)
   # If only a single value is returned (type "unicode" vs type "list"), then convert to a list
   # for easier processing
-  if(isinstance(awardFunders, unicode)):
+  if(isinstance(awardFunders, str)):
     awardFunders = [awardFunders]
     
   found = False
@@ -60,13 +59,12 @@ def call():
     status = "FAILURE"
     return False
     ]]></code>
-    <selector>
-        <name>awardFunders</name>
-        <xpath>/eml/dataset/associatedParty[role/text()='fundingOrganization']/organizationName/text()[normalize-space()]</xpath>
-    </selector>
-    <dialect>
-        <name>Ecological Metadata Language</name>
-        <xpath>boolean(/*[local-name() = 'eml'])</xpath>
-    </dialect>
+  <selector>
+    <name>awardFunders</name>
+    <xpath>/eml/dataset/associatedParty[role/text()='fundingOrganization']/organizationName/text()[normalize-space()]</xpath>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
 </mdq:check>
-

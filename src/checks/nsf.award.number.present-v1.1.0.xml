@@ -33,8 +33,12 @@ if (is.null(awards)) {
 }]]></code>
 	<selector>
 		<name>awards</name>
-		<xpath>/*[local-name() = 'eml']/dataset/project/funding//text()[normalize-space()] |
-               /*[local-name() = 'eml']/dataset/project/award/awardNumber/text()[normalize-space()]
-        </xpath>
+		<xpath>/*/dataset/project/funding//text()[normalize-space()] |
+      /*/dataset/project/award/awardNumber/text()[normalize-space()]
+  </xpath>
 	</selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
 </mdq:check>

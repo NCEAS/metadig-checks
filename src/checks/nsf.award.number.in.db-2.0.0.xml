@@ -18,8 +18,7 @@
                                output = list(
                                    list(value = "No NSF award numbers are present in the metadata document, so this check was skipped.")
                                ))
-        } else if (!is.null(awardText) &&
-                   str_detect(tolower(awardText), "nsf|national science foundation")) {
+        } else if (!is.null(awardText)) {
             awards <- str_extract(awardText, "[0-9]{6,7}")
         } else if (!is.null(awardNumber)) {
             awards <- awardNumber
@@ -42,8 +41,12 @@
             if (all(is_found)) {
                 mdq_result <- list(status = "SUCCESS",
                                    output = list(list(value = "All award numbers were found in the NSF award database.")))
-            } else {
+            }  else {
                 outputs <- paste0("The award number '", awards[!is_found], "' was not found in the NSF award database.")
+                if (length(awards[is_found] > 0)){
+                    outputs_success <- paste0("The award number(s) '", paste0(awards[is_found], collapse = ", "), "' was/were found in the NSF award database.")
+                    outputs <- paste(outputs, outputs_success)
+                }
                 mdq_result <- list(status = "ERROR",
                                    output = lapply(outputs, function(message) { list(value = message) }))
             }
@@ -51,6 +54,7 @@
             mdq_result <- list(status = "SKIP",
                                output = list(list(value = "No NSF award numbers are present in the metadata document, so this check was skipped.")))
         }
+
 ]]></code>
     <selector>
       <name>awardNumber</name>

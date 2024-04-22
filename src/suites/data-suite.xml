@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.suite</id>
+  <name>Data Quality Suite</name>
+  <description>This is an example Data Quality Suite.</description>
+  <check>
+    <id>data.format.congruent</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.well-formed</id>
+  </check>
+</mdq:suite>

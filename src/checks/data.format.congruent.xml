@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.format.congruent</id>
+  <name>Data format congruent with formatId</name>
+  <description>Check that a data file format matches the formatId.</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+library(metarake)
+library(metadig)
+
+result <- list()
+
+sys <- parse_system_metadata(systemMetadata)
+data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
+data_pids <- data_pids[which(data_pids != sys@identifier)]
+
+endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
+
+data_urls <- paste0(endpoint, "object/", data_pids)
+sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
+
+for (i in 1:length(data_urls)){
+
+  path_data <- tryCatch({
+    mdq_get(data_urls[i])
+  },
+  error = function(e) {
+    e
+  })
+
+  path_sysmeta <- tryCatch({
+    mdq_get(sysmeta_urls[i])
+  },
+  error = function(e) {
+    e
+  })
+
+
+  status <- data_format_congruent(path_data, path_sysmeta)
+
+  if (!status){
+    result[[i]] <- list(status = "FAILURE", output = paste("The format of object", data_pids[i], "matches the formatId."))
+  } else if (status){
+    result[[i]] <- list(status = "SUCCESS", output = paste("The format of object", data_pids[i], "does not match the formatId."))
+  }
+}
+statuses <- unlist(lapply(result, function(x){x$status}))
+outputs <- unlist(lapply(result, function(x){x$output}))
+
+failures <- length(which(statuses == "FAILURE"))
+errors <- length(which(statuses == "ERROR"))
+successes <- length(which(statuses == "SUCCESS"))
+
+output_string <- paste(successes, "file(s) with matching formats.",
+                       failures, "file(s) with mismatched formats.",
+                       errors, "files(s) errored.")
+
+if (any(statuses == "SUCCESS")){
+  mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
+} else if (all(statuses == "ERROR")){
+  mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
+} else {
+  mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
+}
+                      
+
+
+  ]]></code>
+  <selector>
+    <name>id</name>
+    <xpath>/eml/packageId</xpath>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

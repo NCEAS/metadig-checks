@@ -9,96 +9,98 @@
   <level>REQUIRED</level>
   <environment>rscript</environment>
   <code><![CDATA[
-library(metarake)
-library(metadig)
-
-result <- list()
-
-sys <- parse_system_metadata(systemMetadata)
-data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
-data_pids <- data_pids[which(data_pids != sys@identifier)]
-
-endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
-
-data_urls <- paste0(endpoint, "object/", data_pids)
-sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
-
-if (length(data_urls) > 100){
-    file_num = 100
-  } else {
-    file_num = length(data_urls)
-  }
-  
-for (i in 1:file_num){
-
-  data_path <- tryCatch({
-    mdq_get(data_urls[i])
-  },
-  error = function(e) {
-    e
-  })
-
-  if (inherits(data_path, "error")) {
-    result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
-    next
-  }
-
-  sysmeta_path <- tryCatch({
-    mdq_get(sysmeta_urls[i])
-  },
-  error = function(e) {
-    e
-  })
-
-  if (inherits(sysmeta_path, "error")) {
-    result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
-    next
-  }
-
-  sys_d <- parse_system_metadata(sysmeta_path)
-  fname <- sys_d@fileName
-  sys_checksum <- sys_d@checksum
-  sys_checksum_alg <- gsub("-", "", tolower(sys_d@checksumAlgorithm))
-
-  if (sys_checksum_alg %in% c("md5", "sha1", "crc32", "sha256", "sha512")){
-    checksum <- digest::digest(data_path, algo = sys_checksum_alg, file = TRUE)
-  } else {
-    result[[i]] <- list(status = "ERROR", output = paste("Checksum algorithm ", sys_checksum_alg, "not recognized for file", fname))
-    next
-  }
-
-  if (checksum == sys_checksum) {
-    status = TRUE
-  } else {
-    status = FALSE
-  }
-
-  if (!status){
-    result[[i]] <- list(status = "FAILURE", output = paste(fname, "has an incongruent checksum."))
-  } else if (status){
-    result[[i]] <- list(status = "SUCCESS", output = paste(fname, "has a matching checksum."))
-  }
-}
-
-statuses <- unlist(lapply(result, function(x){x$status}))
-outputs <- unlist(lapply(result, function(x){x$output}))
-
-failures <- length(which(statuses == "FAILURE"))
-errors <- length(which(statuses == "ERROR"))
-successes <- length(which(statuses == "SUCCESS"))
-
-output_string <- paste(successes, "file(s) have matching checksum information.",
-                       failures, "file(s) have mismatched checksum information.",
-                       errors, "files(s) errored on download.")
-
-if (any(statuses == "SUCCESS")){
-  mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
-} else if (all(statuses == "ERROR")){
-  mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
-} else {
-  mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
-}
-
+    library(metarake)
+    library(metadig)
+    
+    result <- list()
+    
+    sys <- parse_system_metadata(systemMetadata)
+    data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
+    data_pids <- data_pids[which(data_pids != sys@identifier)]
+    
+    endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
+    
+    data_urls <- paste0(endpoint, "object/", data_pids)
+    sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
+    
+    if (length(data_urls) > 100){
+      file_num = 100
+    } else {
+      file_num = length(data_urls)
+    }
+    if (length(data_pids) > 0){
+      for (i in 1:file_num){
+        
+        data_path <- tryCatch({
+          mdq_get(data_urls[i])
+        },
+        error = function(e) {
+          e
+        })
+        
+        if (inherits(data_path, "error")) {
+          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
+          next
+        }
+        
+        sysmeta_path <- tryCatch({
+          mdq_get(sysmeta_urls[i])
+        },
+        error = function(e) {
+          e
+        })
+        
+        if (inherits(sysmeta_path, "error")) {
+          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
+          next
+        }
+        
+        sys_d <- parse_system_metadata(sysmeta_path)
+        fname <- sys_d@fileName
+        sys_checksum <- sys_d@checksum
+        sys_checksum_alg <- gsub("-", "", tolower(sys_d@checksumAlgorithm))
+        
+        if (sys_checksum_alg %in% c("md5", "sha1", "crc32", "sha256", "sha512")){
+          checksum <- digest::digest(data_path, algo = sys_checksum_alg, file = TRUE)
+        } else {
+          result[[i]] <- list(status = "ERROR", output = paste("Checksum algorithm ", sys_checksum_alg, "not recognized for file", fname))
+          next
+        }
+        
+        if (checksum == sys_checksum) {
+          status = TRUE
+        } else {
+          status = FALSE
+        }
+        
+        if (!status){
+          result[[i]] <- list(status = "FAILURE", output = paste(fname, "has an incongruent checksum."))
+        } else if (status){
+          result[[i]] <- list(status = "SUCCESS", output = paste(fname, "has a matching checksum."))
+        }
+      }
+      
+      statuses <- unlist(lapply(result, function(x){x$status}))
+      outputs <- unlist(lapply(result, function(x){x$output}))
+      
+      failures <- length(which(statuses == "FAILURE"))
+      errors <- length(which(statuses == "ERROR"))
+      successes <- length(which(statuses == "SUCCESS"))
+      
+      output_string <- paste(successes, "file(s) have matching checksum information.",
+                             failures, "file(s) have mismatched checksum information.",
+                             errors, "files(s) errored on download.")
+      
+      if (any(statuses == "SUCCESS")){
+        mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
+      } else if (all(statuses == "ERROR")){
+        mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
+      } else {
+        mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
+      }
+    } else {
+      mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
+    }
   ]]></code>
   <selector>
     <name>entityNames</name>

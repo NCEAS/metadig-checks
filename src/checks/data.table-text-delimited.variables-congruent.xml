@@ -13,9 +13,9 @@
     library(metarake)
     library(metadig)
     library(EML)
-
+    
     result <- list()
-
+    
     sys <- parse_system_metadata(systemMetadata)
     doc <- read_eml(document)
     data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
@@ -31,94 +31,97 @@
     } else {
       file_num = length(data_urls)
     }
-    
-    for (i in 1:file_num){
-      
-      data_path <- tryCatch({
-        mdq_get(data_urls[i])
-      },
-      error = function(e) {
-        e
-      })
-      
-      if (inherits(data_path, "error")) {
-        result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
-        next
+    if (length(data_urls) > 0){
+      for (i in 1:file_num){
+        
+        data_path <- tryCatch({
+          mdq_get(data_urls[i])
+        },
+        error = function(e) {
+          e
+        })
+        
+        if (inherits(data_path, "error")) {
+          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
+          next
+        }
+        
+        sysmeta_path <- tryCatch({
+          mdq_get(sysmeta_urls[i])
+        },
+        error = function(e) {
+          e
+        })
+        
+        if (inherits(sysmeta_path, "error")) {
+          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
+          next
+        }
+        
+        sys_d <- parse_system_metadata(sysmeta_path)
+        fname <- sys_d@fileName
+        
+        if (!(sys_d@formatId %in% c("text/tsv", "text/csv"))){
+          result[[i]] <- list(status = "SUCCESS", output = paste(fname, "does not appear to be documented as a text-delimited table."))
+          next
+        }
+        
+        z <- which(entityNames == fname)
+        if (length(z) == 0){
+          z <- which(objectNames == fname)
+        }
+        if (length(z) == 0){
+          id <- gsub(":", "-", sys@identifier)
+          z <- which(ids == id)
+        }
+        if (length(z) == 0){
+          result[[i]] <- list(status = "FAILURE", output = paste(fname, "is not documented in the metadata."))
+          next
+        }
+        
+        ent <- find_eml_entity(doc, sys_d@identifier, sys_d@fileName)
+        
+        df <- read_text_file(data_path, fieldDelimiter[z], headerLines[z])
+        if (is.null(df)) {
+          result[[i]] <- list(status = "ERROR", output = paste("Could not parse ", fname[i]))
+          next
+        }
+        
+        att_names <- eml_get_simple(ent, "attributeName")
+        
+        if (all(att_names == names(df))){
+          status <- TRUE
+        } else {
+          status <- FALSE
+        }
+        
+        if (!status){
+          result[[i]] <- list(status = "FAILURE", output = paste(fname, "variable names do not match documented variables."))
+        } else if (status){
+          result[[i]] <- list(status = "SUCCESS", output = paste(fname, "variable names match documented variables."))
+        }
       }
       
-      sysmeta_path <- tryCatch({
-        mdq_get(sysmeta_urls[i])
-      },
-      error = function(e) {
-        e
-      })
+      statuses <- unlist(lapply(result, function(x){x$status}))
+      outputs <- unlist(lapply(result, function(x){x$output}))
       
-      if (inherits(sysmeta_path, "error")) {
-        result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
-        next
-      }
+      failures <- length(which(statuses == "FAILURE"))
+      errors <- length(which(statuses == "ERROR"))
+      successes <- length(which(statuses == "SUCCESS"))
       
-      sys_d <- parse_system_metadata(sysmeta_path)
-      fname <- sys_d@fileName
+      output_string <- paste(successes, "file(s) with complete variable documentation.",
+                             failures, "file(s) with variable names that do not match documentation",
+                             errors, "files(s) errored on download.")
       
-      if (!(sys_d@formatId %in% c("text/tsv", "text/csv"))){
-        result[[i]] <- list(status = "SUCCESS", output = paste(fname, "does not appear to be documented as a text-delimited table."))
-        next
-      }
-      
-      z <- which(entityNames == fname)
-      if (length(z) == 0){
-        z <- which(objectNames == fname)
-      }
-      if (length(z) == 0){
-        id <- gsub(":", "-", sys@identifier)
-        z <- which(ids == id)
-      }
-      if (length(z) == 0){
-        result[[i]] <- list(status = "FAILURE", output = paste(fname, "is not documented in the metadata."))
-        next
-      }
-      
-      ent <- find_eml_entity(doc, sys_d@identifier, sys_d@fileName)
-      
-      df <- read_text_file(data_path, fieldDelimiter[z], headerLines[z])
-      if (is.null(df)) {
-        result[[i]] <- list(status = "ERROR", output = paste("Could not parse ", fname[i]))
-        next
-      }
-      
-      att_names <- eml_get_simple(ent, "attributeName")
-      
-      if (all(att_names == names(df))){
-        status <- TRUE
+      if (any(statuses == "SUCCESS")){
+        mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
+      } else if (all(statuses == "ERROR")){
+        mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
       } else {
-        status <- FALSE
+        mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
       }
-      
-      if (!status){
-        result[[i]] <- list(status = "FAILURE", output = paste(fname, "variable names do not match documented variables."))
-      } else if (status){
-        result[[i]] <- list(status = "SUCCESS", output = paste(fname, "variable names match documented variables."))
-      }
-    }
-    
-    statuses <- unlist(lapply(result, function(x){x$status}))
-    outputs <- unlist(lapply(result, function(x){x$output}))
-    
-    failures <- length(which(statuses == "FAILURE"))
-    errors <- length(which(statuses == "ERROR"))
-    successes <- length(which(statuses == "SUCCESS"))
-    
-    output_string <- paste(successes, "file(s) with complete variable documentation.",
-                           failures, "file(s) with variable names that do not match documentation",
-                           errors, "files(s) errored on download.")
-    
-    if (any(statuses == "SUCCESS")){
-      mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
-    } else if (all(statuses == "ERROR")){
-      mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
     } else {
-      mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
+      mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
     }
   ]]></code>
   <selector>

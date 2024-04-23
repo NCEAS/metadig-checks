@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.table-text-delimited.variables-congruent</id>
+  <name>Text delimited table variables names congruent</name>
+  <description>Check that text delimited table variables names are congruent.</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+
+    library(metarake)
+    library(metadig)
+    library(EML)
+
+    result <- list()
+
+    sys <- parse_system_metadata(systemMetadata)
+    doc <- read_eml(document)
+    data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
+    data_pids <- data_pids[which(data_pids != sys@identifier)]
+    
+    endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
+    
+    data_urls <- paste0(endpoint, "object/", data_pids)
+    sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
+    
+    if (length(data_urls) > 100){
+      file_num = 100
+    } else {
+      file_num = length(data_urls)
+    }
+    
+    for (i in 1:file_num){
+      
+      data_path <- tryCatch({
+        mdq_get(data_urls[i])
+      },
+      error = function(e) {
+        e
+      })
+      
+      if (inherits(data_path, "error")) {
+        result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
+        next
+      }
+      
+      sysmeta_path <- tryCatch({
+        mdq_get(sysmeta_urls[i])
+      },
+      error = function(e) {
+        e
+      })
+      
+      if (inherits(sysmeta_path, "error")) {
+        result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
+        next
+      }
+      
+      sys_d <- parse_system_metadata(sysmeta_path)
+      fname <- sys_d@fileName
+      
+      if (!(sys_d@formatId %in% c("text/tsv", "text/csv"))){
+        result[[i]] <- list(status = "SUCCESS", output = paste(fname, "does not appear to be documented as a text-delimited table."))
+        next
+      }
+      
+      z <- which(entityNames == fname)
+      if (length(z) == 0){
+        z <- which(objectNames == fname)
+      }
+      if (length(z) == 0){
+        id <- gsub(":", "-", sys@identifier)
+        z <- which(ids == id)
+      }
+      if (length(z) == 0){
+        result[[i]] <- list(status = "FAILURE", output = paste(fname, "is not documented in the metadata."))
+        next
+      }
+      
+      ent <- find_eml_entity(doc, sys_d@identifier, sys_d@fileName)
+      
+      df <- read_text_file(data_path, fieldDelimiter[z], headerLines[z])
+      if (is.null(df)) {
+        result[[i]] <- list(status = "ERROR", output = paste("Could not parse ", fname[i]))
+        next
+      }
+      
+      att_names <- eml_get_simple(ent, "attributeName")
+      
+      if (all(att_names == names(df))){
+        status <- TRUE
+      } else {
+        status <- FALSE
+      }
+      
+      if (!status){
+        result[[i]] <- list(status = "FAILURE", output = paste(fname, "variable names do not match documented variables."))
+      } else if (status){
+        result[[i]] <- list(status = "SUCCESS", output = paste(fname, "variable names match documented variables."))
+      }
+    }
+    
+    statuses <- unlist(lapply(result, function(x){x$status}))
+    outputs <- unlist(lapply(result, function(x){x$output}))
+    
+    failures <- length(which(statuses == "FAILURE"))
+    errors <- length(which(statuses == "ERROR"))
+    successes <- length(which(statuses == "SUCCESS"))
+    
+    output_string <- paste(successes, "file(s) with complete variable documentation.",
+                           failures, "file(s) with variable names that do not match documentation",
+                           errors, "files(s) errored on download.")
+    
+    if (any(statuses == "SUCCESS")){
+      mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
+    } else if (all(statuses == "ERROR")){
+      mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
+    } else {
+      mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
+    }
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>objectNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./physical/objectName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>ids</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]/@id</xpath>
+  </selector>
+  <selector>
+     <name>fieldDelimiter</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+     <name>headerLines</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

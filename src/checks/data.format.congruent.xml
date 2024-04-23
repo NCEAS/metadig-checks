@@ -23,7 +23,13 @@ endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
 data_urls <- paste0(endpoint, "object/", data_pids)
 sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
 
-for (i in 1:length(data_urls)){
+if (length(data_urls) > 100){
+  file_num = 100
+} else {
+  file_num = length(data_urls)
+}
+
+for (i in 1:file_num){
 
   path_data <- tryCatch({
     mdq_get(data_urls[i])

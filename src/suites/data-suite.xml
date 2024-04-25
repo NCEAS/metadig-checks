@@ -4,9 +4,6 @@
   <name>Data Quality Suite</name>
   <description>This is an example Data Quality Suite.</description>
   <check>
-    <id>data.format.congruent</id>
-  </check>
-  <check>
     <id>data.table-text-delimited.well-formed</id>
   </check>
   <check>
@@ -14,5 +11,11 @@
   </check>
   <check>
     <id>data.table-text-delimited.variables-congruent</id>
+  </check>
+  <check>
+    <id>data.size.congruent</id>
+  </check>
+  <check>
+    <id>data.format.congruent</id>
   </check>
 </mdq:suite>

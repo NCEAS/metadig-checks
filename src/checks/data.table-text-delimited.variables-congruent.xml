@@ -17,49 +17,42 @@
     result <- list()
     
     sys <- parse_system_metadata(systemMetadata)
+
+    if (grepl("test", sys@authoritativeMemberNode, ignore.case = TRUE)){
+      options(dataone_test_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
+    } else {
+      options(dataone_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
+    }
+  
     doc <- read_eml(document)
     data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
     data_pids <- data_pids[which(data_pids != sys@identifier)]
-    
-    endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
-    
-    data_urls <- paste0(endpoint, "object/", data_pids)
-    sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
-    
-    if (length(data_urls) > 100){
+    authNode <- sys@authoritativeMemberNode
+    if (length(data_pids) > 100){
       file_num = 100
     } else {
-      file_num = length(data_urls)
+      file_num = length(data_pids)
     }
-    if (length(data_urls) > 0){
+    if (length(data_pids) > 0){
       for (i in 1:file_num){
         
-        data_path <- tryCatch({
-          mdq_get(data_urls[i])
+        data_obj <- tryCatch({
+          get_data_file(authNode, data_pids[i])
         },
         error = function(e) {
           e
         })
         
-        if (inherits(data_path, "error")) {
-          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
+        if (inherits(data_obj, "error")) {
+          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
           next
         }
         
-        sysmeta_path <- tryCatch({
-          mdq_get(sysmeta_urls[i])
-        },
-        error = function(e) {
-          e
-        })
+        sys_d <- data_obj@sysmeta
         
-        if (inherits(sysmeta_path, "error")) {
-          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
-          next
-        }
-        
-        sys_d <- parse_system_metadata(sysmeta_path)
         fname <- sys_d@fileName
+        fpath <- tempfile(fname)
+        writeBin(data_obj@data, fpath)
         
         if (!(sys_d@formatId %in% c("text/tsv", "text/csv"))){
           result[[i]] <- list(status = "SUCCESS", output = paste(fname, "does not appear to be documented as a text-delimited table."))
@@ -81,7 +74,7 @@
         
         ent <- find_eml_entity(doc, sys_d@identifier, sys_d@fileName)
         
-        df <- read_text_file(data_path, fieldDelimiter[z], headerLines[z])
+        df <- read_text_file(fpath, fieldDelimiter[z], headerLines[z])
         if (is.null(df)) {
           result[[i]] <- list(status = "ERROR", output = paste("Could not parse ", fname[i]))
           next
@@ -114,11 +107,11 @@
                              errors, "files(s) errored on download.")
       
       if (any(statuses == "SUCCESS")){
-        mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
+        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "SUCCESS")
       } else if (all(statuses == "ERROR")){
-        mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
+        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "ERROR")
       } else {
-        mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
+        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "FAILURE")
       }
     } else {
       mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
@@ -161,7 +154,7 @@
     </subSelector>
   </selector>
   <dialect>
-    <name>eml</name>
+    <name>Ecological Metadata Language</name>
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
   </dialect>
 </mdq:check>

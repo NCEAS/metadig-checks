@@ -15,97 +15,83 @@
     result <- list()
     
     sys <- parse_system_metadata(systemMetadata)
-    data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
-    data_pids <- data_pids[which(data_pids != sys@identifier)]
     
-    endpoint <- get_mn_endpoint(sys@authoritativeMemberNode)
-    
-    data_urls <- paste0(endpoint, "object/", data_pids)
-    sysmeta_urls <- paste0(endpoint, "meta/", data_pids)
-    
-    if (length(data_urls) > 100){
-      file_num = 100
+    if (grepl("test", sys@authoritativeMemberNode, ignore.case = TRUE)){
+      options(dataone_test_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
     } else {
-      file_num = length(data_urls)
+      options(dataone_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
     }
     
-    if (length(data_urls) > 0){
-        for (i in 1:file_num){
-          
-          data_path <- tryCatch({
-            mdq_get(data_urls[i])
-          },
-          error = function(e) {
-            e
-          })
-          
-          if (inherits(data_path, "error")) {
-            result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_urls[i]))
-            next
-          }
-          
-          sysmeta_path <- tryCatch({
-            mdq_get(sysmeta_urls[i])
-          },
-          error = function(e) {
-            e
-          })
-          
-          if (inherits(sysmeta_path, "error")) {
-            result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", sysmeta_urls[i]))
-            next
-          }
-          
-          sys_d <- parse_system_metadata(sysmeta_path)
-          fname <- sys_d@fileName
-          
-          if (!(sys_d@formatId %in% c("text/tsv", "text/csv"))){
-            result[[i]] <- list(status = "SUCCESS", output = paste(fname, "does not appear to be documented as a text format."))
-            next
-          }
-          
-          
-          z <- which(entityNames == fname)
-          if (length(z) == 0){
-            z <- which(objectNames == fname)
-          }
-          if (length(z) == 0){
-            id <- gsub(":", "-", sys@identifier)
-            z <- which(ids == id)
-          }
-          if (length(z) == 0){
-            result[[i]] <- list(status = "FAILURE", output = paste(fname, "is not documented in the metadata."))
-            next
-          }
-          
-          status <- data_text_delimited_wellformed(data_path, fieldDelimiter[z], headerLines[z])
-          
-          if (!status){
-            result[[i]] <- list(status = "FAILURE", output = paste(fname, "is formatted incorrectly, or documented incorrectly."))
-          } else if (status){
-            result[[i]] <- list(status = "SUCCESS", output = paste(fname, "is formatted correctly."))
-          }
+    data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
+    data_pids <- data_pids[which(data_pids != sys@identifier)]
+    authNode <- sys@authoritativeMemberNode
+    if (length(data_pids) > 100){
+      file_num = 100
+    } else {
+      file_num = length(data_pids)
+    }
+    if (length(data_pids) > 0){
+      for (i in 1:file_num){
+        
+        data_obj <- tryCatch({
+          get_data_file(authNode, data_pids[i])
+        },
+        error = function(e) {
+          e
+        })
+        
+        if (inherits(data_obj, "error")) {
+          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
+          next
         }
         
-        statuses <- unlist(lapply(result, function(x){x$status}))
-        outputs <- unlist(lapply(result, function(x){x$output}))
+        sys_d <- data_obj@sysmeta
         
-        failures <- length(which(statuses == "FAILURE"))
-        errors <- length(which(statuses == "ERROR"))
-        successes <- length(which(statuses == "SUCCESS"))
+        fname <- sys_d@fileName
+        fpath <- tempfile(fname)
+        writeBin(data_obj@data, fpath)
         
-        output_string <- paste(successes, "file(s) successfully parsed, or are not text files.",
-                               failures, "file(s) failed to parse.",
-                               errors, "files(s) errored on download.")
-        
-        if (any(statuses == "SUCCESS")){
-          mdq_result <- list(output = list(list(value = output_string)), status = "SUCCESS")
-        } else if (all(statuses == "ERROR")){
-          mdq_result <- list(output = list(list(value = output_string)), status = "ERROR")
-        } else {
-          mdq_result <- list(output = list(list(value = output_string)), status = "FAILURE")
+        z <- which(entityNames == fname)
+        if (length(z) == 0){
+          z <- which(objectNames == fname)
         }
-    else {
+        if (length(z) == 0){
+          id <- gsub(":", "-", sys@identifier)
+          z <- which(ids == id)
+        }
+        if (length(z) == 0){
+          result[[i]] <- list(status = "FAILURE", output = paste(fname, "is not documented in the metadata."))
+          next
+        }
+        
+        status <- data_text_delimited_wellformed(fpath, fieldDelimiter[z], headerLines[z])
+        
+        if (!status){
+          result[[i]] <- list(status = "FAILURE", output = paste(fname, "is formatted incorrectly, or documented incorrectly."))
+        } else if (status){
+          result[[i]] <- list(status = "SUCCESS", output = paste(fname, "is formatted correctly."))
+        }
+      }
+      
+      statuses <- unlist(lapply(result, function(x){x$status}))
+      outputs <- unlist(lapply(result, function(x){x$output}))
+      
+      failures <- length(which(statuses == "FAILURE"))
+      errors <- length(which(statuses == "ERROR"))
+      successes <- length(which(statuses == "SUCCESS"))
+      
+      output_string <- paste(successes, "file(s) successfully parsed, or are not text files.",
+                             failures, "file(s) failed to parse.",
+                             errors, "files(s) errored on download.")
+      
+      if (any(statuses == "SUCCESS")){
+        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "SUCCESS")
+      } else if (all(statuses == "ERROR")){
+        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "ERROR")
+      } else {
+        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "FAILURE")
+      }
+    }  else {
       mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
     }
   ]]></code>
@@ -146,7 +132,7 @@
     </subSelector>
   </selector>
   <dialect>
-    <name>eml</name>
+    <name>Ecological Metadata Language</name>
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
   </dialect>
 </mdq:check>

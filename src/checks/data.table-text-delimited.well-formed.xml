@@ -41,7 +41,8 @@
         })
         
         if (inherits(data_obj, "error")) {
-          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
+          result[[i]] <- list(status = "ERROR)
+          save_output(paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
           next
         }
         
@@ -60,16 +61,19 @@
           z <- which(ids == id)
         }
         if (length(z) == 0){
-          result[[i]] <- list(status = "FAILURE", output = paste(fname, "is not documented in the metadata."))
+          result[[i]] <- list(status = "FAILURE")
+          save_output(paste(fname, "is not documented in the metadata."))
           next
         }
         
         status <- data_text_delimited_wellformed(fpath, fieldDelimiter[z], headerLines[z])
         
         if (!status){
-          result[[i]] <- list(status = "FAILURE", output = paste(fname, "is formatted incorrectly, or documented incorrectly."))
+          result[[i]] <- list(status = "FAILURE")
+          save_output(paste(fname, "is formatted incorrectly, or documented incorrectly."))
         } else if (status){
-          result[[i]] <- list(status = "SUCCESS", output = paste(fname, "is formatted correctly."))
+          result[[i]] <- list(status = "SUCCESS")
+          save_output = paste(fname, "is formatted correctly."))
         }
       }
       
@@ -84,13 +88,16 @@
                              failures, "file(s) failed to parse.",
                              errors, "files(s) errored on download.")
       
-      if (any(statuses == "SUCCESS")){
-        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "SUCCESS")
-      } else if (all(statuses == "ERROR")){
-        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "ERROR")
-      } else {
-        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "FAILURE")
-      }
+     
+    save_output(output_string, type = "text")
+    
+     if (any(statuses == "SUCCESS")){
+      mdq_result$status <- "SUCCESS"
+    } else if (all(statuses == "ERROR")){
+      mdq_result$status <- "ERROR"
+    } else {
+      mdq_result$status <- "FAILURE"
+    }
     }  else {
       mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
     }

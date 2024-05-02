@@ -22,7 +22,14 @@
       options(dataone_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
     }
     
-    data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
+    data_pids <- NULL
+    attempt <- 1
+    while(is.null(data_pids) && attempt <=10) {
+      attempt <- attempt + 1
+      try(data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode))
+      Sys.sleep(5)
+    }
+
     data_pids <- data_pids[which(data_pids != sys@identifier)]
     authNode <- sys@authoritativeMemberNode
     if (length(data_pids) > 100){
@@ -41,7 +48,8 @@
         })
         
         if (inherits(data_obj, "error")) {
-          result[[i]] <- list(status = "ERROR", output = paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
+          result[[i]] <- list(status = "ERROR")
+          save_output(paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
           next
         }
         
@@ -57,7 +65,8 @@
         if (sys_checksum_alg %in% c("md5", "sha1", "crc32", "sha256", "sha512")){
           checksum <- digest::digest(fpath, algo = sys_checksum_alg, file = TRUE)
         } else {
-          result[[i]] <- list(status = "ERROR", output = paste("Checksum algorithm ", sys_checksum_alg, "not recognized for file", fname))
+          result[[i]] <- list(status = "ERROR")
+          save_output(paste("Checksum algorithm ", sys_checksum_alg, "not recognized for file", fname))
           next
         }
         
@@ -68,9 +77,11 @@
         }
         
         if (!status){
-          result[[i]] <- list(status = "FAILURE", output = paste(fname, "has an incongruent checksum."))
+          result[[i]] <- list(status = "FAILURE")
+          save_output(paste(fname, "has an incongruent checksum."))
         } else if (status){
-          result[[i]] <- list(status = "SUCCESS", output = paste(fname, "has a matching checksum."))
+          result[[i]] <- list(status = "SUCCESS")
+          save_output(paste(fname, "has a matching checksum."))
         }
       }
       
@@ -85,13 +96,15 @@
                              failures, "file(s) have mismatched checksum information.",
                              errors, "files(s) errored on download.")
       
-      if (any(statuses == "SUCCESS")){
-        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "SUCCESS")
-      } else if (all(statuses == "ERROR")){
-        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "ERROR")
-      } else {
-        mdq_result <- list(output = list(list(value = paste(output_string, outputs, sep = "\n"))), status = "FAILURE")
-      }
+      save_output(output_string, type = "text")
+  
+  if (any(statuses == "SUCCESS")){
+    mdq_result$status <- "SUCCESS"
+  } else if (all(statuses == "ERROR")){
+    mdq_result$status <- "ERROR"
+  } else {
+    mdq_result$status <- "FAILURE"
+  }
     } else {
       mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
     }

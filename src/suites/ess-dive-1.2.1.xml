@@ -8,11 +8,12 @@
       <type>Findable</type>
       <level>OPTIONAL</level>
   </check>
+  <!-- removed in 1.2.1, cannot get publisher URLs (dois) to not give a 403
   <check>
     <id>resource.URLs.resolvable-2.0.0</id>
     <type>Findable</type>
     <level>OPTIONAL</level>
-  </check>
+  </check> -->
   <check>
     <id>resource.awardFunderName.controlled-2.0.0</id>
     <type>Findable</type>

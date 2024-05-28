@@ -66,12 +66,12 @@ def call():
   
   # Create list with the DataONE formats
   formats = []
-  with open(formatsFile, 'r', newline='', encoding='utf-8') as csvfile:
+  with open(formatsFile, 'r', newline='') as csvfile:
       fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
       for row in fmtreader:
           formats.append(row)
 
-  entityFormatNames = mvar.toUnicode(entityFormatNames)
+  # entityFormatNames = mvar.toUnicode(entityFormatNames)
   
   # If only a single value is returned (vs type "list"), then convert to a list
   # for easier processing

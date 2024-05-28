@@ -84,7 +84,7 @@ def call():
       excelFileFound = True
       
   if(len(proprietaryFound) > 0):
-    fmts = list(set([f.encode('UTF8') for f in proprietaryFound]))
+    fmts = list(set([str(f) for f in proprietaryFound]))
     output = (
       "It is recommended that non-proprietary file formats be used where possible. "
       "These "+ str(len(fmts)) + " proprietary data formats (out of "+ str(len(entityTypes)) + " total formats) were found: " + str(fmts[0:maxPrint])[1:-1].replace("'", "")

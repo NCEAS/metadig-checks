@@ -100,7 +100,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormats))
+    output = "No proprietary data entity formats found (out of {} total formats).".format(len(entityFormats))
     status = "SUCCESS"
     return True
       ]]></code>

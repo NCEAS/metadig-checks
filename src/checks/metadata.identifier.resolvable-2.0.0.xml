@@ -24,8 +24,6 @@ def call():
     output = "A metadata identifier was not found."
     status = "FAILURE"
     return False
-    
-  metadataIdentifier = mvar.toUnicode(metadataIdentifier)
   
   # This should only be a single value, but if not (a list is returned) just get the first 
   # one

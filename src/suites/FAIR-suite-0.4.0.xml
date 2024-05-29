@@ -254,7 +254,7 @@
     
     <!-- Reusable -->
     <check>
-        <id>entity.format.nonproprietary-2.0.0</id>
+        <id>entity.format.nonproprietary-2.0.1</id>
         <type>Reusable</type>
          <level>REQUIRED</level>
     </check>

@@ -4,7 +4,7 @@
   <name>ESS-DIVE Quality Suite</name>
   <description>This is a the ESS-DIVE Quality Suite</description>
   <check>
-      <id>resource.projectTitle.controlled-1.0.0</id>
+      <id>resource.projectTitle.controlled-1.1.0</id>
       <type>Findable</type>
       <level>OPTIONAL</level>
   </check>

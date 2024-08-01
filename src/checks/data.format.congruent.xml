@@ -9,82 +9,85 @@
   <level>REQUIRED</level>
   <environment>rscript</environment>
   <code><![CDATA[
-    library(metarake)
-    library(metadig)
-    
-    result <- list()
-    
-    sys <- parse_system_metadata(systemMetadata)
+  def call():
+    global output
+    global status
 
-    if (grepl("test", sys@authoritativeMemberNode, ignore.case = TRUE)){
-      options(dataone_test_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
-    } else {
-      options(dataone_token = Sys.getenv("DATAONE_AUTH_TOKEN"))
-    }
-    authNode <- sys@authoritativeMemberNode
-    data_pids <- get_data_pids(sys@identifier, sys@authoritativeMemberNode)
-    data_pids <- data_pids[which(data_pids != sys@identifier)]
-    
-    if (length(data_pids) > 100){
-      file_num = 100
-    } else {
-      file_num = length(data_pids)
-    }
-    if (length(data_pids) > 0){
-      for (i in 1:file_num){
-        
-        data_obj <- tryCatch({
-          get_data_file(authNode, data_pids[i])
-        },
-        error = function(e) {
-          e
+    from metadig import StoreManager
+    from metadig import read_sysmeta_element
+    import magic
+    import io
+    import pandas as pd
+
+    manager = StoreManager(storeConfiguration)
+  
+    url = "https://cn.dataone.org/cn/v2/formats"
+    response = requests.get(url)
+    root = ET.fromstring(response.content)
+    d1_formats = []
+    # get data frame of formats and extensions
+    for format in root.findall("objectFormat"):
+        media_type_element = format.find('mediaType')
+        extension_element = format.find('extension')
+        format_id_element = format.find('formatId')
+
+        media_type = media_type_element.attrib['name'] if media_type_element is not None and 'name' in media_type_element.attrib else None
+        extension = extension_element.text.strip() if extension_element is not None and extension_element.text else None
+        format_id = format_id_element.text.strip() if format_id_element is not None and format_id_element.text else None
+
+        d1_formats.append({
+            'format_id': format_id,
+            'media_type': media_type,
+            'extension': extension
         })
+
+    d1_formats = pd.DataFrame(d1_formats)
+
+    output_data = []
+    status_data = []
+
+    for pid in dataPids:
+        obj, sys = manager.get_object(pid)
+        fname = read_sysmeta_element(sys, "fileName")
+        # if file is not text/csv, skip it
+        fid = read_sysmeta_element(sys, "formatId")
+        mime_type = magic.from_buffer(obj.read(2048), mime = True)
+        ext = os.path.splitext(fname)
+
+        ext = "tiff" if ext == "tif" else ext
+        fid = "application/netcdf" if fid == "application/x-netcdf" else fid
+        mime_type = "text/csv" if ext == "csv" and mime_type == "text/plain" else mime_type
+
+        # extract format_ids matching the media type and file extension of the file
+        df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
+
+        if df_new.shape[0] == 0:
+          output_data.append(f"{fname} does not have a formatId matching it's media type and extension.")
+          status_data.append("FAILURE")
+          continue
         
-        if (inherits(data_obj, "error")) {
-          result[[i]] <- list(status = "ERROR")
-          save_output(paste("Something went wrong when trying to download ", data_pids[i], ":", data_obj))
-          next
-        }
+        if fid in df_new["formatId"].values:
+          output_data.append(f"{fname}'s formatId matches it's media type and extension.")
+          status_data.append("SUCCESS")
+          continue
         
-        sys_d <- data_obj@sysmeta
-        
-        fname <- sys_d@fileName
-        fpath <- tempfile(fileext = paste0(".", tools::file_ext(fname)))
-        writeBin(data_obj@data, fpath)
-        
-        status <- data_format_congruent(fpath, sys_d)
-        
-        if (!status){
-          result[[i]] <- list(status = "FAILURE")
-          save_output(paste("The format of object", data_pids[i], "matches the formatId."))
-        } else if (status){
-          result[[i]] <- list(status = "SUCCESS")
-          save_output(paste("The format of object", data_pids[i], "does not match the formatId."))
-        }
-      }
-      statuses <- unlist(lapply(result, function(x){x$status}))
-      outputs <- unlist(lapply(result, function(x){x$output}))
-      
-      failures <- length(which(statuses == "FAILURE"))
-      errors <- length(which(statuses == "ERROR"))
-      successes <- length(which(statuses == "SUCCESS"))
-      
-      output_string <- paste(successes, "file(s) with matching formats.",
-                             failures, "file(s) with mismatched formats.",
-                             errors, "files(s) errored.")
-      
-     save_output(output_string, type = "text")
-     
-     if (any(statuses == "SUCCESS")){
-       mdq_result$status <- "SUCCESS"
-     } else if (all(statuses == "ERROR")){
-       mdq_result$status <- "ERROR"
-     } else {
-       mdq_result$status <- "FAILURE"
-     }
-    } else {
-      mdq_result <- list(output = list(list(value = "No data files to check.")), status = "SUCCESS")
-    }
+        if fid in df_new["formatId"].values:
+          output_data.append(f"{fname}'s formatId does not match it's media type and extension.")
+          status_data.append("FAILURE")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."
+    if successes > 0 and failures == 0:
+        status = "SUCCESS"
+        return True
+    elif successes == 0 and failures > 0:
+        status = "FAILURE"
+        return True
+    else:
+        status = "FAILURE" 
+        return True
+
   ]]></code>
   <selector>
     <name>id</name>

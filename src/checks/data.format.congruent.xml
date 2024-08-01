@@ -7,88 +7,81 @@
   <description>Check that a data file format matches the formatId.</description>
   <type>identification</type>
   <level>REQUIRED</level>
-  <environment>rscript</environment>
+  <environment>python</environment>
   <code><![CDATA[
-  def call():
-    global output
-    global status
+def call():
+  global output
+  global status
 
-    from metadig import StoreManager
-    from metadig import read_sysmeta_element
-    import magic
-    import io
-    import pandas as pd
+  from metadig import StoreManager
+  from metadig import read_sysmeta_element
+  import magic
+  import io
+  import pandas as pd
+  import requests
+  import xml.etree.ElementTree as ET
+  import os
 
-    manager = StoreManager(storeConfiguration)
-  
-    url = "https://cn.dataone.org/cn/v2/formats"
-    response = requests.get(url)
-    root = ET.fromstring(response.content)
-    d1_formats = []
-    # get data frame of formats and extensions
-    for format in root.findall("objectFormat"):
-        media_type_element = format.find('mediaType')
-        extension_element = format.find('extension')
-        format_id_element = format.find('formatId')
+  manager = StoreManager(storeConfiguration)
 
-        media_type = media_type_element.attrib['name'] if media_type_element is not None and 'name' in media_type_element.attrib else None
-        extension = extension_element.text.strip() if extension_element is not None and extension_element.text else None
-        format_id = format_id_element.text.strip() if format_id_element is not None and format_id_element.text else None
-
-        d1_formats.append({
-            'format_id': format_id,
-            'media_type': media_type,
-            'extension': extension
-        })
-
-    d1_formats = pd.DataFrame(d1_formats)
-
-    output_data = []
-    status_data = []
-
-    for pid in dataPids:
-        obj, sys = manager.get_object(pid)
-        fname = read_sysmeta_element(sys, "fileName")
-        # if file is not text/csv, skip it
-        fid = read_sysmeta_element(sys, "formatId")
-        mime_type = magic.from_buffer(obj.read(2048), mime = True)
-        ext = os.path.splitext(fname)
-
-        ext = "tiff" if ext == "tif" else ext
-        fid = "application/netcdf" if fid == "application/x-netcdf" else fid
-        mime_type = "text/csv" if ext == "csv" and mime_type == "text/plain" else mime_type
-
-        # extract format_ids matching the media type and file extension of the file
-        df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
-
-        if df_new.shape[0] == 0:
-          output_data.append(f"{fname} does not have a formatId matching it's media type and extension.")
-          status_data.append("FAILURE")
-          continue
-        
-        if fid in df_new["formatId"].values:
-          output_data.append(f"{fname}'s formatId matches it's media type and extension.")
-          status_data.append("SUCCESS")
-          continue
-        
-        if fid in df_new["formatId"].values:
-          output_data.append(f"{fname}'s formatId does not match it's media type and extension.")
-          status_data.append("FAILURE")
-
-    successes = sum(x == "SUCCESS" for x in status_data)
-    failures = sum(x == "FAILURE" for x in status_data)
-    output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."
-    if successes > 0 and failures == 0:
-        status = "SUCCESS"
-        return True
-    elif successes == 0 and failures > 0:
-        status = "FAILURE"
-        return True
-    else:
-        status = "FAILURE" 
-        return True
-
-  ]]></code>
+  url = "https://cn.dataone.org/cn/v2/formats"
+  response = requests.get(url)
+  root = ET.fromstring(response.content)
+  d1_formats = []
+  # get data frame of formats and extensions
+  for format in root.findall("objectFormat"):
+      media_type_element = format.find('mediaType')
+      extension_element = format.find('extension')
+      format_id_element = format.find('formatId')
+      media_type = media_type_element.attrib['name'] if media_type_element is not None and 'name' in media_type_element.attrib else None
+      extension = extension_element.text.strip() if extension_element is not None and extension_element.text else None
+      format_id = format_id_element.text.strip() if format_id_element is not None and format_id_element.text else None
+      d1_formats.append({
+          'format_id': format_id,
+          'media_type': media_type,
+          'extension': extension
+      })
+  d1_formats = pd.DataFrame(d1_formats)
+  output_data = []
+  status_data = []
+  for pid in dataPids:
+      obj, sys = manager.get_object(pid)
+      fname = read_sysmeta_element(sys, "fileName")
+      # if file is not text/csv, skip it
+      fid = read_sysmeta_element(sys, "formatId")
+      mime_type = magic.from_buffer(obj.read(2048), mime = True)
+      ext = os.path.splitext(fname)[1][1:]
+      ext = "tiff" if ext == "tif" else ext
+      fid = "application/netcdf" if fid == "application/x-netcdf" else fid
+      mime_type = "text/csv" if ext == "csv" and mime_type == "text/plain" else mime_type
+      # extract format_ids matching the media type and file extension of the file
+      df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
+      if df_new.shape[0] == 0:
+        output_data.append(f"{fname} does not have a formatId matching it's media type and extension.")
+        status_data.append("FAILURE")
+        continue
+      
+      if fid in df_new["format_id"].values:
+        output_data.append(f"{fname}'s formatId matches it's media type and extension.")
+        status_data.append("SUCCESS")
+        continue
+      
+      if fid in df_new["format_id"].values:
+        output_data.append(f"{fname}'s formatId does not match it's media type and extension.")
+        status_data.append("FAILURE")
+  successes = sum(x == "SUCCESS" for x in status_data)
+  failures = sum(x == "FAILURE" for x in status_data)
+  output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."
+  if successes > 0 and failures == 0:
+      status = "SUCCESS"
+      return True
+  elif successes == 0 and failures > 0:
+      status = "FAILURE"
+      return True
+  else:
+      status = "FAILURE" 
+      return True
+]]></code>
   <selector>
     <name>id</name>
     <xpath>/eml/packageId</xpath>

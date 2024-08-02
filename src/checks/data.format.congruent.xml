@@ -65,10 +65,10 @@ def call():
         output_data.append(f"{fname}'s formatId matches it's media type and extension.")
         status_data.append("SUCCESS")
         continue
-      
-      if fid in df_new["format_id"].values:
+      else:
         output_data.append(f"{fname}'s formatId does not match it's media type and extension.")
         status_data.append("FAILURE")
+
   successes = sum(x == "SUCCESS" for x in status_data)
   failures = sum(x == "FAILURE" for x in status_data)
   output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."

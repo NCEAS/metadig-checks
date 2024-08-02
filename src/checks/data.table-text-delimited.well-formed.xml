@@ -30,41 +30,45 @@ def call():
         fname = read_sysmeta_element(sys, "fileName")
         # if file is not text/csv, skip it
         if read_sysmeta_element(sys, "formatId") != "text/csv":
-           output_data.append(f"{fname} is not a text-delimited table, skipping.")
-           status_data.append("SUCCESS")
-           continue
+          output_data.append(f"{fname} is not a text-delimited table, skipping.")
+          status_data.append("SKIP")
+          continue
         # read in first KB of data
         d_read = obj.read(1024).decode('utf-8')
         # find which entity file is documented in
         z = [i for i, x in enumerate(entityNames) if x == fname]
         if len(z) == 0:
-            id = pid.replace(":", "-")
-            z = [i for i, x in enumerate(ids) if x == id]
+          id = pid.replace(":", "-")
+          z = [i for i, x in enumerate(ids) if x == id]
         if len(z) == 0:
-            output_data.append(f"{fname} does not appear to be documented in the metadata.")
-            status_data.append("FAILURE")
-            continue
+          output_data.append(f"{fname} does not appear to be documented in the metadata.")
+          status_data.append("FAILURE")
+          continue
         z = z[0]
         
         # extract correct fieldDelimiter and headerLines
         fd = "," if fieldDelimiter[z] is None else fieldDelimiter[z]
-        hl = 0 if headerLines[z] is None else int(headerLines[z])
+        skiprows = 0 if headerLines[z] is None else int(headerLines[z]) - 1
         # try to read it in as a csv with correct metadata
         # extract column names
         try:
-            df = pd.read_csv(io.StringIO(d_read), delimiter = fd, header = hl)
+            df = pd.read_csv(io.StringIO(d_read), delimiter = fd, header = skiprows)
             colnames = list(df.columns)
         except Exception as e:
             output_data.append(f"{fname} is unable to be read as a table.")
             status_data.append("FAILURE")
             continue
-        if type(df) == "pandas.core.frame.DataFrame":
+        if isinstance(df, pd.DataFrame):
             output_data.append(f"{fname} is able to be parsed.")
             status_data.append("SUCCESS")
+        else:
+            output_data.append(f"{fname} cannot be parsed." + char(type(df)))
+            status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
-    output = f"{successes} file(s) successfully parsed, or are not text files. {failures} file(s) failed to parse."
+    skips = sum(x == "SKIP" for x in status_data)
+    output = f"{successes} file(s) successfully parsed, or are not text files. {failures} file(s) failed to parse. {skips} file(s) that are not text delimited tables."
     if successes > 0 and failures == 0:
         status = "SUCCESS"
         return True

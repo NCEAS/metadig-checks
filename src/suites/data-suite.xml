@@ -12,4 +12,7 @@
   <check>
     <id>data.format.congruent</id>
   </check>
+  <check>
+    <id>data.table-text-delimited.glimpse</id>
+  </check>
 </mdq:suite>

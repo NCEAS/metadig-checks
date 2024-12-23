@@ -13,6 +13,8 @@
 def call():
     global output
     global status
+    global output_identifiers
+    global output_type
 
     from metadig import StoreManager
     from metadig import read_sysmeta_element
@@ -24,13 +26,17 @@ def call():
 
     output_data = []
     status_data = []
+    output_identifiers = []
+    output_type = []
 
     for pid in dataPids:
+        output_identifiers.append(pid)
         obj, sys = manager.get_object(pid)
         fname = read_sysmeta_element(sys, "fileName")
         # if file is not text/csv, skip it
         if read_sysmeta_element(sys, "formatId") != "text/csv":
           output_data.append(f"{fname} is not a text-delimited table, skipping.")
+          output_type.append("text")
           status_data.append("SKIP")
           continue
         # read in all the data
@@ -42,6 +48,7 @@ def call():
           z = [i for i, x in enumerate(ids) if x == id]
         if len(z) == 0:
           output_data.append(f"{fname} does not appear to be documented in the metadata.")
+          output_type.append("text")
           status_data.append("FAILURE")
           continue
         z = z[0]
@@ -53,23 +60,26 @@ def call():
         # extract column names
         try:
             df = pd.read_csv(io.StringIO(d_read), delimiter = fd, header = skiprows)
-            summary = df.describe()
-            summary_md = summary.to_markdown()
         except Exception as e:
             output_data.append(f"{fname} is unable to be read as a table.")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
         if isinstance(df, pd.DataFrame):
+            summary = df.describe()
+            summary_md = summary.to_markdown()
             output_data.append(f"**{fname}** \n {summary_md} \n")
+            output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
             output_data.append(f"{fname} cannot be parsed." + char(type(df)))
+            output_type.append("text")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
-    output = "\n".join(output_data)
+    output = output_data
     if successes > 0 and failures == 0:
         status = "SUCCESS"
         return True

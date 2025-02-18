@@ -13,51 +13,60 @@
 def call():
     global output
     global status
+    global output_identifiers
+    global output_type
 
     from metadig import StoreManager
     from metadig import read_sysmeta_element
     from metadig import find_eml_entity
+    from metadig import get_valid_csv
+    from metadig import find_entity_index
+    from metadig import read_csv_with_metadata
     import pandas as pd
-    import io   
+    import io
+    import chardet   
 
     manager = StoreManager(storeConfiguration)  
 
     output_data = []
     status_data = []
+    output_identifiers = []
 
     for pid in dataPids:
+        output_identifiers.append(pid)
         obj, sys = manager.get_object(pid)
-        fname = read_sysmeta_element(sys, "fileName")
+
         # if file is not text/csv, skip it
-        if read_sysmeta_element(sys, "formatId") != "text/csv":
-          output_data.append(f"{fname} is not a text-delimited table, skipping.")
-          status_data.append("SKIP")
-          continue
-        # read in first KB of data
-        d_read = obj.read(1024).decode('utf-8')
+        # otherwise get the object and filename
+        obj, fname, status = get_valid_csv(manager, pid)
+        if status == "SKIP":
+            output_data.append(f"{fname} is not a text-delimited table, skipping.")
+            status_data.append(status)
+            continue
+
+        # read in all the data
+        d_read = obj.read().decode('utf-8', errors = 'replace')
+
         # find which entity file is documented in
-        z = [i for i, x in enumerate(entityNames) if x == fname]
-        if len(z) == 0:
-          id = pid.replace(":", "-")
-          z = [i for i, x in enumerate(ids) if x == id]
-        if len(z) == 0:
-          output_data.append(f"{fname} does not appear to be documented in the metadata.")
-          status_data.append("FAILURE")
-          continue
+        z = find_entity_index(fname, pid, entityNames, ids)
+        if z is None:
+            output_data.append(f"{fname} does not appear to be documented in the metadata.")
+            status_data.append("FAILURE")
+            continue
         z = z[0]
         
         # extract correct fieldDelimiter and headerLines
         fd = "," if fieldDelimiter[z] is None else fieldDelimiter[z]
         skiprows = 0 if headerLines[z] is None else int(headerLines[z]) - 1
-        # try to read it in as a csv with correct metadata
-        # extract column names
-        try:
-            df = pd.read_csv(io.StringIO(d_read), delimiter = fd, header = skiprows)
-            colnames = list(df.columns)
-        except Exception as e:
+        
+        # try to read in the file
+        df, error = read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines[z])
+        colnames = list(df.columns)
+        if error:
             output_data.append(f"{fname} is unable to be read as a table.")
             status_data.append("FAILURE")
             continue
+
         # extract the entity from the metadata doc and attributeNames
         ent = find_eml_entity(document, pid, fname)
         att_names = [elem.text for elem in ent.findall(".//attributeName")]

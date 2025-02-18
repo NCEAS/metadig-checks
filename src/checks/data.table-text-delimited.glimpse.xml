@@ -24,7 +24,6 @@ def call():
     from metadig import read_csv_with_metadata
     import pandas as pd
     import io
-    import chardet
 
     manager = StoreManager(storeConfiguration)  
 

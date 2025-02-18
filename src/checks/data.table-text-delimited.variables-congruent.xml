@@ -24,7 +24,6 @@ def call():
     from metadig import read_csv_with_metadata
     import pandas as pd
     import io
-    import chardet   
 
     manager = StoreManager(storeConfiguration)  
 
@@ -54,10 +53,6 @@ def call():
             status_data.append("FAILURE")
             continue
         z = z[0]
-        
-        # extract correct fieldDelimiter and headerLines
-        fd = "," if fieldDelimiter[z] is None else fieldDelimiter[z]
-        skiprows = 0 if headerLines[z] is None else int(headerLines[z]) - 1
         
         # try to read in the file
         df, error = read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines[z])

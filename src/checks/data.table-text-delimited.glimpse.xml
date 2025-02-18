@@ -46,9 +46,7 @@ def call():
             continue
 
         # read in all the data
-        detected = chardet.detect(obj.read(1024))
-        encoding = detected["encoding"]
-        d_read = obj.read().decode(encoding, errors = 'replace')
+        d_read = obj.read().decode('utf-8', errors = 'replace')
 
         # find which entity file is documented in
         z = find_entity_index(fname, pid, entityNames, ids)

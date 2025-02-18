@@ -44,10 +44,13 @@ def call():
   d1_formats = pd.DataFrame(d1_formats)
   output_data = []
   status_data = []
+  output_identifiers = []
+
   for pid in dataPids:
+      output_identifiers.append(pid)
       obj, sys = manager.get_object(pid)
       fname = read_sysmeta_element(sys, "fileName")
-      # if file is not text/csv, skip it
+
       fid = read_sysmeta_element(sys, "formatId")
       mime_type = magic.from_buffer(obj.read(2048), mime = True)
       ext = os.path.splitext(fname)[1][1:]
@@ -71,7 +74,8 @@ def call():
 
   successes = sum(x == "SUCCESS" for x in status_data)
   failures = sum(x == "FAILURE" for x in status_data)
-  output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."
+  output = output_data
+  #output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."
   if successes > 0 and failures == 0:
       status = "SUCCESS"
       return True

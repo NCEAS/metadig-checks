@@ -17,43 +17,45 @@ def call():
     from metadig import StoreManager
     from metadig import read_sysmeta_element
     from metadig import find_eml_entity
+    from metadig import get_valid_csv
+    from metadig import find_entity_index
+    from metadig import read_csv_with_metadata
     import pandas as pd
-    import io   
-
-    manager = StoreManager(storeConfiguration)  
+    import io
+ 
 
     output_data = []
     status_data = []
+    output_identifiers = []
+
+    manager = StoreManager(storeConfiguration)
 
     for pid in dataPids:
         obj, sys = manager.get_object(pid)
-        fname = read_sysmeta_element(sys, "fileName")
+        output_identifiers.append(pid)
+
         # if file is not text/csv, skip it
-        if read_sysmeta_element(sys, "formatId") != "text/csv":
-          output_data.append(f"{fname} is not a text-delimited table, skipping.")
-          status_data.append("SKIP")
-          continue
+        # otherwise get the object and filename
+        obj, fname, status = get_valid_csv(manager, pid)
+        if status == "SKIP":
+            output_data.append(f"{fname} is not a text-delimited table, skipping.")
+            status_data.append(status)
+            continue
+
         # read in first KB of data
-        d_read = obj.read(1024).decode('utf-8')
+        d_read = obj.read(1024).decode('utf-8', errors = 'replace')
+        
         # find which entity file is documented in
-        z = [i for i, x in enumerate(entityNames) if x == fname]
-        if len(z) == 0:
-          id = pid.replace(":", "-")
-          z = [i for i, x in enumerate(ids) if x == id]
-        if len(z) == 0:
-          output_data.append(f"{fname} does not appear to be documented in the metadata.")
-          status_data.append("FAILURE")
-          continue
+        z = find_entity_index(fname, pid, entityNames, ids)
+        if z is None:
+            output_data.append(f"{fname} does not appear to be documented in the metadata.")
+            status_data.append("FAILURE")
+            continue
         z = z[0]
         
-        # extract correct fieldDelimiter and headerLines
-        fd = "," if fieldDelimiter[z] is None else fieldDelimiter[z]
-        skiprows = 0 if headerLines[z] is None else int(headerLines[z]) - 1
         # try to read it in as a csv with correct metadata
-        # extract column names
         try:
-            df = pd.read_csv(io.StringIO(d_read), delimiter = fd, header = skiprows)
-            colnames = list(df.columns)
+            df, error = read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines[z])
         except Exception as e:
             output_data.append(f"{fname} is unable to be read as a table.")
             status_data.append("FAILURE")
@@ -68,7 +70,10 @@ def call():
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
-    output = f"{successes} file(s) successfully parsed, or are not text files. {failures} file(s) failed to parse. {skips} file(s) that are not text delimited tables."
+
+    output = output_data
+    #output = f"{successes} file(s) successfully parsed, or are not text files. {failures} file(s) failed to parse. {skips} file(s) that are not text delimited tables."
+    
     if successes > 0 and failures == 0:
         status = "SUCCESS"
         return True

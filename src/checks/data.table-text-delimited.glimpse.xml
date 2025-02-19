@@ -32,6 +32,9 @@ def call():
     output_identifiers = []
     output_type = []
 
+    if len(dataPids) == 0:
+      output_data = "No data objects found."
+
     for pid in dataPids:
         output_identifiers.append(pid)
         obj, sys = manager.get_object(pid)

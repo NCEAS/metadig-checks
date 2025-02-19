@@ -30,6 +30,9 @@ def call():
 
     manager = StoreManager(storeConfiguration)
 
+    if len(dataPids) == 0:
+      output_data = "No data objects found."
+
     for pid in dataPids:
         obj, sys = manager.get_object(pid)
         output_identifiers.append(pid)

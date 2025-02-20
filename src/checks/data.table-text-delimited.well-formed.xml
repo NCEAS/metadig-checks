@@ -15,11 +15,7 @@ def call():
     global status
 
     from metadig import StoreManager
-    from metadig import read_sysmeta_element
-    from metadig import find_eml_entity
-    from metadig import get_valid_csv
-    from metadig import find_entity_index
-    from metadig import read_csv_with_metadata
+    import metadig as md
     import pandas as pd
     import io
  
@@ -39,7 +35,7 @@ def call():
 
         # if file is not text/csv, skip it
         # otherwise get the object and filename
-        obj, fname, status = get_valid_csv(manager, pid)
+        obj, fname, status = md.get_valid_csv(manager, pid)
         if status == "SKIP":
             output_data.append(f"{fname} is not a text-delimited table, skipping.")
             status_data.append(status)
@@ -49,7 +45,7 @@ def call():
         d_read = obj.read(1024).decode('utf-8', errors = 'replace')
         
         # find which entity file is documented in
-        z = find_entity_index(fname, pid, entityNames, ids)
+        z = md.find_entity_index(fname, pid, entityNames, ids)
         if z is None:
             output_data.append(f"{fname} does not appear to be documented in the metadata.")
             status_data.append("FAILURE")
@@ -58,7 +54,7 @@ def call():
         
         # try to read it in as a csv with correct metadata
         try:
-            df, error = read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines[z])
+            df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
         except Exception as e:
             output_data.append(f"{fname} is unable to be read as a table.")
             status_data.append("FAILURE")

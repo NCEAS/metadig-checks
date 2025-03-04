@@ -15,6 +15,7 @@ def call():
     global status
     global output_identifiers
     global output_type
+    global metadigpy_result
 
     from metadig import StoreManager
     import metadig as md
@@ -27,20 +28,26 @@ def call():
     status_data = []
     output_identifiers = []
     output_type = []
+    metadigpy_result = {}
 
     if len(dataPids) == 0:
       output_data = "No data objects found."
 
     for pid in dataPids:
         output_identifiers.append(pid)
-        obj, sys = manager.get_object(pid)
 
-        # if file is not text/csv, skip it
-        # otherwise get the object and filename
-        obj, fname, status = md.get_valid_csv(manager, pid)
-        if status == "SKIP":
-            output_data.append(f"{fname} is not a text-delimited table, skipping.")
-            status_data.append(status)
+        # If data object is not available, skip the pid.
+        try:
+          # if file is not text/csv, skip it
+          # otherwise get the object and filename
+          obj, fname, status = md.get_valid_csv(manager, pid)
+          if status == "SKIP":
+              output_data.append(f"{fname} is not a text-delimited table, skipping.")
+              status_data.append(status)
+              continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            status_data.append("FAILURE")
             continue
 
         # read in all the data
@@ -78,13 +85,15 @@ def call():
     output = output_data
     if successes > 0 and failures == 0:
         status = "SUCCESS"
-        return True
     elif successes == 0 and failures > 0:
         status = "FAILURE"
-        return True
     else:
         status = "FAILURE" 
-        return True
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
 
   ]]></code>
   <selector>

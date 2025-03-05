@@ -48,6 +48,7 @@ def call():
 
   if len(dataPids) == 0:
     output_data = "No data objects found."
+    output_type = "text"
 
   for pid in dataPids:
       output_identifiers.append(pid)
@@ -64,15 +65,18 @@ def call():
       df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
       if df_new.shape[0] == 0:
         output_data.append(f"{fname} does not have a formatId matching it's media type and extension.")
+        output_type.append("text")
         status_data.append("FAILURE")
         continue
       
       if fid in df_new["format_id"].values:
         output_data.append(f"{fname}'s formatId matches it's media type and extension.")
+        output_type.append("text")
         status_data.append("SUCCESS")
         continue
       else:
         output_data.append(f"{fname}'s formatId does not match it's media type and extension.")
+        output_type.append("text")
         status_data.append("FAILURE")
 
   successes = sum(x == "SUCCESS" for x in status_data)

@@ -45,10 +45,12 @@ def call():
           obj, fname, status = md.get_valid_csv(manager, pid)
           if status == "SKIP":
               output_data.append(f"{fname} is not a text-delimited table, skipping.")
+              output_type.append("text")
               status_data.append(status)
               continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
 
@@ -59,6 +61,7 @@ def call():
         z = md.find_entity_index(fname, pid, entityNames, ids)
         if z is None:
             output_data.append(f"{fname} does not appear to be documented in the metadata.")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
         z = z[0]
@@ -68,13 +71,16 @@ def call():
             df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
         except Exception as e:
             output_data.append(f"{fname} is unable to be read as a table.")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
         if isinstance(df, pd.DataFrame):
             output_data.append(f"{fname} is able to be parsed.")
+            output_type.append("text")
             status_data.append("SUCCESS")
         else:
             output_data.append(f"{fname} cannot be parsed because it is of type {type(df).__name__}, not a dataframe.")
+            output_type.append("text")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)

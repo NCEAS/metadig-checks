@@ -24,6 +24,7 @@ def call():
     manager = StoreManager(storeConfiguration)  
 
     output_data = []
+    output_type = []
     status_data = []
     output_identifiers = []
 
@@ -39,6 +40,7 @@ def call():
         obj, fname, status = md.get_valid_csv(manager, pid)
         if status == "SKIP":
             output_data.append(f"{fname} is not a text-delimited table, skipping.")
+            output_type.append("text")
             status_data.append(status)
             continue
 
@@ -49,6 +51,7 @@ def call():
         z = md.find_entity_index(fname, pid, entityNames, ids)
         if z is None:
             output_data.append(f"{fname} does not appear to be documented in the metadata.")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
         z = z[0]
@@ -58,6 +61,7 @@ def call():
         colnames = list(df.columns)
         if error:
             output_data.append(f"{fname} is unable to be read as a table.")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
 
@@ -67,9 +71,11 @@ def call():
         # check if column names match documentation
         if att_names == colnames:
             output_data.append(f"{fname} variable names match documentation.")
+            output_type.append("text")
             status_data.append("SUCCESS")
         else:
             output_data.append(f"{fname} variable names do not match documentation. Attribute names: {att_names}. Variable names: {colnames}")
+            output_type.append("text")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)

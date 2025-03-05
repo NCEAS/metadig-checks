@@ -12,9 +12,12 @@
 def call():
   global output
   global status
+  global output_identifiers
+  global output_type
+  global metadigpy_result
 
   from metadig import StoreManager
-  from metadig import read_sysmeta_element
+  import metadig as md
   import magic
   import io
   import pandas as pd
@@ -23,6 +26,12 @@ def call():
   import os
 
   manager = StoreManager(storeConfiguration)
+
+  output_data = []
+  status_data = []
+  output_identifiers = []
+  output_type = []
+  metadigpy_result = {}
 
   url = "https://cn.dataone.org/cn/v2/formats"
   response = requests.get(url)
@@ -42,9 +51,6 @@ def call():
           'extension': extension
       })
   d1_formats = pd.DataFrame(d1_formats)
-  output_data = []
-  status_data = []
-  output_identifiers = []
 
   if len(dataPids) == 0:
     output_data = "No data objects found."
@@ -52,10 +58,17 @@ def call():
 
   for pid in dataPids:
       output_identifiers.append(pid)
-      obj, sys = manager.get_object(pid)
-      fname = read_sysmeta_element(sys, "fileName")
 
-      fid = read_sysmeta_element(sys, "formatId")
+      # If data object is not available, skip the pid.
+      try:
+        obj, sys = manager.get_object(pid)
+      except Exception as e:
+        output_data.append(f"Unexpected Exception: {e}")
+        status_data.append("FAILURE")
+        continue
+
+      fname = md.read_sysmeta_element(sys, "fileName")
+      fid = md.read_sysmeta_element(sys, "formatId")
       mime_type = magic.from_buffer(obj.read(2048), mime = True)
       ext = os.path.splitext(fname)[1][1:]
       ext = "tiff" if ext == "tif" else ext
@@ -63,6 +76,7 @@ def call():
       mime_type = "text/csv" if ext == "csv" and mime_type == "text/plain" else mime_type
       # extract format_ids matching the media type and file extension of the file
       df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
+
       if df_new.shape[0] == 0:
         output_data.append(f"{fname} does not have a formatId matching it's media type and extension.")
         output_type.append("text")
@@ -82,16 +96,19 @@ def call():
   successes = sum(x == "SUCCESS" for x in status_data)
   failures = sum(x == "FAILURE" for x in status_data)
   output = output_data
-  #output = f"{successes} file(s) with matching formats. {failures} file(s) with mismatched formats."
+
   if successes > 0 and failures == 0:
       status = "SUCCESS"
-      return True
   elif successes == 0 and failures > 0:
       status = "FAILURE"
-      return True
   else:
       status = "FAILURE" 
-      return True
+
+  metadigpy_result["identifiers"] = output_identifiers
+  metadigpy_result["output"] = output_data
+  metadigpy_result["status"] = status
+  return True
+  
 ]]></code>
   <selector>
     <name>id</name>

@@ -5,9 +5,97 @@
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/metadig-checks/issues)
 
-metadig-checks contain metadata quality checks that are used by the [MetaDIG Quality engine](https://github.com).
+`metadig-checks` contain metadata quality checks that are used by the [MetaDIG Quality engine](https://github.com/NCEAS/metadig-engine).
 
 A glossary of metadata terms is available on the ESIP Wiki at http://wiki.esipfed.org/index.php/Concepts_Glossary. This glossary is open for editing / additions to the whole ESIP community.
+
+## MetaDIG Data Suite Checks
+
+In `metadig-checks`, data suite quality checks are written in Python.
+Below is a template from which to begin writing data checks from:
+
+```py
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    # Import your required libariries
+    import metadig as md
+    import pandas as pd
+    ...
+
+    # The arrays below are used by MetacatUI and other clients
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    # Set appropriate output if dataPids are unavailable
+    if len(dataPids) == 0:
+        output_data = "No data objects found."
+
+    # Confirm datapids are present and loop over them
+    for pid in dataPids:
+        # Retrieve data object and sysmeta
+        obj, sys = manager.get_object(pid)
+        output_identifiers.append(pid)
+
+        try:
+            # Perform desired action on 'obj' retrieved
+            ...
+            # Add the results for the pid processed 
+            output_data.append(f"Placeholder Text For Invalid Data Object")
+            output_type.append("text")
+            status_data.append(status)
+            continue
+        except Exception as e:
+            # Record an unexpected issue and move onto checking the next pid
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+
+        # Perform other actions as necessary for the data check
+        try:
+            ...
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+        if "BooleanToCheck" == True:
+            output_data.append(f"{filename} is able to be ...")
+            output_type.append("text")
+            status_data.append("SUCCESS")
+        else:
+            output_data.append(f"{filename} cannot be ...")
+            output_type.append("text")
+            status_data.append("FAILURE")
+
+    # Gather and tally up the results
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    output = output_data # Or you can write a custom message
+    
+    if successes > 0 and failures == 0:
+        status = "SUCCESS"
+    elif successes == 0 and failures > 0:
+        status = "FAILURE"
+    else:
+        status = "FAILURE" 
+
+    # The array below must be populated in order for the `MetaDIG-py` run_check
+    # function to return valid results.
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+```
 
 ## License
 ```

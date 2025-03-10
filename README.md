@@ -29,8 +29,13 @@ limitations under the License.
 ## Acknowledgements
 Work on this package was supported by:
 
+- DataONE Network
 - NSF ACI - DATANET grant #1443062 to T. Habermann and M. B. Jones
 
-Additional support was provided for working group collaboration by the National Center for Ecological Analysis and Synthesis, a Center funded by the University of California, Santa Barbara, and the State of California.
+Additional support was provided for collaboration by the National Center for Ecological Analysis and
+Synthesis, a Center funded by the University of California, Santa Barbara, and the State of
+California.
 
-[![nceas_footer](https://www.nceas.ucsb.edu/files/newLogo_0.png)](http://www.nceas.ucsb.edu)
+[![DataONE_footer](https://user-images.githubusercontent.com/6643222/162324180-b5cf0f5f-ae7a-4ca6-87c3-9733a2590634.png)](https://dataone.org)
+
+[![nceas_footer](https://www.nceas.ucsb.edu/sites/default/files/2020-03/NCEAS-full%20logo-4C.png)](https://www.nceas.ucsb.edu)

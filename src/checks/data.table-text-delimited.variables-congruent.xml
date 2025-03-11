@@ -35,7 +35,6 @@ def call():
 
     for pid in dataPids:
         output_identifiers.append(pid)
-        obj, sys = manager.get_object(pid)
 
         # If data object is not available, skip the pid.
         try:

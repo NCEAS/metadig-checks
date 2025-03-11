@@ -35,7 +35,6 @@ def call():
       output_data = "No data objects found."
 
     for pid in dataPids:
-        obj, sys = manager.get_object(pid)
         output_identifiers.append(pid)
 
         # If data object is not available, skip the pid.

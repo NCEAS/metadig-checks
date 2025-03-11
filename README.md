@@ -22,17 +22,21 @@ def call():
     global output_type
     global metadigpy_result
 
-    # Import your required libariries
+    # Import your required libariries to perform the data check you're writing
+    from metadig import StoreManager
     import metadig as md
     import pandas as pd
     ...
 
-    # The arrays below are used by MetacatUI and other clients
-    output_data = []
-    status_data = []
-    output_identifiers = []
-    output_type = []
-    metadigpy_result = {}
+    # Get a manager object so that we can retrieve objects
+    manager = StoreManager(storeConfiguration)  
+
+    # The variables below are used by the Metadig-Engine, MetacatUI and other clients
+    output_identifiers = [] # This is a lit of pids that have been checked
+    output_data = [] # This array contains the corresponding message for the list of pids checked
+    status_data = [] # This array represents the results for each pid checked: 'SUCCESS' or 'FAILURE'
+    output_type = [] # This is the type of data found in 'output_data': 'text' or 'markdown'
+    metadigpy_result = {} # This dictionary is required for 'MetaDIG-py' to return check results
 
     # Set appropriate output if dataPids are unavailable
     if len(dataPids) == 0:
@@ -41,16 +45,21 @@ def call():
     # Confirm datapids are present and loop over them
     for pid in dataPids:
         # Retrieve data object and sysmeta
-        obj, sys = manager.get_object(pid)
         output_identifiers.append(pid)
 
+        # Retrieve and validate the object
         try:
+            obj, sys = manager.get_object(pid)
             # Perform desired action on 'obj' retrieved
-            ...
+            # TODO: Perform desired check actions
             # Add the results for the pid processed 
-            output_data.append(f"Placeholder Text For Invalid Data Object")
-            output_type.append("text")
-            status_data.append(status)
+            # If the retrieved object is not valid and should not be checked
+            # you may want to skip it. For example:
+            # obj, fname, status = md.get_valid_csv(manager, pid)
+            # if status == "SKIP":
+            #     output_data.append(f"Placeholder Text For Invalid Data Object")
+            #     output_type.append("text")
+            #     status_data.append(status)
             continue
         except Exception as e:
             # Record an unexpected issue and move onto checking the next pid
@@ -59,9 +68,9 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Perform other actions as necessary for the data check
+        # Perform other data check
         try:
-            ...
+            # TODO: Code the data check
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
             output_type.append("text")

@@ -90,7 +90,7 @@ def call():
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
-    output = f"{successes} file(s) with complete variable documentation. {failures} file(s) with variable names that do not match documentation. {skips} file(s) that are not text delimited tables."
+    output = output_data
     
     if successes > 0 and failures == 0:
         status = "SUCCESS"

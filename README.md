@@ -68,7 +68,7 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Perform other data check
+        # Perform the data check on the object
         try:
             # TODO: Code the data check
         except Exception as e:

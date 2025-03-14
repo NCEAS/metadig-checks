@@ -72,17 +72,20 @@ def call():
             status_data.append("FAILURE")
             continue
 
+        # If any errors are found, the data is not normalized
+        normalization_errors_count = 0
+        normalization_errors_data = []
+
         # Check for duplicate file names
         column_names = df.columns
         duplicate_columns = column_names[column_names.duplicated()].tolist()
-        if len(duplicate_columns) == 0:
+        if not len(duplicate_columns) == 0:
+            normalization_errors_count += 1
+            output_data.append(f"{fname} duplicate columns found: {', '.join(duplicate_columns)}")
+        else:
             output_data.append(f"{fname} does not contain duplicates columns.")
             output_type.append("text")
             status_data.append("SUCCESS")
-        else:
-            output_data.append(f"{fname} duplicate columns found: {', '.join(duplicate_columns)}")
-            output_type.append("text")
-            status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

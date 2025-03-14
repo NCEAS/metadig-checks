@@ -82,8 +82,17 @@ def call():
         if not len(duplicate_columns) == 0:
             normalization_errors_count += 1
             output_data.append(f"{fname} duplicate columns found: {', '.join(duplicate_columns)}")
-        else:
-            output_data.append(f"{fname} does not contain duplicates columns.")
+        
+        # TODO: Check for duplicate columns
+
+        # TODO: Check for duplicate rows
+
+        # TODO: Check for obscene amount of columns (DISCUSS)
+
+        # TODO: Check for reasonable amount of non-repeating values (DISCUSS)
+
+        if normalization_errors_count == 0:
+            output_data.append(f"{fname} is normalized.")
             output_type.append("text")
             status_data.append("SUCCESS")
 

@@ -77,8 +77,12 @@ def call():
         normalization_errors_data = []
 
         # Check for duplicate file names
+        # TODO: When pandas reads a .csv, it automatically renames a duplicate column
+        # Determine a robust path to checking for dupes rather than using regex (ex. r"\.\d+$")
         column_names = df.columns
         duplicate_columns = column_names[column_names.duplicated()].tolist()
+        # TODO: Add guard rail - If array is empty at this point, there is an issue with the .CSV
+        # It may contain illegal characters, causing issues - and should error out
         if not len(duplicate_columns) == 0:
             normalization_errors_count += 1
             output_data.append(f"{fname} duplicate columns found: {', '.join(duplicate_columns)}")

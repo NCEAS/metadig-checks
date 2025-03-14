@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.table-text-delimited.normalized</id>
+  <name>Check whether the data is normalized.</name>
+  <description>Data is normalized when there are no duplicate columns or rows and does not contain duplicate column or row names </description>
+  <type>identification</type>
+  <level>INFO</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    import metadig as md
+    import pandas as pd
+    import io
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if len(dataPids) == 0:
+      output_data = "No data objects found."
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+
+        # If data object is not available, skip the pid.
+        try:
+          # if file is not text/csv, skip it
+          # otherwise get the object and filename
+          obj, fname, status = md.get_valid_csv(manager, pid)
+          if status == "SKIP":
+              output_data.append(f"{fname} is not a text-delimited table, skipping.")
+              output_type.append("text")
+              status_data.append(status)
+              continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+
+        # read in all the data
+        d_read = obj.read().decode('utf-8', errors = 'replace')
+
+        # find which entity file is documented in
+        z = md.find_entity_index(fname, pid, entityNames, ids)
+        if z is None:
+            output_data.append(f"{fname} does not appear to be documented in the metadata.")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+        z = z[0]
+
+        # try to read in the file
+        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
+        if error:
+            output_data.append(f"{fname} is unable to be read as a table. {error}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+
+        # Check for duplicate file names
+        column_names = df.columns
+        duplicate_columns = column_names[column_names.duplicated()].tolist()
+        if len(duplicate_columns) == 0:
+            output_data.append(f"{fname} does not contain duplicates columns.")
+            output_type.append("text")
+            status_data.append("SUCCESS")
+        else:
+            output_data.append(f"{fname} duplicate columns found: {', '.join(duplicate_columns)}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    output = output_data
+    if successes > 0 and failures == 0:
+        status = "SUCCESS"
+    elif successes == 0 and failures > 0:
+        status = "FAILURE"
+    else:
+        status = "FAILURE" 
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>objectNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./physical/objectName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>ids</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]/@id</xpath>
+  </selector>
+  <selector>
+     <name>fieldDelimiter</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+     <name>headerLines</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

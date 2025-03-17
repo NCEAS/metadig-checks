@@ -72,20 +72,28 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # If any errors are found, the data is not normalized
+        # If any errors are found, the data will not pass the normalized check
         normalization_errors_count = 0
         normalization_errors_data = []
 
-        # Check for duplicate file names
-        # TODO: When pandas reads a .csv, it automatically renames a duplicate column
-        # Determine a robust path to checking for dupes rather than using regex (ex. r"\.\d+$")
+        # Check for duplicate field names/columns
+        # When pandas reads a .csv, it renames a duplicate column and appends: .#
         column_names = df.columns
-        duplicate_columns = column_names[column_names.duplicated()].tolist()
-        # TODO: Add guard rail - If array is empty at this point, there is an issue with the .CSV
-        # It may contain illegal characters, causing issues - and should error out
-        if not len(duplicate_columns) == 0:
+        columns_to_check = column_names
+        contains_period = any("." in col for col in column_names)
+        if contains_period:
+            # Get a new list that substrings everything before the '.' to check for duplicates
+            columns_to_check = [col.rsplit(".", 1)[0] for col in column_names]
+        # Check the columns
+        checked_cols = set()
+        duplicate_cols = set()
+        for col in columns_to_check:
+            if col in checked_cols:
+                duplicate_cols.add(col)
+            checked_cols.add(col)
+        if duplicate_cols:
             normalization_errors_count += 1
-            output_data.append(f"{fname} duplicate columns found: {', '.join(duplicate_columns)}")
+            output_data.append(f"{fname} contains duplicate columns: {', '.join(duplicate_cols)}")
         
         # TODO: Check for duplicate columns
 

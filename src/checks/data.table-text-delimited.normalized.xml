@@ -93,8 +93,11 @@ def call():
             checked_cols.add(col)
         if duplicate_cols:
             normalization_errors_count += 1
-            output_data.append(f"{fname} contains duplicate columns: {', '.join(duplicate_cols)}")
-        
+            normalization_errors_data.append(f"{fname} contains duplicate columns: {', '.join(duplicate_cols)}")
+        elif contains_period:
+            # Add a warning if there's no duplicates and a period is found in the field
+            normalization_errors_data.append(f"{fname} has periods '.' in the field names. We recommend replacing with underscores '_'")
+
         # TODO: Check for duplicate columns
 
         # TODO: Check for duplicate rows
@@ -107,6 +110,10 @@ def call():
             output_data.append(f"{fname} is normalized.")
             output_type.append("text")
             status_data.append("SUCCESS")
+        else:
+            output_data.append(f"{fname} contains normalization issues: {', '.join(normalization_errors_data)}")
+            output_type.append("text")
+            status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

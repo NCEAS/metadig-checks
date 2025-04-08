@@ -40,11 +40,11 @@ def call():
         try:
           # if file is not text/csv, skip it
           # otherwise get the object and filename
-          obj, fname, status = md.get_valid_csv(manager, pid)
-          if status == "SKIP":
+          obj, fname, csv_status = md.get_valid_csv(manager, pid)
+          if csv_status == "SKIP":
               output_data.append(f"{fname} is not a text-delimited table, skipping.")
               output_type.append("text")
-              status_data.append(status)
+              status_data.append(csv_status)
               continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")

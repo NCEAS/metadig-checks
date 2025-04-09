@@ -71,6 +71,7 @@ def call():
               f"{fname} is unable to be read as a table: {error}."
               + f"Additional Info: entity index z: {z}. headerLines: {headerLines}"
             )
+            output_data.append(error_msg)
             output_type.append("text")
             status_data.append("FAILURE")
             continue

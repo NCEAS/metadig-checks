@@ -68,7 +68,10 @@ def call():
         df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
         colnames = list(df.columns)
         if error:
-            output_data.append(f"{fname} is unable to be read as a table.")
+            error_msg = (
+              f"{fname} is unable to be read as a table: {error}."
+              + f"Additional Info: entity index z: {z}. headerLines: {headerLines}"
+            )
             output_type.append("text")
             status_data.append("FAILURE")
             continue

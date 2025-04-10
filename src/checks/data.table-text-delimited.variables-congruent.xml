@@ -63,9 +63,13 @@ def call():
             status_data.append("FAILURE")
             continue
         z = z[0]
+
+        header_lines_found = z
+        if headerLines[z] != 'null' and isinstance(headerLines, int):
+            header_lines_found = headerLines
         
         # try to read in the file
-        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
+        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], header_lines_found)
         if error:
             error_msg = (
               f"{fname} is unable to be read as a table: {error}."

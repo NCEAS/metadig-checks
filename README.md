@@ -55,11 +55,11 @@ def call():
             # Add the results for the pid processed 
             # If the retrieved object is not valid and should not be checked
             # you may want to skip it. For example:
-            # obj, fname, status = md.get_valid_csv(manager, pid)
-            # if status == "SKIP":
+            # obj, fname, csv_status = md.get_valid_csv(manager, pid)
+            # if csv_status == "SKIP":
             #     output_data.append(f"Placeholder Text For Invalid Data Object")
             #     output_type.append("text")
-            #     status_data.append(status)
+            #     status_data.append(csv_status)
             continue
         except Exception as e:
             # Record an unexpected issue and move onto checking the next pid

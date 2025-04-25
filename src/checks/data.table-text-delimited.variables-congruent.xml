@@ -56,26 +56,40 @@ def call():
         d_read = obj.read().decode('utf-8', errors = 'replace')
 
         # find which entity file is documented in
-        z = md.find_entity_index(fname, pid, entityNames, ids)
-        if z is None:
+        index_list = md.find_entity_index(fname, pid, entityNames, ids)
+        if index_list is None:
             output_data.append(f"{fname} does not appear to be documented in the metadata.")
             output_type.append("text")
             status_data.append("FAILURE")
             continue
-        z = z[0]
+        # Set entity index number to the first item in the list
+        z = index_list[0]
+
+        # Set default value using the entity index
+        num_header_lines = z
+        # headerLines represents 'numHeaderLines' which is retrieved from the EML document
+        if isinstance(headerLines, list):
+            # If we successfully retrieve a list, we will check what the value is
+            if headerLines[z] == 'null':
+                # There are no header lines
+                num_header_lines = 0
+            if isinstance(headerLines[z], int):
+                # We'll use the value from the list of it is an integer
+                num_header_lines = headerLines[z]
         
         # try to read in the file
-        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
-        colnames = list(df.columns)
+        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], num_header_lines)
         if error:
             error_msg = (
               f"{fname} is unable to be read as a table: {error}."
-              + f"Additional Info: entity index z: {z}. headerLines: {headerLines}"
+              + f" Debug Info: entity index z: {z}. headerLines: {headerLines}"
             )
+            output_data.append(error_msg)
             output_type.append("text")
             status_data.append("FAILURE")
             continue
 
+        colnames = list(df.columns)
         # extract the entity from the metadata doc and attributeNames
         ent = md.find_eml_entity(document, pid, fname)
         att_names = [elem.text for elem in ent.findall(".//attributeName")]

@@ -64,6 +64,7 @@ def call():
         obj, sys = manager.get_object(pid)
       except Exception as e:
         output_data.append(f"Unexpected Exception: {e}")
+        output_type.append("text")
         status_data.append("FAILURE")
         continue
 

@@ -112,7 +112,13 @@ def call():
                 f"{fname} contains duplicate column content: {error_msg}"
             )
 
-        # TODO: Check for duplicate rows
+        # Check for duplicate rows
+        duplicate_rows = metadata.find_duplicate_rows(df)
+        if duplicate_rows is not None:
+            normalization_errors_count += 1
+            normalization_errors_data.append(
+                f"{fname} contains duplicate rows: {duplicate_rows}"
+            )
 
         # TODO: Check for obscene amount of columns (DISCUSS)
 

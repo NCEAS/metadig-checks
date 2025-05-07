@@ -18,6 +18,7 @@ def call():
     global metadigpy_result
 
     from metadig import StoreManager
+    from metadig import metadata
     import metadig as md
     import pandas as pd
     import io
@@ -89,29 +90,27 @@ def call():
         normalization_errors_count = 0
         normalization_errors_data = []
 
-        # Check for duplicate field names/columns
-        # When pandas reads a .csv, it renames a duplicate column and appends: .#
-        column_names = df.columns
-        columns_to_check = column_names
-        contains_period = any("." in col for col in column_names)
-        if contains_period:
-            # Get a new list that substrings everything before the '.' to check for duplicates
-            columns_to_check = [col.rsplit(".", 1)[0] for col in column_names]
-        # Check the columns
-        checked_cols = set()
-        duplicate_cols = set()
-        for col in columns_to_check:
-            if col in checked_cols:
-                duplicate_cols.add(col)
-            checked_cols.add(col)
+        # Check for duplicate field names
+        duplicate_cols, contains_period = metadata.find_duplicate_column_names(df)
         if duplicate_cols:
             normalization_errors_count += 1
             normalization_errors_data.append(f"{fname} contains duplicate columns: {', '.join(duplicate_cols)}")
         elif contains_period:
             # Add a warning if there's no duplicates and a period is found in the field
-            normalization_errors_data.append(f"{fname} has periods '.' in the field names. We recommend replacing with underscores '_'")
+            warn_msg = f"{fname} has periods '.' in the field names. We recommend replacing with underscores '_'"
+            normalization_errors_data.append(warn_msg)
 
-        # TODO: Check for duplicate columns
+        # Check for duplicate column content
+        duplicate_col_content = metadata.find_duplicate_column_content(df)
+        if len(duplicate_col_content) != 0:
+            normalization_errors_count += 1
+            error_msg = "; ".join(
+                f"'{dup}' duplicates '{orig}' (hash: {h})"
+                for dup, orig, h in duplicate_cols
+            )
+            normalization_errors_data.append(
+                f"{fname} contains duplicate column content: {error_msg}"
+            )
 
         # TODO: Check for duplicate rows
 

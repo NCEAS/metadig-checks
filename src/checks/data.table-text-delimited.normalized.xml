@@ -119,7 +119,7 @@ def call():
         # TODO: Check for reasonable amount of non-repeating values (DISCUSS)
 
         if normalization_errors_count == 0:
-            if not normalization_errors_data:
+            if normalization_errors_data:
                 output_data.append(f"{fname} is normalized. Additional Details: {', '.join(normalization_errors_data)}")
             else:
                 output_data.append(f"{fname} is normalized.")

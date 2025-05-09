@@ -122,7 +122,7 @@ def call():
 
         # TODO: Discuss
         # Check for obscene amount of columns
-        num_of_cols = metadata.find_number_of_columns
+        num_of_cols = metadata.find_number_of_columns(df)
         if num_of_cols >= 1000:
             normalization_errors_count += 1
             normalization_errors_data.append(

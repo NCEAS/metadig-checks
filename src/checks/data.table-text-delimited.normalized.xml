@@ -106,7 +106,7 @@ def call():
             normalization_errors_count += 1
             error_msg = "; ".join(
                 f"'{dup}' duplicates '{orig}' (hash: {h})"
-                for dup, orig, h in duplicate_cols
+                for dup, orig, h in duplicate_col_content
             )
             normalization_errors_data.append(
                 f"{fname} contains duplicate column content: {error_msg}"

@@ -120,7 +120,6 @@ def call():
                 f"{fname} contains duplicate rows: {duplicate_rows}"
             )
 
-        # TODO: Discuss
         # Check for obscene amount of columns
         num_of_cols = metadata.find_number_of_columns(df)
         if num_of_cols >= 1000:
@@ -129,7 +128,7 @@ def call():
                 f"{fname} contains an excessive number of columns: {num_of_cols}"
             )
 
-        # TODO: Check for reasonable amount of non-repeating values (DISCUSS)
+        # TODO: DISCUSS - Adding check for reasonable amount of non-repeating values
 
         if normalization_errors_count == 0:
             if normalization_errors_data:

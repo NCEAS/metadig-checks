@@ -279,7 +279,7 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.description.present-2.0.0</id>
+        <id>entity.description.present-2.1.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>

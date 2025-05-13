@@ -210,7 +210,7 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.checksum.present-2.0.0</id>
+        <id>entity.checksum.present-2.1.0</id> 
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
@@ -232,7 +232,7 @@
          <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.format.present-2.0.0</id>
+        <id>entity.format.present-2.1.0</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>
@@ -264,7 +264,7 @@
          <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.attributeUnits.present-2.0.0</id>
+        <id>entity.attributeUnits.present-2.1.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
@@ -289,27 +289,27 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.methods.present.1</id>
+        <id>resource.methods.present-2.0.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>provenance.ProcessStepCode.present-2.0.0</id>
+        <id>provenance.ProcessStepCode.present-2.1.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>provenance.sourceEntity.present.1</id>
+        <id>provenance.sourceEntity.present-2.0.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>provenance.trace.present.1</id>
+        <id>provenance.trace.present-2.0.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check> 
     <check>
-        <id>resource.license.present-2.0.0</id>
+        <id>resource.license.present-2.1.0</id>
         <type>Reusable</type>
         <level>REQUIRED</level>
     </check>

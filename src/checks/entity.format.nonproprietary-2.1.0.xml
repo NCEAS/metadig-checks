@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>entity.format.nonproprietary-2.1.0</id>
+  <name>Non proprietary entity format</name>
+  <description>Check that all entities use non-propietary formats.</description>
+  <type>Reusable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global mdq_params
+  global entityFormats
+  global entityFormatNames
+  
+  # Check the data formats for all data entities.
+  # The check fails if the specified data format matches a format marked as proprietary.
+  # This check uses a reformatted copy of the DataONE format list, that is usually kept in the file 
+  # /opt/local/metadig/DataONEformats.csv. This file is manually edited to mark specific formats as proprietary. This file is obtained using the DataONE 'formats'
+  # service, i.e 'https://cn.dataone.org/cn/v2/formats'.
+  
+  import metadig.variable as mvar
+  import csv
+  maxPrint = 5
+  
+  def isProprietary(formats, thisFormat):
+    for row in formats:
+      if (row[4].lower().strip() in ("yes", "y", "true", "t", "1")):
+        if(row[2].lower().strip() == thisFormat.lower().strip()):
+          return True
+        if(row[3].lower().strip() == thisFormat.lower().strip()):
+          return True
+        
+    return False
+  
+  # Are any entity formats present at all, even ones that don't specify 
+  # a format name. This is the list of all formats present.
+  if ('entityFormats' not in globals() or entityFormats is None):
+    output = "No entity formats were found so unable to check for proprietary formats."
+    status = "FAILURE"
+    return False
+    
+  entityFormats = mvar.toUnicode(entityFormats)
+  if(isinstance(entityFormats, str)):
+    entityFormats = [entityFormats]
+    
+  # Entity formats are present, but non that could explicitly define a format type
+  # so give them credit for having any formats defined, i.e. no formats that 
+  # require explicitly defined format names are present.
+  if ('entityFormatNames' not in globals() or entityFormatNames is None):
+    output = "No proprietary data entity formats found (out of {} total formats.".format(len(entityFormats))
+    status = "SUCCESS"
+    return True
+    
+  dataFilename = "DataONEformats.csv"
+  formatsFile = ""
+  # The checks data directory is passed via the 'mdq_params' hash
+  # The filename is known only to this check.
+  if('mdq_params' not in globals()):
+    output = "Internal error running check, mdq_params not available to check."
+    status = "ERROR"
+    return False
+  else:
+    formatsFile = "{}/{}".format(mdq_params['metadigDataDir'], dataFilename)
+  
+  # Create list with the DataONE formats
+  formats = []
+  with open(formatsFile, 'r', newline='') as csvfile:
+      fmtreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+      for row in fmtreader:
+          formats.append(row)
+
+  # entityFormatNames = mvar.toUnicode(entityFormatNames)
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(entityFormatNames, str)):
+    entityFormatNames = [entityFormatNames]
+  
+  proprietaryFound = []
+        
+  # Check each entity format and see if it is in the 'proprietary' list, which
+  # is based on all formats from DataONE that have been manually determined t  o be
+  # proprietary
+  for i in range(0, len(entityFormatNames)):
+    # Check if the entity format is a single string or arrayList
+    thisFormat = entityFormatNames[i]
+    if(isProprietary(formats, thisFormat)):
+      proprietaryFound.append(thisFormat)
+      
+  if(len(proprietaryFound) > 0):
+    fmts = list(set([str(f) for f in proprietaryFound]))
+    output = (
+    "It is recommended that non-proprietary file formats be used where possible. "
+    "These "+ str(len(fmts)) + " proprietary data formats (out of "+ str(len(entityFormats)) + " total formats) were found: " + str(fmts[0:maxPrint])[1:-1].replace("'", "")
+)
+    if(len(fmts) > maxPrint):
+      output += ", ..."
+    status = "FAILURE"
+    return False
+  else:
+    output = "No proprietary data entity formats found (out of {} total formats).".format(len(entityFormats))
+    status = "SUCCESS"
+    return True
+      ]]></code>
+  <selector>
+    <name>entityFormats</name>
+    <xpath>
+        /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format |
+        /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format |
+        //resourceFormat/MD_Format |
+        /eml/dataset/*/physical/dataFormat |
+        /resource/formats/format
+      </xpath>
+      <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .encodingFormat</expression>
+  </selector>
+  <selector>
+    <name>entityFormatNames</name>
+    <xpath>
+          /*/distributionInfo/MD_Distribution/distributionFormat/MD_Format/name/*/text()[normalize-space()] |
+          /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorFormat/MD_Format/name/*/text()[normalize-space()] |
+          //resourceFormat/MD_Format/name | 
+          /eml/dataset/*/physical/dataFormat/externallyDefinedFormat/formatName/text()[normalize-space()] |
+          /resource/formats/format
+      </xpath>
+      <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .encodingFormat</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

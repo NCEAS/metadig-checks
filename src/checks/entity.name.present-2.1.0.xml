@@ -70,6 +70,10 @@ def call():
     </subSelector>
     <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .name</expression>
   </selector>
+  <selector>
+    <name>entities</name>
+    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload")</expression>
+  </selector>
   <dialect>
     <name>DataCite 4</name>
     <xpath>boolean(/*[local-name() = 'resource'])</xpath>

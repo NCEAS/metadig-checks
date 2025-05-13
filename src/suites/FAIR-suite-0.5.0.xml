@@ -70,12 +70,12 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>entity.identifier.present-2.0.0</id> <!-- review -->
+        <id>entity.identifier.present-2.1.0</id>
         <type>Findable</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.identifierType.present-2.0.0</id> <!-- review -->
+        <id>entity.identifierType.present-2.1.0</id> 
         <type>Findable</type>
         <level>OPTIONAL</level>
     </check>
@@ -154,12 +154,12 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>resource.serviceLocation.present.1</id>
+        <id>resource.serviceLocation.present-2.0.0</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>resource.serviceProvider.present-2.0.0</id>
+        <id>resource.serviceProvider.present-2.1.0</id>
         <type>Accessible</type>
         <level>OPTIONAL</level>
     </check>
@@ -247,14 +247,14 @@
         <level>OPTIONAL</level>
     </check>
     <check>
-        <id>resource.serviceType.present.1</id>
+        <id>resource.serviceType.present-2.0.0</id>
         <type>Interoperable</type>
         <level>OPTIONAL</level>
     </check>
     
     <!-- Reusable -->
     <check>
-        <id>entity.format.nonproprietary-2.0.1</id>
+        <id>entity.format.nonproprietary-2.1.0</id>
         <type>Reusable</type>
          <level>REQUIRED</level>
     </check>

@@ -15,7 +15,7 @@ def call():
   import metadig.variable as mvar
 
   # A distribution contact identifier is not present
-  if 'distributionContactIdentifier' not in globals() or distributionContactIdentifier is None:
+  if 'distributionContactIdentifier' not in globals() or distributionContactIdentifier is None or len(distributionContactIdentifier) == 0:
     output = "No distribution contact identifier was found."
     status = "FAILURE"
     return False

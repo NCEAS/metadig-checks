@@ -14,7 +14,7 @@ def call():
   import metadig.variable as mvar
 
   # A distribution contact is not present
-  if 'distributionContact' not in globals() or distributionContact is None:
+  if 'distributionContact' not in globals() or distributionContact is None or len(distributionContact) == 0:
     output = "No distribution contact was found."
     status = "FAILURE"
     return False

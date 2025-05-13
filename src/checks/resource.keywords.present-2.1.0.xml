@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>resource.keywords.present-2.1.0</id>
+  <name>Resource Keywords Present</name>
+  <description>Check if keywords are present.</description>
+  <type>Findable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  import re
+  import metadig.variable as mvar
+
+  global keywords
+
+  # Fail if no keywords present
+  if (not 'keywords' in globals() or keywords is None):
+    output = "No keywords were found."
+    status = "FAILURE"
+    return False
+
+  # Convert all values to unicode
+  keywords = mvar.toUnicode(keywords)
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(keywords, str)):
+    keywords = [keywords]
+
+  # Passed all tests!
+  if(len(keywords) == 1):
+    output = "1 keyword was found."
+  else:
+    output = "{} keywords were found.".format(len(keywords))
+    
+  # Passed all tests!
+  status = "SUCCESS"
+  return True 
+      ]]></code>
+  <selector>
+    <name>keywords</name>
+    <xpath>
+           /resource/subjects/subject |
+           /*/identificationInfo/*/descriptiveKeywords/*/keyword |
+           /eml/dataset/keywordSet/keyword
+      </xpath>
+      <expression syntax="json-path">.keywords[] | select(type == "object") </expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

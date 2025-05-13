@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>resource.abstractLength.sufficient-2.0.0</id>
+  <name>Resource Abstract Length Sufficient</name>
+  <description>Check that an abstract exists and is of sufficient length.</description>
+  <type>Findable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  # check: datasetAbstractLength
+  import re
+  import metadig.variable as mvar
+  
+  global abstract
+
+  global output
+  global status
+  minLength = 100
+  
+  if 'abstract' not in globals() or abstract is None:
+    output = "An abstract was not found."
+    status = "FAILURE"
+    return False
+
+  if(mvar.isBlank(abstract)):
+    output = "The abstract is blank"
+    status = "FAILURE"
+    return False
+    
+  # Convert to unicode so that non-ascii characters don't cause decoding errors
+  abstract = mvar.toUnicode(abstract)
+  
+  # The abstract can be a textType element, so it may contain multiple subelements, i.e. <para>, etc 
+  # Since the metadig-engine is stuck at XPath 1.0, we cannot use the xpath to gather these into 
+  # a single string.
+  if(isinstance(abstract, list)):
+    abstract = ' '.join(abstract)
+  
+  numWords = len(re.split('\s+', abstract.strip()))
+  if (numWords < minLength):
+    output = "The abstract word count of '{}' is less that the recommended minimum of '{}'".format(numWords, minLength)
+    status = "FAILURE"
+    return False
+  else:
+    output = "The abstract is valid, with a word count of {}".format(numWords)
+    status = "SUCCESS"
+    return True
+      ]]></code>
+  <selector>
+    <name>abstract</name>
+    <xpath>/resource/descriptions/description[@descriptionType='Abstract'] |
+          /eml/*/abstract//text()[normalize-space()] |
+          /*/identificationInfo/*/abstract//text()[normalize-space()]
+    </xpath>
+    <expression syntax="json-path">.description</expression>
+  </selector>
+  <selector>
+    <name>datasetTitle</name>
+    <xpath>/resource/titles/title[not(@titleType)]/text()  |
+           /eml/dataset/title/text() |
+           /*/identificationInfo/*/citation/CI_Citation/title/text()
+    </xpath>
+    <expression syntax="json-path">.name</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

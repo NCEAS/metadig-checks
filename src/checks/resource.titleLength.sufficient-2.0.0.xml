@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>resource.titleLength.sufficient-2.0.0</id>
+  <name>Resource title length is sufficient</name>
+  <description>Check that the resource title is greater than 7 words and less than 20.</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code><![CDATA[
+  check <- function() {
+    library(base)
+
+    if(!as.logical(titlePresent)) {
+      return(list(status = "FAILURE", output = sprintf("A resource title was not found so unable to check title word length.")))
+    }
+
+    # Required minimum word count for title
+    strictMinCount <- 5
+    # Recommended minimum word count
+    minWordCount <- 7
+    # Recommended max word count
+    maxWordCount <- 20
+
+    wordCount <- length(unlist(strsplit(as.character(datasetTitle), "\\s+", perl=T)))
+    if (wordCount < strictMinCount) {
+      return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The minimum required word count is %s.", wordCount, minWordCount))) 
+    } else if (wordCount < minWordCount) {
+      return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The minimum recommended word count is %s.", wordCount, minWordCount))) 
+    } else if (wordCount > maxWordCount) {
+      return(list(status = "FAILURE", output = sprintf("The number of words in the resource's title is %d. The maximum recommended word count is %s.", wordCount, maxWordCount))) 
+    } else {
+      return(list(status = "SUCCESS", output = sprintf("The number of words in the resource's title is sufficient because it is between %d and %d words long.", minWordCount, maxWordCount))) 
+    }
+  }
+  result <- check()
+  mdq_result <- list(status=result$status, output=list(list(value=result$output)))
+  ]]></code>
+  <!-- For DataCite, the main title does not have attributes -->
+  <selector>
+    <name>titlePresent</name>
+    <xpath>boolean(
+           /resource/titles/title[not(@titleType)] or
+	       /eml/dataset/title or 
+      	   /*/identificationInfo/*/citation/CI_Citation/title)
+    </xpath>
+    <expression syntax="json-path">if .name != null then "TRUE" else "FALSE" end</expression>
+  </selector>
+  <selector>
+    <name>datasetTitle</name>
+    <xpath>/resource/titles/title[not(@titleType)]/text()  |
+           /eml/dataset/title/text() |
+           /*/identificationInfo/*/citation/CI_Citation/title/text()
+    </xpath>
+    <expression syntax="json-path">.name</expression>
+  </selector>
+  <dialect>
+     <name>DataCite 4</name>
+     <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

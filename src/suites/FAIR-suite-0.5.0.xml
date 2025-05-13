@@ -237,7 +237,7 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>entity.name.present-2.0.0</id>
+        <id>entity.name.present-2.1.0</id>
         <type>Interoperable</type>
         <level>REQUIRED</level>
     </check>

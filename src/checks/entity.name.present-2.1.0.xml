@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>entity.name.present-2.1.0</id>
+  <name>Entity Names Present</name>
+  <description>Check that a name is specified for every entity.</description>
+  <type>Interoperable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global entities
+  
+  import metadig.variable as mvar
+  
+  maxPrint = 5
+  # Check if a name is present for each entity.
+  if not entityPresent:
+    output = "No entities were found so unable to check entity names."
+    status = "FAILURE"
+    return False
+    
+  missing = []
+  
+  # Convert all values, single or list, to unicode
+  entities = mvar.toUnicode(entities)
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(entities, str)):
+    entities = [entities]
+    
+  for i in range(0, len(entities)):
+    name = entities[i]
+    # No name for this entity was specified
+    if(name == None or mvar.isBlank(name)):
+      missing.append("entity #{}".format(i))
+  
+  if(len(missing) == 1):
+    output = "The following entity is missing a name: {}".format(missing[0])
+    status = "FAILURE"
+    return False
+  elif (len(missing) > 1):
+    output = "The following {} entities are missing a name: '{}'".format(len(missing), ', '.join(missing[0:maxPrint]))
+    if(len(missing) > maxPrint):
+      output += ", ..."
+    status = "FAILURE"
+    return False
+  else:
+    output = "All {} entities have names.".format(len(entities))
+    status = "SUCCESS"
+    return True
+    ]]></code>
+  <selector>
+    <name>entityPresent</name>
+    <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])
+      </xpath>
+      <expression syntax="json-path">if .distribution[] | select(."@type" == "DataDownload") != null then "True" else "False" end</expression>
+  </selector>
+  <selector>
+    <name>entities</name>
+    <xpath>
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]
+      </xpath>
+    <subSelector>
+      <name>name</name>
+      <xpath>
+             ./entityName 
+         </xpath>
+    </subSelector>
+    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .name</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

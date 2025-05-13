@@ -123,12 +123,12 @@
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.distributionContact.present-2.0.0</id>
+        <id>resource.distributionContact.present-2.1.0</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>
     <check>
-        <id>resource.distributionContactIdentifier.present-2.0.0</id>
+        <id>resource.distributionContactIdentifier.present-2.1.0</id>
         <type>Accessible</type>
         <level>REQUIRED</level>
     </check>

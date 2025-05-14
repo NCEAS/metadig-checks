@@ -23,6 +23,11 @@ def call():
     output = "No entities were found so unable to check their descriptions."
     status = "FAILURE"
     return False
+
+  if entities is None:
+    output = "No entity descriptions were found."
+    status = "FAILURE"
+    return False
     
   entityCount = 0
   missing = []
@@ -31,7 +36,7 @@ def call():
   entityNames = mvar.toUnicode(entityNames)
 
   if(isinstance(entities, str)):
-    entities = [entitities]
+    entities = [entities]
 
   if(isinstance(entityNames, str)):
     entityNames = [entityNames]

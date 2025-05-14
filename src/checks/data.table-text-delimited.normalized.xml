@@ -115,11 +115,10 @@ def call():
         # Check for duplicate rows
         duplicate_rows = metadata.find_duplicate_rows(df)
         if duplicate_rows is not None:
+            dr_summary = duplicate_rows.to_markdown()
             normalization_errors_count += 1
-            # Note: If there are many columns, the result of printing 'duplicate_rows'
-            #       will be condensed, which is how python displays a pandas df
             normalization_errors_data.append(
-                f"{fname} contains duplicate rows: {duplicate_rows}"
+                f"{fname} contains duplicate rows: \n{dr_summary} \n"
             )
 
         # Check for obscene amount of columns
@@ -132,16 +131,17 @@ def call():
 
         # TODO: DISCUSS - Adding check for reasonable amount of non-repeating values
 
+        norm_errors_md_output = '\n'.join(f'| {line}' for line in normalization_errors_data)
         if normalization_errors_count == 0:
             if normalization_errors_data:
-                output_data.append(f"{fname} is normalized. Additional Details: {', '.join(normalization_errors_data)}")
+                output_data.append(f"{fname} is normalized. Additional Details: {norm_errors_md_output}")
             else:
                 output_data.append(f"{fname} is normalized.")
-            output_type.append("text")
+            output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"{fname} contains normalization issues: {', '.join(normalization_errors_data)}")
-            output_type.append("text")
+            output_data.append(f"{fname} contains normalization issues: {norm_errors_md_output}")
+            output_type.append("markdown")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)

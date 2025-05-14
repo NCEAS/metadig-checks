@@ -18,6 +18,7 @@ def call():
     global metadigpy_result
 
     from metadig import StoreManager
+    from metadig import metadata
     import metadig as md
     import pandas as pd
     import io
@@ -56,16 +57,29 @@ def call():
         d_read = obj.read().decode('utf-8', errors = 'replace')
 
         # find which entity file is documented in
-        z = md.find_entity_index(fname, pid, entityNames, ids)
-        if z is None:
+        index_list = md.find_entity_index(fname, pid, entityNames, ids)
+        if index_list is None:
             output_data.append(f"{fname} does not appear to be documented in the metadata.")
             output_type.append("text")
             status_data.append("FAILURE")
             continue
-        z = z[0]
+        # Set entity index number to the first item in the list
+        z = index_list[0]
 
+        # Set default value using the entity index
+        num_header_lines = z
+        # headerLines represents 'numHeaderLines' which is retrieved from the EML document
+        if isinstance(headerLines, list):
+            # If we successfully retrieve a list, we will check what the value is
+            if headerLines[z] == 'null':
+                # There are no header lines
+                num_header_lines = 0
+            if isinstance(headerLines[z], int):
+                # We'll use the value from the list of it is an integer
+                num_header_lines = headerLines[z]
+        
         # try to read in the file
-        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], headerLines if isinstance(headerLines, int) else headerLines[z])
+        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], num_header_lines)
         if error:
             output_data.append(f"{fname} is unable to be read as a table. {error}")
             output_type.append("text")
@@ -76,46 +90,58 @@ def call():
         normalization_errors_count = 0
         normalization_errors_data = []
 
-        # Check for duplicate field names/columns
-        # When pandas reads a .csv, it renames a duplicate column and appends: .#
-        column_names = df.columns
-        columns_to_check = column_names
-        contains_period = any("." in col for col in column_names)
-        if contains_period:
-            # Get a new list that substrings everything before the '.' to check for duplicates
-            columns_to_check = [col.rsplit(".", 1)[0] for col in column_names]
-        # Check the columns
-        checked_cols = set()
-        duplicate_cols = set()
-        for col in columns_to_check:
-            if col in checked_cols:
-                duplicate_cols.add(col)
-            checked_cols.add(col)
+        # Check for duplicate field names
+        duplicate_cols, contains_period = metadata.find_duplicate_column_names(df)
         if duplicate_cols:
             normalization_errors_count += 1
             normalization_errors_data.append(f"{fname} contains duplicate columns: {', '.join(duplicate_cols)}")
         elif contains_period:
             # Add a warning if there's no duplicates and a period is found in the field
-            normalization_errors_data.append(f"{fname} has periods '.' in the field names. We recommend replacing with underscores '_'")
+            warn_msg = f"{fname} has periods '.' in the field names. We recommend replacing with underscores '_'"
+            normalization_errors_data.append(warn_msg)
 
-        # TODO: Check for duplicate columns
+        # Check for duplicate column content
+        duplicate_col_content = metadata.find_duplicate_column_content(df)
+        if len(duplicate_col_content) != 0:
+            normalization_errors_count += 1
+            error_msg = "; ".join(
+                f"'{dup}' duplicates '{orig}' (hash: {h})"
+                for dup, orig, h in duplicate_col_content
+            )
+            normalization_errors_data.append(
+                f"{fname} contains duplicate column content: {error_msg}"
+            )
 
-        # TODO: Check for duplicate rows
+        # Check for duplicate rows
+        duplicate_rows = metadata.find_duplicate_rows(df)
+        if duplicate_rows is not None:
+            dr_summary = duplicate_rows.to_markdown()
+            normalization_errors_count += 1
+            normalization_errors_data.append(
+                f"{fname} contains duplicate rows: \n{dr_summary} \n"
+            )
 
-        # TODO: Check for obscene amount of columns (DISCUSS)
+        # Check for obscene amount of columns
+        num_of_cols = metadata.find_number_of_columns(df)
+        if num_of_cols >= 1000:
+            normalization_errors_count += 1
+            normalization_errors_data.append(
+                f"{fname} contains an excessive number of columns: {num_of_cols}"
+            )
 
-        # TODO: Check for reasonable amount of non-repeating values (DISCUSS)
+        # TODO: DISCUSS - Adding check for reasonable amount of non-repeating values
 
+        norm_errors_md_output = '\n'.join(f'| {line}' for line in normalization_errors_data)
         if normalization_errors_count == 0:
-            if not normalization_errors_data:
-                output_data.append(f"{fname} is normalized. Additional Details: {', '.join(normalization_errors_data)}")
+            if normalization_errors_data:
+                output_data.append(f"{fname} is normalized. Additional Details: {norm_errors_md_output}")
             else:
                 output_data.append(f"{fname} is normalized.")
-            output_type.append("text")
+            output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"{fname} contains normalization issues: {', '.join(normalization_errors_data)}")
-            output_type.append("text")
+            output_data.append(f"{fname} contains normalization issues: {norm_errors_md_output}")
+            output_type.append("markdown")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)

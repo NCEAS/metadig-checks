@@ -24,6 +24,11 @@ def call():
     status = "FAILURE"
     return False
   
+  if all(item is None for item in attributeDefinition):
+    output = "No attribute definitions were found."
+    status = "FAILURE"
+    return False
+  
   # Convert to a list if only one element, if needed
   if(isinstance(attributeDefinition, str)):
     attributeDefinition = [attributeDefinition]
@@ -71,7 +76,7 @@ def call():
              /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
              /*/contentInfo/*/dimension/MI_Band/descriptor or
              /*/contentInfo/*/dimension/MD_Band/descriptor)</xpath>
-    <expression syntax="json-path">if .variableMeasured | .[] | .description != null then "True" else "False" end</expression>
+    <expression syntax="json-path">if (.variableMeasured? and (.variableMeasured[]?.description? != null)) then "True" else "False" end</expression>
   </selector>
   <selector>
     <name>attributeDefinition</name>
@@ -88,7 +93,7 @@ def call():
                 ./descriptor/*/text()[normalize-space()]
             </xpath>
     </subSelector>
-    <expression syntax="json-path">.variableMeasured | .[] | .description</expression>
+    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] | .description else null end</expression>
   </selector>
   <selector>
     <name>attributeName</name>
@@ -109,7 +114,7 @@ def call():
                 ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()])[1]
             </xpath>
     </subSelector>
-    <expression syntax="json-path">.variableMeasured | .[] | .name</expression>
+    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] | .name else null end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

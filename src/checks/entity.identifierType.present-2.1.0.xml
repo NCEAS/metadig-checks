@@ -19,6 +19,11 @@ def call():
     output = "No entity identifier types were found."
     status = "FAILURE"
     return False
+
+  if all(item is None for item in entityIdentifier):
+    output = "No entity identifiers were found."
+    status = "FAILURE"
+    return False
         
   entityIdentifierType = mvar.toUnicode(entityIdentifierType)
 
@@ -42,7 +47,7 @@ def call():
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
          /eml/dataset/*/alternateIdentifier/@system 
       </xpath>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .identifier.propertyID</expression>
+    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .identifier.propertyId </expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

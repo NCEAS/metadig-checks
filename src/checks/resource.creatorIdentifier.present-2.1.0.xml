@@ -19,6 +19,11 @@ def call():
     output = "A resource creator identifier was not found."
     status = "FAILURE"
     return False
+
+  if all(item is None for item in creatorIdentifier):
+    output = "A resource creator identifier was not found."
+    status = "FAILURE"
+    return False
     
   # Convert all values to unicode
   creatorIdentifier = mvar.toUnicode(creatorIdentifier)
@@ -52,7 +57,7 @@ def call():
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='creator']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()]
       </xpath>
-      <expression syntax="json-path">.creator | .[] | .[] | (.identifier // ."@id")</expression>
+      <expression syntax="json-path">.creator[] | (.[]?.identifier? // .[]?["@id"]? // .identifier? // .["@id"]?)</expression>
   </selector>
   <dialect>
     <name>DataCite 3.1</name>

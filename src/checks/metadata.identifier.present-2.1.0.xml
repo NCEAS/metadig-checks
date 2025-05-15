@@ -27,15 +27,20 @@ def call():
   
   # This should only be a single value, but if not (a list is returned) just get the first 
   # one
-  if(isinstance(metadataIdentifier, list)):
-    metadataIdentifier = metadataIdentifier[0]
+  # if(isinstance(metadataIdentifier, list)):
+  #  metadataIdentifierSingle = metadataIdentifier[0]
     
   if (mvar.isBlank(metadataIdentifier)):
     output = "The metadata identifier is blank."
     status = "FAILURE"
     return False
   else:
-    output = "The metadata identifier '{}' was found.".format(metadataIdentifier.strip())
+    if isinstance(metadataIdentifier, list):
+      formatted_id = ', '.join(str(id).strip() for id in metadataIdentifier if id is not None)
+    else:
+      formatted_id = str(metadataIdentifier).strip()
+
+    output = "The metadata identifier '{}' was found.".format(formatted_id)
     status = "SUCCESS"
     return True 
     
@@ -48,7 +53,7 @@ def call():
              /*/fileIdentifier |
              /eml/@packageId
       </xpath>
-      <expression syntax="json-path">.identifier as $id | ($id[]?.value? // $id.value? // $id)</expression>
+      <expression syntax="json-path">.identifier as $id | ($id[]?.value? // $id.value? // $id) | [select(. != null)]</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

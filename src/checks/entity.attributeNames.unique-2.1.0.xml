@@ -36,7 +36,7 @@ def call():
   attributeCount = 0
   
   # The check fails if no attributes are found.
-  if(len(entities) == 0):
+  if entities is None or len(entities) == 0 or all(item is None for item in entities):
     output = "No attributes were found, unable to check for duplicate attribute names."
     status = "FAILURE"
     return False
@@ -88,7 +88,11 @@ def call():
               ./descriptor/*/text()[normalize-space()]
           </xpath>
     </subSelector>
-    <expression syntax="json-path">.variableMeasured | .[] | .name</expression>
+    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] | .name else null end</expression>
+  </selector>
+  <selector>
+    <name>entities</name>
+    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] else null end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

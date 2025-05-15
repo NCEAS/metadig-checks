@@ -21,6 +21,11 @@ def call():
     output = "No entity identifiers were found."
     status = "FAILURE"
     return False
+
+  if all(item is None for item in entityIdentifier):
+    output = "No entity identifiers were found."
+    status = "FAILURE"
+    return False
         
   entityIdentifier = mvar.toUnicode(entityIdentifier)
   # If a single value, convert to a list for easier processing (i.e. don't have

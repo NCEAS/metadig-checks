@@ -84,7 +84,7 @@ def call():
       <name>...</name>
       <xpath>./physical/authentication</xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | select(."spdx:checksum" != null) | ."spdx:checksum"[0]."spdx:checksumValue" </expression>
+    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | select(."spdx:checksum" != null)? | ."spdx:checksum"[0]."spdx:checksumValue" </expression>
   </selector>
   <selector>
     <name>checksumAlgorithms</name>

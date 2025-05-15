@@ -67,6 +67,10 @@ def call():
     </subSelector>
     <expression syntax="json-path">.keywords[] | .inDefinedTermSet?</expression>
   </selector>
+  <selector>
+    <name>keywordGroups</name>
+    <expression syntax="json-path">.keywords[]</expression>
+  </selector>
   <dialect>
     <name>DataCite 4</name>
     <xpath>boolean(/*[local-name() = 'resource'])</xpath>

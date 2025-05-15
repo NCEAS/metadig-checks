@@ -22,6 +22,11 @@ def call():
     output = "No attributes were found so unable to check attribute units."
     status = "FAILURE"
     return False
+  
+  if all(item is None for item in attributeUnits):
+    output = "No attributes were found so unable to check attribute units."
+    status = "FAILURE"
+    return False
     
   attributeCount = 0
   missing = []
@@ -91,7 +96,7 @@ def call():
              ./units//name/text()[normalize-space()]
          </xpath>
     </subSelector>
-    <expression syntax="json-path">.variableMeasured | .[] | .unitText</expression>
+    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] | .unitText else null end</expression>
   </selector>
   <selector>
     <name>attributeName</name>
@@ -110,7 +115,7 @@ def call():
              ./descriptor/*/text()[normalize-space()])[1]
          </xpath>
     </subSelector>
-    <expression syntax="json-path">.variableMeasured | .[] | .name</expression>
+    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] | .name else null end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

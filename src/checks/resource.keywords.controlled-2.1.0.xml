@@ -65,7 +65,7 @@ def call():
         )
       </xpath>
     </subSelector>
-    <expression syntax="json-path">.keywords[] | select(type == "object") | .inDefinedTermSet</expression>
+    <expression syntax="json-path">.keywords[] | .inDefinedTermSet?</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

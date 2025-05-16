@@ -45,7 +45,7 @@ def call():
            /*/identificationInfo/*/descriptiveKeywords/*/keyword |
            /eml/dataset/keywordSet/keyword
       </xpath>
-      <expression syntax="json-path">.keywords[]</expression>
+      <expression syntax="json-path">.keywords</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

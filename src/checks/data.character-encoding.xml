@@ -38,7 +38,7 @@ def call():
         # If data object is not available, skip the pid.
         try:
           obj, sys = manager.get_object(pid)
-          fname = read_sysmeta_element(sys, "fileName")
+          fname = metadata.read_sysmeta_element(sys, "fileName")
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
             output_type.append("text")
@@ -46,6 +46,7 @@ def call():
             continue
 
         # Check character encoding
+        bytes_read = obj.read()
         enc_type, msg = metadata.detect_text_encoding(bytes_read)
         # Check for illegal characters
         if enc_type == "ascii":
@@ -78,6 +79,14 @@ def call():
     return True
 
   ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
   <dialect>
     <name>Ecological Metadata Language</name>
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>

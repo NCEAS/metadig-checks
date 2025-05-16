@@ -17,10 +17,9 @@ def call():
     global output_type
     global metadigpy_result
 
+    from metadig import metadata
     from metadig import StoreManager
     import metadig as md
-    import pandas as pd
-    import io
 
     manager = StoreManager(storeConfiguration)  
 
@@ -38,24 +37,29 @@ def call():
 
         # If data object is not available, skip the pid.
         try:
-          # if file is not text/csv, skip it
-          # otherwise get the object and filename
-          obj, fname, csv_status = md.get_valid_csv(manager, pid)
-          if csv_status == "SKIP":
-              output_data.append(f"{fname} is not a text-delimited table, skipping.")
-              output_type.append("text")
-              status_data.append(csv_status)
-              continue
+          obj, sys = manager.get_object(pid)
+          fname = read_sysmeta_element(sys, "fileName")
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
             output_type.append("text")
             status_data.append("FAILURE")
             continue
 
-        # TODO: Check character encoding
-        # Check to see if it's UTF-8
-        # Check to see if it's ASCII
-        # Handle if it's other
+        # Check character encoding
+        enc_type, msg = metadata.detect_text_encoding(bytes_read)
+        # Check for illegal characters
+        if enc_type == "ascii":
+            output_data.append(f"{fname} is a valid 'ascii' document and does not contain encoding errors.")
+            output_type.append("text")
+            status_data.append("SUCCESS")
+        elif enc_type == "utf-8":
+            output_data.append(f"{fname} is a valid 'utf-8' document and does not contain encoding errors.")
+            output_type.append("text")
+            status_data.append("SUCCESS")
+        elif enc_type == "other":
+            output_data.append(f"Cannot determine type of {fname}. Additional details: {msg}.")
+            output_type.append("text")
+            status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

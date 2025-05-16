@@ -27,7 +27,7 @@ def call():
   
   # This should only be a single value, but if not (a list is returned) just get the first 
   # one
-  if len(metadataIdentifier) > 0:
+  if (metadataIdentifier is not None and not isinstance(metadataIdentifier, str) and not type(metadataIdentifier).__name__ == "String" and len(metadataIdentifier) > 0):
     for id in metadataIdentifier:
       if isinstance(id, str) and id.lower().startswith("doi:"):
         metadataIdentifier = id

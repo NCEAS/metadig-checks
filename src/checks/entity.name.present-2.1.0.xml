@@ -59,8 +59,8 @@ def call():
     <name>entityPresent</name>
     <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])
       </xpath>
-      <expression syntax="json-path">if .distribution[] | select(."@type" == "DataDownload") != null then "True" else "False" end</expression>
-  </selector>
+      <expression syntax="json-path">if .distribution != null then "True" else "False" end</expression>
+    </selector>
   <selector>
     <name>entities</name>
     <xpath>
@@ -72,7 +72,16 @@ def call():
              ./entityName 
          </xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .name</expression>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | .name
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then .distribution.name
+      else null
+      end
+      )</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

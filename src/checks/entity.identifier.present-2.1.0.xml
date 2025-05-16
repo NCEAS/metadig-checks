@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
   <id>entity.identifier.present-2.1.0</id>
   <name>Entity Identifier Present</name>
   <description>Check that each entity has an identifier.</description>
@@ -53,11 +55,21 @@ def call():
   <selector>
     <name>entityIdentifier</name>
     <xpath>
-          /eml/dataset/*/alternateIdentifier |
-          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id |
-          /eml/dataset/*/physical/distribution/online/url
-      </xpath>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | (.identifier.value // .identifier)</expression>
+      /eml/dataset/*/alternateIdentifier |
+      /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@id
+      |
+      /eml/dataset/*/physical/distribution/online/url
+    </xpath>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | (.identifier?.value? // .identifier?)
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then .distribution.identifier?.value? // .distribution.identifier?
+      else null
+      end
+      )</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

@@ -45,8 +45,17 @@ def call():
           /eml/dataset/*/physical/dataFormat |
           /resource/formats/format
       </xpath>
-      <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .encodingFormat</expression>
-  </selector>
+      <expression syntax="json-path">(
+        .distribution[]?
+          | select(."@type"? == "DataDownload")
+          | .encodingFormat
+        ) // (
+        if .distribution?."@type"? == "DataDownload"
+        then .distribution.encodingFormat
+        else null
+        end
+        )</expression>
+    </selector>
   <dialect>
     <name>DataCite 4</name>
     <xpath>boolean(/*[local-name() = 'resource'])</xpath>

@@ -69,7 +69,16 @@ def call():
           /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL/text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL/text()[normalize-space()]
       </xpath>
-      <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .contentUrl</expression>
+      <expression syntax="json-path">(
+        .distribution[]?
+          | select(."@type"? == "DataDownload")
+          | .contentUrl
+        ) // (
+        if .distribution?."@type"? == "DataDownload"
+        then .distribution.contentUrl
+        else null
+        end
+        )</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

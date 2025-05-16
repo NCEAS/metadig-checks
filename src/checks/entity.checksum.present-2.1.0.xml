@@ -73,7 +73,7 @@ def call():
     <name>entitiesPresent</name>
     <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])
     </xpath>
-    <expression syntax="json-path">if .distribution[] | select(."@type" == "DataDownload") != null then "True" else "False" end</expression>
+    <expression syntax="json-path">if .distribution != null then "True" else "False" end</expression>
   </selector>
   <selector>
     <name>checksums</name>
@@ -84,7 +84,18 @@ def call():
       <name>...</name>
       <xpath>./physical/authentication</xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | select(."spdx:checksum" != null)? | ."spdx:checksum"[0]."spdx:checksumValue" </expression>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | select(."spdx:checksum" != null)? 
+        | ."spdx:checksum"[0]."spdx:checksumValue"
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then select(."spdx:checksum" != null)? 
+        | ."spdx:checksum"[0]."spdx:checksumValue"
+      else null
+      end
+      )</expression>
   </selector>
   <selector>
     <name>checksumAlgorithms</name>
@@ -95,7 +106,20 @@ def call():
       <name>...</name>
       <xpath>./physical/authentication[@method]</xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | ."spdx:checksum"[0]."spdx:checksumAlgorithm" | ."@id"</expression>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | select(."spdx:checksum" != null)? 
+        | ."spdx:checksum"[0]."spdx:checksumAlgorithm"
+        | ."@id"
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then select(."spdx:checksum" != null)? 
+        | ."spdx:checksum"[0]."spdx:checksumAlgorithm"
+        | ."@id"
+      else null
+      end
+      )</expression>
   </selector>
   <selector>
     <name>entityNames</name>
@@ -105,7 +129,16 @@ def call():
       <name>name</name>
       <xpath>./entityName</xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .contentUrl </expression>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | .name
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then .distribution.name
+      else null
+      end
+      )</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

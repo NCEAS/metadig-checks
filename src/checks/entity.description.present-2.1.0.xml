@@ -76,7 +76,7 @@ def call():
           /*/contentInfo/MD_CoverageDescription or
           /*/contentInfo/MI_CoverageDescription)
       </xpath>
-      <expression syntax="json-path">if .distribution[] | select(."@type" == "DataDownload") != null then "True" else "False" end</expression>
+      <expression syntax="json-path">if .distribution != null then "True" else "False" end</expression>
   </selector>
   <selector>
     <name>entities</name>
@@ -92,7 +92,16 @@ def call():
              ./attributeDescription/RecordType
          </xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .description</expression>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | .description
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then .distribution.description
+      else null
+      end
+      )</expression>
   </selector>
   <selector>
     <name>entityNames</name>
@@ -109,7 +118,16 @@ def call():
              ./attributeDescription/RecordType
          </xpath>
     </subSelector>
-    <expression syntax="json-path">.distribution[] | select(."@type" == "DataDownload") | .name</expression>
+    <expression syntax="json-path">(
+      .distribution[]?
+        | select(."@type"? == "DataDownload")
+        | .name
+      ) // (
+      if .distribution?."@type"? == "DataDownload"
+      then .distribution.name
+      else null
+      end
+      )</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

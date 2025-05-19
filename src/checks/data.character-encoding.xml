@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.character-encoding</id>
   <name>Text data characters are encoded correctly</name>
-  <description>Check that the characters match the declared encoding.</description>
+  <description>Check that the text content is decodable and whether it's ascii or utf-8.</description>
   <type>identification</type>
   <level>INFO</level>
   <environment>python</environment>
@@ -48,7 +48,8 @@ def call():
         # Check character encoding
         bytes_read = obj.read()
         enc_type, msg = metadata.detect_text_encoding(bytes_read)
-        # Check for illegal characters
+        # TODO: Discuss whether we should also look for characters that can cause
+        #       parsing concerns like \n, \t and add a warning
         if enc_type == "ascii":
             output_data.append(f"{fname} is a valid 'ascii' document and does not contain encoding errors.")
             output_type.append("text")
@@ -71,7 +72,7 @@ def call():
     elif successes == 0 and failures > 0:
         status = "FAILURE"
     else:
-        status = "FAILURE" 
+        status = "FAILURE"
 
     metadigpy_result["identifiers"] = output_identifiers
     metadigpy_result["output"] = output_data

@@ -31,6 +31,7 @@ def call():
     
   entityCount = 0
   missing = []
+  descriptions = []
     
   entities = mvar.toUnicode(entities)
   entityNames = mvar.toUnicode(entityNames)
@@ -40,6 +41,9 @@ def call():
 
   if(isinstance(entityNames, str)):
     entityNames = [entityNames]
+  
+  if isinstance(entityNames, NoneType):
+    entityNames = [None] * len(entities)
   
   # Loop through the entities, checking if each entity has a description.
   # If the entity does not have a description, then add the name to a list
@@ -56,6 +60,8 @@ def call():
     # No description for this entity was specified
     if(description == None):
         missing.append(name)
+
+    descriptions.append(description)
   
   # Add the list of deliquent entities, if any, to the output
   if(len(missing) > 0):
@@ -65,7 +71,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All {} entities have descriptions.".format(entityCount)
+    output = "All entities have descriptions {}.".format(descriptions)
     status = "SUCCESS"
     return True
     ]]></code>

@@ -12,6 +12,7 @@
 def call():
   global output
   global status
+  global keywordGroups
 
   keywordGroupCount = 0
   naturalKeywordGroupCount = 0
@@ -22,13 +23,16 @@ def call():
     output = "No keywords found, unable to check for controlled keywords."
     status = "FAILURE"
     return False
+
+  if(isinstance(keywordGroups, str)):
+    keywordGroups = [keywordGroups]
     
   for i in range(0, len(keywordGroups)):
     keywordGroupCount += 1
     # Should be only one thesaurus per keyword group. If there is ANY thesaurus
     # then it applies to the entire group, and so this group of keywords is
     # controlled and not 'natural'
-    thesaurusPresent = keywordGroups.get(i)
+    thesaurusPresent = keywordGroups[i]
     
     if(thesaurusPresent):
       controlledKeywordGroupCount += 1

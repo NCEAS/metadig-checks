@@ -50,10 +50,10 @@ def call():
     <expression syntax="json-path">(
         .distribution[]?
           | select(."@type"? == "DataDownload")
-          | (.identifier?.value? // .identifier?)
+          | .identifier?.propertyID?
         ) // (
         if .distribution?."@type"? == "DataDownload"
-        then .distribution.identifier?.value? // .distribution.identifier?
+        then .distribution.identifier?.propertyID?
         else null
         end
         )</expression>

@@ -71,7 +71,7 @@ def call():
     status = "FAILURE"
     return False
   else:
-    output = "All entities have descriptions {}.".format(descriptions)
+    output = "All entities have descriptions {}.".format(', '.join(descriptions[0:maxPrint]))
     status = "SUCCESS"
     return True
     ]]></code>

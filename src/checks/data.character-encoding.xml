@@ -58,8 +58,10 @@ def call():
             output_data.append(f"{fname} is a valid 'utf-8' document and does not contain encoding errors.")
             output_type.append("text")
             status_data.append("SUCCESS")
-        elif enc_type == "other":
-            output_data.append(f"Cannot determine type of {fname}. Additional details: {msg}.")
+        else:
+            # TODO: For now, we will only accept valid 'utf-8' and 'ascii' documents as a SUCCESS
+            #       Discuss if we should have specific standards, or should proceed in another path
+            output_data.append(f"{fname} has been detected as a '{enc_type}' document, and may contain errors: {msg}.")
             output_type.append("text")
             status_data.append("FAILURE")
 

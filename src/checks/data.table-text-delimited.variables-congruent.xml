@@ -93,8 +93,16 @@ def call():
             output_type.append("text")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"{fname} variable names do not match documentation. Attribute names: {att_names}. Variable names: {colnames}")
-            output_type.append("text")
+            # Create a table to assist with comparing the variable names
+            table_rows = [
+                "| Attribute Names (Expected) | Variable Names (CSV) |",
+                "|----------------------------|----------------------|"
+            ]
+            for att, col in zip(att_names, colnames):
+                table_rows.append(f"| {att} | {col} |")
+            joined_table_rows = '\n'.join(table_rows)
+            output_data.append(f"{fname} variable names do not match documentation.\n{joined_table_rows}")
+            output_type.append("markdown")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)

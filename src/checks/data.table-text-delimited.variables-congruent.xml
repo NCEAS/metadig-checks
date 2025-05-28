@@ -18,7 +18,7 @@ def call():
     global metadigpy_result
 
     from metadig import StoreManager
-    import metadig as md
+    from metadig import metadata as md
     import pandas as pd
     import io
 
@@ -78,7 +78,10 @@ def call():
                 num_header_lines = headerLines[z]
         
         # try to read in the file
-        df, error = md.read_csv_with_metadata(d_read, fieldDelimiter[z], num_header_lines)
+        obj_bytes_read = obj.read()
+        encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
+        d_read_decoded = obj_bytes_read.decode(encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[z], num_header_lines, encoding_type)
         if error:
             error_msg = (
               f"{fname} is unable to be read as a table: {error}."

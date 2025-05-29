@@ -17,9 +17,8 @@ def call():
     global output_type
     global metadigpy_result
 
-    from metadig import metadata
+    from metadig import metadata as md
     from metadig import StoreManager
-    import metadig as md
 
     manager = StoreManager(storeConfiguration)  
 
@@ -38,7 +37,7 @@ def call():
         # If data object is not available, skip the pid.
         try:
           obj, sys = manager.get_object(pid)
-          fname = metadata.read_sysmeta_element(sys, "fileName")
+          fname = md.read_sysmeta_element(sys, "fileName")
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
             output_type.append("text")
@@ -47,7 +46,7 @@ def call():
 
         # Check character encoding
         bytes_read = obj.read()
-        enc_type, msg = metadata.detect_text_encoding(bytes_read)
+        enc_type, msg = md.detect_text_encoding(bytes_read)
         # TODO: Discuss whether we should also look for characters that can cause
         #       parsing concerns like \n, \t and add a warning
         if enc_type == "ascii":

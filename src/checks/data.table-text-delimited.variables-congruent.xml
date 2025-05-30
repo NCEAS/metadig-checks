@@ -73,7 +73,7 @@ def call():
                 # We'll use the value from the list of it is an integer
                 num_header_lines = header_line_value
         
-        # Try to read the data object
+        # Read the data object
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
         d_read_decoded = obj_bytes_read.decode(encoding_type)
@@ -84,25 +84,41 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        colnames = list(df.columns)
-        # extract the entity from the metadata doc and attributeNames
+        # Extract the entity from the metadata doc and attributeNames
         ent = md.find_eml_entity(document, pid, fname)
         att_names = [elem.text for elem in ent.findall(".//attributeName")]
-        # check if column names match documentation
-        if att_names == colnames:
+        col_names = list(df.columns)
+        if len(att_names) == 0:
+            output_data.append(f"Cannot find attribute names.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+        # Check if column names match documentation
+        if att_names == col_names:
             output_data.append(f"{fname} variable names match documentation.")
             output_type.append("text")
             status_data.append("SUCCESS")
         else:
             # Create a table to assist with comparing the variable names
-            table_rows = [
-                "| Attribute Names (Expected) | Variable Names (CSV) |",
-                "|----------------------------|----------------------|"
+            # Get the max width so that we can insert the correct amount of spaces between pipes
+            att_name_mxw = max(
+                len("Attribute Names (Expected)"),
+                max(len(str(a)) for a in att_names)
+            )
+            col_name_mxw = max(
+                len("Variable Names (CSV)"),
+                max(len(str(c)) for c in col_names)
+            )
+            header = f"| {'Attribute Names (Expected)':<{att_name_mxw}} | {'Variable Names (CSV)':<{col_name_mxw}} |"
+            separator = f"|{'-' * (att_name_mxw + 2)}|{'-' * (col_name_mxw + 2)}|"
+            # Create the rows
+            rows = [
+                f"| {att:<{att_name_mxw}} | {col:<{col_name_mxw}} |"
+                for att, col in zip(att_names, col_names)
             ]
-            for att, col in zip(att_names, colnames):
-                table_rows.append(f"| {att} | {col} |")
-            joined_table_rows = '\n'.join(table_rows)
-            output_data.append(f"{fname} variable names do not match documentation.\n{joined_table_rows}")
+            row_list = [header, separator] + rows
+            table_rows = "\n".join(row_list)
+            # table_rows = "\n".join([header, separator] + rows)
+            output_data.append(f"{fname} variable names do not match documentation.\n{table_rows}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

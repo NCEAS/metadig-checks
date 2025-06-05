@@ -43,7 +43,7 @@ def call():
           //*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty[normalize-space(role/CI_RoleCode)='distributor']/party/*/partyIdentifier/MD_Identifier/code |
           //*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty[normalize-space(role/CI_RoleCode)='pointOfContact']/party/*/partyIdentifier/MD_Identifier/code
       </xpath>
-      <expression syntax="json-path">.creator | (if .[]? then .[] else . end)? | select(.roleName? == "Contact") | .identifier </expression>
+      <expression syntax="json-path">.creator | (if .[]? then .[] else . end)? | select(.roleName? == "Contact") | .identifier // .sameAs </expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

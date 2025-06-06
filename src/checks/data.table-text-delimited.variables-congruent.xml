@@ -38,14 +38,14 @@ def call():
 
         # If data object is not available, skip the pid.
         try:
-          # if file is not text/csv, skip it
-          # otherwise get the object and filename
-          obj, fname, csv_status = md.get_valid_csv(manager, pid)
-          if csv_status == "SKIP":
-              output_data.append(f"{fname} is not a text-delimited table, skipping.")
-              output_type.append("text")
-              status_data.append(csv_status)
-              continue
+            # if file is not text/csv, skip it
+            # otherwise get the object and filename
+            obj, fname, csv_status = md.get_valid_csv(manager, pid)
+            if csv_status == "SKIP":
+                output_data.append(f"`{fname}` is not a text-delimited table, skipping.")
+                output_type.append("markdown")
+                status_data.append(csv_status)
+                continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
             output_type.append("text")
@@ -55,8 +55,8 @@ def call():
         # Ensure that the data object is documented in the list of entity names
         entity_index = md.find_entity_index(fname, pid, entityNames, ids)[0]
         if entity_index is None:
-            output_data.append(f"{fname} does not appear to be documented in the metadata.")
-            output_type.append("text")
+            output_data.append(f"`{fname}` does not appear to be documented in the metadata.")
+            output_type.append("markdown")
             status_data.append("FAILURE")
             continue
 
@@ -79,8 +79,8 @@ def call():
         d_read_decoded = obj_bytes_read.decode(encoding_type)
         df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type)
         if error:
-            output_data.append(f"{fname} is unable to be read as a table: {error}.")
-            output_type.append("text")
+            output_data.append(f"`{fname}` is unable to be read as a table: {error}.")
+            output_type.append("markdown")
             status_data.append("FAILURE")
             continue
 
@@ -94,8 +94,8 @@ def call():
             status_data.append("FAILURE")
         # Check if column names match documentation
         if att_names == col_names:
-            output_data.append(f"{fname} variable names match documentation.")
-            output_type.append("text")
+            output_data.append(f"`{fname}` variable names match documentation.")
+            output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
             # Create a table to assist with comparing the variable names
@@ -118,7 +118,7 @@ def call():
             row_list = [header, separator] + rows
             table_rows = "\n".join(row_list)
             # table_rows = "\n".join([header, separator] + rows)
-            output_data.append(f"{fname} variable names do not match documentation.\n{table_rows}")
+            output_data.append(f"`{fname}` variable names do not match documentation.\n{table_rows}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

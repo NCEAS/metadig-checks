@@ -118,7 +118,7 @@ def call():
             row_list = [header, separator] + rows
             table_rows = "\n".join(row_list)
             # table_rows = "\n".join([header, separator] + rows)
-            output_data.append(f"{fname} variable names do not match documentation.\n{table_rows}")
+            output_data.append(f"`{fname}` variable names do not match documentation.\n{table_rows}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

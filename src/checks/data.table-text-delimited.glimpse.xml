@@ -87,11 +87,11 @@ def call():
         if isinstance(df, pd.DataFrame):
             summary = df.describe()
             summary_md = summary.to_markdown()
-            output_data.append(f"**{fname}** \n {summary_md} \n")
+            output_data.append(f"**`{fname}`** \n {summary_md} \n")
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"{fname} cannot be parsed." + char(type(df)))
+            output_data.append(f"`{fname}` cannot be parsed." + char(type(df)))
             output_type.append("text")
             status_data.append("FAILURE")
 

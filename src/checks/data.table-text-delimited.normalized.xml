@@ -132,13 +132,13 @@ def call():
         norm_errors_md_output = '\n'.join(f'| {line}' for line in normalization_errors_data)
         if normalization_errors_count == 0:
             if normalization_errors_data:
-                output_data.append(f"{fname} is normalized. Additional Details: {norm_errors_md_output}")
+                output_data.append(f"`{fname}` is normalized. Additional Details: {norm_errors_md_output}")
             else:
-                output_data.append(f"{fname} is normalized.")
+                output_data.append(f"`{fname}` is normalized.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"{fname} contains normalization issues: {norm_errors_md_output}")
+            output_data.append(f"`{fname}` contains normalization issues: {norm_errors_md_output}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

@@ -36,8 +36,8 @@ def call():
 
         # If data object is not available, skip the pid.
         try:
-          obj, sys = manager.get_object(pid)
-          fname = md.read_sysmeta_element(sys, "fileName")
+            obj, sys = manager.get_object(pid)
+            fname = md.read_sysmeta_element(sys, "fileName")
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
             output_type.append("text")
@@ -50,18 +50,18 @@ def call():
         # TODO: Discuss whether we should also look for characters that can cause
         #       parsing concerns like \n, \t and add a warning
         if enc_type == "ascii":
-            output_data.append(f"{fname} is a valid 'ascii' document and does not contain encoding errors.")
-            output_type.append("text")
+            output_data.append(f"`{fname}` is a valid 'ascii' document and does not contain encoding errors.")
+            output_type.append("markdown")
             status_data.append("SUCCESS")
         elif enc_type == "utf-8":
-            output_data.append(f"{fname} is a valid 'utf-8' document and does not contain encoding errors.")
-            output_type.append("text")
+            output_data.append(f"`{fname}` is a valid 'utf-8' document and does not contain encoding errors.")
+            output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
             # TODO: For now, we will only accept valid 'utf-8' and 'ascii' documents as a SUCCESS
             #       Discuss if we should have specific standards, or should proceed in another path
-            output_data.append(f"{fname} has been detected as a '{enc_type}' document, and may contain errors: {msg}.")
-            output_type.append("text")
+            output_data.append(f"`{fname}` has been detected as a '{enc_type}' document, and may contain errors: {msg}.")
+            output_type.append("markdown")
             status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)

@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>data.character-encoding</id>
+  <id>data.text-encoding.valid</id>
   <name>Text data characters are encoded correctly</name>
   <description>Check that the text content is decodable and whether it's ascii or utf-8.</description>
   <type>identification</type>

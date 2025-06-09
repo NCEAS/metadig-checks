@@ -4,7 +4,7 @@
   <name>Data Quality Suite</name>
   <description>This is an example Data Quality Suite.</description>
   <check>
-    <id>data.character-encoding</id>
+    <id>data.text-encoding.valid</id>
   </check>
   <check>
     <id>data.format.congruent</id>

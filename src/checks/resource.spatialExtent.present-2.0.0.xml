@@ -30,7 +30,7 @@ def call():
           /eml/*/coverage/geographicCoverage/boundingCoordinates or
           /resource/geoLocations/geoLocation)
       </xpath>
-      <expression syntax="json-path">if .spatialCoverage != null then "True" else "False" end</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .spatialCoverage != null then "True" else "False" end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

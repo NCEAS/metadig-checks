@@ -59,7 +59,7 @@ mdq_result <- list(status=result$status, output=result$values)
       name(/eml/software),
       name(/eml/protocol))
     </xpath>
-    <expression syntax="json-path">."@type"</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | ."@type"</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

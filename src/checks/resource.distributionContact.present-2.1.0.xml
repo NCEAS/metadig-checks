@@ -45,7 +45,10 @@ def call():
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text()[normalize-space()] |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()[normalize-space()]
       </xpath>
-    <expression syntax="json-path">.creator | (if .[]? then .[] else . end)? | select(.roleName? == "Contact")</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | 
+      .creator |
+      (if .[]? then .[] else . end)? |
+      select(.roleName? == "Contact")</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

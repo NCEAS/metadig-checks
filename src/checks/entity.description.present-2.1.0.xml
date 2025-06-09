@@ -82,7 +82,7 @@ def call():
           /*/contentInfo/MD_CoverageDescription or
           /*/contentInfo/MI_CoverageDescription)
       </xpath>
-      <expression syntax="json-path">if .distribution != null then "True" else "False" end</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .distribution != null then "True" else "False" end</expression>
   </selector>
   <selector>
     <name>entities</name>
@@ -98,7 +98,7 @@ def call():
              ./attributeDescription/RecordType
          </xpath>
     </subSelector>
-    <expression syntax="json-path">(
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
       .distribution[]?
         | select(."@type"? == "DataDownload")
         | .description
@@ -124,7 +124,7 @@ def call():
              ./attributeDescription/RecordType
          </xpath>
     </subSelector>
-    <expression syntax="json-path">(
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
       .distribution[]?
         | select(."@type"? == "DataDownload")
         | .name

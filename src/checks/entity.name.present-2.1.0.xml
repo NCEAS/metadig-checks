@@ -72,7 +72,7 @@ def call():
              ./entityName 
          </xpath>
     </subSelector>
-    <expression syntax="json-path">(
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
       .distribution[]?
         | select(."@type"? == "DataDownload")
         | .name

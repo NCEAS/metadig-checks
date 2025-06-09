@@ -53,7 +53,7 @@ def call():
              /*/fileIdentifier |
              /eml/@packageId
       </xpath>
-      <expression syntax="json-path">.identifier as $id | ($id[]?.value? // $id.value? // $id) | [select(. != null)]</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | .identifier as $id | ($id[]?.value? // $id.value? // $id) | [select(. != null)]</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

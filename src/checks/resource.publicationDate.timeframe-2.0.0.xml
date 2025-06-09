@@ -78,7 +78,8 @@
             /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime or
             /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime)
      </xpath>
-     <expression syntax="json-path">if .datePublished != null then "TRUE" else "FALSE" end</expression>
+     <expression syntax="json-path">(.["@graph"]? // [.] )[] | 
+      if .datePublished != null then "TRUE" else "FALSE" end</expression>
    </selector>
    <selector>
        <name>datasetPubDate</name>
@@ -88,7 +89,7 @@
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime//text()[normalize-space()] |
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime//text()[normalize-space()]
        </xpath>
-       <expression syntax="json-path">.datePublished</expression>
+       <expression syntax="json-path">(.["@graph"]? // [.] )[] | .datePublished</expression>
    </selector>
    <dialect>
       <name>DataCite 4</name>

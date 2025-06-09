@@ -73,7 +73,7 @@ def call():
     <name>entitiesPresent</name>
     <xpath>boolean(/eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity])
     </xpath>
-    <expression syntax="json-path">if .distribution != null then "True" else "False" end</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .distribution != null then "True" else "False" end</expression>
   </selector>
   <selector>
     <name>checksums</name>
@@ -84,7 +84,7 @@ def call():
       <name>...</name>
       <xpath>./physical/authentication</xpath>
     </subSelector>
-    <expression syntax="json-path">(
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
       .distribution[]?
         | select(."@type"? == "DataDownload")
         | select(."spdx:checksum" != null)? 

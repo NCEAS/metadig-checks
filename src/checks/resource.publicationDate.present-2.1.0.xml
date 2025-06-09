@@ -39,7 +39,7 @@ def call():
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='publication']/date/DateTime |
               /*/identificationInfo/*/citation/CI_Citation/date/CI_Date[dateType/CI_DateTypeCode='publication']/date/DateTime
        </xpath>
-       <expression syntax="json-path">.datePublished</expression>
+       <expression syntax="json-path">(.["@graph"]? // [.] )[] | .datePublished</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

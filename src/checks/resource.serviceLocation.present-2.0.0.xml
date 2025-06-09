@@ -24,7 +24,7 @@ def call():
     <name>serviceLocation</name>
     <xpath>boolean(/*/identificationInfo/SV_ServiceIdentification/containsOperations/SV_OperationMetadata/connectPoint/CI_OnlineResource/linkage/URL)
       </xpath>
-    <expression syntax="json-path">.potentialAction | .target | .urlTemplate</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .potentialAction | .target | .urlTemplate</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

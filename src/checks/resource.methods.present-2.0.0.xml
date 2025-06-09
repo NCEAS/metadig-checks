@@ -39,7 +39,7 @@ def call():
         /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/description//text()[normalize-space()] |
         /eml/dataset/methods/methodStep/description//text()[normalize-space()]
       </xpath>
-    <expression syntax="json-path">.measurementTechnique</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .measurementTechnique</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

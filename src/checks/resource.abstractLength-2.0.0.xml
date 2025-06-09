@@ -53,7 +53,7 @@ def call():
           /eml/*/abstract//text()[normalize-space()] |
           /*/identificationInfo/*/abstract//text()[normalize-space()]
     </xpath>
-    <expression syntax="json-path">.description</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .description</expression>
   </selector>
   <selector>
     <name>datasetTitle</name>
@@ -61,7 +61,7 @@ def call():
            /eml/dataset/title/text() |
            /*/identificationInfo/*/citation/CI_Citation/title/text()
     </xpath>
-    <expression syntax="json-path">.name</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .name</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

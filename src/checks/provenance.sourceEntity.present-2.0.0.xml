@@ -30,7 +30,7 @@ def call():
           or /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LI_ProcessStep/source/LI_Source
           or /*/dataQualityInfo/DQ_DataQuality/lineage/LI_Lineage/processStep/LE_ProcessStep/source/LE_Source)
       </xpath>
-      <expression syntax="json-path">if ."prov:wasDerivedFrom" != null then "True" else "False" end</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | if ."prov:wasDerivedFrom" != null then "True" else "False" end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

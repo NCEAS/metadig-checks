@@ -100,7 +100,7 @@ def call():
           /eml/dataset/intellectualRights/text()[normalize-space()] |
           /*/identificationInfo/*/resourceConstraints/MD_LegalConstraints/accessConstraints/*/text()[normalize-space()]
       </xpath>
-      <expression syntax="json-path">.isAccessibleForFree</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | .isAccessibleForFree</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

@@ -24,7 +24,7 @@ def call():
   <selector>
     <name>serviceType</name>
     <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/serviceType/LocalName))</xpath>
-    <expression syntax="json-path">if .potentialAction | ."@type" != null then "True" else "False" end</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .potentialAction | ."@type" != null then "True" else "False" end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

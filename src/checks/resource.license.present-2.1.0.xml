@@ -66,7 +66,7 @@ def call():
         /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode[@codeListValue="license"] |
         /eml/dataset/licensed/licenseName//text()[normalize-space()]
       </xpath>
-      <expression syntax="json-path">.license</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | .license</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

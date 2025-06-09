@@ -27,7 +27,7 @@ def call():
           /*/identificationInfo/*/extent/EX_Extent/temporalElement/EX_TemporalExtent or
           /eml/*/coverage/temporalCoverage)
       </xpath>
-      <expression syntax="json-path">if .temporalCoverage != null then "True" else "False" end</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .temporalCoverage != null then "True" else "False" end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

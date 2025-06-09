@@ -47,7 +47,7 @@ def call():
           /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/organisationName/*/text()[normalize-space()] |
           /*/identificationInfo/SV_ServiceIdentification/pointOfContact/CI_ResponsibleParty/positionNam/*/text()[normalize-space()]
       </xpath>
-    <expression syntax="json-path">.potentialAction | .target</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .potentialAction | .target</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

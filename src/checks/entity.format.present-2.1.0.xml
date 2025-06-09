@@ -45,7 +45,7 @@ def call():
           /eml/dataset/*/physical/dataFormat |
           /resource/formats/format
       </xpath>
-      <expression syntax="json-path">(
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
         .distribution[]?
           | select(."@type"? == "DataDownload")
           | .encodingFormat

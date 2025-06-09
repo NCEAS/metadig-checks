@@ -47,7 +47,7 @@ def call():
           /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
          /eml/dataset/*/alternateIdentifier/@system 
       </xpath>
-    <expression syntax="json-path">(
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
         .distribution[]?
           | select(."@type"? == "DataDownload")
           | .identifier?.propertyID?

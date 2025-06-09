@@ -22,7 +22,7 @@
         /eml/dataset/coverage/geographicCoverage/geographicDescription or
         /*/identificationInfo/*/extent/EX_Extent/description)
     </xpath>
-    <expression syntax="json-path">if .spatialCoverage != null then "TRUE" else "FALSE" end</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .spatialCoverage != null then "TRUE" else "FALSE" end</expression>
   </selector>
 
    <dialect>

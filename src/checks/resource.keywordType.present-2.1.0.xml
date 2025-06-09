@@ -78,7 +78,7 @@ def call():
             ../type/MD_KeywordTypeCode
         </xpath>
     </subSelector>
-    <expression syntax="json-path">.keywords[]? | ."@type"?</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .keywords[]? | ."@type"?</expression>
   </selector>
   <selector>
     <name>keywordNames</name>
@@ -90,7 +90,7 @@ def call():
       <name>name</name>
       <xpath>text()[normalize-space()] | */text()[normalize-space()]</xpath>
     </subSelector>
-    <expression syntax="json-path">.keywords[]? | .name?</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .keywords[]? | .name?</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

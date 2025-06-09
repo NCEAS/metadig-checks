@@ -57,8 +57,9 @@ def call():
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='creator']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/partyIdentifier/MD_Identifier/code//text()[normalize-space()]
       </xpath>
-      <expression syntax="json-path">.creator? 
-        | (if .["@list"]? != null then .["@list"][] else . end) 
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] 
+        | .creator? 
+        | (if .[]? != null then .[] else . end) 
         | (.identifier? // ."@id"? // .sameAs?)</expression>
   </selector>
   <dialect>

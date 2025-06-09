@@ -51,7 +51,7 @@
            /eml/dataset/title/text() |
            /*/identificationInfo/*/citation/CI_Citation/title/text()
     </xpath>
-    <expression syntax="json-path">.name</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | .name</expression>
   </selector>
   <dialect>
      <name>DataCite 4</name>

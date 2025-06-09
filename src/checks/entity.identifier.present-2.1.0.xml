@@ -60,7 +60,7 @@ def call():
       |
       /eml/dataset/*/physical/distribution/online/url
     </xpath>
-    <expression syntax="json-path">(
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
       .distribution[]?
         | select(."@type"? == "DataDownload")
         | (.identifier?.value? // .identifier?)

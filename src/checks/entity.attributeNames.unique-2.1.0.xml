@@ -88,11 +88,11 @@ def call():
               ./descriptor/*/text()[normalize-space()]
           </xpath>
     </subSelector>
-    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] | .name else null end</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .variableMeasured? then .variableMeasured[] | .name else null end</expression>
   </selector>
   <selector>
     <name>entities</name>
-    <expression syntax="json-path">if .variableMeasured? then .variableMeasured[] else null end</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .variableMeasured? then .variableMeasured[] else null end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

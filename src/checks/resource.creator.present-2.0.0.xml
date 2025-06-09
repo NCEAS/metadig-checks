@@ -30,7 +30,7 @@ def call():
          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='author']/party/*/name or
          /*/identificationInfo/*/citation/CI_Citation/citedResponsibleParty/CI_Responsibility[normalize-space(role/CI_RoleCode)='originator']/party/*/name)
       </xpath>
-      <expression syntax="json-path">.creator</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | .creator</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

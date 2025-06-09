@@ -69,7 +69,7 @@ def call():
           /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL/text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='download']/linkage/URL/text()[normalize-space()]
       </xpath>
-      <expression syntax="json-path">(
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
         .distribution[]?
           | select(."@type"? == "DataDownload")
           | .contentUrl

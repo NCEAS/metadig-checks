@@ -56,7 +56,7 @@ def call():
           /*/distributionInfo/MD_Distribution/transferOptions/MD_DigitalTransferOptions/onLine/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL/text()[normalize-space()] |
           /*/identificationInfo/*/citation/CI_Citation/onlineResource/CI_OnlineResource[function/CI_OnLineFunctionCode='information']/linkage/URL/text()[normalize-space() ]
   </xpath>
-  <expression syntax="json-path">.url</expression>
+  <expression syntax="json-path">(.["@graph"]? // [.] )[] | .url</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

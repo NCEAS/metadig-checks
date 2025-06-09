@@ -41,7 +41,7 @@ def call():
   <selector>
     <name>provenanceProcessStepCode</name>
     <xpath>/eml/*/methods/methodStep/software//text()[normalize-space()]</xpath>
-    <expression syntax="json-path">."prov:wasGeneratedBy" | ."prov:hadPlan" </expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | ."prov:wasGeneratedBy" | ."prov:hadPlan" </expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

@@ -28,7 +28,7 @@ def call():
          or (/*/identificationInfo/*/citation/CI_Citation/date/CI_Date[normalize-space(dateType/CI_DateTypeCode)='revision']/date/DateTime)
          )
       </xpath>
-      <expression syntax="json-path">.dateModified</expression>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | .dateModified</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

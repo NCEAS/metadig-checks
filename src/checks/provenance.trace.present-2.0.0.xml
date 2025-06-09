@@ -32,7 +32,7 @@ def call():
           /eml/*/methods/methodStep/dataSource or
           /eml/*/methods/methodStep/subStep/dataSource)
       </xpath>
-    <expression syntax="json-path">if ."prov:wasGeneratedBy" != null then "True" else "False" end</expression>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if ."prov:wasGeneratedBy" != null then "True" else "False" end</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>

@@ -6,7 +6,7 @@
   <name>Text data characters are encoded correctly</name>
   <description>Check that the text content is decodable and whether it's ascii or utf-8.</description>
   <type>identification</type>
-  <level>INFO</level>
+  <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[
 

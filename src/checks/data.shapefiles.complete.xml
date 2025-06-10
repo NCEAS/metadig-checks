@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.shapefiles.complete</id>
+  <name>Shapefile sets are complete with correct naming</name>
+  <description>Check that ESRI shapefile sets contain the required files with the correct naming convention.</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    from metadig import metadata as md
+    import pandas as pd
+    import io
+    import zipfile
+    import os
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if len(dataPids) == 0:
+      output_data = "No data objects found."
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+
+        # If data object is not available, skip the pid.
+        try:
+            # if file is not a zip file, skip it
+            # otherwise get the object and filename
+            obj, sys = manager.get_object(pid)
+            fname = md.read_sysmeta_element(sys, "fileName")
+            fid = md.read_sysmeta_element(sys, "formatId")
+            if fid != "application/zip" & fid != "application/vnd.shp+zip":
+                output_data.append(f"`{fname}` does not look like a shapefile set, skipping.")
+                output_type.append("markdown")
+                status_data.append("SKIP")
+                continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+
+        # Read the data object
+        with zipfile.ZipFile(obj, 'r') as zip_obj:
+            file_list = zip_obj.namelist()
+
+        # remove directories/extensionless files
+        file_list = [f for f in file_list if os.path.splitext(f)[1]]
+
+        exts = []
+        fn_no_ext = []
+        for file_name in file_list:
+            # get just the extensions
+            exts.append(os.path.splitext(file_name)[1]) 
+            # get just the base names
+            if file_name.endswith(".shp.xml"): # account for a common double extension and remove it
+                fn_no_ext.append(file_name[:-8])
+            else:
+                fn_no_ext.append(os.path.splitext(file_name)[0]) # otherwise just remove the extension
+
+        # check if all base names are the same
+        all_same = len(set(fn_no_ext)) == 1
+
+        # set required extensions
+        required = {".shp", ".prj", ".dbf"}
+        has_required = required.issubset(set(exts))
+
+        if not has_required:
+            missing = required - set(exts)
+        
+        # Check if column names match documentation
+        if all_same & has_required:
+            output_data.append(f"`{fname}` has a complete set of shapefiles, with correct naming.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        elif not has_required & all_same:
+            output_data.append(f"`{fname}` is missing files with extensions: {missing}")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+        elif not all_same & has_required:
+            output_data.append(f"`{fname}` has files with multiple base names `{file_list}`")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    output = output_data
+    
+    if successes > 0 and failures == 0:
+        status = "SUCCESS"
+    elif successes == 0 and failures > 0:
+        status = "FAILURE"
+    else:
+        status = "FAILURE" 
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

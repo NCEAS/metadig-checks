@@ -85,15 +85,15 @@ def call():
             missing = required - set(exts)
         
         # Check if column names match documentation
-        if all_same & has_required:
+        if all_same and has_required:
             output_data.append(f"`{fname}` has a complete set of shapefiles, with correct naming.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
-        elif not has_required & all_same:
+        elif not has_required:
             output_data.append(f"`{fname}` is missing files with extensions: {missing}")
             output_type.append("markdown")
             status_data.append("FAILURE")
-        elif not all_same & has_required:
+        elif not all_same:
             output_data.append(f"`{fname}` has files with multiple base names `{file_list}`")
             output_type.append("markdown")
             status_data.append("FAILURE")

@@ -45,7 +45,7 @@ def call():
             obj, sys = manager.get_object(pid)
             fname = md.read_sysmeta_element(sys, "fileName")
             fid = md.read_sysmeta_element(sys, "formatId")
-            if fid != "application/zip" & fid != "application/vnd.shp+zip":
+            if fid != "application/zip" and fid != "application/vnd.shp+zip":
                 output_data.append(f"`{fname}` does not look like a shapefile set, skipping.")
                 output_type.append("markdown")
                 status_data.append("SKIP")
@@ -62,6 +62,9 @@ def call():
 
         # remove directories/extensionless files
         file_list = [f for f in file_list if os.path.splitext(f)[1]]
+        # remove junk mac files
+        mac_junk_prefixes = ("__MACOSX", ".DS_Store", "._", ".Trashes")
+        file_list = [f for f in file_list if not any(f.startswith(p) or f == p for p in mac_junk_prefixes)] 
 
         exts = []
         fn_no_ext = []

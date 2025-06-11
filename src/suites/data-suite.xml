@@ -18,10 +18,14 @@
   <check>
     <id>data.table-text-delimited.glimpse</id>
   </check>
+  <!--
   <check>
     <id>data.table-text-delimited.normalized</id>
   </check>
-  <check>
+  <check> -->
     <id>data.shapefiles.complete</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.missing-values-documented</id>
   </check>
 </mdq:suite>

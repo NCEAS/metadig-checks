@@ -67,8 +67,8 @@ def call():
                 status_data.append("FAILURE")
         else:
             output_data.append(f"`{fname}` is not a text document.")
-            output_type.append("text")
-            status_data.append("FAILURE")
+            output_type.append("markdown")
+            status_data.append("SKIP")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

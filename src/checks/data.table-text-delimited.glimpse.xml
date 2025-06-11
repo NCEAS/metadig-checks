@@ -85,6 +85,7 @@ def call():
             continue
 
         if isinstance(df, pd.DataFrame):
+            df.columns = [md.escape_markdown_chars(col) for col in df.columns]
             summary = df.describe()
             summary_md = summary.to_markdown()
             output_data.append(f"**`{fname}`** \n {summary_md} \n")

@@ -112,12 +112,11 @@ def call():
             separator = f"|{'-' * (att_name_mxw + 2)}|{'-' * (col_name_mxw + 2)}|"
             # Create the rows
             rows = [
-                f"| {att:<{att_name_mxw}} | {col:<{col_name_mxw}} |"
+                f"| {md.escape_for_markdown(att):<{att_name_mxw}} | {md.escape_for_markdown(col):<{col_name_mxw}} |"
                 for att, col in zip(att_names, col_names)
             ]
             row_list = [header, separator] + rows
             table_rows = "\n".join(row_list)
-            # table_rows = "\n".join([header, separator] + rows)
             output_data.append(f"`{fname}` variable names do not match documentation.\n{table_rows}")
             output_type.append("markdown")
             status_data.append("FAILURE")

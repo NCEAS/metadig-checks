@@ -2,9 +2,9 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>data.table-text-delimited.normalized</id>
-  <name>Check whether the data is normalized.</name>
-  <description>Data is normalized when there are no duplicate columns or rows and does not contain duplicate column or row names </description>
+  <id>data.table-text-delimited.column-names-well-formed</id>
+  <name>Check whether there are any special characters found in the column names</name>
+  <description>When special characters are found in column names, this could potentially cause parsing issues.</description>
   <type>identification</type>
   <level>INFO</level>
   <environment>python</environment>
@@ -138,14 +138,6 @@ def call():
     <subSelector>
       <name>...</name>
       <xpath>./entityName</xpath>
-    </subSelector>
-  </selector>
-  <selector>
-    <name>objectNames</name>
-    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
-    <subSelector>
-      <name>...</name>
-      <xpath>./physical/objectName</xpath>
     </subSelector>
   </selector>
   <selector>

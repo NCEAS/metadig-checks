@@ -24,8 +24,7 @@ def call():
 
     # Import your required libariries to perform the data check you're writing
     from metadig import StoreManager
-    import metadig as md
-    import pandas as pd
+    from metadig import metadata as md
     ...
 
     # Get a manager object so that we can retrieve objects
@@ -96,7 +95,7 @@ def call():
     elif successes == 0 and failures > 0:
         status = "FAILURE"
     else:
-        status = "FAILURE" 
+        status = "FAILURE"
 
     # The array below must be populated in order for the `MetaDIG-py` run_check
     # function to return valid results.

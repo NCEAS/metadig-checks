@@ -16,6 +16,9 @@
     <id>data.table-text-delimited.well-formed</id>
   </check>
   <check>
+    <id>data.table-text-delimited.column-names-well-formed</id>
+  </check>
+  <check>
     <id>data.table-text-delimited.glimpse</id>
   </check>
   <!--

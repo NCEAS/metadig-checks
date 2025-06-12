@@ -11,6 +11,7 @@
   <code><![CDATA[
 
 def call():
+
     global output
     global status
     global output_identifiers
@@ -20,6 +21,7 @@ def call():
     from metadig import metadata as md
     import pandas as pd
     import io
+    import re
     manager = StoreManager(storeConfiguration)  
     output_data = []
     status_data = []
@@ -64,7 +66,6 @@ def call():
             if isinstance(header_line_value, int):
                 # We'll use the value from the list of it is an integer
                 num_header_lines = header_line_value
-
         # Read the data object
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
@@ -76,54 +77,64 @@ def call():
             status_data.append("FAILURE")
             continue
         # Extract the entity from the metadata doc and attributeNames
-        atts = ent.findall(".//attribute")
-        att_names = [att.findtext("attributeName") for att in atts]
-        mv_codes = [[code.text for code in att.findall(".//missingValueCode/code")] or [None] for att in atts]
-        col_names = list(df.columns)
+        ent = md.find_eml_entity(document, pid, fname)
 
+        atts = ent.findall("./attributeList/attribute")
+        mv_codes = []
+        for att in atts:
+            t = att.findall("./missingValueCode/code")
+            mv = [c.text for c in t]
+            mv_codes.append(mv)
+        att_names = [att.findtext("attributeName") for att in atts]
+        t = [att.findall(".//missingValueCode/code") for att in atts]
+        #mv_codes = [[code.text for code in att.findall(".//missingValueCode/code")] or [None] for att in atts]
+        col_names = list(df.columns)
         common_mv_codes = ['NA', 'n/a', 'N/A', '', ' ', "NaN", "null", "NULL"]
         nine_pattern = re.compile(r"-9{3,}")
-
         all_undoc = []
         all_doc = []
 
         for col, mv in zip(col_names, mv_codes):
-
             # normalize data to string
             values_in_col = df[col].astype(str)
+
             # check for undocumented missing value codes
             explicit_match = values_in_col.isin(common_mv_codes)
             fuzzy_nine_match = values_in_col.str.contains(nine_pattern)
             matches_common = values_in_col[explicit_match | fuzzy_nine_match].tolist()
             undocumented = set(matches_common) - set(mv)
-
-            if mv is not None and mv != [None]:
+            if mv is not None:
                 # check for documented missing value codes  
                 doc_match = values_in_col.isin(mv)
                 matches_documented = values_in_col[doc_match].tolist()
                 documented = set(matches_documented)
-                all_doc.extend(documented)
+                all_doc.append((col, list(documented)))
 
-            all_undoc.extend(undocumented)
-
-        if len(all_undoc) == 0 and len(all_doc) > 0:
-            output_data.append(f"`{fname}`'s missing value codes: ```{set(all_doc)}``` are all documented.")
+            all_undoc.append((col, list(undocumented)))
+    
+        undoc_flat = [item for _, codes in all_undoc for item in codes if codes]
+        doc_flat = [item for _, codes in all_doc for item in codes if codes]
+        
+        if len(undoc_flat) == 0 and len(doc_flat) > 0:
+            doc_msgs = [f"`{col}`: `{set(codes)}`" for col, codes in all_doc if codes]
+            msg = f"`{fname}`'s missing value codes are all documented:\n" + "\n".join(doc_msgs)
+            output_data.append(msg)
             output_type.append("markdown")
             status_data.append("SUCCESS")
-        if len(all_undoc) > 0 and len(all_doc) > 0:
-            output_data.append(f"`{fname}`'s missing value codes: ```{set(all_doc)}``` are documented, but the following possible missing value codes were found: ```{set(all_undoc)}```")
+        elif len(undoc_flat) > 0:
+            doc_msgs = [f"`{col}`: `{set(codes)}`" for col, codes in all_undoc if codes]
+            msg = f"`{fname}` has the following undocumented missing values:\n" + "\n".join(doc_msgs)
+            output_data.append(msg)
             output_type.append("markdown")
             status_data.append("FAILURE")
-        if len(all_undoc) > 0 and len(all_doc) == 0:
-            output_data.append(f"`{fname}`'s missing value codes: ```{set(all_undoc)}``` are undocumented.")
+        elif len(undoc_flat) == 0 and len(doc_flat) == 0:
+            output_data.append(f"`{fname}` did not have any missing value codes detected.")
             output_type.append("markdown")
-            status_data.append("FAILURE")
-
+            status_data.append("SUCCESS")
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
     output = output_data
-
     if failures > 0:
         status = "FAILURE"
     else:
@@ -131,6 +142,7 @@ def call():
     metadigpy_result["identifiers"] = output_identifiers
     metadigpy_result["output"] = output_data
     metadigpy_result["status"] = status
+
     return True
 
   ]]></code>

@@ -21,6 +21,7 @@ def call():
     from metadig import metadata as md
     import pandas as pd
     import io
+    import re
 
     manager = StoreManager(storeConfiguration)  
 
@@ -84,9 +85,21 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check for special characters
+        # Check for special characters and spaces
+        special_chars_summary = {}
+        allowed_pattern = re.compile(r'[^a-zA-Z0-9_-]')
+        column_names = df.columns
+        for column in column_names:
+            special_chars_found = list(set(allowed_pattern.findall(string)))
+            if special_chars_summary[column] = special_chars_found
 
-        # Check for no spaces
+        if len(special_chars_summary) == 0:
+            output_data.append(f"No special characters found in columns in `{fname}`.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        else:
+            # TODO:
+            print(special_chars_summary)
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

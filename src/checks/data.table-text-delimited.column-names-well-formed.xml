@@ -90,16 +90,18 @@ def call():
         allowed_pattern = re.compile(r'[^a-zA-Z0-9_-]')
         column_names = df.columns
         for column in column_names:
-            special_chars_found = list(set(allowed_pattern.findall(string)))
-            if special_chars_summary[column] = special_chars_found
+            special_chars_found = list(set(allowed_pattern.findall(column)))
+            if special_chars_found:
+                special_chars_summary[column] = special_chars_found
 
         if len(special_chars_summary) == 0:
             output_data.append(f"No special characters found in columns in `{fname}`.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            # TODO:
-            print(special_chars_summary)
+            output_data.append(f"`{fname}` contains columns names with special characters: {special_chars_summary}")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

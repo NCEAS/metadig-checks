@@ -99,7 +99,21 @@ def call():
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"`{fname}` contains columns names with special characters: {special_chars_summary}")
+            # Create the markdown table
+            col_name_mxw = max(
+                len("Column Names"),
+                max(len(str(c)) for c in column_names)
+            )
+            spch_mxw = len("Special Characters")
+            header = f"| {'Column Names':<{col_name_mxw}} | {'Special Characters':<{spch_mxw}} |"
+            separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (spch_mxw + 2)}|"
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(chars) if isinstance(chars, list) else chars):<{spch_mxw}} |"
+                for col, chars in special_chars_summary.items()
+            ]
+            row_list = [header, separator] + rows
+            table_rows = "\n".join(row_list)
+            output_data.append(f"`{fname}` contains columns names with special characters: {table_rows}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

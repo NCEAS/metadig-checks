@@ -95,7 +95,7 @@ def call():
                 special_chars_summary[column] = special_chars_found
 
         if len(special_chars_summary) == 0:
-            output_data.append(f"No special characters found in columns in `{fname}`.")
+            output_data.append(f"Column names in `{fname}` are well formed. No special characters detected.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
@@ -113,7 +113,7 @@ def call():
             ]
             row_list = [header, separator] + rows
             table_rows = "\n".join(row_list)
-            output_data.append(f"`{fname}` contains columns names with special characters: {table_rows}")
+            output_data.append(f"`{fname}` contains column names with special characters:\n{table_rows}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

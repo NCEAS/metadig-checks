@@ -108,7 +108,7 @@ def call():
             header = f"| {'Column Names':<{col_name_mxw}} | {'Special Characters':<{spch_mxw}} |"
             separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (spch_mxw + 2)}|"
             rows = [
-                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(chars) if isinstance(chars, list) else chars):<{spch_mxw}} |"
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in chars) if isinstance(chars, list) else chars):<{spch_mxw}} |"
                 for col, chars in special_chars_summary.items()
             ]
             row_list = [header, separator] + rows

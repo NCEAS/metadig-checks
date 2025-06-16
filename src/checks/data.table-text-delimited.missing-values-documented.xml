@@ -117,13 +117,15 @@ def call():
         
         if len(undoc_flat) == 0 and len(doc_flat) > 0:
             doc_msgs = [f"`{col}`: `{set(codes)}`" for col, codes in all_doc if codes]
-            msg = f"`{fname}`'s missing value codes are all documented:\n" + "\n".join(doc_msgs)
+            doc_msgs_joined = "\n".join(doc_msgs)
+            msg = f"`{fname}` has all missing value codes documented:\n{doc_msgs_joined}"
             output_data.append(msg)
             output_type.append("markdown")
             status_data.append("SUCCESS")
         elif len(undoc_flat) > 0:
             doc_msgs = [f"`{col}`: `{set(codes)}`" for col, codes in all_undoc if codes]
-            msg = f"`{fname}` has the following undocumented missing values:\n" + "\n".join(doc_msgs)
+            doc_msgs_joined = "\n".join(doc_msgs)
+            msg = f"`{fname}` has the following undocumented missing values:\n{doc_msgs_joined}"
             output_data.append(msg)
             output_type.append("markdown")
             status_data.append("FAILURE")

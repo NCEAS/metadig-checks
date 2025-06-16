@@ -6,7 +6,7 @@
   <name>Check whether there are any special characters found in the column names</name>
   <description>When special characters are found in column names, this could potentially cause parsing issues.</description>
   <type>identification</type>
-  <level>INFO</level>
+  <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[
 

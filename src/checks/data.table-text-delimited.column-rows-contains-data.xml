@@ -85,21 +85,21 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check that there are no blank columns
+        # Check that there are no NaN cells
         columns_with_empty_cells = df.isnull().any().any()
         if columns_with_empty_cells:
-            output_data.append(f"`{fname}` contains column names with empty cells or NaN characters.")
+            output_data.append(f"`{fname}` contains column names with NaN characters.")
             output_type.append("markdown")
             status_data.append("FAILURE")
-        else:
-            output_data.append(f"`{fname}` does not contain empty spaces or rows.")
-            output_type.append("markdown")
-            status_data.append("SUCCESS")
-
-        # Start with NaN values
-        # And then empty strings
+            
+        # Check for empty strings in cells
 
         # Check that there are no empty rows
+
+        # Success scenario
+        #output_data.append(f"`{fname}` does not contain empty cells, NaN characters, or empty rows.")
+        #output_type.append("markdown")
+        #status_data.append("SUCCESS")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

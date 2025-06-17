@@ -86,6 +86,14 @@ def call():
             continue
 
         # Check that there are no blank columns
+        columns_with_empty_cells = df.isnull().any()
+        if columns_with_empty_cells:
+            output_data.append(f"`{fname}` contains column names with empty cells or NaN characters:\n{table_rows}")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+
+        # Start with NaN values
+        # And then empty strings
 
         # Check that there are no empty rows
 

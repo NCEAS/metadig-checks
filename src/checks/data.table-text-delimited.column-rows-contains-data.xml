@@ -78,21 +78,19 @@ def call():
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
         d_read_decoded = obj_bytes_read.decode(encoding_type)
-        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, True)
         if error:
             output_data.append(f"`{fname}`is unable to be read as a table. {error}")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
 
-        # Check that there are no NaN cells
-        columns_with_empty_cells = df.isnull().any().any()
-        if columns_with_empty_cells:
-            output_data.append(f"`{fname}` contains column names with NaN characters.")
+        # Check that there are no NaN cells, this covers empty strings (which get converted to nan)
+        columns_with_nan_cells = df.columns[df.isnull().any()].tolist()
+        if len(columns_with_nan_cells) != 0:
+            output_data.append(f"`{fname}` contains column names with NaN characters: {', '.join(columns_with_nan_cells)}")
             output_type.append("markdown")
             status_data.append("FAILURE")
-            
-        # Check for empty strings in cells
 
         # Check that there are no empty rows
 

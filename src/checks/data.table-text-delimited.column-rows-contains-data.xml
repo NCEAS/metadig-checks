@@ -85,8 +85,8 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check that there are no NaN cells, this covers empty strings (which gets converted to nan)
-        # If there are any trailing commas or extra delimiters, it will catch this and produce a 'nan' value
+        # Check that there are no NaN cells, this covers empty strings (which gets converted to nan), as well
+        # as any trailing commas or extra delimiters.
         # Blank lines and empty spaces will not be caught, but should not cause issues
         columns_with_nan_cells = df.columns[df.isnull().any()].tolist()
         if len(columns_with_nan_cells) != 0:

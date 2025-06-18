@@ -32,4 +32,7 @@
   <check>
     <id>data.table-text-delimited.missing-values-documented</id>
   </check>
+  <check>
+    <id>data.content.malware-free</id>
+  </check>
 </mdq:suite>

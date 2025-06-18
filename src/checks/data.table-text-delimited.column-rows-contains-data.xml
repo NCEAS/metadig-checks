@@ -85,19 +85,18 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check that there are no NaN cells, this covers empty strings (which get converted to nan)
+        # Check that there are no NaN cells, this covers empty strings (which gets converted to nan)
+        # If there are any trailing commas or extra delimiters, it will catch this and produce a 'nan' value
+        # Blank lines and empty spaces will not be caught, but should not cause issues
         columns_with_nan_cells = df.columns[df.isnull().any()].tolist()
         if len(columns_with_nan_cells) != 0:
             output_data.append(f"`{fname}` contains column names with NaN characters: {', '.join(columns_with_nan_cells)}")
             output_type.append("markdown")
             status_data.append("FAILURE")
-
-        # Check that there are no empty rows
-
-        # Success scenario
-        #output_data.append(f"`{fname}` does not contain empty cells, NaN characters, or empty rows.")
-        #output_type.append("markdown")
-        #status_data.append("SUCCESS")
+        else:
+            output_data.append(f"`{fname}` does not appear to contain empty cells, NaN characters, or empty rows.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

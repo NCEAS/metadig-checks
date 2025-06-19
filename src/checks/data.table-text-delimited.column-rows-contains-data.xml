@@ -6,7 +6,7 @@
   <name>Check whether there are any special characters found in the column names</name>
   <description>When special characters are found in column names, this could potentially cause parsing issues.</description>
   <type>identification</type>
-  <level>INFO</level>
+  <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[
 
@@ -85,9 +85,8 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check that there are no NaN cells, this covers empty strings (which gets converted to nan), as well
-        # as any trailing commas or extra delimiters.
-        # Blank lines and empty spaces will not be caught, but should not cause issues
+        # Check that there are no NaN cells, this covers empty strings (which gets converted
+        # to nan), as well as any trailing commas or extra delimiters.
         columns_with_nan_cells = df.columns[df.isnull().any()].tolist()
         if len(columns_with_nan_cells) != 0:
             output_data.append(f"`{fname}` contains column names with NaN characters: {', '.join(columns_with_nan_cells)}")

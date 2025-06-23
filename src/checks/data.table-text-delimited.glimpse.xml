@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.table-text-delimited.glimpse</id>
   <name>Show a summary of a text-delimited table</name>
-  <description>CShow a summary of a text-delimited table.</description>
+  <description>Show a summary of a text-delimited table.</description>
   <type>identification</type>
   <level>INFO</level>
   <environment>python</environment>

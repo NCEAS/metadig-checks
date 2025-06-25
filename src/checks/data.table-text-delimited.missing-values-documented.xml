@@ -17,19 +17,24 @@ def call():
     global output_identifiers
     global output_type
     global metadigpy_result
+
     from metadig import StoreManager
     from metadig import metadata as md
     import pandas as pd
     import io
     import re
+
     manager = StoreManager(storeConfiguration)  
+
     output_data = []
     status_data = []
     output_identifiers = []
     output_type = []
     metadigpy_result = {}
+
     if len(dataPids) == 0:
-      output_data = "No data objects found."
+        output_data = "No data objects found."
+
     for pid in dataPids:
         output_identifiers.append(pid)
         # If data object is not available, skip the pid.
@@ -76,6 +81,7 @@ def call():
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
+
         # Extract the entity from the metadata doc and attributeNames
         ent = md.find_eml_entity(document, pid, fname)
 
@@ -87,10 +93,9 @@ def call():
             mv_codes.append(mv)
         att_names = [att.findtext("attributeName") for att in atts]
         t = [att.findall(".//missingValueCode/code") for att in atts]
-        #mv_codes = [[code.text for code in att.findall(".//missingValueCode/code")] or [None] for att in atts]
         col_names = list(df.columns)
         common_mv_codes = ['NA', 'n/a', 'N/A', '', ' ', "NaN", "null", "NULL"]
-        nine_pattern = re.compile(r"-9{3,}")
+        nine_pattern = re.compile(r"^-9+9$")
         all_undoc = []
         all_doc = []
 
@@ -115,17 +120,34 @@ def call():
         undoc_flat = [item for _, codes in all_undoc for item in codes if codes]
         doc_flat = [item for _, codes in all_doc for item in codes if codes]
         
+        # Create the markdown table for the output to share
+        col_name_mxw = max(
+            len("Column Names"),
+            max(len(str(c)) for c, _ in all_undoc)
+        )
+        umv_mxw = len("Undocumented Missing Values")
+        md_header = f"| {'Column Names':<{col_name_mxw}} | {'Undocumented Missing Values':<{umv_mxw}} |"
+        md_separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (umv_mxw + 2)}|"
+
         if len(undoc_flat) == 0 and len(doc_flat) > 0:
-            doc_msgs = [f"- `{col}`: `{set(codes)}`" for col, codes in all_doc if codes]
-            doc_msgs_joined = "<br>".join(doc_msgs)
-            msg = f"`{fname}` has all missing value codes documented:<br>{doc_msgs_joined}"
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in codes) if isinstance(codes, list) else codes):<{umv_mxw}} |"
+                for col, codes in all_doc if codes
+            ]
+            row_list = [md_header, md_separator] + rows
+            table_rows = "\n".join(row_list)
+            msg = f"`{fname}` has all missing value codes documented:\n{table_rows}"
             output_data.append(msg)
             output_type.append("markdown")
             status_data.append("SUCCESS")
         elif len(undoc_flat) > 0:
-            doc_msgs = [f"- `{col}`: `{set(codes)}`" for col, codes in all_undoc if codes]
-            doc_msgs_joined = "<br>".join(doc_msgs)
-            msg = f"`{fname}` has the following undocumented missing values:<br>{doc_msgs_joined}"
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in codes) if isinstance(codes, list) else codes):<{umv_mxw}} |"
+                for col, codes in all_undoc if codes
+            ]
+            row_list = [md_header, md_separator] + rows
+            table_rows = "\n".join(row_list)
+            msg = f"`{fname}` has the following undocumented missing values:\n{table_rows}"
             output_data.append(msg)
             output_type.append("markdown")
             status_data.append("FAILURE")

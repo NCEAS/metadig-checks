@@ -123,7 +123,7 @@ def call():
         # Create the markdown table for the output to share
         col_name_mxw = max(
             len("Column Names"),
-            max(len(str(c)) for c in undoc_flat)
+            max(len(str(c)) for c, _ in all_undoc)
         )
         umv_mxw = len("Undocumented Missing Values")
         md_header = f"| {'Column Names':<{col_name_mxw}} | {'Undocumented Missing Values':<{umv_mxw}} |"

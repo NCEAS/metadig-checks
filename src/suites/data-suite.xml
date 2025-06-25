@@ -38,4 +38,13 @@
   <check>
     <id>data.content.malware-free</id>
   </check>
+  <check>
+    <id>data.netcdf.global-attributes-complete</id>
+  </check>
+  <check>
+    <id>data.netcdf.variable-attributes-complete</id>
+  </check>
+  <check>
+    <id>data.netcdf.coordinate-attributes-complete</id>
+  </check>
 </mdq:suite>

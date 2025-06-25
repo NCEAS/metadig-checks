@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.netcdf.coordinate-attributes-complete</id>
+  <name>NetCDF file contains required coordinate attributes</name>
+  <description>Check that a NetCDF file contains all required coordinate attributes.</description>
+  <type>identification</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global output_identifiers
+  global output_type
+  global metadigpy_result
+
+  from metadig import StoreManager
+  import metadig as md
+  import xarray as xr
+
+  manager = StoreManager(storeConfiguration)
+
+  output_data = []
+  status_data = []
+  output_identifiers = []
+  output_type = []
+  metadigpy_result = {}
+
+
+  if len(dataPids) == 0:
+    output_data = "No data objects found."
+    output_type = "text"
+
+  for pid in dataPids:
+      output_identifiers.append(pid)
+
+      # If data object is not available, skip the pid.
+      try:
+        obj, sys = manager.get_object(pid)
+      except Exception as e:
+        output_data.append(f"Unexpected Exception: {e}")
+        output_type.append("text")
+        status_data.append("FAILURE")
+        continue
+
+      fname = md.read_sysmeta_element(sys, "fileName")
+      fid = md.read_sysmeta_element(sys, "formatId")
+
+      if not fid.startswith("netCDF"):
+        output_data.append(f"`{fname}` does not appear to be a netCDF file.")
+        output_type.append("markdown")
+        status_data.append("SUCCESS")
+        continue
+
+      ds = xr.open_dataset(obj)
+
+      # check dimensions have corresponding coordinate variables
+      missing_dims = [dim for dim in ds.dims if dim not in ds.coords]
+
+      #check coordinate variable metadata
+      required_coord_attrs = ["standard_name", "units"]
+      missing_coord = {}
+      for coord in ds.coords:
+          missing_coord_atts = [a for a in required_coord_attrs if a not in ds[coord].attrs]
+          if missing_coord_atts:
+              missing_coord[coord] = missing_coord_atts
+    
+      if missing_dims or missing_coord:
+        lines = []
+        if missing_dims:
+          lines.append(f"{fname} has dimensions missing coordinate variables: {', '.join(missing_dims)}")
+        if missing_coord:
+          lines.append(f"{fname} has the following coordinate variables missing attributes:")
+          for coord, atts in missing_coord.items():
+            lines.append(f"- Coordinate `{coord}` is missing attributes: {', '.join(atts)}")
+        output_data.append("\n".join(lines))
+        output_type.append("markdown")
+        status_data.append("FAILURE")
+      else:
+        output_data.append(f"`{fname}` contains all required variable attributes.")
+        output_type.append("markdown")
+        status_data.append("SUCCESS")
+
+  successes = sum(x == "SUCCESS" for x in status_data)
+  failures = sum(x == "FAILURE" for x in status_data)
+  output = output_data
+
+  if failures > 0:
+      status = "FAILURE"
+  else:
+      status = "SUCCESS"
+
+  metadigpy_result["identifiers"] = output_identifiers
+  metadigpy_result["output"] = output_data
+  metadigpy_result["status"] = status
+  return True
+  
+]]></code>
+  <selector>
+    <name>id</name>
+    <xpath>/eml/packageId</xpath>
+  </selector>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

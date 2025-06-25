@@ -70,9 +70,9 @@ def call():
       if missing_dims or missing_coord:
         lines = []
         if missing_dims:
-          lines.append(f"{fname} has dimensions missing coordinate variables: {', '.join(missing_dims)}")
+          lines.append(f"`{fname}` has dimensions missing coordinate variables: {', '.join(missing_dims)}")
         if missing_coord:
-          lines.append(f"{fname} has the following coordinate variables missing attributes:")
+          lines.append(f"`{fname}` has the following coordinate variables missing attributes:")
           for coord, atts in missing_coord.items():
             lines.append(f"- Coordinate `{coord}` is missing attributes: {', '.join(atts)}")
         output_data.append("\n".join(lines))

@@ -54,7 +54,7 @@ def call():
             continue
 
         # Ensure that the data object is documented in the list of entity names
-        entity_index = md.find_entity_index(fname, pid, entityNames, ids)[0]
+        entity_index = md.find_entity_index(fname, pid, entityNames, ids)
         if entity_index is None:
             output_data.append(f"`{fname}` does not appear to be documented in the metadata.")
             output_type.append("markdown")

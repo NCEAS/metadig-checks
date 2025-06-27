@@ -89,13 +89,10 @@ def call():
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
     output = output_data # Or you can write a custom message
-    
-    if successes > 0 and failures == 0:
-        status = "SUCCESS"
-    elif successes == 0 and failures > 0:
+    if failures > 0:
         status = "FAILURE"
     else:
-        status = "FAILURE"
+        status = "SUCCESS"
 
     # The array below must be populated in order for the `MetaDIG-py` run_check
     # function to return valid results.

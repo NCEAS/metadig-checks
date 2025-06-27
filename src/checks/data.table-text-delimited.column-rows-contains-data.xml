@@ -3,8 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.table-text-delimited.column-rows-contains-data</id>
-  <name>Check whether there are any empty cells, extra delimiters or empty rows in a text delimited table</name>
-  <description>This check identifies columns that contain data issues with missing or conflicting values.</description>
+  <name>Check whether there are any empty columns or rows in a text delimited table</name>
+  <description>This check identifies if there are empty columns or rows in a text delimited table</description>
   <type>identification</type>
   <level>REQUIRED</level>
   <environment>python</environment>
@@ -85,15 +85,23 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check that there are no NaN cells, this covers empty strings (which gets converted
-        # to nan), as well as any trailing commas or extra delimiters.
-        columns_with_nan_cells = df.columns[df.isnull().any()].tolist()
-        if len(columns_with_nan_cells) != 0:
-            output_data.append(f"`{fname}` contains columns with NaN characters: {', '.join(md.escape_for_markdown(c) for c in columns_with_nan_cells)}")
+        # Check that there are no empty rows or columns
+        is_null = df.isnull()
+        rows_with_nan_cells = is_null.all(axis=1).sum()
+        columns_with_nan_cells = df.columns[is_null.all()].tolist()
+        if columns_with_nan_cells or rows_with_nan_cells:
+            empty_col_msg = "No empty columns found"
+            empty_row_msg = "No empty rows found"
+            empty_columns_list = ', '.join(md.escape_for_markdown(c) for c in columns_with_nan_cells)
+            if empty_columns_list:
+                empty_col_msg = f"Empty columns: {empty_columns_list}"
+            if rows_with_nan_cells:
+                empty_row_msg = f"Empty rows found: {rows_with_nan_cells}"
+            output_data.append(f"`{fname}` may contain empty columns or rows. {empty_col_msg}. {empty_row_msg}.")
             output_type.append("markdown")
             status_data.append("FAILURE")
         else:
-            output_data.append(f"`{fname}` does not appear to contain empty cells, NaN characters, or empty rows.")
+            output_data.append(f"`{fname}` does not appear to contain empty columns or rows.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
 

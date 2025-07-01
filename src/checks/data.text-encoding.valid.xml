@@ -49,22 +49,14 @@ def call():
             # Check character encoding
             bytes_read = obj.read()
             enc_type, msg = md.detect_text_encoding(bytes_read)
-            # TODO: Discuss whether we should also look for characters that can cause
-            #       parsing concerns like \n, \t and add a warning
-            if enc_type == "ascii":
-                output_data.append(f"`{fname}` is a valid 'ascii' document and does not contain encoding errors.")
-                output_type.append("markdown")
-                status_data.append("SUCCESS")
-            elif enc_type == "utf-8":
-                output_data.append(f"`{fname}` is a valid 'utf-8' document and does not contain encoding errors.")
-                output_type.append("markdown")
-                status_data.append("SUCCESS")
-            else:
-                # TODO: For now, we will only accept valid 'utf-8' and 'ascii' documents as a SUCCESS
-                #       Discuss if we should have specific standards, or should proceed in another path
-                output_data.append(f"`{fname}` has been detected as a '{enc_type}' document. {msg}.")
+            if msg is not None:
+                output_data.append(f"`{fname}` has been detected as a '{enc_type}' document. Details: {msg}.")
                 output_type.append("markdown")
                 status_data.append("FAILURE")
+            else:
+                output_data.append(f"`{fname}` is a valid '{enc_type}' document and does not contain encoding errors.")
+                output_type.append("markdown")
+                status_data.append("SUCCESS")
         else:
             output_data.append(f"`{fname}` is not a text document.")
             output_type.append("markdown")

@@ -87,7 +87,7 @@ def call():
 
         # Check for non-printable characters
         column_names = df.columns
-        printable = [x.isprintable() for x in cols]
+        printable = [x.isprintable() for x in column_names]
 
         if all(printable):
             output_data.append(f"Column names in `{fname}` are well formed. No non-printable characters detected.")

@@ -2,15 +2,16 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>data.table-text-delimited.normalized</id>
-  <name>Check whether the data is normalized.</name>
-  <description>Data is normalized when there are no duplicate columns or rows and does not contain duplicate column or row names </description>
-  <type>identification</type>
-  <level>INFO</level>
+  <id>data.table-text-delimited.missing-values-documented</id>
+  <name>Text delimited table missing values are documented</name>
+  <description>Check that text delimited table missing variables are documented.</description>
+  <type>Reusable</type>
+  <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[
 
 def call():
+
     global output
     global status
     global output_identifiers
@@ -21,6 +22,7 @@ def call():
     from metadig import metadata as md
     import pandas as pd
     import io
+    import re
 
     manager = StoreManager(storeConfiguration)  
 
@@ -31,11 +33,10 @@ def call():
     metadigpy_result = {}
 
     if len(dataPids) == 0:
-      output_data = "No data objects found."
+        output_data = "No data objects found."
 
     for pid in dataPids:
         output_identifiers.append(pid)
-
         # If data object is not available, skip the pid.
         try:
             # if file is not text/csv, skip it
@@ -48,10 +49,9 @@ def call():
                 continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
-            output_type.append("markdown")
+            output_type.append("text")
             status_data.append("FAILURE")
             continue
-
         # Ensure that the data object is documented in the list of entity names
         entity_index = md.find_entity_index(fname, pid, entityNames, ids)
         if entity_index is None:
@@ -59,7 +59,6 @@ def call():
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
-
         # Set the default expecated header line value (the first row is headers)
         num_header_lines = 0
         # headerLines represents 'numHeaderLines' which is retrieved from the EML document
@@ -72,76 +71,90 @@ def call():
             if isinstance(header_line_value, int):
                 # We'll use the value from the list of it is an integer
                 num_header_lines = header_line_value
-        
-        # Try to read the data object
+        # Read the data object
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
         d_read_decoded = obj_bytes_read.decode(encoding_type)
         df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type)
         if error:
-            output_data.append(f"`{fname}`is unable to be read as a table. {error}")
+            output_data.append(f"`{fname}` is unable to be read as a table: {error}.")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
 
-        # If any errors are found, the data will not pass the normalized check
-        normalization_errors_count = 0
-        normalization_errors_data = []
+        # Extract the entity from the metadata doc and attributeNames
+        ent = md.find_eml_entity(document, pid, fname)
 
-        # Check for duplicate field names
-        duplicate_cols, contains_period = md.find_duplicate_column_names(df)
-        if duplicate_cols:
-            normalization_errors_count += 1
-            normalization_errors_data.append(f"`{fname}` contains duplicate columns: {', '.join(duplicate_cols)}")
-        elif contains_period:
-            # Add a warning if there's no duplicates and a period is found in the field
-            warn_msg = f"`{fname}` has periods '.' in the field names. We recommend replacing with underscores '_'"
-            normalization_errors_data.append(warn_msg)
+        atts = ent.findall("./attributeList/attribute")
+        mv_codes = []
+        for att in atts:
+            t = att.findall("./missingValueCode/code")
+            mv = [c.text for c in t]
+            mv_codes.append(mv)
+        att_names = [att.findtext("attributeName") for att in atts]
+        t = [att.findall(".//missingValueCode/code") for att in atts]
+        col_names = list(df.columns)
+        common_mv_codes = ['NA', 'n/a', 'N/A', '', ' ', "NaN", "null", "NULL"]
+        nine_pattern = re.compile(r"^-9+9$")
+        all_undoc = []
+        all_doc = []
 
-        # Check for duplicate column content
-        duplicate_col_content = md.find_duplicate_column_content(df)
-        if len(duplicate_col_content) != 0:
-            normalization_errors_count += 1
-            error_msg = "; ".join(
-                f"'{dup}' duplicates '{orig}' (hash: {h})"
-                for dup, orig, h in duplicate_col_content
-            )
-            normalization_errors_data.append(
-                f"`{fname}` contains duplicate column content: {error_msg}"
-            )
+        for col, mv in zip(col_names, mv_codes):
+            # normalize data to string
+            values_in_col = df[col].astype(str)
 
-        # Check for duplicate rows
-        duplicate_rows = md.find_duplicate_rows(df)
-        if duplicate_rows is not None:
-            dr_summary = duplicate_rows.to_markdown()
-            normalization_errors_count += 1
-            normalization_errors_data.append(
-                f"`{fname}` contains duplicate rows: \n{dr_summary} \n"
-            )
+            # check for undocumented missing value codes
+            explicit_match = values_in_col.isin(common_mv_codes)
+            fuzzy_nine_match = values_in_col.str.contains(nine_pattern)
+            matches_common = values_in_col[explicit_match | fuzzy_nine_match].tolist()
+            undocumented = set(matches_common) - set(mv)
+            if mv is not None:
+                # check for documented missing value codes  
+                doc_match = values_in_col.isin(mv)
+                matches_documented = values_in_col[doc_match].tolist()
+                documented = set(matches_documented)
+                all_doc.append((col, list(documented)))
 
-        # Check for obscene amount of columns
-        num_of_cols = md.find_number_of_columns(df)
-        if num_of_cols >= 1000:
-            normalization_errors_count += 1
-            normalization_errors_data.append(
-                f"`{fname}` contains an excessive number of columns: {num_of_cols}"
-            )
+            all_undoc.append((col, list(undocumented)))
+    
+        undoc_flat = [item for _, codes in all_undoc for item in codes if codes]
+        doc_flat = [item for _, codes in all_doc for item in codes if codes]
+        
+        # Create the markdown table for the output to share
+        col_name_mxw = max(
+            len("Column Names"),
+            max(len(str(c)) for c, _ in all_undoc)
+        )
+        umv_mxw = len("Undocumented Missing Values")
+        md_header = f"| {'Column Names':<{col_name_mxw}} | {'Undocumented Missing Values':<{umv_mxw}} |"
+        md_separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (umv_mxw + 2)}|"
 
-        # TODO: DISCUSS - Adding check for reasonable amount of non-repeating values
-
-        norm_errors_md_output = '\n'.join(f'| {line}' for line in normalization_errors_data)
-        if normalization_errors_count == 0:
-            if normalization_errors_data:
-                output_data.append(f"`{fname}` is normalized. Additional Details: {norm_errors_md_output}")
-            else:
-                output_data.append(f"`{fname}` is normalized.")
+        if len(undoc_flat) == 0 and len(doc_flat) > 0:
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in codes) if isinstance(codes, list) else codes):<{umv_mxw}} |"
+                for col, codes in all_doc if codes
+            ]
+            row_list = [md_header, md_separator] + rows
+            table_rows = "\n".join(row_list)
+            msg = f"`{fname}` has all missing value codes documented:\n{table_rows}"
+            output_data.append(msg)
             output_type.append("markdown")
             status_data.append("SUCCESS")
-        else:
-            output_data.append(f"`{fname}` contains normalization issues: {norm_errors_md_output}")
+        elif len(undoc_flat) > 0:
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in codes) if isinstance(codes, list) else codes):<{umv_mxw}} |"
+                for col, codes in all_undoc if codes
+            ]
+            row_list = [md_header, md_separator] + rows
+            table_rows = "\n".join(row_list)
+            msg = f"`{fname}` has the following undocumented missing values:\n{table_rows}"
+            output_data.append(msg)
             output_type.append("markdown")
             status_data.append("FAILURE")
-
+        elif len(undoc_flat) == 0 and len(doc_flat) == 0:
+            output_data.append(f"`{fname}` did not have any missing value codes detected.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
@@ -150,10 +163,10 @@ def call():
         status = "FAILURE"
     else:
         status = "SUCCESS"
-
     metadigpy_result["identifiers"] = output_identifiers
     metadigpy_result["output"] = output_data
     metadigpy_result["status"] = status
+
     return True
 
   ]]></code>

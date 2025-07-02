@@ -5,7 +5,7 @@
   <id>data.shapefiles.complete</id>
   <name>Shapefile sets are complete with correct naming</name>
   <description>Check that ESRI shapefile sets contain the required files with the correct naming convention.</description>
-  <type>identification</type>
+  <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[

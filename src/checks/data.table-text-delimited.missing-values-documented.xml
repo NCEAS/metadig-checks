@@ -5,7 +5,7 @@
   <id>data.table-text-delimited.missing-values-documented</id>
   <name>Text delimited table missing values are documented</name>
   <description>Check that text delimited table missing variables are documented.</description>
-  <type>identification</type>
+  <type>Reusable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[

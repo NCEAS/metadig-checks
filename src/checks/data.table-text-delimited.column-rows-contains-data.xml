@@ -5,7 +5,7 @@
   <id>data.table-text-delimited.column-rows-contains-data</id>
   <name>Check whether there are any empty columns or rows in a text delimited table</name>
   <description>This check identifies if there are empty columns or rows in a text delimited table</description>
-  <type>identification</type>
+  <type>Reusable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[

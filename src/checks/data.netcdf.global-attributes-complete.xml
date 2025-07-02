@@ -5,7 +5,7 @@
   <id>data.netcdf.global-attributes-complete</id>
   <name>NetCDF file contains required global attributes</name>
   <description>Check that a NetCDF file contains all required global attributes.</description>
-  <type>identification</type>
+  <type>Findable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[

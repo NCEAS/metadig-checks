@@ -5,7 +5,7 @@
   <id>data.table-text-delimited.column-names-printable</id>
   <name>Check whether there are any non-printable characters in the column names</name>
   <description>When non-printable characters are found in column names, this could potentially cause analysis and parsing issues.</description>
-  <type>identification</type>
+  <type>Reusable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[

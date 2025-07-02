@@ -2,9 +2,9 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>data.table-text-delimited.column-names-well-formed</id>
-  <name>Check whether there are any special characters found in the column names</name>
-  <description>When special characters are found in column names, this could potentially cause parsing issues.</description>
+  <id>data.table-text-delimited.column-names-printable</id>
+  <name>Check whether there are any non-printable characters in the column names</name>
+  <description>When non-printable characters are found in column names, this could potentially cause analysis and parsing issues.</description>
   <type>identification</type>
   <level>REQUIRED</level>
   <environment>python</environment>
@@ -85,35 +85,17 @@ def call():
             status_data.append("FAILURE")
             continue
 
-        # Check for special characters and spaces
-        special_chars_summary = {}
-        allowed_pattern = re.compile(r'[^a-zA-Z0-9_-]')
+        # Check for non-printable characters
         column_names = df.columns
-        for column in column_names:
-            special_chars_found = list(set(allowed_pattern.findall(column)))
-            if special_chars_found:
-                special_chars_summary[column] = special_chars_found
+        printable = [x.isprintable() for x in cols]
 
-        if len(special_chars_summary) == 0:
-            output_data.append(f"Column names in `{fname}` are well formed. No special characters detected.")
+        if all(printable):
+            output_data.append(f"Column names in `{fname}` are well formed. No non-printable characters detected.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            # Create the markdown table
-            col_name_mxw = max(
-                len("Column Names"),
-                max(len(str(c)) for c in column_names)
-            )
-            spch_mxw = len("Special Characters")
-            header = f"| {'Column Names':<{col_name_mxw}} | {'Special Characters':<{spch_mxw}} |"
-            separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (spch_mxw + 2)}|"
-            rows = [
-                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in chars) if isinstance(chars, list) else chars):<{spch_mxw}} |"
-                for col, chars in special_chars_summary.items()
-            ]
-            row_list = [header, separator] + rows
-            table_rows = "\n".join(row_list)
-            output_data.append(f"`{fname}` contains column names with special characters:\n{table_rows}")
+            bad_names = [name for name, ok in zip(column_names, printable) if not ok]
+            output_data.append(f"`{fname}` contains the following column names with non-printable characters: `{', '.join(bad_names)}`")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

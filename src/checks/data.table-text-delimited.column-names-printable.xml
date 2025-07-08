@@ -22,6 +22,7 @@ def call():
     import pandas as pd
     import io
     import re
+    import gc
 
     manager = StoreManager(storeConfiguration)  
 
@@ -78,12 +79,15 @@ def call():
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
         d_read_decoded = obj_bytes_read.decode(encoding_type)
-        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, dtype_string = True)
         if error:
             output_data.append(f"`{fname}`is unable to be read as a table. {error}")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
+
+        # cleanup
+        del obj_bytes_read
 
         # Check for non-printable characters
         column_names = df.columns
@@ -98,6 +102,10 @@ def call():
             output_data.append(f"`{fname}` contains the following column names with non-printable characters: `{', '.join(bad_names)}`")
             output_type.append("markdown")
             status_data.append("FAILURE")
+
+        # cleanup
+        del df
+        gc.collect()
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

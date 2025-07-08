@@ -19,6 +19,7 @@ def call():
 
     from metadig import metadata as md
     from metadig import StoreManager
+    import gc
 
     manager = StoreManager(storeConfiguration)  
 
@@ -57,10 +58,15 @@ def call():
                 output_data.append(f"`{fname}` is a valid '{enc_type}' document and does not contain encoding errors.")
                 output_type.append("markdown")
                 status_data.append("SUCCESS")
+            
         else:
             output_data.append(f"`{fname}` is not a text document.")
             output_type.append("markdown")
             status_data.append("SKIP")
+
+        # cleanup
+        del bytes_read
+        gc.collect()
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

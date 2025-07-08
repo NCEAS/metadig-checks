@@ -21,6 +21,7 @@ def call():
     from metadig import metadata as md
     import pandas as pd
     import io
+    import gc
 
     manager = StoreManager(storeConfiguration)  
 
@@ -84,6 +85,9 @@ def call():
             status_data.append("FAILURE")
             continue
 
+        # cleanup
+        del obj_bytes_read
+
         if isinstance(df, pd.DataFrame):
             df.columns = [md.escape_for_markdown(col) for col in df.columns]
             summary = df.describe()
@@ -95,6 +99,10 @@ def call():
             output_data.append(f"`{fname}` cannot be parsed." + char(type(df)))
             output_type.append("markdown")
             status_data.append("FAILURE")
+            
+        # cleanup
+        del df
+        gc.collect()
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

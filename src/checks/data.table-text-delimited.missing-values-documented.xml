@@ -23,6 +23,7 @@ def call():
     import pandas as pd
     import io
     import re
+    import gc
 
     manager = StoreManager(storeConfiguration)  
 
@@ -75,12 +76,15 @@ def call():
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
         d_read_decoded = obj_bytes_read.decode(encoding_type)
-        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, dtype_string = True)
         if error:
             output_data.append(f"`{fname}` is unable to be read as a table: {error}.")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
+
+        # cleanup
+        del obj_bytes_read
 
         # Extract the entity from the metadata doc and attributeNames
         ent = md.find_eml_entity(document, pid, fname)
@@ -100,8 +104,6 @@ def call():
         all_doc = []
 
         for col, mv in zip(col_names, mv_codes):
-            # normalize data to string
-            values_in_col = df[col].astype(str)
 
             # check for undocumented missing value codes
             explicit_match = values_in_col.isin(common_mv_codes)
@@ -155,6 +157,11 @@ def call():
             output_data.append(f"`{fname}` did not have any missing value codes detected.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
+
+        # cleanup
+        del df
+        gc.collect()
+
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)

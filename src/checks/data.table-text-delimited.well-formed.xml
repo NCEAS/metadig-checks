@@ -21,6 +21,7 @@ def call():
     from metadig import metadata as md
     import pandas as pd
     import io
+    import gc
  
     output_data = []
     status_data = []
@@ -78,12 +79,15 @@ def call():
             obj_bytes_read = obj.read()
             encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
             d_read_decoded = obj_bytes_read.decode(encoding_type)
-            df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type)
+            df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, dtype_string = True)
         except Exception as e:
             output_data.append(f"`{fname}` is unable to be read as a table.")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
+
+        # cleanup
+        del obj_bytes_read
             
         if isinstance(df, pd.DataFrame):
             output_data.append(f"`{fname}` is able to be parsed.")
@@ -93,6 +97,10 @@ def call():
             output_data.append(f"`{fname}` cannot be parsed because it is of type {type(df).__name__}, not a dataframe.")
             output_type.append("markdown")
             status_data.append("FAILURE")
+        
+        # cleanup
+        del df
+        gc.collect()
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

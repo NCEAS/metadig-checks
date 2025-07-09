@@ -46,7 +46,7 @@ def call():
             if csv_status == "SKIP":
                 output_data.append(f"`{fname}` is not a text-delimited table, skipping.")
                 output_type.append("markdown")
-                status_data.append("SUCCESS)
+                status_data.append("SUCCESS")
                 continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")

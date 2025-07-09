@@ -124,7 +124,13 @@ def call():
     
         undoc_flat = [item for _, codes in all_undoc for item in codes if codes]
         doc_flat = [item for _, codes in all_doc for item in codes if codes]
-        
+
+        if len(undoc_flat) == 0 and len(doc_flat) == 0:
+            output_data.append(f"`{fname}` did not have any missing value codes detected.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+            continue
+
         # Create the markdown table for the output to share
         col_name_mxw = max(
             len("Column Names"),
@@ -156,10 +162,6 @@ def call():
             output_data.append(msg)
             output_type.append("markdown")
             status_data.append("FAILURE")
-        elif len(undoc_flat) == 0 and len(doc_flat) == 0:
-            output_data.append(f"`{fname}` did not have any missing value codes detected.")
-            output_type.append("markdown")
-            status_data.append("SUCCESS")
 
         # cleanup
         del df

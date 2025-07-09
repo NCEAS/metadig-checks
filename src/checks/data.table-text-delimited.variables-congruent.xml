@@ -97,6 +97,12 @@ def call():
             output_data.append(f"Cannot find attribute names.")
             output_type.append("markdown")
             status_data.append("FAILURE")
+            continue
+        if len(col_names) == 0:
+            output_data.append(f"Cannot find column names.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+            continue
         # Check if column names match documentation
         if att_names == col_names:
             output_data.append(f"`{fname}` variable names match documentation.")

@@ -29,8 +29,9 @@ def call():
     output_type = []
     metadigpy_result = {}
 
-    if len(dataPids) == 0:
+    if not dataPids or len(dataPids) == 0:
       output_data = "No data objects found."
+      output_type = "text"
 
     for pid in dataPids:
         output_identifiers.append(pid)

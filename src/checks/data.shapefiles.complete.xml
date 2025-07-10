@@ -61,6 +61,12 @@ def call():
         with zipfile.ZipFile(obj, 'r') as zip_obj:
             file_list = zip_obj.namelist()
 
+        if not any(fname.lower().endswith(".shp") for fname in file_list):
+            output_data.append(f"`{fname}` does not look like a shapefile set, skipping.")
+            output_type.append("markdown")
+            status_data.append("SKIP")
+            continue
+
         # remove directories/extensionless files
         file_list = [f for f in file_list if os.path.splitext(f)[1]]
         # remove junk mac files

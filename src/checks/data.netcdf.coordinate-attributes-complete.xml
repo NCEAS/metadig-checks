@@ -54,7 +54,7 @@ def call():
         status_data.append("SUCCESS")
         continue
 
-      ds = xr.open_dataset(obj)
+      ds = xr.open_dataset(obj, decode_times=False)
 
       # check dimensions have corresponding coordinate variables
       missing_dims = [dim for dim in ds.dims if dim not in ds.coords]

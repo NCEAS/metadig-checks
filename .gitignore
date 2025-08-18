@@ -40,3 +40,6 @@ rsconnect/
 
 # Ant distribution directory
 dist/**
+
+.DS_Store
+.vscode/settings.json

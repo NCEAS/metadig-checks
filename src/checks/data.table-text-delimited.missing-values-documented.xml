@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.table-text-delimited.missing-values-documented</id>
+  <name>Text delimited table missing values are documented</name>
+  <description>Check that text delimited table missing variables are documented.</description>
+  <type>Reusable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    from metadig import metadata as md
+    import pandas as pd
+    import io
+    import re
+    import gc
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if not dataPids or len(dataPids) == 0:
+        output_data = "No data objects found."
+        output_type = "text"
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+        # If data object is not available, skip the pid.
+        try:
+            # if file is not text/csv, skip it
+            # otherwise get the object and filename
+            obj, fname, csv_status = md.get_valid_csv(manager, pid)
+            if csv_status == "SKIP":
+                output_data.append(f"`{fname}` is not a text-delimited table, skipping.")
+                output_type.append("markdown")
+                status_data.append(csv_status)
+                continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+        # Ensure that the data object is documented in the list of entity names
+        entity_index = md.find_entity_index(fname, pid, entityNames, ids)
+        if entity_index is None:
+            output_data.append(f"`{fname}` does not appear to be documented in the metadata.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+            continue
+        # Set the default expecated header line value (the first row is headers)
+        num_header_lines = 0
+        # headerLines represents 'numHeaderLines' which is retrieved from the EML document
+        if isinstance(headerLines, list):
+            # If we successfully retrieve a list, we will check what the value is
+            header_line_value = headerLines[entity_index]
+            if header_line_value == 'null':
+                # There are no header lines
+                pass
+            if isinstance(header_line_value, int):
+                # We'll use the value from the list of it is an integer
+                num_header_lines = header_line_value
+        # Read the data object
+        obj_bytes_read = obj.read()
+        encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
+        d_read_decoded = obj_bytes_read.decode(encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, dtype_string = True)
+        if error:
+            output_data.append(f"`{fname}` is unable to be read as a table: {error}.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+            continue
+
+        # cleanup
+        del obj_bytes_read
+
+        # Extract the entity from the metadata doc and attributeNames
+        ent = md.find_eml_entity(document, pid, fname)
+
+        atts = ent.findall("./attributeList/attribute")
+        mv_codes = []
+        for att in atts:
+            t = att.findall("./missingValueCode/code")
+            mv = [c.text for c in t]
+            mv_codes.append(mv)
+        att_names = [att.findtext("attributeName") for att in atts]
+        t = [att.findall(".//missingValueCode/code") for att in atts]
+        col_names = list(df.columns)
+        common_mv_codes = ['NA', 'n/a', 'N/A', '', ' ', "NaN", "null", "NULL"]
+        nine_pattern = re.compile(r"^-9+9$")
+        all_undoc = []
+        all_doc = []
+
+        for col, mv in zip(col_names, mv_codes):
+            # normalize data to string
+            values_in_col = df[col]
+
+            # check for undocumented missing value codes
+            explicit_match = values_in_col.isin(common_mv_codes)
+            fuzzy_nine_match = values_in_col.str.contains(nine_pattern)
+            matches_common = values_in_col[explicit_match | fuzzy_nine_match].tolist()
+            undocumented = set(matches_common) - set(mv)
+            if mv is not None:
+                # check for documented missing value codes  
+                doc_match = values_in_col.isin(mv)
+                matches_documented = values_in_col[doc_match].tolist()
+                documented = set(matches_documented)
+                all_doc.append((col, list(documented)))
+
+            all_undoc.append((col, list(undocumented)))
+    
+        undoc_flat = [item for _, codes in all_undoc for item in codes if codes]
+        doc_flat = [item for _, codes in all_doc for item in codes if codes]
+
+        if len(undoc_flat) == 0 and len(doc_flat) == 0:
+            output_data.append(f"`{fname}` did not have any missing value codes detected.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+            continue
+
+        # Create the markdown table for the output to share
+        col_name_mxw = max(
+            len("Column Names"),
+            max(len(str(c)) for c, _ in all_undoc)
+        )
+        umv_mxw = len("Undocumented Missing Values")
+        md_header = f"| {'Column Names':<{col_name_mxw}} | {'Undocumented Missing Values':<{umv_mxw}} |"
+        md_separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (umv_mxw + 2)}|"
+
+        if len(undoc_flat) == 0 and len(doc_flat) > 0:
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in codes) if isinstance(codes, list) else codes):<{umv_mxw}} |"
+                for col, codes in all_doc if codes
+            ]
+            row_list = [md_header, md_separator] + rows
+            table_rows = "\n".join(row_list)
+            msg = f"`{fname}` has all missing value codes documented:\n{table_rows}"
+            output_data.append(msg)
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        elif len(undoc_flat) > 0:
+            rows = [
+                f"| {md.escape_for_markdown(col):<{col_name_mxw}} | {md.escape_for_markdown(', '.join(f'`{c}`' for c in codes) if isinstance(codes, list) else codes):<{umv_mxw}} |"
+                for col, codes in all_undoc if codes
+            ]
+            row_list = [md_header, md_separator] + rows
+            table_rows = "\n".join(row_list)
+            msg = f"`{fname}` has the following undocumented missing values:\n{table_rows}"
+            output_data.append(msg)
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+
+        # cleanup
+        del df
+        gc.collect()
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    output = output_data
+    if failures > 0:
+        status = "FAILURE"
+    else:
+        status = "SUCCESS"
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+
+    return True
+
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>objectNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./physical/objectName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>ids</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]/@id</xpath>
+  </selector>
+  <selector>
+     <name>fieldDelimiter</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+     <name>headerLines</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

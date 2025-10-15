@@ -48,12 +48,12 @@
   </check>
   <check>
     <id>check.contact.1</id>
-    <type>Findable</type>
+    <type>Accessible</type>
     <level>REQUIRED</level>
   </check>
   <check>
     <id>contact.has.ORCID.1</id>
-    <type>Findable</type>
+    <type>Accessible</type>
     <level>REQUIRED</level>
   </check>
   <check>
@@ -108,7 +108,7 @@
   </check>
   <check>
     <id>check.methods.present.1</id>
-    <type>Interoperable</type>
+    <type>Reusable</type>
     <level>REQUIRED</level>
   </check>
   <check>

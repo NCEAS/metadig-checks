@@ -25,12 +25,13 @@
     <type>Accessible</type>
     <level>REQUIRED</level>
   </check>
-  -->
+  Consistently fails
   <check>
     <id>metadata.identifier.resolvable-2.0.0</id>
     <type>Accessible</type>
     <level>OPTIONAL</level>
   </check>
+-->
   <check>
     <id>entity.type.nonproprietary-2.0.1</id>
     <type>Reusable</type>

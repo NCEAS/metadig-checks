@@ -42,7 +42,7 @@
     <level>REQUIRED</level>
   </check>
   <check>
-    <id>check.creator.info.1</id>
+    <id>check.creator.info.3</id>
     <type>Findable</type>
     <level>INFO</level>
   </check>

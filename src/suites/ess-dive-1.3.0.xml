@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>ess-dive.data.center.suite-1.2.1</id>
+  <id>ess-dive.data.center.suite-1.3.0</id>
   <name>ESS-DIVE Quality Suite</name>
   <description>This is a the ESS-DIVE Quality Suite</description>
   <check>

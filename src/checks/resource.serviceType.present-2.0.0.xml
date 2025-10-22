@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>resource.serviceType.present-2.0.0</id>
+  <name>Resource Service Type Present</name>
+  <description>Check that a service type exists.</description>
+  <type>Accessible</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+
+  if ('serviceType' in globals() and serviceType is not None and serviceType):
+    output = "A service type was found."
+    status = "SUCCESS"
+    return True
+  else:
+    output = "No service types were found."
+    status = "FAILURE"
+    return False
+
+      ]]></code>
+  <selector>
+    <name>serviceType</name>
+    <xpath>boolean((/*/identificationInfo/SV_ServiceIdentification/serviceType/LocalName))</xpath>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .potentialAction | ."@type" != null then "True" else "False" end</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

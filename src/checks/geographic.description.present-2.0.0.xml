@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>geographic.description.present-2.0.0</id>
+  <name>Geographic coverage description</name>
+  <description>Geographic coverage description should be present at the dataset level.</description>
+  <type>discovery</type>
+  <level>REQUIRED</level>
+  <environment>rscript</environment>
+  <code>
+    library(metadig)
+    
+    if (as.logical(descriptionPresent)) {
+      success("A textual description of the geographic coverage of this dataset was found.")
+    } else {
+      failure("No textual description of the geographic coverage of this dataset was found.")
+    }
+  </code>
+  <selector>
+    <name>descriptionPresent</name>
+    <xpath>boolean(
+        /resource/geoLocations/geoLocation/geoLocationPlace or
+        /eml/dataset/coverage/geographicCoverage/geographicDescription or
+        /*/identificationInfo/*/extent/EX_Extent/description)
+    </xpath>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .spatialCoverage != null then "TRUE" else "FALSE" end</expression>
+  </selector>
+
+   <dialect>
+      <name>DataCite 4</name>
+      <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+   </dialect>
+  <dialect>
+    <name>eml</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

@@ -126,7 +126,7 @@ def call():
             max(len(str(c)) for c, _ in all_undoc)
         )
         umv_mxw = len("Undocumented Missing Values")
-        md_header = f"| {'Column Names':<{col_name_mxw}} | {'Undocumented Missing Values':<{umv_mxw}} |"
+        md_header = f"| {'Column Names':<{col_name_mxw}} | {'Missing Values':<{umv_mxw}} |"
         md_separator = f"|{'-' * (col_name_mxw + 2)}|{'-' * (umv_mxw + 2)}|"
 
         if len(undoc_flat) == 0 and len(doc_flat) > 0:

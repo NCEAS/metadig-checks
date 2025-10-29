@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.raster.well-formed</id>
   <name>Raster files are well formed</name>
-  <description>Check that ESRI shapefile sets contain the required files with the correct naming convention.</description>
+  <description>Geotiff files should be able to be read using python's `rasterio`.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>

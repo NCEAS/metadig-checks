@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.table-text-delimited.well-formed</id>
   <name>Text delimited table is well formed</name>
-  <description>Check that a delmited text table is well formed.</description>
+  <description>A text delimited table is read using python's pandas library using available metadata about the file structure.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>

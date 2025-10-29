@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.shapefiles.complete</id>
   <name>Shapefile sets are complete with correct naming</name>
-  <description>Check that ESRI shapefile sets contain the required files with the correct naming convention.</description>
+  <description>ESRI shapefile sets should contain the required files (".shp", ".prj", ".dbf"), with the correct naming convention.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>

@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.format.congruent</id>
   <name>Data format congruent with formatId</name>
-  <description>Check that a data file format matches the formatId.</description>
+  <description>Check that a data file format, as determined by magic, matches the formatId listed in the system metadata.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>

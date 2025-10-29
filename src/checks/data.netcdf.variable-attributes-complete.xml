@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.netcdf.variable-attributes-complete</id>
   <name>NetCDF file contains required variable attributes</name>
-  <description>Check that a NetCDF file contains all required variable attributes.</description>
+  <description>NetCDF files should contain all required variable attributes ("long_name", "units").</description>
   <type>Reusable</type>
   <level>REQUIRED</level>
   <environment>python</environment>

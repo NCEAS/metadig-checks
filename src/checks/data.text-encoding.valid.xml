@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.text-encoding.valid</id>
   <name>Text data characters are encoded correctly</name>
-  <description>Check that the text content is decodable according to the guessed encoding.</description>
+  <description>Text content should be decodable according to the guessed encoding.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>entity.identifierType.present-2.1.0</id>
+  <name>Entity Identifier Type Present</name>
+  <description>Check that a entity identifier type exists.</description>
+  <type>Findable</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global entityIdentifierType
+  
+  import metadig.variable as mvar
+
+  # An entity identifier type is not present
+  if 'entityIdentifierType' not in globals() or entityIdentifierType is None:
+    output = "No entity identifier types were found."
+    status = "FAILURE"
+    return False
+
+  if all(item is None for item in entityIdentifier):
+    output = "No entity identifiers were found."
+    status = "FAILURE"
+    return False
+        
+  entityIdentifierType = mvar.toUnicode(entityIdentifierType)
+
+  if (mvar.isBlank(entityIdentifierType)):
+    output = "The entity identifier type is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if entity identifier type is a single string or list
+    if(isinstance(entityIdentifierType, str)):
+      output = "The entity identifier type '{}' was found.".format(entityIdentifierType)
+    else:
+      output = "The entity identifier type '{}' was found.".format(entityIdentifierType[0])
+      
+    status = "SUCCESS"
+    return True
+      ]]></code>
+  <selector>
+    <name>entityIdentifierType</name>
+    <xpath>
+          /eml/dataset/*[self::dataTable|self::spatialRaster|self::spatialVector|self::storedProcedure|self::view|self::otherEntity]/@system |
+         /eml/dataset/*/alternateIdentifier/@system 
+      </xpath>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | (
+        .distribution[]?
+          | select(."@type"? == "DataDownload")
+          | .identifier?.propertyID?
+        ) // (
+        if .distribution?."@type"? == "DataDownload"
+        then .distribution.identifier?.propertyID?
+        else null
+        end
+        )</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

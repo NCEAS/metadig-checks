@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>resource.distributionContact.present.1</id>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>resource.distributionContact.present-2.1.0</id>
   <name>Resource Distribution Contact Present</name>
   <description>Check that a distribution contact exists.</description>
   <type>Accessible</type>
@@ -14,7 +14,7 @@ def call():
   import metadig.variable as mvar
 
   # A distribution contact is not present
-  if 'distributionContact' not in globals() or distributionContact is None:
+  if 'distributionContact' not in globals() or distributionContact is None or len(distributionContact) == 0:
     output = "No distribution contact was found."
     status = "FAILURE"
     return False
@@ -45,6 +45,10 @@ def call():
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/individualName/*/text()[normalize-space()] |
           /*/distributionInfo/MD_Distribution/distributor/MD_Distributor/distributorContact/CI_ResponsibleParty/positionName/*/text()[normalize-space()]
       </xpath>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | 
+      .creator |
+      (if .[]? then .[] else . end)? |
+      select(.roleName? == "Contact")</expression>
   </selector>
   <dialect>
     <name>DataCite 4</name>
@@ -57,5 +61,9 @@ def call():
   <dialect>
     <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
     <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
   </dialect>
 </mdq:check>

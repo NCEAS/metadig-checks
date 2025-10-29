@@ -62,13 +62,15 @@ if __name__ == '__main__':
             #print checkFiles
             # for this id, search each check file to find the check file with this id
             for file in checkFiles:
-                #print("file {}".format(file))
-                with open(file) as thisFile:
-                    if id in thisFile.read():
-                        print('found check id {} in file {}'.format(id, file))
-                        srcfile = "{}/{}".format(cwd, file)
-                        fname = os.path.basename(file)
-                        dstfile = "{}/{}/checks/{}".format(cwd, dst, fname)
-                        print("cp {} {}".format(srcfile, dstfile))
-                        copyfile(srcfile, dstfile)
+                tree = ET.parse(file)
+                root = tree.getroot()
+                id_elem = root.find(".//id")  # find the <id> element anywhere in the doc
+
+                if id_elem is not None and id_elem.text == id:
+                    print(f"found check id {id} in file {file}")
+                    srcfile = os.path.join(cwd, file)
+                    fname = os.path.basename(file)
+                    dstfile = os.path.join(cwd, dst, "checks", fname)
+                    print(f"cp {srcfile} {dstfile}")
+                    copyfile(srcfile, dstfile)
 

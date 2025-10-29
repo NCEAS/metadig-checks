@@ -52,7 +52,7 @@ def call():
       })
   d1_formats = pd.DataFrame(d1_formats)
 
-  if len(dataPids) == 0:
+  if not dataPids or len(dataPids) == 0:
     output_data = "No data objects found."
     output_type = "text"
 

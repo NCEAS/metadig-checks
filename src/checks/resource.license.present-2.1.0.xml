@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>resource.license.present-2.1.0</id>
+  <name>Resource License Present</name>
+  <description>Check that a resource license exists.</description>
+  <type>Reusable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global datasetLicense
+         
+  import metadig.variable as mvar
+  
+  displayNchars = 40
+  # A dataset license is not present
+  if 'datasetLicense' not in globals() or datasetLicense is None:
+    output = "A resource license was not found."
+    status = "FAILURE"
+    return False
+
+  datasetLicense = mvar.toUnicode(datasetLicense)
+  if(isinstance(datasetLicense, str)):
+    datasetLicense = [datasetLicense]
+  
+  if (mvar.isBlank(datasetLicense)):
+    output = "The resource license is blank."   
+    status = "FAILURE"
+    return False
+  else:
+    # Check if dataset license is a single string or arrayList
+    if(isinstance(datasetLicense, str)):
+      outstr = datasetLicense.strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      output = "The resource license '{}' was found".format(outstr)
+    elif (isinstance(datasetLicense, list)):
+      outstr = datasetLicense[0].strip()
+      outstr.replace('\n', ' ').replace('\r', '')
+      if(len(outstr) > displayNchars):
+        outstr = "{}...".format(outstr[:displayNchars])
+      if(len(datasetLicense) == 1):
+        output = "The resource license '{}' was found.".format(outstr)
+      else:
+        output = "The resource license '{}' was found. ".format(outstr)
+    else:
+      output = "The resource license '{}' was found".format(datasetLicense)
+    status = "SUCCESS"
+    return True
+      ]]></code>
+  <selector>
+    <name>datasetLicense</name>
+    <!--
+      The Xpaths for the ISO    resourceConstraints check for just the MD_RestrictionCode of 'license', but may have to be made more 
+      open, i.e. check for 'licenceUnrestricted' or 'intellectualPropertyRights'. See https://geo-ide.noaa.gov/wiki/index.php?title=ISO_19115_and_19115-2_CodeList_Dictionaries#MD_RestrictionCode
+      for more details.
+      -->
+    <xpath>
+        /eml/dataset/intellectualRights//text()[normalize-space()] |
+        /resource/rightsList/rights |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/accessConstraints/MD_RestrictionCode[@codeListValue="license"] |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/useConstraints/MD_RestrictionCode[@codeListValue="license"] |
+        /*/identificationInfo/MD_DataIdentification/resourceConstraints/MD_LegalConstraints/otherConstraints/MD_RestrictionCode[@codeListValue="license"] |
+        /eml/dataset/licensed/licenseName//text()[normalize-space()]
+      </xpath>
+      <expression syntax="json-path">(.["@graph"]? // [.] )[] | .license</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language 2.1, 2.2.0</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139 and ISO 19139-2</name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

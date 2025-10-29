@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1.2 ../schemas/schema1.2.xsd">
+  <id>entity.attributeDefinition.sufficient-2.1.0</id>
+  <name>Entity Attribute Definition Sufficient</name>
+  <description>Check that each attribute definition is sufficient (e.g. word count).</description>
+  <type>Interoperable</type>
+  <level>OPTIONAL</level>
+  <environment>python</environment>
+  <code><![CDATA[
+def call():
+  global output
+  global status
+  global attributeDefinition
+  global attributeName 
+  
+  import metadig.variable as mvar
+  import re
+  
+  NoneType = type(None)
+  minWordCount = 3
+  maxPrint = 5
+  
+  # Check if definitions are present for each attribute.
+  if not attributeDefinitionPresent:
+    output = "No attribute definitions were found, so unable to check if definitions are sufficient."
+    status = "FAILURE"
+    return False
+  
+  if all(item is None for item in attributeDefinition):
+    output = "No attributes were found so unable to check attribute defintions."
+    status = "FAILURE"
+    return False
+    
+  attributeCount = 0
+  insufficient = []
+  
+  # If only a single value is returned (vs type "list"), then convert to a list
+  # for easier processing
+  if(isinstance(attributeDefinition, str)):
+    attributeDefinition = [attributeDefinition]
+  
+  if(isinstance(attributeName, str)):
+    attributeName = [attributeName]
+
+  # Check each attribute definition to see if it is missing or blank.
+  for i in range(0, len(attributeDefinition)):
+    attributeCount += 1
+    definition = attributeDefinition[i]
+    name = attributeName[i]
+    # Check if the name is missing or blank
+    if(isinstance(name, NoneType) or mvar.isBlank(name)):
+      name = "attr #{}".format(i)
+
+    # No definition for this attribute was specified
+    if(isinstance(definition, NoneType) or mvar.isBlank(definition)):
+      insufficient.append(name)
+      continue
+    # If for some reason there are multiple definitions for this entity, just use the first one
+    elif(isinstance(definition, list)):
+      definition = mvar.toUnicode(definition[0])
+        
+    # Now check the word count of the definition
+    words = re.split('\s+', definition.strip())
+    if(len(words) < minWordCount):
+      insufficient.append(name)
+  
+  # Let the user know if definitions are missing, but don't fail the check based
+  # on this (unless all are missing), as that is part of a different check
+  if(len(insufficient) == 1):
+    output = "This attribute (of {} total) has an insufficient definition of less than {} words: '{}'".format(attributeCount, minWordCount, insufficient[0])
+  elif(len(insufficient) > 1):
+    # Only print the max entries allowed - otherwise the report could get unweildy  
+    output = "These {} attributes (of {} total) have insufficient definitions of less than {} words: '{}'".format(len(insufficient),attributeCount, minWordCount,  ", ".join(insufficient[0:maxPrint]))
+    if(len(insufficient) > maxPrint):
+      output += ", ..."
+    status = "FAILURE"
+    return False
+  else:
+    output = "All {} attribute have sufficient definitions of greater than {} words".format(attributeCount, minWordCount)
+    status = "SUCCESS"
+    return True
+    ]]></code>
+  <selector>
+    <name>attributeDefinitionPresent</name>
+    <xpath>boolean(
+          /eml/dataset/*/attributeList/attribute/attributeDefinition or
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute/*/description or
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute/*/description or
+          /*/contentInfo/*/dimension/MI_Band/descriptor or
+          /*/contentInfo/*/dimension/MD_Band/descriptor)</xpath>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if (.variableMeasured? and (.variableMeasured[]?.description? != null)) then "True" else "False" end</expression>
+  </selector>
+  <selector>
+    <name>attributeDefinition</name>
+    <xpath>/eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/*/dimension/MI_Band |
+          /*/contentInfo/*/dimension/MD_Band 
+      </xpath>
+    <subSelector>
+      <name>definition</name>
+      <xpath>
+             ./attributeDefinition |
+             ./*/description |
+             ./descriptor/*/text()[normalize-space()]
+         </xpath>
+    </subSelector>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .variableMeasured? then .variableMeasured[] | .description else null end</expression>
+  </selector>
+  <selector>
+    <name>attributeName</name>
+    <xpath>
+          /eml/dataset/*/attributeList/attribute |
+          /*/contentInfo/MD_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/MI_CoverageDescription/attributeGroup/*/attribute |
+          /*/contentInfo/*/dimension/MI_Band |
+          /*/contentInfo/*/dimension/MD_Band
+      </xpath>
+    <subSelector>
+      <name>name</name>
+      <!-- Multiple paths may be present and return values, but we need just one -->
+      <xpath>
+             (./attributeName/text()[normalize-space()] | 
+             ./sequenceIdentifier/MemberName/aName/*/text()[normalize-space()] |
+             ./descriptor/*/text()[normalize-space()])[1]
+         </xpath>
+    </subSelector>
+    <expression syntax="json-path">(.["@graph"]? // [.] )[] | if .variableMeasured? then .variableMeasured[] | .name else null end</expression>
+  </selector>
+  <dialect>
+    <name>DataCite 4</name>
+    <xpath>boolean(/*[local-name() = 'resource'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+  <dialect>
+    <name>ISO 19115 and ISO 19115-2 / ISO 19139, ISO 19139-2, ISO 19115-1, ISO 19115-3 </name>
+    <xpath>boolean(/*[local-name() = 'MI_Metadata' or local-name() = 'MD_Metadata'])</xpath>
+  </dialect>
+  <dialect>
+    <name>Schema.org</name>
+    <expression syntax="json-path">.["@context"]</expression>
+  </dialect>
+</mdq:check>

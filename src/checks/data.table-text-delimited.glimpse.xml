@@ -21,6 +21,7 @@ def call():
     from metadig import metadata as md
     import pandas as pd
     import io
+    import gc
 
     manager = StoreManager(storeConfiguration)  
 
@@ -30,8 +31,9 @@ def call():
     output_type = []
     metadigpy_result = {}
 
-    if len(dataPids) == 0:
+    if not dataPids or len(dataPids) == 0:
       output_data = "No data objects found."
+      output_type = "text"
 
     for pid in dataPids:
         output_identifiers.append(pid)
@@ -44,7 +46,7 @@ def call():
             if csv_status == "SKIP":
                 output_data.append(f"`{fname}` is not a text-delimited table, skipping.")
                 output_type.append("markdown")
-                status_data.append(csv_status)
+                status_data.append("SUCCESS")
                 continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
@@ -84,6 +86,9 @@ def call():
             status_data.append("FAILURE")
             continue
 
+        # cleanup
+        del obj_bytes_read
+
         if isinstance(df, pd.DataFrame):
             df.columns = [md.escape_for_markdown(col) for col in df.columns]
             summary = df.describe()
@@ -95,6 +100,10 @@ def call():
             output_data.append(f"`{fname}` cannot be parsed." + char(type(df)))
             output_type.append("markdown")
             status_data.append("FAILURE")
+            
+        # cleanup
+        del df
+        gc.collect()
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

@@ -22,6 +22,7 @@ def call():
     import pandas as pd
     import io
     import re
+    import gc
 
     manager = StoreManager(storeConfiguration)  
 
@@ -31,8 +32,9 @@ def call():
     output_type = []
     metadigpy_result = {}
 
-    if len(dataPids) == 0:
+    if not dataPids or len(dataPids) == 0:
         output_data = "No data objects found."
+        output_type = "text"
 
     for pid in dataPids:
         output_identifiers.append(pid)
@@ -78,12 +80,15 @@ def call():
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
         d_read_decoded = obj_bytes_read.decode(encoding_type)
-        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, True)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, nan_filter = True, dtype_string = True)
         if error:
             output_data.append(f"`{fname}`is unable to be read as a table. {error}")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
+        
+        # cleanup
+        del obj_bytes_read
 
         # Check that there are no empty rows or columns
         is_null = df.isnull()
@@ -104,6 +109,10 @@ def call():
             output_data.append(f"`{fname}` does not appear to contain empty columns or rows.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
+
+        # cleanup
+        del df
+        gc.collect()
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

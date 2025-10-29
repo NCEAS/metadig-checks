@@ -32,8 +32,9 @@ def call():
     output_type = []
     metadigpy_result = {}
 
-    if len(dataPids) == 0:
+    if not dataPids or len(dataPids) == 0:
       output_data = "No data objects found."
+      output_type = "text"
 
     for pid in dataPids:
         output_identifiers.append(pid)
@@ -59,6 +60,12 @@ def call():
         # Read the data object
         with zipfile.ZipFile(obj, 'r') as zip_obj:
             file_list = zip_obj.namelist()
+
+        if not any(fname.lower().endswith(".shp") for fname in file_list):
+            output_data.append(f"`{fname}` does not look like a shapefile set, skipping.")
+            output_type.append("markdown")
+            status_data.append("SKIP")
+            continue
 
         # remove directories/extensionless files
         file_list = [f for f in file_list if os.path.splitext(f)[1]]

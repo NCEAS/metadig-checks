@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.raster.well-formed</id>
+  <name>Raster files are well formed</name>
+  <description>Check that ESRI shapefile sets contain the required files with the correct naming convention.</description>
+  <type>Interoperable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    from metadig import metadata as md
+    import rasterio
+    from rasterio.io import MemoryFile
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if not dataPids or len(dataPids) == 0:
+      output_data = "No data objects found."
+      output_type = "text"
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+
+        # If data object is not available, skip the pid.
+        try:
+            # if file is not a zip file, skip it
+            # otherwise get the object and filename
+            obj, sys = manager.get_object(pid)
+            fname = md.read_sysmeta_element(sys, "fileName")
+            fid = md.read_sysmeta_element(sys, "formatId")
+            if fid != "image/geotiff+zip" and fid != "image/geotiff":
+                output_data.append(f"`{fname}` does not look like a geotiff, skipping.")
+                output_type.append("markdown")
+                status_data.append("SKIP")
+                continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("FAILURE")
+            continue
+
+        # Read the data object
+        if fid == "image/geotiff+zip":
+            with zipfile.ZipFile(obj, 'r') as zip_obj:
+                file_list = zip_obj.namelist()
+                # I guess do something else here
+        
+        try:
+            with MemoryFile(tiff_bytes) as memfile:
+                with memfile.open() as src:
+                    crs = src.crs
+                    bounds = src.bounds
+                    #src.width,  src.height
+                    bands = src.count
+            output_data.append(f"`{fname}` is able to be read, with a crs of `{crs}`, and {bands} band(s).")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        except Exception as e:
+            output_data.append(f"`{fname}` is unable to be read as a raster file.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    output = output_data
+    
+    if failures > 0:
+        status = "FAILURE"
+    else:
+        status = "SUCCESS"
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

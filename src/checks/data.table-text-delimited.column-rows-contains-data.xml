@@ -120,7 +120,7 @@ def call():
     output = output_data
     if failures > 0:
         status = "FAILURE"
-    else if all(s == "SKIP" for s in status):
+    elif all(s == "SKIP" for s in status_data):
         status = "SKIP"
     else:
         status = "SUCCESS"

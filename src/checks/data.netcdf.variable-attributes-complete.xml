@@ -51,7 +51,7 @@ def call():
       if not fid.startswith("netCDF"):
         output_data.append(f"`{fname}` does not appear to be a netCDF file.")
         output_type.append("markdown")
-        status_data.append("SUCCESS")
+        status_data.append("SKIP")
         continue
 
       ds = xr.open_dataset(obj, decode_times=False)
@@ -82,7 +82,7 @@ def call():
 
   if failures > 0:
       status = "FAILURE"
-  else if all(s == "SKIP" for s in status):
+  elif all(s == "SKIP" for s in status_data):
       status = "SKIP"
   else:
       status = "SUCCESS"

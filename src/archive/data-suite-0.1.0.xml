@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:suite xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data-suite-0.1.0</id>
+  <name>Data Quality Suite</name>
+  <description>FAIR data quality suite</description>
+  <check>
+    <id>data.text-encoding.valid</id>
+  </check>
+  <check>
+    <id>data.format.congruent</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.variables-congruent</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.well-formed</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.column-names-printable</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.column-rows-contains-data</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.glimpse</id>
+  </check>
+  <!--
+  <check>
+    <id>data.table-text-delimited.normalized</id>
+  </check>
+  -->
+  <check>
+    <id>data.shapefiles.complete</id>
+  </check>
+  <check>
+    <id>data.table-text-delimited.missing-values-documented</id>
+  </check>
+  <check>
+    <id>data.content.malware-free</id>
+  </check>
+  <check>
+    <id>data.netcdf.global-attributes-complete</id>
+  </check>
+  <check>
+    <id>data.netcdf.variable-attributes-complete</id>
+  </check>
+  <check>
+    <id>data.netcdf.coordinate-attributes-complete</id>
+  </check>
+  <check>
+    <id>data.raster.well-formed</id>
+  </check>
+</mdq:suite>

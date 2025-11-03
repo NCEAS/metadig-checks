@@ -44,7 +44,7 @@ def call():
             obj, sys = manager.get_object(pid)
             fname = md.read_sysmeta_element(sys, "fileName")
             fid = md.read_sysmeta_element(sys, "formatId")
-            if fid != "image/geotiff+zip" and fid != "image/geotiff":
+            if fid != "image/geotiff+zip" and fid != "image/geotiff" and fid != "image/tiff":
                 output_data.append(f"`{fname}` does not look like a geotiff, skipping.")
                 output_type.append("markdown")
                 status_data.append("SKIP")
@@ -62,17 +62,31 @@ def call():
                 # I guess do something else here
         
         try:
-            with MemoryFile(tiff_bytes) as memfile:
+            with MemoryFile(obj) as memfile:
                 with memfile.open() as src:
-                    crs = src.crs
-                    bounds = src.bounds
-                    #src.width,  src.height
-                    bands = src.count
-            output_data.append(f"`{fname}` is able to be read, with a crs of `{crs}`, and {bands} band(s).")
-            output_type.append("markdown")
-            status_data.append("SUCCESS")
+                    # if not typed as geotiff, and no crs, probably just a plain tiff so skip
+                    if fid == "image/tiff" and not src.crs:
+                        output_data.append(f"`{fname}` does not look like a geotiff, skipping.")
+                        output_type.append("markdown")
+                        status_data.append("SKIP")
+                        continue
+                    # if not a plain tiff (typed as geotiff) but no crs, fail it
+                    elif fid != "image/tiff" and not src.crs:
+                        output_data.append(f"`{fname}` does not have a coordinate reference system.")
+                        output_type.append("markdown")
+                        status_data.append("FAILURE")
+                        continue
+                    # if it has a crs and we made it this far, it succeeds
+                    else:
+                        crs = src.crs
+                        bounds = src.bounds
+                        #src.width,  src.height
+                        bands = src.count
+                        output_data.append(f"`{fname}` is able to be read, with a crs of `{crs}`, and {bands} band(s).")
+                        output_type.append("markdown")
+                        status_data.append("SUCCESS")
         except Exception as e:
-            output_data.append(f"`{fname}` is unable to be read as a raster file.")
+            output_data.append(f"`{fname}` is unable to be read as a raster file. {e}")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

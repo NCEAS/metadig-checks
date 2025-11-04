@@ -116,6 +116,12 @@ def call():
             status_data.append("SUCCESS")
         else:
             # Create a table to assist with comparing the variable names
+            data = {'att_names': att_names, 'col_names': col_names}
+            df = pd.DataFrame(data)
+            filtered_df = df[df['att_names'] != df['col_names']]
+            # get filtered attribute and column names to only show mismatched attributes
+            att_names = filtered_df.get('att_names').tolist()
+            col_names = filtered_df.get('col_names').tolist()
             # Get the max width so that we can insert the correct amount of spaces between pipes
             att_name_mxw = max(
                 len("Attribute Names (Expected)"),

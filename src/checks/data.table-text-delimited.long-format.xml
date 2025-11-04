@@ -2,11 +2,11 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>data.table-text-delimited.well-formed</id>
-  <name>Text delimited table is well formed</name>
-  <description>A text delimited table is read using python's pandas library using available metadata about the file structure.</description>
-  <type>Interoperable</type>
-  <level>REQUIRED</level>
+  <id>data.table-text-delimited.long-format</id>
+  <name>Check whether text delimited tables appear to be in long format.</name>
+  <description>Well structured data tables should be "long" and not "wide." This check looks for repeated column name prefixes (eg: temp_1, temp_2, ...) as a signal for wide data structures.</description>
+  <type>Reusable</type>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 
@@ -19,17 +19,19 @@ def call():
 
     from metadig import StoreManager
     from metadig import metadata as md
+    from collections import Counter
     import pandas as pd
     import io
+    import re
     import gc
- 
+
+    manager = StoreManager(storeConfiguration)  
+
     output_data = []
     status_data = []
     output_identifiers = []
     output_type = []
     metadigpy_result = {}
-
-    manager = StoreManager(storeConfiguration)
 
     if not dataPids or len(dataPids) == 0:
       output_data = "No data objects found."
@@ -50,7 +52,7 @@ def call():
                 continue
         except Exception as e:
             output_data.append(f"Unexpected Exception: {e}")
-            output_type.append("text")
+            output_type.append("markdown")
             status_data.append("FAILURE")
             continue
 
@@ -81,30 +83,35 @@ def call():
                 except (ValueError, TypeError):
                     pass
         
-        # Try to read it in as a csv with correct metadata
-        try:
-            obj_bytes_read = obj.read()
-            encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
-            d_read_decoded = obj_bytes_read.decode(encoding_type)
-            df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, dtype_string = True)
-        except Exception as e:
-            output_data.append(f"`{fname}` is unable to be read as a table.")
+        # Try to read the data object
+        obj_bytes_read = obj.read()
+        encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
+        d_read_decoded = obj_bytes_read.decode(encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, nan_filter = False, dtype_string = True)
+        if error:
+            output_data.append(f"`{fname}`is unable to be read as a table. {error}")
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
 
         # cleanup
         del obj_bytes_read
-            
-        if isinstance(df, pd.DataFrame):
-            output_data.append(f"`{fname}` is able to be parsed.")
+
+        # Check for non-printable characters
+        column_names = df.columns
+        pattern = re.compile(r"(.*?)[_-]?\d+$", re.IGNORECASE)
+        prefixes = [re.sub(r"([_-]?\d+)$", "", col) for col in column_names if pattern.match(col)]
+        pref_counts = Counter(prefixes)
+
+        if any(count > 3 for count in pref_counts.values()):
+            pref_repeat = [key for key,value in pref_counts.items() if value > 3]
+            output_data.append(f"`{fname}` contains the following repeated column name prefixes: `{', '.join(pref_repeat)}`")
+            status_data.append("FAILURE")
+        else:
+            output_data.append(f"`{fname}` appears to be in long format.")
             output_type.append("markdown")
             status_data.append("SUCCESS")
-        else:
-            output_data.append(f"`{fname}` cannot be parsed because it is of type {type(df).__name__}, not a dataframe.")
-            output_type.append("markdown")
-            status_data.append("FAILURE")
-        
+
         # cleanup
         del df
         gc.collect()
@@ -112,7 +119,6 @@ def call():
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)
     skips = sum(x == "SKIP" for x in status_data)
-
     output = output_data
     if failures > 0:
         status = "FAILURE"
@@ -133,14 +139,6 @@ def call():
     <subSelector>
       <name>...</name>
       <xpath>./entityName</xpath>
-    </subSelector>
-  </selector>
-  <selector>
-    <name>objectNames</name>
-    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
-    <subSelector>
-      <name>...</name>
-      <xpath>./physical/objectName</xpath>
     </subSelector>
   </selector>
   <selector>

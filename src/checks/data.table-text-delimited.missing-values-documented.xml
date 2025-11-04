@@ -67,12 +67,18 @@ def call():
         if isinstance(headerLines, list):
             # If we successfully retrieve a list, we will check what the value is
             header_line_value = headerLines[entity_index]
-            if header_line_value == 'null':
-                # There are no header lines
+            if header_line_value is None or str(header_line_value).lower() == 'null':
+                # No header lines specified
                 pass
-            if isinstance(header_line_value, int):
-                # We'll use the value from the list of it is an integer
-                num_header_lines = header_line_value
+            elif isinstance(header_line_value, (int, float)):
+                # convert float to int
+                num_header_lines = int(header_line_value)
+            else:
+                # try to parse numeric strings
+                try:
+                    num_header_lines = int(float(header_line_value))
+                except (ValueError, TypeError):
+                    pass
         # Read the data object
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)

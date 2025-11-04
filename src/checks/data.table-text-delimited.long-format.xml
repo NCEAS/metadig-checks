@@ -99,13 +99,12 @@ def call():
 
         # Check for non-printable characters
         column_names = df.columns
-        pattern = re.compile(r"(.*?)[_-]?\d+$", re.IGNORECASE)
-        prefixes = [re.sub(r"([_-]?\d+)$", "", col) for col in column_names if pattern.match(col)]
+        prefixes = [re.split(r"[_-]", col, maxsplit=1)[0] for col in column_names]
         pref_counts = Counter(prefixes)
 
         if any(count > 3 for count in pref_counts.values()):
             pref_repeat = [key for key,value in pref_counts.items() if value > 3]
-            output_data.append(f"`{fname}` contains the following repeated column name prefixes: `{', '.join(pref_repeat)}`")
+            output_data.append(f"`{fname}` contains the following repeated column name prefixes: `{', '.join(pref_repeat)}`, and might be in wide format.")
             status_data.append("FAILURE")
         else:
             output_data.append(f"`{fname}` appears to be in long format.")

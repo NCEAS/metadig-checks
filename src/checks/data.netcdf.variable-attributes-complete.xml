@@ -76,20 +76,20 @@ def call():
         output_type.append("markdown")
         status_data.append("SUCCESS")
 
-    successes = sum(x == "SUCCESS" for x in status_data)
-    failures = sum(x == "FAILURE" for x in status_data)
-    skips = sum(x == "SKIP" for x in status_data)
-    errors = sum(x == "ERROR" for x in status_data)
-    output = output_data
-    
-    if failures > 0:
-        status = "FAILURE"
-    elif all(s == "SKIP" for s in status_data):
-        status = "SKIP"
-    elif all(s == "ERROR" for s in status_data):
-        status = "ERROR"
-    else:
-        status = "SUCCESS"
+  successes = sum(x == "SUCCESS" for x in status_data)
+  failures = sum(x == "FAILURE" for x in status_data)
+  skips = sum(x == "SKIP" for x in status_data)
+  errors = sum(x == "ERROR" for x in status_data)
+  output = output_data
+  
+  if failures > 0:
+      status = "FAILURE"
+  elif all(s == "SKIP" for s in status_data):
+      status = "SKIP"
+  elif all(s == "ERROR" for s in status_data):
+      status = "ERROR"
+  else:
+      status = "SUCCESS"
 
   metadigpy_result["identifiers"] = output_identifiers
   metadigpy_result["output"] = output_data

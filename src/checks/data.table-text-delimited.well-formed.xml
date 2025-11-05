@@ -80,6 +80,11 @@ def call():
                     num_header_lines = int(float(header_line_value))
                 except (ValueError, TypeError):
                     pass
+        else:
+            try:
+                num_header_lines = int(float(headerLines))
+            except (ValueError, TypeError):
+                pass
         
         # Try to read it in as a csv with correct metadata
         try:

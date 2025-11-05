@@ -4,7 +4,7 @@
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
   <id>data.table-text-delimited.variables-congruent</id>
   <name>Text delimited table variables names congruent</name>
-  <description>Variable (column) names in a file should be congruent with attribute's in the file's metadata.</description>
+  <description>Variable (column) names in a file should be congruent with attributes in the file's metadata.</description>
   <type>Interoperable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
@@ -22,6 +22,7 @@ def call():
     import pandas as pd
     import io
     import gc
+    import numpy as np
 
     manager = StoreManager(storeConfiguration)  
 
@@ -80,6 +81,11 @@ def call():
                     num_header_lines = int(float(header_line_value))
                 except (ValueError, TypeError):
                     pass
+        else:
+            try:
+                num_header_lines = int(float(headerLines))
+            except (ValueError, TypeError):
+                pass
         
         # Read the data object
         obj_bytes_read = obj.read()
@@ -116,7 +122,11 @@ def call():
             status_data.append("SUCCESS")
         else:
             # Create a table to assist with comparing the variable names
-            data = {'att_names': att_names, 'col_names': col_names}
+            max_len = max(len(att_names), len(col_names))
+            att_names_padded = att_names + ["NULL"] * (max_len - len(att_names))
+            col_names_padded = col_names + ["NULL"] * (max_len - len(col_names))
+
+            data = {'att_names': att_names_padded, 'col_names': col_names_padded}
             df = pd.DataFrame(data)
             filtered_df = df[df['att_names'] != df['col_names']]
             # get filtered attribute and column names to only show mismatched attributes

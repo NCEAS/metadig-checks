@@ -61,7 +61,7 @@ def call():
             output_type.append("markdown")
             status_data.append("FAILURE")
             continue
-        # Set the default expecated header line value (the first row is headers)
+         # Set the default expecated header line value (the first row is headers)
         num_header_lines = 0
         # headerLines represents 'numHeaderLines' which is retrieved from the EML document
         if isinstance(headerLines, list):
@@ -79,6 +79,12 @@ def call():
                     num_header_lines = int(float(header_line_value))
                 except (ValueError, TypeError):
                     pass
+        else:
+            try:
+                num_header_lines = int(float(headerLines))
+            except (ValueError, TypeError):
+                pass
+
         # Read the data object
         obj_bytes_read = obj.read()
         encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)

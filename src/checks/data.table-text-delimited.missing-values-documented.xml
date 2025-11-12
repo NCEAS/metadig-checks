@@ -107,6 +107,8 @@ def call():
         for att in atts:
             t = att.findall("./missingValueCode/code")
             mv = [c.text for c in t]
+            if mv == "blank":
+                mv = ""
             mv_codes.append(mv)
         att_names = [att.findtext("attributeName") for att in atts]
         t = [att.findall(".//missingValueCode/code") for att in atts]

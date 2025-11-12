@@ -143,10 +143,12 @@ def call():
             )
             header = f"| {'Attribute Names (Expected)':<{att_name_mxw}} | {'Variable Names (CSV)':<{col_name_mxw}} |"
             separator = f"|{'-' * (att_name_mxw + 2)}|{'-' * (col_name_mxw + 2)}|"
+            att_names_quoted = [f'"{a}"' if a is not None else '"NULL"' for a in att_names]
+            col_names_quoted = [f'"{c}"' if c is not None else '"NULL"' for c in col_names]
             # Create the rows
             rows = [
                 f"| {md.escape_for_markdown(att):<{att_name_mxw}} | {md.escape_for_markdown(col):<{col_name_mxw}} |"
-                for att, col in zip(att_names, col_names)
+                for att, col in zip(att_names_quoted, col_names_quoted)
             ]
             row_list = [header, separator] + rows
             table_rows = "\n".join(row_list)

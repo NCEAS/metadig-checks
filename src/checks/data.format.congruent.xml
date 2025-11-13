@@ -75,8 +75,12 @@ def call():
       ext = "tiff" if ext == "tif" else ext
       # massage a couple of custom formatIds 
       fid = "application/netcdf" if fid == "application/x-netcdf" else fid
-      fid = "application/zip" if fid == "application/vnd.shp+zip" else fid
+      fid = "application/zip" if fid in ["application/vnd.shp+zip", "image/geotiff+zip"] else fid
       mime_type = "text/csv" if ext == "csv" and mime_type == "text/plain" else mime_type
+      mime_type = "application/x-python" if ext == "py" and mime_type == "text/plain" else mime_type
+      mime_type = "text/x-rsrc" if ext == "R" and mime_type == "text/plain" else mime_type
+      mime_type = "text/x-matlab" if ext == "m" and mime_type == "text/plain" else mime_type
+      mime_type = "application/geo+json" if ext == "geojson" and mime_type == "text/plain" else mime_type
       # extract format_ids matching the media type and file extension of the file
       df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
 

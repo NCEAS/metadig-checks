@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.content.not-zipped</id>
+  <name>Data content is not zipped</name>
+  <description>Data files should be published as individual files, not zip archives, for transparency.</description>
+  <type>Interoperable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    from metadig import metadata as md
+    import io
+    import zipfile
+    import os
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if not dataPids or len(dataPids) == 0:
+      output_data = "No data objects found."
+      output_type = "text"
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+
+        # If data object is not available, skip the pid.
+        try:
+            # if file is not a zip file, skip it
+            # otherwise get the object and filename
+            obj, sys = manager.get_object(pid)
+            fname = md.read_sysmeta_element(sys, "fileName")
+            fid = md.read_sysmeta_element(sys, "formatId")
+            if fid != "application/zip":
+                output_data.append(f"`{fname}` does not appear to be a zip archive.")
+                output_type.append("markdown")
+                status_data.append("SUCCESS")
+                continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("ERROR")
+            continue
+
+        # Read the data object
+        with zipfile.ZipFile(obj, 'r') as zip_obj:
+            file_list = zip_obj.namelist()
+
+        if any(fname.lower().endswith(".shp") for fname in file_list):
+            output_data.append(f"`{fname}` looks like a shapefile set, and is acceptable to zip.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        else:
+            output_data.append(f"`{fname}` is a zip archive. Best practices for archival indicate the flies should be published individually.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    errors = sum(x == "ERROR" for x in status_data)
+    output = output_data
+    
+    if failures > 0:
+        status = "FAILURE"
+    elif all(s == "SKIP" for s in status_data):
+        status = "SKIP"
+    elif all(s == "ERROR" for s in status_data):
+        status = "ERROR"
+    else:
+        status = "SUCCESS"
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

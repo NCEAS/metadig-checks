@@ -10,6 +10,9 @@
     <id>data.format.congruent</id>
   </check>
   <check>
+    <id>data.content.not-zipped</id>
+  </check>
+  <check>
     <id>data.table-text-delimited.variables-congruent</id>
   </check>
   <check>

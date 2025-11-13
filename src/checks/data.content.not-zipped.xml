@@ -65,9 +65,9 @@ def call():
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"`{fname}` is a zip archive. Best practices for archival indicate the flies should be published individually.")
+            output_data.append(f"`{fname}` is a zip archive. Best practices for archival indicate the files should be published individually.")
             output_type.append("markdown")
-            status_data.append("SUCCESS")
+            status_data.append("FAILURE")
 
     successes = sum(x == "SUCCESS" for x in status_data)
     failures = sum(x == "FAILURE" for x in status_data)

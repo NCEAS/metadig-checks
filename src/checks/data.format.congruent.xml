@@ -85,7 +85,7 @@ def call():
       df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
 
       if df_new.shape[0] == 0:
-        output_data.append(f"`{fname}` does not have a formatId matching its media type and extension.")
+        output_data.append(f"`{fname}` has a formatId of `{fid}`, which does not match the detected format `{mime_type}`.")
         output_type.append("markdown")
         status_data.append("FAILURE")
         continue
@@ -96,7 +96,7 @@ def call():
         status_data.append("SUCCESS")
         continue
       else:
-        output_data.append(f"`{fname}`'s formatId does not match its media type and extension.")
+        output_data.append(f"`{fname}` has a formatId of `{fid}`, which does not match the detected format `{mime_type}`.")
         output_type.append("markdown")
         status_data.append("FAILURE")
 

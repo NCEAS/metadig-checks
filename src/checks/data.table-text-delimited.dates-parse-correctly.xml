@@ -121,26 +121,33 @@ def call():
             status_data.append("SKIP")
             continue
         
+        att_out = []
+        att_status = []
+
         for att_name, fmt in zip(att_names, format_strings):
             if att_name not in df.columns:
-                output_data.append(f"`{att_name}` is unable to extracted from the table. The variable may be misdocumented.")
-                output_type.append("markdown")
-                status_data.append("FAILURE")
+                att_out.append(f"`{att_name}` is unable to extracted from the table. The variable may be misdocumented.")
+                att_status.append("FAILURE")
                 continue
             col = df[att_name]
             try:
                 fmt_strptime = md.eml_to_strptime(fmt)
                 parsed = pd.to_datetime(col, format=fmt_strptime, errors='raise')
-                output_data.append(f"`{att_name}` parses correctly with format `{fmt}`.")
-                output_type.append("markdown")
-                status_data.append("FAILURE")
+                att_out.append(f"`{att_name}` parses correctly with format `{fmt}`.")
+                att_status.append("SUCCESS")
             except Exception as e:
                 exc_str = str(e)
                 trunc_index = exc_str.find("You might want")
                 exc_str = exc_str[:trunc_index].rstrip()  # remove trailing whitespace
-                output_data.append(f"`{att_name}` is unable to be parsed according to `{fmt}`, with exception `{exc_str}`.")
-                output_type.append("markdown")
-                status_data.append("FAILURE")
+                att_out.append(f"`{att_name}` is unable to be parsed according to `{fmt}`, with exception `{exc_str}`.")
+                att_status.append("FAILURE")
+        
+        output_data.append(" ".join(att_out))
+        if any(status == "FAILURE" for status in att_status):
+            status_data.append("FAILURE")
+        else:
+            status_data.append("SUCCESS")
+        output_type.append("markdown")
 
         # cleanup
         del df

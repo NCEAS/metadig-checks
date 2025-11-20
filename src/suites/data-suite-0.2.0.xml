@@ -38,6 +38,9 @@
   <check>
     <id>data.shapefiles.complete</id>
   </check>
+    <check>
+    <id>data.coordinates.within-bounds</id>
+  </check>
   <check>
     <id>data.table-text-delimited.missing-values-documented</id>
   </check>

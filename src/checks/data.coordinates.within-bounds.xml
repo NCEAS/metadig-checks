@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.coordinates.within-bounds</id>
+  <name>Shapefile coordinate data is within the bounds of the CRS.</name>
+  <description>ESRI shapefile coordinates should be within the range of the CRS that is defined. For example, latitude should not exceed 90 degrees.</description>
+  <type>Interoperable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    from metadig import metadata as md
+    import geopandas as gpd
+    import io
+    import zipfile
+    import os
+    import pyproj
+    import tempfile
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if not dataPids or len(dataPids) == 0:
+      output_data = "No data objects found."
+      output_type = "text"
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+
+        # If data object is not available, skip the pid.
+        try:
+            # if file is not a zip file, skip it
+            # otherwise get the object and filename
+            obj, sys = manager.get_object(pid)
+            fname = md.read_sysmeta_element(sys, "fileName")
+            fid = md.read_sysmeta_element(sys, "formatId")
+            if fid != "application/zip" and fid != "application/vnd.shp+zip":
+                output_data.append(f"`{fname}` does not look like a shapefile set, skipping.")
+                output_type.append("markdown")
+                status_data.append("SKIP")
+                continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("ERROR")
+            continue
+
+        with zipfile.ZipFile(obj, 'r') as zf:
+            file_list = zf.namelist()
+            shp_files = [f for f in file_list if f.lower().endswith(".shp")]
+          
+            if not shp_files:
+                output_data.append(f"{fname} does not look like a shapefile set, skipping.")
+                output_type.append("markdown")
+                status_data.append("SKIP")
+                continue
+          
+            shapefile_in_zip = shp_files[0]
+          
+            # Extract all files to a temporary directory
+            with tempfile.TemporaryDirectory() as tmpdir:
+                zf.extractall(tmpdir)
+                shapefile_path = os.path.join(tmpdir, shapefile_in_zip)
+                gdf = gpd.read_file(shapefile_path)
+
+        # get CRS and bounds
+        ref_crs = pyproj.CRS.from_epsg(gdf.crs.to_epsg())
+        minx, miny, maxx, maxy = gdf.total_bounds
+        west, south, east, north = ref_crs.area_of_use.bounds
+
+        # check if gdf is fully within reference bounds
+        within_bounds = (west <= minx <= east) and (west <= maxx <= east) and (south <= miny <= north) and (south <= maxy <= north)
+
+        if not within_bounds:
+            tests = {
+                "minx": west <= minx <= east,
+                "maxx": west <= maxx <= east,
+                "miny": south <= miny <= north,
+                "maxy": south <= maxy <= north,
+            }
+            oob = [name for name, ok in tests.items() if not ok]
+            vals = {"minx": minx, "maxx": maxx, "miny": miny, "maxy": maxy}
+            msg = "; ".join(f"{key} = {vals[key]} is out of bounds" for key in oob)
+        
+        # Check if column names match documentation
+        if within_bounds:
+            output_data.append(f"`{fname}` has coordinates that are within the bounds defined by CRS `{ref_crs.name}`.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        elif not within_bounds:
+            output_data.append(f"`{fname}` has the following coordinate range issues for CRS `{ref_crs.name}`: {msg}")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    errors = sum(x == "ERROR" for x in status_data)
+    output = output_data
+    
+    if failures > 0:
+        status = "FAILURE"
+    elif all(s == "SKIP" for s in status_data):
+        status = "SKIP"
+    elif all(s == "ERROR" for s in status_data):
+        status = "ERROR"
+    else:
+        status = "SUCCESS"
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

@@ -2,7 +2,7 @@
 <mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
-  <id>data.coordinates.within-bounds</id>
+  <id>data.shapefiles.coordinates-within-crs-bounds</id>
   <name>Shapefile coordinate data is within the bounds of the CRS.</name>
   <description>ESRI shapefile coordinates should be within the range of the CRS that is defined. For example, latitude should not exceed 90 degrees.</description>
   <type>Interoperable</type>
@@ -25,6 +25,8 @@ def call():
     import os
     import pyproj
     import tempfile
+    from shapely.geometry import box
+    from shapely.ops import transform
 
     manager = StoreManager(storeConfiguration)  
 
@@ -77,10 +79,16 @@ def call():
                 shapefile_path = os.path.join(tmpdir, shapefile_in_zip)
                 gdf = gpd.read_file(shapefile_path)
 
-        # get CRS and bounds
-        ref_crs = pyproj.CRS.from_epsg(gdf.crs.to_epsg())
+        # get CRS and bounds, transforming the CRS bounds into the same proj as the gdf
         minx, miny, maxx, maxy = gdf.total_bounds
-        west, south, east, north = ref_crs.area_of_use.bounds
+        ref_crs = pyproj.CRS.from_epsg(gdf.crs.to_epsg())
+        bounds = pyproj.CRS.from_epsg(gdf.crs.to_epsg()).area_of_use.bounds
+        ref_box = box(bounds[0], bounds[1], bounds[2], bounds[3])
+        ref_bounds = transform(
+            pyproj.Transformer.from_crs("EPSG:4326", gdf.crs, always_xy=True).transform,
+            ref_box
+        ).bounds
+        west, south, east, north = ref_bounds
 
         # check if gdf is fully within reference bounds
         within_bounds = (west <= minx <= east) and (west <= maxx <= east) and (south <= miny <= north) and (south <= maxy <= north)
@@ -93,8 +101,12 @@ def call():
                 "maxy": south <= maxy <= north,
             }
             oob = [name for name, ok in tests.items() if not ok]
-            vals = {"minx": minx, "maxx": maxx, "miny": miny, "maxy": maxy}
-            msg = "; ".join(f"{key} = {vals[key]} is out of bounds" for key in oob)
+            val_found = {"minx": minx, "maxx": maxx, "miny": miny, "maxy": maxy}
+            val_allowed = {"minx": west, "maxx": east, "miny": south, "maxy": north}
+            msg = "; ".join(
+                f"Coordinate '{key}' with value {val_found[key]} is out of bounds; allowed range: {val_allowed[key]}"
+                for key in oob
+            )
         
         # Check if column names match documentation
         if within_bounds:

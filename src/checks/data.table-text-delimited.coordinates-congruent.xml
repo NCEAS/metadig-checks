@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdq:check xmlns:mdq="https://nceas.ucsb.edu/mdqe/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://nceas.ucsb.edu/mdqe/v1 ../schemas/schema1.xsd">
+  <id>data.table-text-delimited.coordinates-congruent</id>
+  <name>Latitude/Longitude coordinates are congruent with defined bounding box.</name>
+  <description>Values within latitude/longitude columns should be within one or more bounding boxes defined in the geogaphic coverage of a dataset.</description>
+  <type>Interoperable</type>
+  <level>REQUIRED</level>
+  <environment>python</environment>
+  <code><![CDATA[
+
+def call():
+    global output
+    global status
+    global output_identifiers
+    global output_type
+    global metadigpy_result
+
+    from metadig import StoreManager
+    from metadig import metadata as md
+    import pandas as pd
+    import io
+    import os
+    from shapely.geometry import box
+    from shapely.ops import transform
+    import xml.etree.ElementTree as ET
+
+    manager = StoreManager(storeConfiguration)  
+
+    output_data = []
+    status_data = []
+    output_identifiers = []
+    output_type = []
+    metadigpy_result = {}
+
+    if not dataPids or len(dataPids) == 0:
+      output_data = "No data objects found."
+      output_type = "text"
+
+    for pid in dataPids:
+        output_identifiers.append(pid)
+
+        # If data object is not available, skip the pid.
+        try:
+            # if file is not text/csv, skip it
+            # otherwise get the object and filename
+            obj, fname, csv_status = md.get_valid_csv(manager, pid)
+            if csv_status == "SKIP":
+                output_data.append(f"`{fname}` is not a text-delimited table, skipping.")
+                output_type.append("markdown")
+                status_data.append(csv_status)
+                continue
+        except Exception as e:
+            output_data.append(f"Unexpected Exception: {e}")
+            output_type.append("text")
+            status_data.append("ERROR")
+            continue
+
+        # Ensure that the data object is documented in the list of entity names
+        entity_index = md.find_entity_index(fname, pid, entityNames, ids)
+        if entity_index is None:
+            output_data.append(f"`{fname}` does not appear to be documented in the metadata.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+            continue
+
+        # Set the default expecated header line value (the first row is headers)
+        num_header_lines = 0
+        # headerLines represents 'numHeaderLines' which is retrieved from the EML document
+        if isinstance(headerLines, list):
+            # If we successfully retrieve a list, we will check what the value is
+            header_line_value = headerLines[entity_index]
+            if header_line_value is None or str(header_line_value).lower() == 'null':
+                # No header lines specified
+                pass
+            elif isinstance(header_line_value, (int, float)):
+                # convert float to int
+                num_header_lines = int(header_line_value)
+            else:
+                # try to parse numeric strings
+                try:
+                    num_header_lines = int(float(header_line_value))
+                except (ValueError, TypeError):
+                    pass
+        else:
+            try:
+                num_header_lines = int(float(headerLines))
+            except (ValueError, TypeError):
+                pass
+        
+        # Read the data object
+        obj_bytes_read = obj.read()
+        encoding_type, enc_msg = md.detect_text_encoding(obj_bytes_read)
+        d_read_decoded = obj_bytes_read.decode(encoding_type)
+        df, error = md.read_csv_with_metadata(d_read_decoded, fieldDelimiter[entity_index], num_header_lines, encoding_type, dtype_string = True)
+        if error:
+            output_data.append(f"`{fname}` is unable to be read as a table: {error}.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+            continue
+
+        # cleanup
+        del obj_bytes_read
+
+        # Extract the entity from the metadata doc, attribute names, and annotations
+        ent = md.find_eml_entity(document, pid, fname)
+        attrs = ent.findall(".//attribute")
+
+        att_names = [elem.text for elem in ent.findall(".//attributeName")]
+        anns = [(elem.find(".//annotation/valueURI").text 
+                    if elem.find(".//annotation/valueURI") is not None
+                    else None)
+                for elem in attrs
+                ]
+
+        lats = [att for att, ann in zip(att_names, anns) if ann in ["http://purl.dataone.org/odo/ECSO_00002130", "http://purl.dataone.org/odo/ECSO_00002247"]]
+        lons = [att for att, ann in zip(att_names, anns) if ann in ["http://purl.dataone.org/odo/ECSO_00002132", "http://purl.dataone.org/odo/ECSO_00002239"]]
+    
+        if len(lats + lons) == 0:
+            output_data.append(f"No latitude or longitude columns detected in `{fname}`.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+            continue
+
+        if any(col not in df.columns for col in lats + lons):
+            out_cols = [col for col in lats + lons if col not in df.columns]
+            output_data.append(f"Unable to retrieve documented columns: `{out_cols}` from `{fname}`. The variables in the file may not match documentation.")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+            continue
+
+        df[lats] = df[lats].apply(pd.to_numeric, errors='coerce')
+        df[lons] = df[lons].apply(pd.to_numeric, errors='coerce')
+
+        lat_values = df[lats].stack().tolist()
+        lon_values = df[lons].stack().tolist()
+
+        # convert longitudes from 0-360 to -180:180 if necessary
+        lon_values = [((lon + 180) % 360) - 180 if lon > 180 else lon for lon in lon_values]
+
+        # get bounding boxes
+        root = ET.fromstring(document)
+        bboxes = root.findall(".//coverage/geographicCoverage/boundingCoordinates")
+
+        bbox_list = []
+        for bbox in bboxes:
+            west = float(bbox.find("westBoundingCoordinate").text)
+            east = float(bbox.find("eastBoundingCoordinate").text)
+            south = float(bbox.find("southBoundingCoordinate").text)
+            north = float(bbox.find("northBoundingCoordinate").text)
+            bbox_list.append((west, east, south, north))
+
+        # Check each point inline: pass if it lies in at least one bbox
+        within_bounds = [
+            any(west <= lon <= east and south <= lat <= north for west, east, south, north in bbox_list)
+            for lat, lon in zip(lat_values, lon_values)
+        ]
+         
+        if within_bounds:
+            output_data.append(f"`{fname}` has a correctly defined bounding box given the lat/lon values found in `{lats + lons}`.")
+            output_type.append("markdown")
+            status_data.append("SUCCESS")
+        elif not within_bounds:
+            output_data.append(f"`{fname}` has lat/lon values outside of the metadata bounding box from one of the following variables: `{lats + lons}`")
+            output_type.append("markdown")
+            status_data.append("FAILURE")
+
+    successes = sum(x == "SUCCESS" for x in status_data)
+    failures = sum(x == "FAILURE" for x in status_data)
+    skips = sum(x == "SKIP" for x in status_data)
+    errors = sum(x == "ERROR" for x in status_data)
+    output = output_data
+    
+    if failures > 0:
+        status = "FAILURE"
+    elif all(s == "SKIP" for s in status_data):
+        status = "SKIP"
+    elif all(s == "ERROR" for s in status_data):
+        status = "ERROR"
+    else:
+        status = "SUCCESS"
+
+    metadigpy_result["identifiers"] = output_identifiers
+    metadigpy_result["output"] = output_data
+    metadigpy_result["status"] = status
+    return True
+  ]]></code>
+  <selector>
+    <name>entityNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./entityName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>objectNames</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+    <subSelector>
+      <name>...</name>
+      <xpath>./physical/objectName</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+    <name>ids</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]/@id</xpath>
+  </selector>
+  <selector>
+     <name>fieldDelimiter</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/simpleDelimited/fieldDelimiter</xpath>
+    </subSelector>
+  </selector>
+  <selector>
+     <name>headerLines</name>
+    <xpath>/eml/dataset/*[self::dataTable|self::otherEntity]</xpath>
+     <subSelector>
+        <name>...</name>
+        <xpath>./physical/dataFormat/textFormat/numHeaderLines</xpath>
+    </subSelector>
+  </selector>
+  <dialect>
+    <name>Ecological Metadata Language</name>
+    <xpath>boolean(/*[local-name() = 'eml'])</xpath>
+  </dialect>
+</mdq:check>

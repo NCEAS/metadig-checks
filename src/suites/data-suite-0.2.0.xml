@@ -28,6 +28,9 @@
     <id>data.table-text-delimited.dates-parse-correctly</id>
   </check>
   <check>
+    <id>data.table-text-delimited.coordinates-congruent</id>
+  </check>
+  <check>
     <id>data.table-text-delimited.glimpse</id>
   </check>
   <!--
@@ -38,8 +41,11 @@
   <check>
     <id>data.shapefiles.complete</id>
   </check>
-    <check>
-    <id>data.coordinates.within-bounds</id>
+  <check>
+    <id>data.shapefiles.coordinates-within-crs-bounds</id>
+  </check>
+  <check>
+    <id>data.shapefiles.geometry-congruent</id>
   </check>
   <check>
     <id>data.table-text-delimited.missing-values-documented</id>

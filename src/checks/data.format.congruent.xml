@@ -80,7 +80,9 @@ def call():
       mime_type = "application/x-python" if ext == "py" and mime_type == "text/plain" else mime_type
       mime_type = "text/x-rsrc" if ext == "R" and mime_type == "text/plain" else mime_type
       mime_type = "text/x-matlab" if ext == "m" and mime_type == "text/plain" else mime_type
-      mime_type = "application/geo+json" if ext == "geojson" and mime_type == "text/plain" else mime_type
+      if ext == "geojson" and mime_type == "text/plain":
+        mime_type = "application/geo+json" 
+        ext = "json"
       # extract format_ids matching the media type and file extension of the file
       df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
 

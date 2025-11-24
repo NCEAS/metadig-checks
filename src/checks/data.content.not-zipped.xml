@@ -65,7 +65,7 @@ def call():
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"`{fname}` is a zip archive. Best practices for archival indicate the files should be published individually.")
+            output_data.append(f"`{fname}` is a zip archive. To follow best practices for archival, publish files individually.")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

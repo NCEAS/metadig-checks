@@ -97,7 +97,7 @@ def call():
             output_type.append("markdown")
             status_data.append("SUCCESS")
         else:
-            output_data.append(f"`{fname}` has geometry {" ".join(geom_gdf)}, which does not match the documenation of {geom_doc}")
+            output_data.append(f"`{fname}` has geometry {' '.join(geom_gdf)}, which does not match the documenation of {geom_doc}.")
             output_type.append("markdown")
             status_data.append("FAILURE")
 

@@ -5,7 +5,7 @@
   <id>data.content.not-zipped</id>
   <name>Data content is not zipped</name>
   <description>Data files should be published as individual files, not zip archives, for transparency.</description>
-  <type>Interoperable</type>
+  <type>Findable</type>
   <level>REQUIRED</level>
   <environment>python</environment>
   <code><![CDATA[

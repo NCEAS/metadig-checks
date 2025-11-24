@@ -6,7 +6,7 @@
   <name>Data format congruent with formatId</name>
   <description>Check that a data file format, as determined by magic, matches the formatId listed in the system metadata.</description>
   <type>Interoperable</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 def call():

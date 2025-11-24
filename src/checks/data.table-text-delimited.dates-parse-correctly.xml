@@ -5,7 +5,7 @@
   <id>data.table-text-delimited.dates-parse-correctly</id>
   <name>Check that date columns parse correctly according to declared format</name>
   <description>In text delimited tables, dates should parse correctly according to the declared date format in the metadata.</description>
-  <type>Reusable</type>
+  <type>Interoperable</type>
   <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[

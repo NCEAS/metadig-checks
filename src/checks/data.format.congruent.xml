@@ -84,23 +84,44 @@ def call():
         mime_type = "application/geo+json" 
         ext = "json"
       # extract format_ids matching the media type and file extension of the file
-      df_new = d1_formats[(d1_formats["media_type"] == mime_type) & (d1_formats["extension"] == ext)]
+      # filter by MIME type only
+      df_mime_match = d1_formats[d1_formats["media_type"] == mime_type]
 
-      if df_new.shape[0] == 0:
-        output_data.append(f"`{fname}` has a formatId of `{fid}`, which does not match the detected format `{mime_type}`.")
-        output_type.append("markdown")
-        status_data.append("FAILURE")
-        continue
-      
-      if fid in df_new["format_id"].values:
-        output_data.append(f"`{fname}`'s formatId matches its media type and extension.")
-        output_type.append("markdown")
-        status_data.append("SUCCESS")
-        continue
+      # Track results
+      soft_failure = False
+
+      if df_mime_match.shape[0] == 0:
+          # MIME type doesn't match anything
+          output_data.append(f"`{fname}` has a formatId of `{fid}`, which does not match detected MIME type `{mime_type}`.")
+          output_type.append("markdown")
+          status_data.append("FAILURE")
+          continue
+
+      # Check if format_id matches
+      if fid in df_mime_match["format_id"].values and ext in df_mime_match["extension"]:
+          output_data.append(f"`{fname}`'s formatId matches its MIME type and extension.")
+          output_type.append("markdown")
+          status_data.append("SUCCESS")
+          continue
       else:
-        output_data.append(f"`{fname}` has a formatId of `{fid}`, which does not match the detected format `{mime_type}`.")
-        output_type.append("markdown")
-        status_data.append("FAILURE")
+          # MIME matched, but extension didn't — treat as soft failure
+          soft_failure = True
+
+      # check extension if MIME is generic
+      generic_mimes = ["application/octet-stream", "text/plain"]
+      if mime_type in generic_mimes and fid in df_mime_match["format_id"].values:
+          output_data.append(f"`{fname}` has a generic MIME type `{mime_type}` with extension `{ext}`.")
+          output_type.append("markdown")
+          status_data.append("SUCCESS")
+          continue
+      else:
+          soft_failure = True
+
+      # Catch-all for remaining mismatches
+      if soft_failure:
+          output_data.append(f"`{fname}` has a formatId of `{fid}` and extension `{ext}`, which does not match detected MIME type `{mime_type}` which has expected extensions {df_mime_match["extension"].tolist()}")
+          output_type.append("markdown")
+          status_data.append("FAILURE")
 
   successes = sum(x == "SUCCESS" for x in status_data)
   failures = sum(x == "FAILURE" for x in status_data)

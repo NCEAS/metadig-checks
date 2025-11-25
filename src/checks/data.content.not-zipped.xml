@@ -46,7 +46,7 @@ def call():
             fname = md.read_sysmeta_element(sys, "fileName")
             fid = md.read_sysmeta_element(sys, "formatId")
             if fid != "application/zip":
-                output_data.append(f"`{fname}` does not appear to be a zip archive.")
+                output_data.append(f"`{fname}` does not appear to be a zip archive that is not a shapefile set.")
                 output_type.append("markdown")
                 status_data.append("SUCCESS")
                 continue

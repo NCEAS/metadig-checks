@@ -6,7 +6,7 @@
   <name>NetCDF file contains required variable attributes</name>
   <description>NetCDF files should contain all required variable attributes ("long_name", "units").</description>
   <type>Reusable</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 def call():

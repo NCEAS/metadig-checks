@@ -6,7 +6,7 @@
   <name>Text delimited table missing values are documented</name>
   <description>Check that text delimited table missing variables are documented.</description>
   <type>Reusable</type>
-  <level>Optional</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 

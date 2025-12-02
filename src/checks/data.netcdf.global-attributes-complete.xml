@@ -6,7 +6,7 @@
   <name>NetCDF file contains required global attributes</name>
   <description>NetCDF files should contain all required global attributes ("title", "summary", "keywords", "Conventions", "references").</description>
   <type>Findable</type>
-  <level>Optional</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 def call():

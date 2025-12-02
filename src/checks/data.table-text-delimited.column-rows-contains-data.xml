@@ -6,7 +6,7 @@
   <name>Check whether there are any empty columns or rows in a text delimited table</name>
   <description>Text delimited tables shouldn't contain entirely empty rows or columns. This check identifies if there are empty columns or rows that might have been generated unintentionally.</description>
   <type>Reusable</type>
-  <level>Optional</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 

@@ -6,7 +6,7 @@
   <name>Text delimited table variables names congruent</name>
   <description>Variable (column) names in a file should be congruent with attributes in the file's metadata.</description>
   <type>Interoperable</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 

@@ -6,7 +6,7 @@
   <name>Shapefile geometry type is congruent with metadata.</name>
   <description>The geometry of a geospatial vector dataset should be documented correctly in the metadata.</description>
   <type>Interoperable</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 

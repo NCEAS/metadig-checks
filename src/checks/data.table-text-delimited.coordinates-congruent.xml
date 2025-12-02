@@ -6,7 +6,7 @@
   <name>Latitude/Longitude coordinates are congruent with defined bounding box.</name>
   <description>Values within latitude/longitude columns should be within one or more bounding boxes defined in the geogaphic coverage of a dataset.</description>
   <type>Findable</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 

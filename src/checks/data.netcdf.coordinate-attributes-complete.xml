@@ -6,7 +6,7 @@
   <name>NetCDF file contains required coordinate attributes</name>
   <description>NetCDF files should contain all required coordinate attributes ("standard_name", "units").</description>
   <type>Reusable</type>
-  <level>REQUIRED</level>
+  <level>OPTIONAL</level>
   <environment>python</environment>
   <code><![CDATA[
 def call():

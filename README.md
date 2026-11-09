@@ -4,6 +4,7 @@
 - **Author**: Matthew B. Jones, Peter Slaughter ([NCEAS](http://www.nceas.ucsb.edu)), Ted Habermann, Sean Gordon
 - **License**: [Apache 2](http://opensource.org/licenses/Apache-2.0)
 - [**Submit Bugs and feature requests**](https://github.com/NCEAS/metadig-checks/issues)
+- **Citation**: MetaDIG suites and checks for data and metadata improvement and guidance. Matthew B. Jones, Peter Slaughter, Ted Habermann, Sean Gordon, S. Jeanette Clark. doi:10.18739/A20V89K5K
 
 `metadig-checks` contain metadata quality checks that are used by the [MetaDIG Quality engine](https://github.com/NCEAS/metadig-engine).
 
